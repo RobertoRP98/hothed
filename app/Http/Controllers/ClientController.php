@@ -13,7 +13,8 @@ class ClientController extends Controller
      */
     public function index()
     {
-        //
+        $datos['Clients'] = Client::paginate(5);
+        return view('client.index',$datos);
     }
 
     /**
@@ -21,7 +22,7 @@ class ClientController extends Controller
      */
     public function create()
     {
-        //
+        return view('client.create');
     }
 
     /**
@@ -29,7 +30,21 @@ class ClientController extends Controller
      */
     public function store(StoreClientRequest $request)
     {
-        //
+
+
+       // Reglas y mensajes personalizados.
+    $field = ['name' => 'required'];
+    $message = ['required' => 'El :attribute es requerido'];
+
+    // Validar la solicitud.
+    $this->validate($request, $field, $message);  
+
+    // Procesar los datos y guardar el cliente.
+    $datosclient = $request->except('_token');
+    Client::insert($datosclient);
+
+    // Redirigir con mensaje de éxito.
+    return redirect('clientes')->with('message', 'Cliente agregado');
     }
 
     /**
@@ -37,30 +52,36 @@ class ClientController extends Controller
      */
     public function show(Client $client)
     {
-        //
+        return view();
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Client $client)
-    {
-        //
+    public function edit($id)
+    {   
+        $client=Client::FindOrFail($id);
+        return view('client.edit', compact('client'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateClientRequest $request, Client $client)
+    public function update(UpdateClientRequest $request, $id)
     {
-        //
+        $datosclient=request()->except(['_token',('_method')]);
+        Client::where('id',$id)->update($datosclient);
+        $client=Client::FindOrFail($id);
+        //return view('client.edit', compact('client'));
+        return redirect('clientes')->with('message','Cliente Actualizado');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Client $client)
+    public function destroy($id)
     {
-        //
+        Client::destroy($id);
+        return redirect('clientes/');
     }
 }

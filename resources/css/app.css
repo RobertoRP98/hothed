@@ -1,3 +1,6 @@
+a{
+    text-decoration: none;
+}
 .cardmivi{
     margin: 0;
     padding: 0;
@@ -82,26 +85,6 @@ color:#fff;
     display: inline-block;
 }
 
-.facebook {
-    background-color: #4e71a8;
-    color: #ffffff;
-}
-
-.twitter {
-    background-color: #55acee;
-    color: #ffffff;
-}
-
-.google {
-    background-color: #d6492f;
-    color: #ffffff;
-}
-
-.apple {
-    background-color: #424041;
-    color: #ffffff;
-}
-
 .footer-alt {
     color: #acacac;
 }
@@ -120,4 +103,30 @@ color:#fff;
     bottom: 0;
     display: block;
     border-bottom: 1px solid #1bbc9b;
+}
+
+
+/* Posicion del footer */
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+#app {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+main {
+    flex: 1;
+}
+
+footer {
+    margin-top: auto;
+}
+footer {
+    bottom: 0;
+    width: 100%;
 }

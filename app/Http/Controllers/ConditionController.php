@@ -13,15 +13,17 @@ class ConditionController extends Controller
      */
     public function index()
     {
-        //
+        $Conditions = Condition::paginate(5);
+        return view('condition.index', compact('Conditions'));
     }
+   
 
     /**
      * Show the form for creating a new resource.
      */
     public function create()
     {
-        //
+        return view('condition.create');
     }
 
     /**
@@ -29,7 +31,15 @@ class ConditionController extends Controller
      */
     public function store(StoreConditionRequest $request)
     {
-        //
+        $field=['condition'=>'required'];
+        $message = ['required'=> 'El :attribute es requerido'];
+
+        $this->validate($request, $field, $message);
+
+        $datoscondition=$request->except('_token');
+        Condition::insert($datoscondition);
+
+        return redirect('condiciones')->with('message','Condicion agregada');
     }
 
     /**
@@ -43,24 +53,29 @@ class ConditionController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Condition $condition)
+    public function edit($id)
     {
-        //
+        $condition=Condition::FindOrFail($id);
+        return view('condition.edit', compact('condition'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateConditionRequest $request, Condition $condition)
+    public function update(UpdateConditionRequest $request, $id)
     {
-        //
+        $datoscondition=request()->except(['_token',('_method')]);
+        Condition::where('id',$id)->update($datoscondition);
+        $condition=Condition::FindOrFail($id);
+        return redirect('condiciones')->with('message','Condicion actualizada');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Condition $condition)
+    public function destroy($id)
     {
-        //
+        Condition::destroy($id);
+        return redirect ('condiciones/');
     }
 }

@@ -13,7 +13,8 @@ class WellOilController extends Controller
      */
     public function index()
     {
-        //
+        $Welloil=Well_oil::paginate(5);
+        return view('welloil.index', compact('Welloil'));
     }
 
     /**
@@ -21,7 +22,7 @@ class WellOilController extends Controller
      */
     public function create()
     {
-        //
+        return view('welloil.create');
     }
 
     /**
@@ -29,7 +30,15 @@ class WellOilController extends Controller
      */
     public function store(StoreWell_oilRequest $request)
     {
-        //
+        $field=['name'=>'required', 'located'=>'required'];
+        $message = ['required'=> 'El :attribute es requerido'];
+
+        $this->validate($request, $field, $message);
+
+        $datoswelloil=$request->except('_token');
+        Well_oil::insert($datoswelloil);
+
+        return redirect('pozos')->with('message','Pozo agregado');
     }
 
     /**
@@ -43,24 +52,29 @@ class WellOilController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Well_oil $well_oil)
+    public function edit($id)
     {
-        //
+        $welloil=Well_oil::FindOrFail($id);
+        return view('welloil.edit',compact('welloil'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateWell_oilRequest $request, Well_oil $well_oil)
+    public function update(UpdateWell_oilRequest $request, $id)
     {
-        //
+        $datoswelloil=request()->except(['_token',('_method')]);
+        Well_oil::where('id',$id)->update($datoswelloil);
+        $well_oil=Well_oil::FindOrFail($id);
+        return redirect ('pozos')->with('message','Pozo actualizado');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Well_oil $well_oil)
+    public function destroy($id)
     {
-        //
+        Well_oil::destroy($id);
+        return redirect ('pozos/');
     }
 }

@@ -31,7 +31,15 @@
             @yield('confirm') 
             @yield('home')
             @yield('inout') 
-            
+            @yield('createclient')
+            @yield('indexclient')
+            @yield('editclient')
+            @yield('createcondition')
+            @yield('indexcondition')
+            @yield('editcondition')
+            @yield('createstatus')
+            @yield('indexstatus')
+            @yield('editstatus')               
          @include('layouts.footer')   
         </main>
     </div>
