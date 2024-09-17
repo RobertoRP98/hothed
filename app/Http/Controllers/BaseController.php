@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Tool_history;
-use App\Http\Requests\StoreTool_historyRequest;
-use App\Http\Requests\UpdateTool_historyRequest;
+use App\Models\Base;
+use App\Http\Requests\StoreBaseRequest;
+use App\Http\Requests\UpdateBaseRequest;
 
-class ToolHistoryController extends Controller
+class BaseController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -27,7 +27,7 @@ class ToolHistoryController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreTool_historyRequest $request)
+    public function store(StoreBaseRequest $request)
     {
         //
     }
@@ -35,7 +35,7 @@ class ToolHistoryController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Tool_history $tool_history)
+    public function show(Base $base)
     {
         //
     }
@@ -43,7 +43,7 @@ class ToolHistoryController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Tool_history $tool_history)
+    public function edit(Base $base)
     {
         //
     }
@@ -51,7 +51,7 @@ class ToolHistoryController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateTool_historyRequest $request, Tool_history $tool_history)
+    public function update(UpdateBaseRequest $request, Base $base)
     {
         //
     }
@@ -59,7 +59,7 @@ class ToolHistoryController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Tool_history $tool_history)
+    public function destroy(Base $base)
     {
         //
     }

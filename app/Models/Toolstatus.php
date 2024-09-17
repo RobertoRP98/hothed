@@ -5,9 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Toolrent extends Model
+class Toolstatus extends Model
 {
     use HasFactory;
-    protected $table = 'tools_rent';
+    protected $table='toolstatus';
     protected $guarded = ['id'];
 }

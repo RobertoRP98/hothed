@@ -6,6 +6,7 @@ use App\Http\Controllers\StatusController;
 use App\Http\Controllers\WellOilController;
 use App\Http\Controllers\ConditionController;
 use App\Http\Controllers\ToolrentController;
+use App\Http\Controllers\TypemaintController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -28,6 +29,8 @@ Route::resource('condiciones', ConditionController::class)->middleware('auth');
 Route::resource('status', StatusController::class)->middleware('auth');
 Route::resource('pozos', WellOilController::class)->middleware('auth');
 Route::resource('herramientasrenta', ToolrentController::class)->middleware('auth');
+Route::resource('tiposmantenimiento', TypemaintController::class)->middleware('auth');
+
 
 
 

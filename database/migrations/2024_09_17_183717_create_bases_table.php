@@ -11,10 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tools_history', function (Blueprint $table) {
+        Schema::create('bases', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('tool_id')->constrained('tools');
-            $table->string('description');
+            $table->string('name');
             $table->timestamps();
         });
     }
@@ -24,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('tools_history');
+        Schema::dropIfExists('bases');
     }
 };

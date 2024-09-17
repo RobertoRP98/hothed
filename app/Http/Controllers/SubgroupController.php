@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Tool;
-use App\Http\Requests\StoreToolRequest;
-use App\Http\Requests\UpdateToolRequest;
+use App\Models\Subgroup;
+use App\Http\Requests\StoreSubgroupRequest;
+use App\Http\Requests\UpdateSubgroupRequest;
 
-class ToolController extends Controller
+class SubgroupController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -27,7 +27,7 @@ class ToolController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreToolRequest $request)
+    public function store(StoreSubgroupRequest $request)
     {
         //
     }
@@ -35,7 +35,7 @@ class ToolController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Tool $tool)
+    public function show(Subgroup $subgroup)
     {
         //
     }
@@ -43,7 +43,7 @@ class ToolController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Tool $tool)
+    public function edit(Subgroup $subgroup)
     {
         //
     }
@@ -51,7 +51,7 @@ class ToolController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateToolRequest $request, Tool $tool)
+    public function update(UpdateSubgroupRequest $request, Subgroup $subgroup)
     {
         //
     }
@@ -59,7 +59,7 @@ class ToolController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Tool $tool)
+    public function destroy(Subgroup $subgroup)
     {
         //
     }

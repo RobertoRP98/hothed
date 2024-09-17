@@ -5,9 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Toolrent extends Model
+class Typemaint extends Model
 {
     use HasFactory;
-    protected $table = 'tools_rent';
+    protected $table = 'type_maint';
     protected $guarded = ['id'];
+
 }

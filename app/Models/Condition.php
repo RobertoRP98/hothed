@@ -10,13 +10,6 @@ class Condition extends Model
     use HasFactory;
 
     protected $table = 'conditions';
-    //relationship with toools()
-    public function tools(){
-        return $this->hasMany(Tool::class);
-    }
+    protected $guarded = ['id'];
 
-    //relationship with movements 
-    public function movements(){
-        return $this->hasMany(Movement::class);
-    }
 }

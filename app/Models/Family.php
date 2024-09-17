@@ -6,13 +6,15 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Status extends Model
+class Family extends Model
 {
     use HasFactory;
-    protected $table='statuses';
+    protected $table='families';
     protected $guarded = ['id'];
-    
+
     public function tool(): BelongsTo{
         return $this->belongsTo(Toolwarehouse::class);
     }
-}
+
+    }
+

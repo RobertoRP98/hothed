@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Movements;
-use App\Http\Requests\StoreMovementsRequest;
-use App\Http\Requests\UpdateMovementsRequest;
+use App\Models\Toolstatus;
+use App\Http\Requests\StoreToolstatusRequest;
+use App\Http\Requests\UpdateToolstatusRequest;
 
-class MovementsController extends Controller
+class ToolstatusController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -27,7 +27,7 @@ class MovementsController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreMovementsRequest $request)
+    public function store(StoreToolstatusRequest $request)
     {
         //
     }
@@ -35,7 +35,7 @@ class MovementsController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Movements $movements)
+    public function show(Toolstatus $toolstatus)
     {
         //
     }
@@ -43,7 +43,7 @@ class MovementsController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Movements $movements)
+    public function edit(Toolstatus $toolstatus)
     {
         //
     }
@@ -51,7 +51,7 @@ class MovementsController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateMovementsRequest $request, Movements $movements)
+    public function update(UpdateToolstatusRequest $request, Toolstatus $toolstatus)
     {
         //
     }
@@ -59,7 +59,7 @@ class MovementsController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Movements $movements)
+    public function destroy(Toolstatus $toolstatus)
     {
         //
     }
