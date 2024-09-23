@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Toolwarehouse extends Model
 {
@@ -12,21 +11,17 @@ class Toolwarehouse extends Model
     protected $table='toolwarehouse';
     protected $guarded = ['id'];
 
-
-    public function family(): HasOne{
-        return $this->hasOne(Family::class);
+    public function toolstatus(){
+        return $this->belongsTo(Toolstatus::class);
     }
 
-    public function subgroup(): HasOne{
-        return $this->hasOne(Subgroup::class);
+    public function subgroup(){
+        return $this->belongsTo(Subgroup::class);
     }
-
-    public function base(): HasOne{
-        return $this->hasOne(Base::class);
+    public function family(){
+        return $this->belongsTo(Family::class);
     }
-
-    public function status(): HasOne{
-        return $this->hasOne(Status::class);
+    public function base(){
+        return $this->belongsTo(Base::class);
     }
-
 }

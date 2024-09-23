@@ -13,7 +13,8 @@ class SubgroupController extends Controller
      */
     public function index()
     {
-        //
+        $subgroup=Subgroup::paginate(5);
+        return view('subgroup.index', compact('subgroup'));
     }
 
     /**
@@ -21,7 +22,7 @@ class SubgroupController extends Controller
      */
     public function create()
     {
-        //
+        return view('subgroup.create');
     }
 
     /**
@@ -29,7 +30,14 @@ class SubgroupController extends Controller
      */
     public function store(StoreSubgroupRequest $request)
     {
-        //
+        $field=['name'=>'required'];
+        $message=['required'=>'El :attribute es requerido'];
+        $this->validate($request, $field, $message);
+
+        $datossubgroup=$request->except('_token');
+        Subgroup::insert($datossubgroup);
+
+        return redirect('subgrupos')->with('message','Subgrupo agreado');
     }
 
     /**
@@ -43,24 +51,29 @@ class SubgroupController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Subgroup $subgroup)
+    public function edit($id)
     {
-        //
+        $subgroup=Subgroup::FindOrFail($id);
+        return view('subgroup.edit', compact('subgroup'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateSubgroupRequest $request, Subgroup $subgroup)
+    public function update(UpdateSubgroupRequest $request, $id)
     {
-        //
+        $datossubgroup=request()->except(['_token',('_method')]);
+        Subgroup::where('id',$id)->update($datossubgroup);
+        $subgroup=Subgroup::FindOrFail($id);
+        return redirect('subgrupos')->with('message','Subgrupo actualizado');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Subgroup $subgroup)
+    public function destroy($id)
     {
-        //
+        Subgroup::destroy($id);
+        return redirect('subgrupos/');
     }
 }

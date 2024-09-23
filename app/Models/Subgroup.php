@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Subgroup extends Model
 {
@@ -12,7 +12,8 @@ class Subgroup extends Model
     protected $table='subgroups';
     protected $guarded = ['id'];
 
-    public function tool(): BelongsTo{
-        return $this->belongsTo(Toolwarehouse::class);
+    public function toolwarehouse(): HasMany{
+        return $this->hasMany(Toolwarehouse::class,'id');
     }
+
 }

@@ -18,22 +18,25 @@ return new class extends Migration
             $table->string('description');
             $table->string('serienum');
             $table->string('extdia');
-            $table->string('guidia');
-            $table->string('insdia');
-            $table->string('fishingneck');
-            $table->string('conpin');
-            $table->string('conbox');
-            $table->string('opera');
-            $table->decimal('length', 8, 2); // Campo numérico con precisión
-            $table->string('necklength');
-            $table->string('lastinsp');
-            $table->date('datelastinsp');
-            $table->string('outfolio');
-            $table->date('departuredate');
+
+            $table->string('guidia')->nullable();
+            $table->string('insdia')->nullable();
+            $table->string('fishingneck')->nullable();
+            $table->string('conpin')->nullable();
+            $table->string('conbox')->nullable();
+            $table->string('opera')->nullable();
+
+            $table->string('length');
+            
+            $table->string('necklength')->nullable();
+            $table->string('lastinsp')->nullable();
+            $table->date('datelastinsp')->nullable();
+            $table->string('outfolio')->nullable();
+            $table->date('departuredate')->nullable();
             $table->unsignedBigInteger('toolstatus_id');
             $table->string('comentary')->nullable();
-            $table->string('intloca');
-            $table->string('QR')->unique();
+            $table->string('intloca')->nullable();
+            $table->string('QR')->nullable();
             $table->unsignedBigInteger('base_id');
 
             // Llaves foráneas

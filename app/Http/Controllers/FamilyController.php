@@ -13,7 +13,8 @@ class FamilyController extends Controller
      */
     public function index()
     {
-        //
+        $family=Family::paginate(5);
+        return view('family.index', compact('family'));
     }
 
     /**
@@ -21,7 +22,7 @@ class FamilyController extends Controller
      */
     public function create()
     {
-        //
+        return view('family.create');
     }
 
     /**
@@ -29,7 +30,14 @@ class FamilyController extends Controller
      */
     public function store(StoreFamilyRequest $request)
     {
-        //
+        $field=['name'=>'required'];
+        $message=['required'=>'El :attribute es requerido'];
+        $this->validate($request, $field, $message);
+
+        $datosfamily=$request->except('_token');
+        Family::insert($datosfamily);
+
+        return redirect('familias')->with('message', 'Familia agregada');
     }
 
     /**
@@ -43,24 +51,29 @@ class FamilyController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Family $family)
+    public function edit($id)
     {
-        //
+        $family=Family::FindOrFail($id);
+        return view('family.edit',compact('family'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateFamilyRequest $request, Family $family)
+    public function update(UpdateFamilyRequest $request, $id)
     {
-        //
+        $datosfamily=request()->except(['_token',('_method')]);
+        Family::where('id',$id)->update($datosfamily);
+        $family=Family::FindOrFail($id);
+        return redirect('familias')->with('message','Familia actualizada');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Family $family)
+    public function destroy($id)
     {
-        //
+        Family::destroy($id);
+        return redirect('familias/');
     }
 }

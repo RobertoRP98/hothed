@@ -13,7 +13,8 @@ class ToolstatusController extends Controller
      */
     public function index()
     {
-        //
+        $toolstatus=Toolstatus::paginate(5);
+        return view('toolstatus.index', compact('toolstatus'));
     }
 
     /**
@@ -21,7 +22,7 @@ class ToolstatusController extends Controller
      */
     public function create()
     {
-        //
+        return view('toolstatus.create');
     }
 
     /**
@@ -29,7 +30,15 @@ class ToolstatusController extends Controller
      */
     public function store(StoreToolstatusRequest $request)
     {
-        //
+        $field=['status'=>'required'];
+        $message=['required'=> 'El :attribute es requerido'];
+        $this->validate($request, $field, $message);
+
+        $datostoolstatus=$request->except('_token');
+        Toolstatus::insert($datostoolstatus);
+
+        return redirect('toolstatus')->with('message','Status de herramienta agregado');
+
     }
 
     /**
@@ -43,24 +52,29 @@ class ToolstatusController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Toolstatus $toolstatus)
+    public function edit($id)
     {
-        //
+        $toolstatus=Toolstatus::FindOrFail($id);
+        return view('toolstatus.edit', compact('toolstatus'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateToolstatusRequest $request, Toolstatus $toolstatus)
+    public function update(UpdateToolstatusRequest $request, $id)
     {
-        //
+        $datostoolstatus=request()->except(['_token', ('_method')]);
+        Toolstatus::where('id',$id)->update($datostoolstatus);
+        $toolstatus=Toolstatus::FindOrFail($id);
+        return redirect('toolstatus')->with('message', 'Status de herramienta actualizada');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Toolstatus $toolstatus)
+    public function destroy($id)
     {
-        //
+        Toolstatus::destroy($id);
+        return redirect('toolstatus');
     }
 }
