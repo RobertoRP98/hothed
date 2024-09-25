@@ -1,5 +1,14 @@
 import './bootstrap';
+import searchComponent from './components/searchComponent.vue';
+
 import * as bootstrap from 'bootstrap';
+
+import { createApp } from 'vue';
+
+const app = createApp({});
+app.component('search-component', searchComponent);
+app.mount('#app'); // Asume que tienes un <div id="app"></div> en tu layout Blade.
+
 
 window.addEventListener('scroll', reveal);
 

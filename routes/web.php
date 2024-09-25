@@ -9,6 +9,7 @@ use App\Http\Controllers\WellOilController;
 use App\Http\Controllers\SubgroupController;
 use App\Http\Controllers\ToolrentController;
 use App\Http\Controllers\ConditionController;
+use App\Http\Controllers\ToolHistoryController;
 use App\Http\Controllers\TypemaintController;
 use App\Http\Controllers\ToolstatusController;
 use App\Http\Controllers\ToolwarehouseController;
@@ -23,9 +24,7 @@ Auth::routes(['reset'=>false]);
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 // Ruta comodín para capturar todas las rutas no definidas
-Route::fallback(function () {
-    return redirect('/');
-});
+//Route::fallback(function () {    return redirect('/');});
 
 
 
@@ -39,10 +38,13 @@ Route::resource('bases', BaseController::class)->middleware('auth');
 Route::resource('familias', FamilyController::class)->middleware('auth');
 Route::resource('subgrupos', SubgroupController::class)->middleware('auth');
 Route::resource('toolstatus', ToolstatusController::class)->middleware('auth');
+//
 Route::resource('almacenherramientas',ToolwarehouseController::class)->middleware('auth');
+Route::get('/list', [ToolwarehouseController::class, 'list'])->middleware('auth');
+Route::post('/search', [ToolwarehouseController::class, 'search'])->middleware('auth');
+Route::resource('toolwarehousehistory',ToolHistoryController::class)->middleware('auth');
 
-
-
+//
 
 
 
