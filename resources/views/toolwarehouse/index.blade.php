@@ -12,6 +12,13 @@
         </a>
     </button>
 
+    <button type="button" class="btn btn-outline-success mb-3 mt-3 m-3">
+        <a class="text-dark" href="{{ url('historialalmacen/') }}">
+            Historial de cambios
+        </a>
+    </button>
+
+
     <!-- Aquí se integra el componente de búsqueda de Vue -->
     <div id="app">
         <search-component></search-component>

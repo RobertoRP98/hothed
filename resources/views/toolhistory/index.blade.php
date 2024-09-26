@@ -7,8 +7,8 @@
  @endif   
 
 <button type="button" class="btn btn-outline-success mb-3 mt-3"> 
-    <a class="text-dark" href="{{ url('herramientasrenta/create') }}">
-    Agregar herramientas
+    <a class="text-dark" href="{{ url('almacenherramientas/') }}">
+    Almacen de Herramientas
 </a> </button> 
 <div class="container">
 <table class="table table-light">
