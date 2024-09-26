@@ -1,13 +1,11 @@
 <?php
 
 namespace App\Http\Controllers;
-use Illuminate\Support\Facades\Auth;
 use App\Models\ToolHistory;
 use App\Http\Requests\StoreToolHistoryRequest;
 use App\Http\Requests\UpdateToolHistoryRequest;
 use App\Models\Toolwarehouse;
-use Illuminate\Http\Client\Request;
-
+use App\Models\User;
 
 class ToolHistoryController extends Controller
 {
@@ -17,8 +15,10 @@ class ToolHistoryController extends Controller
      */
     public function index()
     {
-     $histories = ToolHistory::with('toolwarehouse','user')->orderBy('created_at','desc')->get();
-     return view('toolwarehouse.index', compact('tools','histories'));
+     $histories = ToolHistory::with(['user:id,name','toolwarehouse:id,description'])->paginate(30);
+     $user=User::select('id','name')->get();
+     $toolwarehouse=Toolwarehouse::select('id','description')->get();
+     return view('toolhistory.index', compact('histories', 'user','toolwarehouse'));
     }
 
     /**
@@ -58,25 +58,7 @@ class ToolHistoryController extends Controller
      */
     public function update(UpdateToolHistoryRequest $request, $id)
     {
-        $toolwarehouse = Toolwarehouse::findOrFail($id);
-
-        //recorre cada campo modificado y lo preparada para ser guardado
-        foreach($request->all() as $key => $value){
-            if($toolwarehouse->getOriginal($key) != $value) { // si el valor ha cambiado
-                ToolHistory::create([
-                    'toolwarehouse_id' => $toolwarehouse->id,
-                    'user_id' => auth()->User()->id,
-                    'field' => $key,
-                    'old_value' => $toolwarehouse->$key,
-                    'new_value' => $value,
-                    
-                ]);
-            }
-        }
-
-        $toolwarehouse->update($request->all());
-
-        return redirect()->route('toolwarehouse.show', $toolwarehouse->id);
+      
     }
 
     /**

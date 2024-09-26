@@ -1,5 +1,7 @@
 <?php
 
+use OwenIt\Auditing\AuditingServiceProvider;
+
 return [
 
     /*
@@ -99,12 +101,6 @@ return [
 
     'key' => env('APP_KEY'),
 
-    'previous_keys' => [
-        ...array_filter(
-            explode(',', env('APP_PREVIOUS_KEYS', ''))
-        ),
-    ],
-
     /*
     |--------------------------------------------------------------------------
     | Maintenance Mode Driver
@@ -122,5 +118,6 @@ return [
         'driver' => env('APP_MAINTENANCE_DRIVER', 'file'),
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
+
 
 ];

@@ -85,7 +85,7 @@
             @foreach($toolstatus as $tool)
             <option value="{{$tool->id}}"
             {{(isset($toolwarehouse) && $toolwarehouse->toolstatus_id==$tool->id)|| old('toolstatus_id')==$tool->id ? 'selected':''}}>
-            {{$tool->status}}
+            {{$tool->name}}
             </option>
             @endforeach
           </select>

@@ -42,7 +42,7 @@ Route::resource('toolstatus', ToolstatusController::class)->middleware('auth');
 Route::resource('almacenherramientas',ToolwarehouseController::class)->middleware('auth');
 Route::get('/list', [ToolwarehouseController::class, 'list'])->middleware('auth');
 Route::post('/search', [ToolwarehouseController::class, 'search'])->middleware('auth');
-Route::resource('toolwarehousehistory',ToolHistoryController::class)->middleware('auth');
+Route::resource('historialalmacen',ToolHistoryController::class)->middleware('auth');
 
 //
 

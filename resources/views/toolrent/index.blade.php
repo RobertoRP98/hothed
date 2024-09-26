@@ -27,8 +27,7 @@
             <td>{{ $tool->id }}</td>
             <td>{{ $tool->serienumber }}</td>
             <td>{{ $tool->description }}</td>
-            <td>
-               <button class="btn btn-warning mb-2"> <a class="text-white" href="{{ url('herramientasrenta/'.$tool->id.'/edit') }}">
+            <td>       <button class="btn btn-warning mb-2"> <a class="text-white" href="{{ url('herramientasrenta/'.$tool->id.'/edit') }}">
                     Editar
                 </a> </button> 
             <!-- <form action="{{url('herramientasrenta/'.$tool->id)}}" method="post" class="d-inline">

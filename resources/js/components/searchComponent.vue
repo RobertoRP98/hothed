@@ -25,7 +25,7 @@
                     <td>{{ tool.description }}</td>
                     <td>{{ tool.serienum }}</td>
                     <td>{{ tool.base.name }}</td>
-                    <td>{{ tool.toolstatus.status }}</td>
+                    <td>{{ tool.toolstatus.name }}</td>
                     <td>{{ tool.comentary }}</td>
                     <td>
                         <button class="btn btn-warning mb-2">

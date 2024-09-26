@@ -26,4 +26,10 @@ class ToolHistory extends Model
         // Cambiar a belongsTo ya que el historial pertenece a un usuario
         return $this->belongsTo(User::class, 'user_id');
     }
+
+    public function toolwarehouse(): BelongsTo
+    {
+        // Cambiar a belongsTo ya que el historial pertenece a un usuario
+        return $this->belongsTo(Toolwarehouse::class, 'toolwarehouse_id');
+    }
 }

@@ -10,7 +10,7 @@
   <div class="row mb-4">
     <div class="col-md-3">
         <div class="form-outline">
-            <input class="form-control" type="text" value="{{$toolwarehouse->family_id}}" readonly>
+            <input class="form-control" type="text" value="{{$toolwarehouse->family->name}}" readonly>
             <label class="form-label" for="family_id">Familia</label>
         </div>
     </div>
@@ -18,7 +18,7 @@
 
       <div class="col-md-3">
          <div class="form-outline">
-            <input class="form-control" type="text" value="{{$toolwarehouse->subgroup_id}}" readonly>
+            <input class="form-control" type="text" value="{{$toolwarehouse->subgroup->name}}" readonly>
             <label class="form-label" for="subgroup_id">Subgrupo</label>
          </div>
       </div>
@@ -44,13 +44,13 @@
       
       <div class="col-md-3">
         <div class="form-outline">
-            <input class="form-control" type="text" value="{{$toolwarehouse->base_id}}" readonly>
+            <input class="form-control" type="text" value="{{$toolwarehouse->base->name}}" readonly>
            <label class="form-label"  for="base_id">Base Operativa</label>
         </div>
     </div>
 
     <div class="col-md-3">
-        <input class="form-control" type="text" value="{{$toolwarehouse->toolstatus_id}}" readonly>
+        <input class="form-control" type="text" value="{{$toolwarehouse->toolstatus->name}}" readonly>
         <label class="form-label"  for="base_id">Status de la herramienta</label>
   </div>
 
@@ -199,17 +199,18 @@
         </tr>
     </thead>
     <tbody>
-        @foreach($toolwarehouse->histories as $history)
+        @foreach ($toolwarehouse->histories as $history)
         <tr>
             <td>{{ $history->field }}</td>
             <td>{{ $history->old_value }}</td>
             <td>{{ $history->new_value }}</td>
-            <td>{{ ($history->user)->name ?? 'Usuario no disponible' }}</td>
+            <td>{{ $history->user->name }}</td>
             <td>{{ $history->created_at }}</td>
         </tr>
         @endforeach
     </tbody>
 </table>
+
 
 
 
