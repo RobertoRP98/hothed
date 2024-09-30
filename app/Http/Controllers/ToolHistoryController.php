@@ -15,9 +15,12 @@ class ToolHistoryController extends Controller
      */
     public function index()
     {
-     $histories = ToolHistory::with(['user:id,name','toolwarehouse:id,description'])->paginate(30);
+     $histories = ToolHistory::with(['user:id,name','toolwarehouse:id,description,serienum'])
+     ->orderBy('created_at', 'desc')
+     ->paginate(30);
+
      $user=User::select('id','name')->get();
-     $toolwarehouse=Toolwarehouse::select('id','description')->get();
+     $toolwarehouse=Toolwarehouse::select('id','description','serienum')->get();
      return view('toolhistory.index', compact('histories', 'user','toolwarehouse'));
     }
 

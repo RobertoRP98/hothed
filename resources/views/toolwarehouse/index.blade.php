@@ -18,6 +18,10 @@
         </a>
     </button>
 
+    <button class="btn btn-primary me-md-2   justify-content-md-end" type="button">LISTA EN PDF</button>
+
+
+  
 
     <!-- Aquí se integra el componente de búsqueda de Vue -->
     <div id="app">

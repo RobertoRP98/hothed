@@ -14,8 +14,8 @@
 <table class="table table-light">
     <thead class="thead-light">
         <tr>
-            <th>ID</th>
             <th>HERRAMIENTA</th>
+            <th> N.SERIE </th> 
             <th>CAMPO CAMBIADO</th>
             <th>VALOR ANTERIOR</th>
             <th>VALOR NUEVO</th>
@@ -26,8 +26,8 @@
     <tbody>
         @foreach( $histories as $history)
         <tr>
-            <td>{{ $history->id }}</td>
             <td>{{ $history->toolwarehouse->description}}</td>
+            <td>{{ $history->toolwarehouse->serienum}}</td>
             <td>{{ $history->field }}</td>
             <td>{{ $history->old_value }}</td>
             <td>{{ $history->new_value }}</td>
