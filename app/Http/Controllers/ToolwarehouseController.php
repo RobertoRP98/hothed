@@ -39,6 +39,19 @@ class ToolwarehouseController extends Controller
         
         return view('toolwarehouse.index', compact('toolwarehouse', 'toolstatus', 'subgroups', 'families', 'bases'));
     }
+
+    public function pdftools()
+    {
+        $toolwarehouse = Toolwarehouse::with(['toolstatus:id,name','subgroup:id,name','family:id,name','base:id,name'])
+            ->paginate(30);
+    
+        $toolstatus = Toolstatus::all();
+        $subgroups = Subgroup::all();
+        $families = Family::all();
+        $bases = Base::all();
+        
+        return view('toolwarehouse.pdf', compact('toolwarehouse', 'toolstatus', 'subgroups', 'families', 'bases'));
+    }
     
 
     /**

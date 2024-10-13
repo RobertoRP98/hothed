@@ -3,7 +3,9 @@
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BaseController;
+use App\Http\Controllers\BillController;
 use App\Http\Controllers\ClientController;
+use App\Http\Controllers\CompanyReceivableController;
 use App\Http\Controllers\FamilyController;
 use App\Http\Controllers\StatusController;
 use App\Http\Controllers\WellOilController;
@@ -50,9 +52,24 @@ Route::resource('historialalmacen',ToolHistoryController::class)->middleware('au
 // TERMINA ALMACEN
 
 
+//MODULOS DE COBRO
+Route::resource('empresas',CompanyReceivableController::class)->middleware('auth');
+Route::get('catalogo/privadas', [CompanyReceivableController::class, 'indexprivate'])->name('empresas.privadas');
+Route::get('catalogo/pemex', [CompanyReceivableController::class, 'indexPublicas'])->name('empresas.publicas')->middleware('auth');
+Route::get('/catalogo/{id}', [CompanyReceivableController::class, 'showEmpresa'])->name('empresas.show');
 
 
+Route::get('/prefactura/create/{companyreceivable_id}', [BillController::class, 'createFactura'])->name('prefactura.create');
+// Para crear una factura y relacionarla con la empresa
+Route::post('/facturas/{companyreceivable_id}', [BillController::class, 'store'])->name('facturas.store');
+// Para actualizar una factura relacionada con la empresa
+Route::patch('facturas/update/{companyreceivable_id}/{factura}', [BillController::class, 'update'])->name('facturas.update');
+// Para editar una factura
+Route::get('/facturas/{companyreceivable_id}/edit/{factura}', [BillController::class, 'edit'])->name('facturas.edit');
+//
+Route::get('/facturas', [BillController::class,'index'])->name('facturas.index');
 
+//TERMINA MODULOS DE COBRO
 
 
 

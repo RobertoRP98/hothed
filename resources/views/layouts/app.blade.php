@@ -44,7 +44,8 @@
             @yield('editcondition')
             @yield('createstatus')
             @yield('indexstatus')
-            @yield('editstatus')               
+            @yield('editstatus') 
+            @yield('indexprivate')
          @include('layouts.footer')   
         </main>
     </div>
