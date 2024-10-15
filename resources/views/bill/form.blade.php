@@ -88,7 +88,7 @@
 <div class="col-md-3">
   <div class="form-outline">
       <input type="date" id="end_operation" name="end_operation" value="{{isset($bill) ? $bill->end_operation : ''}}" class="form-control" />
-      <label class="form-label" for="FECHA DE LA FACTURA">FIN DE OPERACIÓN</label>
+      <label class="form-label" for="FIN DE OPERACIÓN">FIN DE OPERACIÓN</label>
    </div>
  </div> 
 

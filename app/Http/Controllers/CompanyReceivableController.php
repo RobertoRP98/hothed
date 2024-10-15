@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Bill;
 use App\Models\CompanyReceivable;
 use App\Http\Requests\StoreCompanyReceivableRequest;
 use App\Http\Requests\UpdateCompanyReceivableRequest;
+use Carbon\Carbon;
 
 class CompanyReceivableController extends Controller
 {
@@ -114,5 +116,35 @@ class CompanyReceivableController extends Controller
         $totalPagado = $empresa->bills->where('status', 'pagado')->sum('total_payment');
 
         return view('companiesreceivable.detail', compact('empresa', 'totalGlobal', 'totalPendienteFacturar', 'totalPendienteCobrar', 'totalPagado'));
+    }
+
+    public function history($company_id){
+
+        $comp=CompanyReceivable::findOrFail($company_id);
+
+        //Filtrar facturas por empresa
+        $bills= Bill::where('companyreceivable_id',$company_id)
+        ->selectRaw(
+            'YEAR(billing_date) as year,
+            MONTH(billing_date) as month,
+            status,
+            SUM(total_payment) as total
+        ')
+        ->groupBy('year','month','status')
+        ->orderBy('year','asc')//Especifica el orden de ascendente por año
+        ->orderBy('month','asc')//Especifica el orden de ascendente por mes
+        ->get();
+
+        //agrupación y sumas
+        $grupofacturas=$bills->groupBy(function ($bill){
+            return Carbon::create($bill->year, $bill->month,1)->format('F-Y');
+        })->map(function($grouped){
+            return $grouped->groupBy('status')->map(function ($statusgroup){
+                return $statusgroup->sum('total');
+            });
+        });
+
+
+        return view('companiesreceivable.history', compact('grupofacturas', 'comp'));
     }
 }

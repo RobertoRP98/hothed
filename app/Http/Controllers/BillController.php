@@ -69,7 +69,10 @@ class BillController extends Controller
     //termina calculos de pesos pendiente de cobrar
 
     // Facturas vencidas o por vencer
-    $facturas = Bill::all()->filter(function ($bill) {
+    $facturas = Bill::where('status', '!=', 'pagado')
+        ->get()
+        ->filter(function($bill){
+            
         //comprar fechas de vencimiento con la fecha actual
         $expirationDate = Carbon::parse($bill->expiration_date);
         $today = Carbon::now();

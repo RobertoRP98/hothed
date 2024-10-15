@@ -18,16 +18,22 @@
             Regresar
         </a> </button> 
         
-        <button type="button" class="btn btn-outline-success mb-3 mt-3">
+        <button type="button" class="btn btn-outline-success mb-3 mt-3 ">
             <a class="text-dark" href="{{ route('prefactura.create', ['companyreceivable_id' => $empresa->id]) }}">
                 Crear nuevo
+            </a>
+        </button>
+
+        <button type="button" class="btn btn-outline-success mb-3 mt-3 m-2">
+            <a class="text-dark" href="{{route('empresa.historial', ['company' => $empresa->id]) }} ">
+                Historial 
             </a>
         </button>
     </div>
 
     <h2>Totales</h2>
     <div class="row">
-    <p class="col-3">Total Global: ${{ $totalGlobal }}</p>
+    <p class="col-3">Total Historico: ${{ $totalGlobal }}</p>
     <p class="col-3">Total Pendiente de Facturar: ${{ $totalPendienteFacturar }}</p>
     <p class="col-3">Total Pendiente de Cobrar: ${{ $totalPendienteCobrar }}</p>
     <p class="col-3">Total Pagado: ${{ $totalPagado }}</p>
@@ -55,13 +61,15 @@
                     <td>{{ $bill->entry_date }}</td>
                     <td>{{ $bill->expiration_date }}</td>
                     <td class="
-                    @if (\Carbon\Carbon::parse($bill->expiration_date)->diffInDays(now(),false)>=0) 
-                    table-danger
-                    @elseif (\Carbon\Carbon::parse($bill->expiration_date)->diffInDay(now(),false)<=-31)
-                    table-success
+                    @if($bill->status==='pagado')
+                        table-info
+                    @elseif(\Carbon\Carbon::parse($bill->expiration_date)->diffInDay(now(),false)>=0)
+                        table-danger 
+                    @elseif(\Carbon\Carbon::parse($bill->expiration_date)->diffInDay(now(),false)<=-31)
+                        table-secondary
                     @else
-                    table-warning
-                    @endif
+                        table-warning        
+                    @endif    
                     ">
                     {{floor(\Carbon\Carbon::parse($bill->expiration_date)->diffInDay(now(),false))}}
                     </td>
