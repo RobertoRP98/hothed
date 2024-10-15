@@ -40,6 +40,17 @@
   </div>
  </div>
 
+ <div class="row mb-4 col-md-3">
+  <div class="col">
+    <div data-mdb-input-init class="form-outline">
+ <select class="form-select" name="currency" id="currency">
+  <option value="USD" {{ isset($currency) && $currency->currency == 'USD' ? 'selected' : '' }}>USD</option>
+  <option value="MXN" {{ isset($company) && $company->currency == 'MXN' ? 'selected' : '' }}>MXN</option>
+</select>
+    </div>
+  </div>
+ </div>
+
 <br>
  <!-- Submit button -->
  <div class="row mb-4 col-md-6">

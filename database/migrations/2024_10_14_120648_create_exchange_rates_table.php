@@ -11,12 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('companyreceivable', function (Blueprint $table) {
+        Schema::create('exchange_rates', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->enum('type',['Pemex', 'Privada']);
-            $table->integer('creditdays');
-            $table->enum('currency', ['MXN', 'USD'])->default('USD'); // Campo para divisa
+            $table->string('currency', 3);
+            $table->decimal('rate', 8,4);
             $table->timestamps();
         });
     }
@@ -26,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('companyreceivable');
+        Schema::dropIfExists('exchange_rates');
     }
 };

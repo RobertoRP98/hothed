@@ -23,7 +23,8 @@ class CompanyReceivableController extends Controller
     public function create()
     {
         $company=null;
-        return view('companiesreceivable.create', compact('company'));
+        $currency=null;
+        return view('companiesreceivable.create', compact('company','currency'));
     }
 
     /**
@@ -31,7 +32,7 @@ class CompanyReceivableController extends Controller
      */
     public function store(StoreCompanyReceivableRequest $request)
     {
-        $field = ['name' => 'required', 'type' => 'required' ];
+        $field = ['name' => 'required', 'type' => 'required', 'currency' => 'required' ];
         $message = ['required' => 'El :attribute es requerido'];
 
         $this->validate($request, $field, $message);

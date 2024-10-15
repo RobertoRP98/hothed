@@ -9,6 +9,15 @@
     <h1>{{ $empresa->name }}</h1>
 
     <div>
+        <button type="button" class="btn btn-outline-success mb-3 mt-3 m-2"> 
+            <a class="text-dark" 
+            @if($empresa->type == 'Privada')
+            href="{{route('empresas.privadas')}}"
+            @else href="{{route('empresas.publicas')}}"
+            @endif>
+            Regresar
+        </a> </button> 
+        
         <button type="button" class="btn btn-outline-success mb-3 mt-3">
             <a class="text-dark" href="{{ route('prefactura.create', ['companyreceivable_id' => $empresa->id]) }}">
                 Crear nuevo
@@ -18,10 +27,10 @@
 
     <h2>Totales</h2>
     <div class="row">
-    <p class="col-3">Total Global: {{ $totalGlobal }}</p>
-    <p class="col-3">Total Pendiente de Facturar: {{ $totalPendienteFacturar }}</p>
-    <p class="col-3">Total Pendiente de Cobrar: {{ $totalPendienteCobrar }}</p>
-    <p class="col-3">Total Pagado: {{ $totalPagado }}</p>
+    <p class="col-3">Total Global: ${{ $totalGlobal }}</p>
+    <p class="col-3">Total Pendiente de Facturar: ${{ $totalPendienteFacturar }}</p>
+    <p class="col-3">Total Pendiente de Cobrar: ${{ $totalPendienteCobrar }}</p>
+    <p class="col-3">Total Pagado: ${{ $totalPagado }}</p>
     </div>
 
     <h2>Facturas</h2>
@@ -45,7 +54,17 @@
                     <td>{{ $bill->bill_date }}</td>
                     <td>{{ $bill->entry_date }}</td>
                     <td>{{ $bill->expiration_date }}</td>
-                    <td> {{ floor(\Carbon\Carbon::parse($bill->expiration_date)->diffInDays(now())) }} </td>
+                    <td class="
+                    @if (\Carbon\Carbon::parse($bill->expiration_date)->diffInDays(now(),false)>=0) 
+                    table-danger
+                    @elseif (\Carbon\Carbon::parse($bill->expiration_date)->diffInDay(now(),false)<=-31)
+                    table-success
+                    @else
+                    table-warning
+                    @endif
+                    ">
+                    {{floor(\Carbon\Carbon::parse($bill->expiration_date)->diffInDay(now(),false))}}
+                    </td>
                     <td>
                         <button class="btn btn-warning mb-2">
                             <a class="text-white" href="{{ route('facturas.edit', [$empresa->id, $bill->id]) }}">Editar Factura</a> 

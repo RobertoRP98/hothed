@@ -12,6 +12,7 @@ use App\Http\Controllers\WellOilController;
 use App\Http\Controllers\SubgroupController;
 use App\Http\Controllers\ToolrentController;
 use App\Http\Controllers\ConditionController;
+use App\Http\Controllers\CurrencyController;
 use App\Http\Controllers\TypemaintController;
 use App\Http\Controllers\ToolstatusController;
 use App\Http\Controllers\ToolHistoryController;
@@ -53,21 +54,28 @@ Route::resource('historialalmacen',ToolHistoryController::class)->middleware('au
 
 
 //MODULOS DE COBRO
+//LIMITADOR A SOLOS CON ROLE COBRANZA PUEDAN ACCEDER
+Route::group(['middleware'=>['auth','checkrole:Cobranza']], function(){
+
+Route::resource('divisas',CurrencyController::class)->middleware('auth');
+
 Route::resource('empresas',CompanyReceivableController::class)->middleware('auth');
-Route::get('catalogo/privadas', [CompanyReceivableController::class, 'indexprivate'])->name('empresas.privadas');
+Route::get('catalogo/privadas', [CompanyReceivableController::class, 'indexprivate'])->name('empresas.privadas')->middleware('auth');
 Route::get('catalogo/pemex', [CompanyReceivableController::class, 'indexPublicas'])->name('empresas.publicas')->middleware('auth');
-Route::get('/catalogo/{id}', [CompanyReceivableController::class, 'showEmpresa'])->name('empresas.show');
+Route::get('/catalogo/{id}', [CompanyReceivableController::class, 'showEmpresa'])->name('empresas.show')->middleware('auth');
 
 
-Route::get('/prefactura/create/{companyreceivable_id}', [BillController::class, 'createFactura'])->name('prefactura.create');
+Route::get('/prefactura/create/{companyreceivable_id}', [BillController::class, 'createFactura'])->name('prefactura.create')->middleware('auth');
 // Para crear una factura y relacionarla con la empresa
-Route::post('/facturas/{companyreceivable_id}', [BillController::class, 'store'])->name('facturas.store');
+Route::post('/facturas/{companyreceivable_id}', [BillController::class, 'store'])->name('facturas.store')->middleware('auth');
 // Para actualizar una factura relacionada con la empresa
-Route::patch('facturas/update/{companyreceivable_id}/{factura}', [BillController::class, 'update'])->name('facturas.update');
+Route::patch('facturas/update/{companyreceivable_id}/{factura}', [BillController::class, 'update'])->name('facturas.update')->middleware('auth');
 // Para editar una factura
-Route::get('/facturas/{companyreceivable_id}/edit/{factura}', [BillController::class, 'edit'])->name('facturas.edit');
+Route::get('/facturas/{companyreceivable_id}/edit/{factura}', [BillController::class, 'edit'])->name('facturas.edit')->middleware('auth');
 //
-Route::get('/facturas', [BillController::class,'index'])->name('facturas.index');
+Route::get('/facturas', [BillController::class,'index'])->name('facturas.index')->middleware('auth');
+
+});
 
 //TERMINA MODULOS DE COBRO
 

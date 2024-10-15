@@ -12,6 +12,15 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <!-- Left Side Of Navbar -->
             <ul class="navbar-nav me-auto">
+                @auth
+                    @if(Auth::user()->hasRole('Cobranza'))
+                        <li class="nav-item">
+                            <a class="nav-link text-white" href="{{ url('facturas') }}">Facturas</a>
+                        </li>
+                    @endif
+                @endauth
+
+
                 <li class="nav-item">
                     <a class="nav-link text-white" href="hothedtabasco.test/#misionvision">Misión y Visión</a>
                 </li>

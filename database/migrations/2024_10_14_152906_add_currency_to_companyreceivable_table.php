@@ -11,13 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('companyreceivable', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->enum('type',['Pemex', 'Privada']);
-            $table->integer('creditdays');
+        Schema::table('companyreceivable', function (Blueprint $table) {
+            //
             $table->enum('currency', ['MXN', 'USD'])->default('USD'); // Campo para divisa
-            $table->timestamps();
         });
     }
 
@@ -26,6 +22,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('companyreceivable');
+        Schema::table('companyreceivable', function (Blueprint $table) {
+            //
+        });
     }
 };

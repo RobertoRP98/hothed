@@ -49,7 +49,7 @@
 <div class="row mb-4">  
   <div class="col-md-3">
     <div class="form-outline">
-        <input type="date" id="expiration_date" name="expiration_date" value="{{isset($bill) ? $bill->expiration_date : ''}}" class="form-control" />
+        <input type="date" id="expiration_date" name="expiration_date" value="{{isset($bill) ? $bill->expiration_date : ''}}" class="form-control" readonly/>
         <label class="form-label" for="VENCIMIENTO">VENCIMIENTO</label>
     </div>
 </div>

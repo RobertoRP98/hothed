@@ -6,6 +6,7 @@ use App\Models\Bill;
 use App\Http\Requests\StoreBillRequest;
 use App\Http\Requests\UpdateBillRequest;
 use App\Models\CompanyReceivable;
+use App\Models\Currency;
 use Carbon\Carbon;
 
 class BillController extends Controller
@@ -15,6 +16,8 @@ class BillController extends Controller
      */
     public function index()
     {
+        //Obtener el valor del dolar desde el modelo
+        $dollarRate = Currency::where('currency', 'USD')->latest()->value('rate');
         // Obtener los totales de empresas privadas
     $totalPrivadasPendienteFacturar = Bill::whereHas('companyreceivable', function ($query) {
         $query->where('type', 'Privada');
@@ -24,22 +27,67 @@ class BillController extends Controller
         $query->where('type', 'Privada');
     })->where('status', 'pendiente_cobrar')->sum('total_payment');
 
-    // Obtener los totales de empresas públicas
-    $totalPublicasPendienteFacturar = Bill::whereHas('companyreceivable', function ($query) {
-        $query->where('type', 'Pemex');
-    })->where('status', 'pendiente_facturar')->sum('total_payment');
 
+
+
+    // Obtener los totales de empresas públicas
+    //inicia calculos de pesos pendientes de facturar
+    $totalPublicasPendienteFacturar= Bill::whereHas('companyreceivable', function($query){
+        $query->where('type','Pemex');
+    }) 
+    ->where('status','pendiente_facturar')
+    ->get()
+    ->map(function($bill)use($dollarRate){
+        //Si la empresa maneja MXN, convertir a USD
+        if($bill->companyreceivable->currency == 'MXN'){
+            return $bill->total_payment / $dollarRate;
+        }else{
+            return $bill->total_payment;
+        }
+    })->sum();
+
+    $totalPublicasPendienteFacturar=number_format($totalPublicasPendienteFacturar);
+    //termina calculos de pesos pendientes de facturar
+
+
+    //empieza calculos de pesos pendientes de cobrar
     $totalPublicasPendienteCobrar = Bill::whereHas('companyreceivable', function ($query) {
         $query->where('type', 'Pemex');
-    })->where('status', 'pendiente_cobrar')->sum('total_payment');
+    })
+    ->where('status', 'pendiente_cobrar')
+    ->get()
+    ->map(function($bill)use($dollarRate){
+        //Si la empresa maneja MXN, convertir a USD
+        if($bill->companyreceivable->currency == 'MXN'){
+            return $bill->total_payment / $dollarRate;
+        }else{
+            return $bill->total_payment;
+        }
+    })->sum();
+
+    $totalPublicasPendienteCobrar=number_format($totalPublicasPendienteCobrar,2);
+    //termina calculos de pesos pendiente de cobrar
 
     // Facturas vencidas o por vencer
-    $facturas = Bill::all()->map(function ($bill) {
+    $facturas = Bill::all()->filter(function ($bill) {
+        //comprar fechas de vencimiento con la fecha actual
         $expirationDate = Carbon::parse($bill->expiration_date);
         $today = Carbon::now();
-        $bill->diasExpirados = $expirationDate->diffInDays($today, false); // negativo si aún no ha expirado
+
+        //diferencia en dias entre la fecha actual y la fecha de vencimiento
+        $diasExpirados=$expirationDate->diffInDays($today, false);// negativo si aún no ha expirado
+
+        //solo facturas con dias expirados >= 0 (vencidas o por vencer)
+        return $diasExpirados >= 0;
+    })->map(function($bill){
+        $expirationDate= Carbon::parse($bill->expiration_date);
+        $today= Carbon::now();
+        $bill->diasExpirados = $expirationDate->diffInDays($today,false);
         return $bill;
+
     });
+
+
 
     return view('bill.index', compact(
         'totalPrivadasPendienteFacturar', 

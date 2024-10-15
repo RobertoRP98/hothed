@@ -8,6 +8,10 @@
 
  <h1>Empresas Privadas</h1>
 
+ <button type="button" class="btn btn-outline-success mb-3 mt-3 m-2"> <a class="text-dark" href="{{ route('facturas.index') }}">
+    Regresar
+</a> </button> 
+
  <ul class="list-group">
      @foreach ($empresasPrivadas as $empresa)
          <li  class="list-group-item col-md-4">
