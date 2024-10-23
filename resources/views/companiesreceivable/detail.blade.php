@@ -26,21 +26,66 @@
 
         <button type="button" class="btn btn-outline-success mb-3 mt-3 m-2">
             <a class="text-dark" href="{{route('empresa.historial', ['company' => $empresa->id]) }} ">
-                Historial 
+                Historial General
+            </a>
+        </button>
+
+        <button type="button" class="btn btn-outline-success mb-3 mt-3 m-1">
+            <a class="text-dark" href="{{route('empresa.facturas-pagadas', ['company' => $empresa->id]) }} ">
+                Historial pagados
             </a>
         </button>
     </div>
 
     <h2>Totales</h2>
-    <div class="row">
-    <p class="col-3">Total Historico: ${{ $totalGlobal }}</p>
-    <p class="col-3">Total Pendiente de Facturar: ${{ $totalPendienteFacturar }}</p>
-    <p class="col-3">Total Pendiente de Cobrar: ${{ $totalPendienteCobrar }}</p>
-    <p class="col-3">Total Pagado: ${{ $totalPagado }}</p>
+    <div class="container my-4">
+        <div class="row">
+
+            <div class="col-md-3">
+                <div class="card text-white bg-secondary mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">Total Historico: </h5>
+                        <p class="card-text display-6">${{ number_format($totalGlobal, 2) }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="card text-white bg-primary mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">Pendiente de facturar: </h5>
+                        <p class="card-text display-6">${{ number_format($totalPendienteFacturar, 2) }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="card text-white bg-danger mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title"> Pendiente de Cobrar: </h5>
+                        <p class="card-text display-6">${{ number_format($totalPendienteCobrar, 2) }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="card text-white bg-success mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">Total Pagado: </h5>
+                        <p class="card-text display-6">${{ number_format($totalPagado , 2) }}</p>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
     </div>
 
+   
+
     <h2>Facturas</h2>
-    <table class="table table-light">
+    <div class="table-responsive">
+    <table class="table table-light table-bordered table-hover">
         <thead class="thead-light">
             <tr>
                 <th>No. Orden</th>
@@ -53,7 +98,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach ($empresa->bills as $bill)
+            @foreach ($unpaidBills as $bill)
                 <tr>
                     <td>{{ $bill->order_number }}</td>
                     <td>{{ $bill->bill_number }}</td>
@@ -83,6 +128,6 @@
             @endforeach
         </tbody>
     </table>
-
+</div>
 </div>
 @endsection

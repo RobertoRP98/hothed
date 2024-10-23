@@ -66,6 +66,11 @@ Route::get('/catalogo/{id}', [CompanyReceivableController::class, 'showEmpresa']
 // Ruta para el historial de facturación de una empresa específica
 Route::get('historial/{company}', [CompanyReceivableController::class, 'history'])->name('empresa.historial')->middleware('auth');
 
+// Ruta para el historial de facturas pagadas de una empresa específica
+Route::get('facturas-pagadas/{company}', [CompanyReceivableController::class, 'paid'])->name('empresa.facturas-pagadas')->middleware('auth');
+
+
+
 
 
 Route::get('/prefactura/create/{companyreceivable_id}', [BillController::class, 'createFactura'])->name('prefactura.create')->middleware('auth');
@@ -77,6 +82,17 @@ Route::patch('facturas/update/{companyreceivable_id}/{factura}', [BillController
 Route::get('/facturas/{companyreceivable_id}/edit/{factura}', [BillController::class, 'edit'])->name('facturas.edit')->middleware('auth');
 //
 Route::get('/facturas', [BillController::class,'index'])->name('facturas.index')->middleware('auth');
+
+//Index de todas las facturas privadas que estan vencidas
+Route::get('/privadas-vencidas',[BillController::class,'facturasvencidasprivadas'])->name('privadas-vencidas')->middleware('auth');
+//Index de todas las facturas privadas que NO estan vencidas
+Route::get('/privadas-no-vencidas',[BillController::class,'facturasnovencidasprivadas'])->name('privadas-no-vencidas')->middleware('auth');
+
+
+//Index de todas las facturas publicas que estan vencidas
+Route::get('/pemex-vencidas',[BillController::class,'facturasvencidaspublicas'])->name('publicas-vencidas')->middleware('auth');
+//Index de todas las facturas publicas que NO estan vencidas
+Route::get('/pemex-no-vencidas',[BillController::class,'facturasnovencidaspublicas'])->name('publicas-no-vencidas')->middleware('auth');
 
 });
 

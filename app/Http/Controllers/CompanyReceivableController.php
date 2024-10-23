@@ -109,13 +109,19 @@ class CompanyReceivableController extends Controller
     {
         $empresa = CompanyReceivable::with('bills')->findOrFail($id);
 
+        $unpaidBills = $empresa->bills->where('status', '!=', 'pagado');
+
         // Calcular los totales
         $totalGlobal = $empresa->bills->sum('total_payment');
         $totalPendienteFacturar = $empresa->bills->where('status', 'pendiente_facturar')->sum('total_payment');
         $totalPendienteCobrar = $empresa->bills->where('status', 'pendiente_cobrar')->sum('total_payment');
         $totalPagado = $empresa->bills->where('status', 'pagado')->sum('total_payment');
 
-        return view('companiesreceivable.detail', compact('empresa', 'totalGlobal', 'totalPendienteFacturar', 'totalPendienteCobrar', 'totalPagado'));
+        return view('companiesreceivable.detail', compact('empresa', 'totalGlobal', 
+        'totalPendienteFacturar', 
+        'totalPendienteCobrar', 
+        'totalPagado',
+        'unpaidBills'));
     }
 
     public function history($company_id){
@@ -146,5 +152,21 @@ class CompanyReceivableController extends Controller
 
 
         return view('companiesreceivable.history', compact('grupofacturas', 'comp'));
+    }
+
+    public function paid($company_id){
+
+        $comp=CompanyReceivable::findOrFail($company_id);
+
+        //obtener solo las facturas con status "pagado"
+
+        $paidBills = Bill::where('companyreceivable_id',$company_id)
+        ->where('status','pagado')
+        ->get();
+
+
+        return view('companiesreceivable.paid', compact('paidBills','comp'));
+
+
     }
 }

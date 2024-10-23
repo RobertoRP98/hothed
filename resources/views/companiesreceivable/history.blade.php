@@ -17,7 +17,7 @@
 <div class="container">
     
 <table class="table table-light caption-top table-bordered table-hover">
-    <caption class="text-center"> Historial de la empresa {{$comp->name}}</caption>
+    <caption class="text-center"> Historial de {{$comp->name}}</caption>
     <thead class="thead-light">
         <tr>
             <th colspan="2" class="text-center">Pendiente Facturar</th>
