@@ -6,6 +6,12 @@
  {{Session::get('message')}}
  @endif   
 
+ @push('css')
+ <!-- CSS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.bootstrap5.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/responsive/3.0.3/css/responsive.bootstrap5.css">
+@endpush
 
 <div class="container">
     <br>
@@ -26,7 +32,7 @@
     
             <!-- Card 2: Total pendiente de cobrar vencido (Privadas) -->
             <div class="col-md-4">
-                <a href="{{ route('privadas-vencidas') }}">
+                <a href="{{ route('privadas-vencidas') }}" class="text-decoration-none">
                 <div class="card text-white bg-danger mb-3">
                     <div class="card-body">
                         <h5 class="card-title">Privadas Pendiente de Cobrar : Vencido</h5>
@@ -38,7 +44,7 @@
     
             <!-- Card 3: Total pendiente de cobrar NO vencido (Privadas) -->
             <div class="col-md-4">
-                <a href="{{ route('privadas-no-vencidas') }}">
+                <a href="{{ route('privadas-no-vencidas') }}" class="text-decoration-none">
                 <div class="card text-white bg-success mb-3">
                     <div class="card-body">
                         <h5 class="card-title">Privadas Pendiente de Cobrar: No Vencido</h5>
@@ -60,7 +66,7 @@
     
             <!-- Card 5: Total vencido (Pemex) -->
             <div class="col-md-4">
-                <a href=" {{route('publicas-vencidas')}} ">
+                <a href=" {{route('publicas-vencidas')}} " class="text-decoration-none">
                 <div class="card text-white bg-danger mb-3">
                     <div class="card-body">
                         <h5 class="card-title">PEMEX Pendiente de Cobrar: Vencido</h5>
@@ -72,7 +78,7 @@
     
             <!-- Card 6: Total pendiente de cobrar NO vencido (Pemex) -->
             <div class="col-md-4">
-                <a href="{{ route('publicas-no-vencidas')}}">
+                <a href="{{ route('publicas-no-vencidas')}}" class="text-decoration-none">
                 <div class="card text-white bg-success mb-3">
                     <div class="card-body">
                         <h5 class="card-title">PEMEX Pendiente de Cobrar: No Vencido</h5>
@@ -85,26 +91,36 @@
     </div>
 
     <button type="button" class="btn btn-outline-success mb-3 mt-3">
-        <a class="text-dark" href="{{ route('empresas.privadas') }}">
+        <a class="text-dark text-decoration-none" href="{{ route('empresas.privadas') }}">
             Empresas Privadas
         </a>
     </button>
 
-    <button type="button" class="btn btn-outline-success mb-3 mt-3 m-2"> <a class="text-dark" href="{{ route('empresas.publicas') }}">
+    <button type="button" class="btn btn-outline-success mb-3 mt-3 m-2"> <a class="text-dark text-decoration-none" href="{{ route('empresas.publicas') }}">
         Contratos con PEMEX
     </a> </button> 
 
-    <button type="button" class="btn btn-outline-success mb-3 mt-3 m-2"> <a class="text-dark" href="{{ url('empresas/') }}">
+    <button type="button" class="btn btn-outline-success mb-3 mt-3 m-2"> <a class="text-dark text-decoration-none" href="{{ url('empresas/') }}">
         Crear Empresas
     </a> </button> 
 
-    <button type="button" class="btn btn-outline-success mb-3 mt-3 m-2"> <a class="text-dark" href="{{ url('divisas/') }}">
+    <button type="button" class="btn btn-outline-success mb-3 mt-3 m-2"> <a class="text-dark text-decoration-none" href="{{ url('divisas/') }}">
         Tipo de cambio
     </a> </button> 
 
+    <button type="button" class="btn btn-outline-info mb-3 mt-3 m-2"> <a class="text-dark text-decoration-none" href="{{ route('export.empresas') }}">
+        Descargar informacion de las empresas
+    </a> </button> 
+
+    
     <h3>Facturas vencidas</h3>
-    <div class="table-responsive">
-<table class="table table-bordered table-hover">
+    
+    
+    <div class="card">
+        <div class="card-body">
+                
+        <div class="table-responsive">
+        <table id="vencidasall" class="table table-light table-bordered table-hover">
     <thead class="thead-light">
         <tr>
             <th>CLIENTE</th>
@@ -130,9 +146,48 @@
         @endforeach
     </tbody>
 </table>
+{!! $facturas->links() !!}
 
 </div>
 </div>
 </div>
 
 @endsection
+
+@push('js')
+<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+<!-- JavaScript -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.datatables.net/2.1.8/js/dataTables.js"></script>
+<script src="https://cdn.datatables.net/2.1.8/js/dataTables.bootstrap5.js"></script>
+<script src="https://cdn.datatables.net/responsive/3.0.3/js/dataTables.responsive.js"></script>
+<script src="https://cdn.datatables.net/responsive/3.0.3/js/responsive.bootstrap5.js"></script>
+
+<script>
+    $(document).ready(function() {
+        $('#vencidasall').DataTable({
+            resposive:true,
+            autoWidth: false,
+
+            "language": {
+                "lengthMenu":     "Mostrar _MENU_ registros",
+    "loadingRecords": "Cargando...",
+    "processing":     "",
+    "info": "Mostrando la página _PAGE_ de _PAGES_",
+    "search":         "Buscar:",
+    "zeroRecords":    "Registro no encontrado - Verifica el texto, elimina espacios al inicio y al final",
+    "paginate": {
+        "first":      "Inicio",
+        "last":       "Ultimo",
+        "next":       "Siguiente",
+        "previous":   "Anterior"
+    },
+    "aria": {
+        "orderable":  "Ordenado por esta columna",
+        "orderableReverse": "Columna ordenada inversamente"
+    }
+            }
+        }); // Asegúrate de que el ID coincida con tu tabla
+    });
+</script>
+@endpush

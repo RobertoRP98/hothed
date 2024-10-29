@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\Bill;
+use App\Models\Currency;
+use App\Exports\EmpresasExport;
+use App\Models\CompanyReceivable;
+use Maatwebsite\Excel\Facades\Excel;
 use App\Http\Requests\StoreBillRequest;
 use App\Http\Requests\UpdateBillRequest;
-use App\Models\CompanyReceivable;
-use App\Models\Currency;
-use Carbon\Carbon;
 
 class BillController extends Controller
 {
@@ -90,19 +92,23 @@ class BillController extends Controller
             })->sum();
 
         // Facturas vencidas o por vencer
-        $facturas = Bill::where('status', '!=', 'pagado')
-            ->get()
-            ->filter(function ($bill) {
-                $expirationDate = Carbon::parse($bill->expiration_date);
-                $today = Carbon::now();
-                return $expirationDate->diffInDays($today, false) >= 0; // Facturas vencidas o por vencer
+
+        $today = Carbon::now()->toDateString();
+
+        $facturas = Bill::where('status', '=', 'pendiente_cobrar')
+            ->whereHas('companyreceivable', function ($query) {
+                // Otras condiciones si las necesitas
             })
-            ->map(function ($bill) {
+            ->whereDate('expiration_date', '<=', $today) // Filtrar facturas vencidas directamente en la consulta
+            ->paginate(20) // Paginar
+            ->through(function ($bill) use ($today) {
                 $expirationDate = Carbon::parse($bill->expiration_date);
-                $today = Carbon::now();
+
+                // Asignar el cálculo de días expirados
                 $bill->diasExpirados = $expirationDate->diffInDays($today, false);
                 return $bill;
             });
+
 
         return view('bill.index', compact(
             'totalPrivadasPendienteFacturar',
@@ -116,104 +122,103 @@ class BillController extends Controller
     }
 
     //index donde se ven todas las facturas privadas al presionar la card de facturas
-    public function facturasvencidasprivadas(){
-         // Facturas vencidas
-         $facturasprivvenc = Bill::where('status', '!=', 'pagado')
-         ->whereHas('companyreceivable', function($query){
-            $query->where('type','Privada');
-         })
-         ->get()
+    public function facturasvencidasprivadas()
+    {
+        // Facturas vencidas
+        $facturasprivvenc = Bill::where('status', '=', 'pendiente_cobrar')
+            ->whereHas('companyreceivable', function ($query) {
+                $query->where('type', 'Privada');
+            })
+            ->get()
+            ->filter(function ($bill) {
+                $expirationDate = Carbon::parse($bill->expiration_date);
+                $today = Carbon::now();
+                return $expirationDate->diffInDays($today, false) >= 0; // Facturas vencidas o por vencer
+            })
+            ->map(function ($bill) {
+                $expirationDate = Carbon::parse($bill->expiration_date);
+                $today = Carbon::now();
+                $bill->diasExpirados = $expirationDate->diffInDays($today, false);
+                return $bill;
+            });
 
-         
-         ->filter(function ($bill) {
-             $expirationDate = Carbon::parse($bill->expiration_date);
-             $today = Carbon::now();
-             return $expirationDate->diffInDays($today, false) >= 0; // Facturas vencidas o por vencer
-         })
-         ->map(function ($bill) {
-             $expirationDate = Carbon::parse($bill->expiration_date);
-             $today = Carbon::now();
-             $bill->diasExpirados = $expirationDate->diffInDays($today, false);
-             return $bill;
-         });
+        return view('bill.vencidaspriv', compact('facturasprivvenc'));
+    }
 
-         return view('bill.vencidaspriv', compact('facturasprivvenc'));
+    //index donde se ven todas las facturas privadas al presionar la card de facturas
+    public function facturasvencidaspublicas()
+    {
+        // Facturas vencidas
+        $facturaspubvenc = Bill::where('status', '=', 'pendiente_cobrar')
+            ->whereHas('companyreceivable', function ($query) {
+                $query->where('type', 'Pemex');
+            })
+            ->get()
+            ->filter(function ($bill) {
+                $expirationDate = Carbon::parse($bill->expiration_date);
+                $today = Carbon::now();
+                return $expirationDate->diffInDays($today, false) >= 0; // Facturas vencidas o por vencer
+            })
+            ->map(function ($bill) {
+                $expirationDate = Carbon::parse($bill->expiration_date);
+                $today = Carbon::now();
+                $bill->diasExpirados = $expirationDate->diffInDays($today, false);
+                return $bill;
+            });
 
+        return view('bill.vencidaspublic', compact('facturaspubvenc'));
     }
 
 
     //index donde se ven todas las facturas privadas no vencidas al presionar la card de facturas
-    public function facturasnovencidasprivadas(){
+    public function facturasnovencidasprivadas()
+    {
         // Facturas vencidas
-        $facturasprivnov = Bill::where('status', '!=', 'pagado')
-        ->whereHas('companyreceivable', function($query){
-           $query->where('type','Privada');
-        })
-        ->get()
-        ->filter(function ($bill) {
-            $expirationDate = Carbon::parse($bill->expiration_date);
-            $today = Carbon::now();
-            return $expirationDate->diffInDays($today, false) < 0; // Facturas vencidas o por vencer
-        })
-        ->map(function ($bill) {
-            $expirationDate = Carbon::parse($bill->expiration_date);
-            $today = Carbon::now();
-            $bill->diasExpirados = $expirationDate->diffInDays($today, false);
-            return $bill;
-        });
+        $facturasprivnov = Bill::where('status', '=', 'pendiente_cobrar')
+            ->whereHas('companyreceivable', function ($query) {
+                $query->where('type', 'Privada');
+            })
+            ->get()
+            ->filter(function ($bill) {
+                $expirationDate = Carbon::parse($bill->expiration_date);
+                $today = Carbon::now();
+                return $expirationDate->diffInDays($today, false) < 0; // Facturas vencidas o por vencer
+            })
+            ->map(function ($bill) {
+                $expirationDate = Carbon::parse($bill->expiration_date);
+                $today = Carbon::now();
+                $bill->diasExpirados = $expirationDate->diffInDays($today, false);
+                return $bill;
+            });
 
         return view('bill.novencidaspriv', compact('facturasprivnov'));
-
-   }
-
-   //index donde se ven todas las facturas privadas al presionar la card de facturas
-   public function facturasvencidaspublicas(){
-    // Facturas vencidas
-    $facturaspubvenc = Bill::where('status', '!=', 'pagado')
-    ->whereHas('companyreceivable', function($query){
-       $query->where('type','Pemex');
-    })
-    ->get()
-    ->filter(function ($bill) {
-        $expirationDate = Carbon::parse($bill->expiration_date);
-        $today = Carbon::now();
-        return $expirationDate->diffInDays($today, false) >= 0; // Facturas vencidas o por vencer
-    })
-    ->map(function ($bill) {
-        $expirationDate = Carbon::parse($bill->expiration_date);
-        $today = Carbon::now();
-        $bill->diasExpirados = $expirationDate->diffInDays($today, false);
-        return $bill;
-    });
-
-    return view('bill.vencidaspublic', compact('facturaspubvenc'));
-
-}
+    }
 
 
-//index donde se ven todas las facturas privadas no vencidas al presionar la card de facturas
-public function facturasnovencidaspublicas(){
-   // Facturas vencidas
-   $facturaspubnov = Bill::where('status', '!=', 'pagado')
-   ->whereHas('companyreceivable', function($query){
-      $query->where('type','Pemex');
-   })
-   ->get()
-   ->filter(function ($bill) {
-       $expirationDate = Carbon::parse($bill->expiration_date);
-       $today = Carbon::now();
-       return $expirationDate->diffInDays($today, false) < 0; // Facturas vencidas o por vencer
-   })
-   ->map(function ($bill) {
-       $expirationDate = Carbon::parse($bill->expiration_date);
-       $today = Carbon::now();
-       $bill->diasExpirados = $expirationDate->diffInDays($today, false);
-       return $bill;
-   });
 
-   return view('bill.novencidaspublic', compact('facturaspubnov'));
+    //index donde se ven todas las facturas privadas no vencidas al presionar la card de facturas
+    public function facturasnovencidaspublicas()
+    {
+        // Facturas vencidas
+        $facturaspubnov = Bill::where('status', '=', 'pendiente_cobrar')
+            ->whereHas('companyreceivable', function ($query) {
+                $query->where('type', 'Pemex');
+            })
+            ->get()
+            ->filter(function ($bill) {
+                $expirationDate = Carbon::parse($bill->expiration_date);
+                $today = Carbon::now();
+                return $expirationDate->diffInDays($today, false) < 0; // Facturas vencidas o por vencer
+            })
+            ->map(function ($bill) {
+                $expirationDate = Carbon::parse($bill->expiration_date);
+                $today = Carbon::now();
+                $bill->diasExpirados = $expirationDate->diffInDays($today, false);
+                return $bill;
+            });
 
-}
+        return view('bill.novencidaspublic', compact('facturaspubnov'));
+    }
 
     /**
      * Show the form for creating a new resource.
@@ -244,26 +249,26 @@ public function facturasnovencidaspublicas(){
      */
     public function store(StoreBillRequest $request, $companyreceivable_id)
     {
-        $field = ['order_number' => 'required',];
-        $message = ['required' => 'El :attribute es requerido'];
+        $field = [];
+    $message = ['required' => 'El :attribute es requerido'];
 
-        $this->validate($request, $field, $message);
-        $datosbill = $request->except('_token', 'diasexpirados');
-        // Obtén la fecha de entrada y los días de crédito
-        $entryDate = Carbon::parse($request->input('entry_date')); // Fecha de entrada
-        $company = CompanyReceivable::findOrFail($companyreceivable_id);
-        $creditDays = $company->creditdays; // Días de crédito de la empresa
+    $this->validate($request, $field, $message);
+    $datosbill = $request->except('_token', 'diasexpirados');
 
-        // Calcula la fecha de expiración
-        $expirationDate = $entryDate->copy()->addDays($creditDays);
-        // Agrega la fecha de expiración y el ID de la empresa
-        $datosbill['expiration_date'] = $expirationDate;
-        $datosbill['companyreceivable_id'] = $companyreceivable_id;
+    // Calcula la fecha de expiración
+    $entryDate = Carbon::parse($request->input('entry_date')); // Fecha de entrada
+    $company = CompanyReceivable::findOrFail($companyreceivable_id);
+    $creditDays = $company->creditdays;
 
-        Bill::insert($datosbill);
+    $expirationDate = $entryDate->copy()->addDays($creditDays);
 
-        // Redirigir al perfil de la empresa después de guardar
-        return redirect()->route('empresas.show', $companyreceivable_id)->with('message', 'Factura creada exitosamente');
+    // Guarda el valor de la fecha de expiración en formato para la base de datos
+    $datosbill['expiration_date'] = $expirationDate;
+    $datosbill['companyreceivable_id'] = $companyreceivable_id;
+
+    Bill::insert($datosbill);
+
+    return redirect()->route('empresas.show', $companyreceivable_id)->with('message', 'Factura creada exitosamente');
     }
 
     /**
@@ -279,21 +284,21 @@ public function facturasnovencidaspublicas(){
      */
     public function edit($companyreceivable_id, $id)
     {
-        //esto nos ayuda pasar el id a la vista
         $company = CompanyReceivable::findOrFail($companyreceivable_id);
-
-        //el id de la factura
-        $bill = Bill::FindOrFail($id);
-
+        $bill = Bill::findOrFail($id);
+    
+        // Formato para expiration_date
+        $bill->expiration_date = Carbon::parse($bill->expiration_date)->format('d-m-Y');
+    
         return view(
             'bill.edit',
             [
                 'company' => $company,
                 'company_name' => $company->name,
                 'company_type' => $company->type,
-                'company_creditdays' => $company->creditdays
-            ],
-            compact('bill', 'company')
+                'company_creditdays' => $company->creditdays,
+                'bill' => $bill
+            ]
         );
     }
 
@@ -327,5 +332,11 @@ public function facturasnovencidaspublicas(){
     public function destroy(Bill $bill)
     {
         //
+    }
+
+    
+    public function exportEmpresas()
+    {
+        return Excel::download(new EmpresasExport, 'empresas.xlsx');
     }
 }

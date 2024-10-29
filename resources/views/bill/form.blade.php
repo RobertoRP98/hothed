@@ -94,7 +94,7 @@
 
     <div class="col-md-3">
         <div class="form-outline">
-            <input type="number" id="total_payment" name="total_payment" value="{{isset($bill) ? $bill->total_payment : ''}}" class="form-control" />
+            <input type="number" step="0.01" id="total_payment" name="total_payment" value="{{isset($bill) ? $bill->total_payment : ''}}" class="form-control" />
             <label class="form-label" for="IMPORTE">IMPORTE</label>
         </div>
     </div>
@@ -106,6 +106,8 @@
           <option value="pendiente_cobrar" {{isset($bill) && $bill->status == 'pendiente_cobrar' ? 'selected':''}}>Pendiente de cobrar</option>
           <option value="pagado" {{isset($bill) && $bill->status == 'pagado' ? 'selected':''}}>Pagado</option>
           <option value="aclaración" {{isset($bill) && $bill->status == 'aclaración' ? 'selected':''}}>Aclaración</option>
+          <option value="cancelado" {{isset($bill) && $bill->status == 'cancelado' ? 'selected':''}}>Cancelado</option>
+
           </select>
           <label class="form-label" for="IMPORTE">STATUS</label>
   </div>   
@@ -114,12 +116,12 @@
 
 <!-- Cuarta fila -->
 <div class="row mb-4">  
-  <div class="col-md-3">
+  {{-- <div class="col-md-3">
     <div class="form-outline">
         <input type="date" id="billing_date" name="billing_date" value="{{isset($bill) ? $bill->billing_date : ''}}" class="form-control" />
         <label class="form-label" for="FECHA DE FACTURACIÓN">FECHA DE FACTURACIÓN</label>
     </div>
-</div>
+</div> --}}
 
   <div class="col-md-3">
     <div class="form-outline">

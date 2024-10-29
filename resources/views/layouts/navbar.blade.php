@@ -13,7 +13,7 @@
             <!-- Left Side Of Navbar -->
             <ul class="navbar-nav me-auto">
                 @auth
-                    @if(Auth::user()->hasRole('Cobranza'))
+                    @if(Auth::user()->hasRole(['Cobranza', 'AdministracionKarla']))
                         <li class="nav-item">
                             <a class="nav-link text-white" href="{{ url('facturas') }}">Facturas</a>
                         </li>

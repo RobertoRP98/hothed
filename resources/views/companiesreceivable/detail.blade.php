@@ -6,11 +6,18 @@
  {{Session::get('message')}}
  @endif   
 
+ @push('css')
+   <!-- CSS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.bootstrap5.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/responsive/3.0.3/css/responsive.bootstrap5.css">
+@endpush
+
     <h1>{{ $empresa->name }}</h1>
 
     <div>
         <button type="button" class="btn btn-outline-success mb-3 mt-3 m-2"> 
-            <a class="text-dark" 
+            <a class="text-dark text-decoration-none" 
             @if($empresa->type == 'Privada')
             href="{{route('empresas.privadas')}}"
             @else href="{{route('empresas.publicas')}}"
@@ -19,19 +26,19 @@
         </a> </button> 
         
         <button type="button" class="btn btn-outline-success mb-3 mt-3 ">
-            <a class="text-dark" href="{{ route('prefactura.create', ['companyreceivable_id' => $empresa->id]) }}">
+            <a class="text-dark text-decoration-none" href="{{ route('prefactura.create', ['companyreceivable_id' => $empresa->id]) }}">
                 Crear nuevo
             </a>
         </button>
 
         <button type="button" class="btn btn-outline-success mb-3 mt-3 m-2">
-            <a class="text-dark" href="{{route('empresa.historial', ['company' => $empresa->id]) }} ">
+            <a class="text-dark text-decoration-none" href="{{route('empresa.historial', ['company' => $empresa->id]) }} ">
                 Historial General
             </a>
         </button>
 
         <button type="button" class="btn btn-outline-success mb-3 mt-3 m-1">
-            <a class="text-dark" href="{{route('empresa.facturas-pagadas', ['company' => $empresa->id]) }} ">
+            <a class="text-dark text-decoration-none" href="{{route('empresa.facturas-pagadas', ['company' => $empresa->id]) }} ">
                 Historial pagados
             </a>
         </button>
@@ -41,7 +48,7 @@
     <div class="container my-4">
         <div class="row">
 
-            <div class="col-md-3">
+            <div class="col-md-6">
                 <div class="card text-white bg-secondary mb-3">
                     <div class="card-body">
                         <h5 class="card-title">Total Historico: </h5>
@@ -50,7 +57,7 @@
                 </div>
             </div>
 
-            <div class="col-md-3">
+            <div class="col-md-6">
                 <div class="card text-white bg-primary mb-3">
                     <div class="card-body">
                         <h5 class="card-title">Pendiente de facturar: </h5>
@@ -59,7 +66,7 @@
                 </div>
             </div>
 
-            <div class="col-md-3">
+            <div class="col-md-6">
                 <div class="card text-white bg-danger mb-3">
                     <div class="card-body">
                         <h5 class="card-title"> Pendiente de Cobrar: </h5>
@@ -68,7 +75,7 @@
                 </div>
             </div>
 
-            <div class="col-md-3">
+            <div class="col-md-6">
                 <div class="card text-white bg-success mb-3">
                     <div class="card-body">
                         <h5 class="card-title">Total Pagado: </h5>
@@ -84,8 +91,13 @@
    
 
     <h2>Facturas</h2>
+
+    <div class="card">
+        <div class="card-body">
+            
     <div class="table-responsive">
-    <table class="table table-light table-bordered table-hover">
+    <table id="detalles" class="table table-light table-bordered table-hover">
+    {{-- <table class="table table-striped" id="detalles"> --}}
         <thead class="thead-light">
             <tr>
                 <th>No. Orden</th>
@@ -94,9 +106,11 @@
                 <th>Fecha de Ingreso</th>
                 <th>Fecha de Expiración</th>
                 <th>Días Vencidos o por vencer</th>
+                <th>Total</th>
                 <th>Opciones</th>
             </tr>
         </thead>
+
         <tbody>
             @foreach ($unpaidBills as $bill)
                 <tr>
@@ -105,6 +119,7 @@
                     <td>{{ $bill->bill_date }}</td>
                     <td>{{ $bill->entry_date }}</td>
                     <td>{{ $bill->expiration_date }}</td>
+                    
                     <td class="
                     @if($bill->status==='pagado')
                         table-info
@@ -118,16 +133,62 @@
                     ">
                     {{floor(\Carbon\Carbon::parse($bill->expiration_date)->diffInDay(now(),false))}}
                     </td>
+
+                    <td>{{ $bill->total_payment }}</td>
+
+
                     <td>
                         <button class="btn btn-warning mb-2">
                             <a class="text-white" href="{{ route('facturas.edit', [$empresa->id, $bill->id]) }}">Editar Factura</a> 
                         </button> 
 
                     </td>
+
                 </tr>
             @endforeach
         </tbody>
+
     </table>
 </div>
 </div>
+</div>
+</div>
 @endsection
+
+@push('js')
+<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+<!-- JavaScript -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.datatables.net/2.1.8/js/dataTables.js"></script>
+<script src="https://cdn.datatables.net/2.1.8/js/dataTables.bootstrap5.js"></script>
+<script src="https://cdn.datatables.net/responsive/3.0.3/js/dataTables.responsive.js"></script>
+<script src="https://cdn.datatables.net/responsive/3.0.3/js/responsive.bootstrap5.js"></script>
+
+<script>
+    $(document).ready(function() {
+        $('#detalles').DataTable({
+            resposive:true,
+            autoWidth: false,
+
+            "language": {
+                "lengthMenu":     "Mostrar _MENU_ registros",
+    "loadingRecords": "Cargando...",
+    "processing":     "",
+    "info": "Mostrando la página _PAGE_ de _PAGES_",
+    "search":         "Buscar:",
+    "zeroRecords":    "Registro no encontrado - Verifica el texto, elimina espacios al inicio y al final",
+    "paginate": {
+        "first":      "Inicio",
+        "last":       "Ultimo",
+        "next":       "Siguiente",
+        "previous":   "Anterior"
+    },
+    "aria": {
+        "orderable":  "Ordenado por esta columna",
+        "orderableReverse": "Columna ordenada inversamente"
+    }
+            }
+        }); // Asegúrate de que el ID coincida con tu tabla
+    });
+</script>
+@endpush

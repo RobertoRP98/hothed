@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\Bill;
+use App\Exports\EmpresasExport;
 use App\Models\CompanyReceivable;
+use Maatwebsite\Excel\Facades\Excel;
 use App\Http\Requests\StoreCompanyReceivableRequest;
 use App\Http\Requests\UpdateCompanyReceivableRequest;
-use Carbon\Carbon;
 
 class CompanyReceivableController extends Controller
 {
@@ -16,7 +18,7 @@ class CompanyReceivableController extends Controller
     public function index()
     {
         $datos['Companies'] = CompanyReceivable::paginate(30);
-        return view('companiesreceivable.index',$datos);
+        return view('companiesreceivable.index', $datos);
     }
 
     /**
@@ -24,9 +26,9 @@ class CompanyReceivableController extends Controller
      */
     public function create()
     {
-        $company=null;
-        $currency=null;
-        return view('companiesreceivable.create', compact('company','currency'));
+        $company = null;
+        $currency = null;
+        return view('companiesreceivable.create', compact('company', 'currency'));
     }
 
     /**
@@ -34,7 +36,7 @@ class CompanyReceivableController extends Controller
      */
     public function store(StoreCompanyReceivableRequest $request)
     {
-        $field = ['name' => 'required', 'type' => 'required', 'currency' => 'required' ];
+        $field = ['name' => 'required', 'type' => 'required', 'currency' => 'required'];
         $message = ['required' => 'El :attribute es requerido'];
 
         $this->validate($request, $field, $message);
@@ -58,7 +60,7 @@ class CompanyReceivableController extends Controller
      */
     public function edit($id)
     {
-        $company=CompanyReceivable::FindOrFail($id);
+        $company = CompanyReceivable::FindOrFail($id);
         return view('companiesreceivable.edit', compact('company'));
     }
 
@@ -67,9 +69,9 @@ class CompanyReceivableController extends Controller
      */
     public function update(UpdateCompanyReceivableRequest $request, $id)
     {
-        $datoscompany=request()->except(['_token',('_method')]);
-        CompanyReceivable::where('id',$id)->update($datoscompany);
-        $company=CompanyReceivable::FindOrFail($id);
+        $datoscompany = request()->except(['_token', ('_method')]);
+        CompanyReceivable::where('id', $id)->update($datoscompany);
+        $company = CompanyReceivable::FindOrFail($id);
 
         return redirect('empresas')->with('message', 'Empresa Actualizada');
     }
@@ -88,12 +90,12 @@ class CompanyReceivableController extends Controller
     {
         // Obtén las empresas privadas
         $empresasPrivadas = CompanyReceivable::where('type', 'Privada')->get();
-    
+
         // Verifica que hay registros
         if ($empresasPrivadas->isEmpty()) {
             abort(404, 'No hay empresas privadas registradas.');
         }
-    
+
         return view('companiesreceivable.indexprivate', compact('empresasPrivadas'));
     }
 
@@ -109,64 +111,98 @@ class CompanyReceivableController extends Controller
     {
         $empresa = CompanyReceivable::with('bills')->findOrFail($id);
 
-        $unpaidBills = $empresa->bills->where('status', '!=', 'pagado');
+        $unpaidBills = $empresa->bills
+            ->whereIn('status', ['pendiente_facturar', 'pendiente_cobrar'])
+            ->sortBy(function ($bill) {
+                return $bill->status === 'pendiente_facturar' ? 0 : 1;
+            });
 
         // Calcular los totales
-        $totalGlobal = $empresa->bills->sum('total_payment');
+        $totalGlobal = $empresa->bills->where('status', '!=', 'cancelado')->sum('total_payment');
         $totalPendienteFacturar = $empresa->bills->where('status', 'pendiente_facturar')->sum('total_payment');
         $totalPendienteCobrar = $empresa->bills->where('status', 'pendiente_cobrar')->sum('total_payment');
         $totalPagado = $empresa->bills->where('status', 'pagado')->sum('total_payment');
 
-        return view('companiesreceivable.detail', compact('empresa', 'totalGlobal', 
-        'totalPendienteFacturar', 
-        'totalPendienteCobrar', 
-        'totalPagado',
-        'unpaidBills'));
+        return view('companiesreceivable.detail', compact(
+            'empresa',
+            'totalGlobal',
+            'totalPendienteFacturar',
+            'totalPendienteCobrar',
+            'totalPagado',
+            'unpaidBills'
+        ));
     }
 
-    public function history($company_id){
+    public function history($company_id)
+    {
+        $comp = CompanyReceivable::findOrFail($company_id);
 
-        $comp=CompanyReceivable::findOrFail($company_id);
+        // Filtrar facturas por empresa y agrupar por año, mes y estado
+        $bills = Bill::where('companyreceivable_id', $company_id)
+            ->selectRaw(
+                'YEAR(billing_date) as year,
+                    MONTH(billing_date) as month,
+                    status,
+                    SUM(total_payment) as total'
+            )
+            ->groupBy('year', 'month', 'status')
+            ->orderBy('year', 'asc')
+            ->orderBy('month', 'asc')
+            ->get();
 
-        //Filtrar facturas por empresa
-        $bills= Bill::where('companyreceivable_id',$company_id)
-        ->selectRaw(
-            'YEAR(billing_date) as year,
-            MONTH(billing_date) as month,
-            status,
-            SUM(total_payment) as total
-        ')
-        ->groupBy('year','month','status')
-        ->orderBy('year','asc')//Especifica el orden de ascendente por año
-        ->orderBy('month','asc')//Especifica el orden de ascendente por mes
-        ->get();
+        // Crear un array para almacenar el desglose por mes-año y estado
+        $grupofacturas = [];
 
-        //agrupación y sumas
-        $grupofacturas=$bills->groupBy(function ($bill){
-            return Carbon::create($bill->year, $bill->month,1)->format('F-Y');
-        })->map(function($grouped){
-            return $grouped->groupBy('status')->map(function ($statusgroup){
-                return $statusgroup->sum('total');
-            });
-        });
+        // Rellenar los datos por cada mes y estado
+        foreach ($bills as $bill) {
+            // Formatear el mes y año
+            $monthYear = Carbon::create($bill->year, $bill->month, 1)->format('M-Y');
 
+            // Inicializar el mes y año en el arreglo si no existe
+            if (!isset($grupofacturas[$monthYear])) {
+                $grupofacturas[$monthYear] = [
+                    'pendiente_facturar' => 0,
+                    'pagado' => 0,
+                    'pendiente_cobrar' => 0,
+                ];
+            }
+
+            // Asignar el total a la categoría correspondiente según el status
+            switch ($bill->status) {
+                case 'pendiente_facturar':
+                    $grupofacturas[$monthYear]['pendiente_facturar'] = $bill->total;
+                    break;
+                case 'pagado':
+                    $grupofacturas[$monthYear]['pagado'] = $bill->total;
+                    break;
+                case 'pendiente_cobrar':
+                    $grupofacturas[$monthYear]['pendiente_cobrar'] = $bill->total;
+                    break;
+            }
+        }
 
         return view('companiesreceivable.history', compact('grupofacturas', 'comp'));
     }
 
-    public function paid($company_id){
 
-        $comp=CompanyReceivable::findOrFail($company_id);
+
+
+
+    public function paid($company_id)
+    {
+
+        $comp = CompanyReceivable::findOrFail($company_id);
 
         //obtener solo las facturas con status "pagado"
 
-        $paidBills = Bill::where('companyreceivable_id',$company_id)
-        ->where('status','pagado')
-        ->get();
+        $paidBills = Bill::where('companyreceivable_id', $company_id)
+            ->where('status', 'pagado')
+            ->get();
 
 
-        return view('companiesreceivable.paid', compact('paidBills','comp'));
-
-
+        return view('companiesreceivable.paid', compact('paidBills', 'comp'));
     }
+
+
+
 }

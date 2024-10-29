@@ -23,9 +23,15 @@ Route::get('/', function () {
 });
 
 
-Auth::routes(['reset'=>false]);
+Auth::routes(['reset'=>false,'register'=>false]);
 //
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+//Errores 
+Route::get('/error-403',function(){return view('errors.403');})->name('error403');
+
+//Errores 
+Route::get('/new-index',function(){return view('errors.newindex');})->name('newindex');
 
 // Ruta comodín para capturar todas las rutas no definidas
 //Route::fallback(function () {    return redirect('/');});
@@ -93,6 +99,11 @@ Route::get('/privadas-no-vencidas',[BillController::class,'facturasnovencidaspri
 Route::get('/pemex-vencidas',[BillController::class,'facturasvencidaspublicas'])->name('publicas-vencidas')->middleware('auth');
 //Index de todas las facturas publicas que NO estan vencidas
 Route::get('/pemex-no-vencidas',[BillController::class,'facturasnovencidaspublicas'])->name('publicas-no-vencidas')->middleware('auth');
+
+
+//Exportar Excel con todas las empresas
+Route::get('/export-empresas', [BillController::class, 'exportEmpresas'])->name('export.empresas');
+
 
 });
 

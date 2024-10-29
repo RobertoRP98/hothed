@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Bill extends Model
 {
     use HasFactory;
+    
+    protected $dates = ['bill_date', 'entry_date', 'expiration_date', 'payment_day', 'created_at'];
 
     protected $table= 'bill';
 
