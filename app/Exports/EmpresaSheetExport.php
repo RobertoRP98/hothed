@@ -23,22 +23,28 @@ class EmpresaSheetExport implements FromCollection, WithHeadings, WithTitle
     public function collection()
     {
         return $this->empresa->bills->map(function ($bill) {
+            $billDate = \Carbon\Carbon::parse($bill->bill_date);
+            $entryDate = \Carbon\Carbon::parse($bill->entry_date);
             $expirationDate = \Carbon\Carbon::parse($bill->expiration_date);
+            $paymentDay = \Carbon\Carbon::parse($bill->payment_date);
+            $createdAt = \Carbon\Carbon::parse($bill->created_at);
+
+
             $today = \Carbon\Carbon::now();
-            $daysRemaining = $expirationDate->diffInDays($today, false);
+            $daysRemaining = floor($expirationDate->diffInDays($today, false));
 
             return [
                 'numero de orden' => $bill->order_number,
                 'numero de factura' => $bill->bill_number,
-                'fecha de factura' => optional($bill->bill_date)->format('d/m/Y'),
-                'fecha de entrada' => optional($bill->entry_date)->format('d/m/Y'),
+                'fecha de factura' => optional($billDate)->format('d/m/Y'),
+                'fecha de entrada' => optional($entryDate)->format('d/m/Y'),
                 'fecha de expiracion' => optional($expirationDate)->format('d/m/Y'),
                 'dias_vencidos_o_por_vencer' => $daysRemaining,
                 'total_a_pagar' => $bill->total_payment,
                 'status' => $bill->status,
-                'fecha_de_pago' => optional($bill->payment_day)->format('d/m/Y'),
+                'fecha_de_pago' => optional($paymentDay)->format('d/m/Y'),
                 'comentario' => $bill->comentary,
-                'fecha_creacion_factura' => optional($bill->created_at)->format('d/m/Y'),
+                'fecha_creacion_factura' => optional($createdAt)->format('d/m/Y'),
             ];
         });
     }
