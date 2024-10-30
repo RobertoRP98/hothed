@@ -336,7 +336,9 @@ class BillController extends Controller
 
     
     public function exportEmpresas()
-    {
+        {
+
+            
         return Excel::download(new EmpresasExport, 'empresas.xlsx');
     }
 }
