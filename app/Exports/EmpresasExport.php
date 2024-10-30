@@ -5,7 +5,6 @@ namespace App\Exports;
 use App\Models\CompanyReceivable;
 use App\Exports\EmpresaSheetExport;
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
-use Maatwebsite\Excel\Concerns\FromCollection;
 
 class EmpresasExport implements WithMultipleSheets
 {
@@ -24,11 +23,5 @@ class EmpresasExport implements WithMultipleSheets
 
         return $sheets;
     }
-    /**
-    * @return \Illuminate\Support\Collection
-    */
-    public function collection()
-    {
-        return CompanyReceivable::all();
-    }
+    
 }
