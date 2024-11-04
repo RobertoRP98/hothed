@@ -17,6 +17,11 @@
    <button type="button" class="btn btn-outline-success mb-3 mt-3 m-2"> <a class="text-dark text-decoration-none" href="{{ route('facturas.index') }}">
       Regresar
   </a> </button> 
+
+  <button type="button" class="btn btn-outline-info mb-3 mt-3 m-2"> <a class="text-dark text-decoration-none" href="{{ route('export.publicas-vencidas') }}">
+    Descargar Información
+</a> </button> 
+
     <h2>Contratos de Pemex Pendiente de Cobrar Vencidas</h2>
     <br>
 

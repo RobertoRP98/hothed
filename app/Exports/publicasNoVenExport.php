@@ -1,0 +1,117 @@
+<?php
+
+namespace App\Exports;
+
+use Carbon\Carbon;
+use App\Models\Bill;
+use App\Models\Currency;
+use Maatwebsite\Excel\Events\AfterSheet;
+use Maatwebsite\Excel\Concerns\FromArray;
+use Maatwebsite\Excel\Concerns\WithTitle;
+use PhpOffice\PhpSpreadsheet\Shared\Date;
+use Maatwebsite\Excel\Concerns\WithEvents;
+use Maatwebsite\Excel\Concerns\WithHeadings;
+use Maatwebsite\Excel\Concerns\ShouldAutoSize;
+use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
+use Maatwebsite\Excel\Concerns\WithColumnFormatting;
+
+class publicasNoVenExport implements 
+FromArray, WithTitle, WithHeadings,
+ WithColumnFormatting, ShouldAutoSize, WithEvents
+{
+   
+    protected $totalPublicasNoVencidas;
+
+    public function __construct()
+    {
+        // Obtener el valor del dólar desde el modelo
+        $dollarRate = Currency::where('currency', 'USD')->latest()->value('rate');
+         // Monto total de las facturas no vencidas pendientes de cobrar (Públicas - Pemex)
+         $this->totalPublicasNoVencidas = Bill::whereHas('companyreceivable', function ($query) {
+            $query->where('type', 'Pemex');
+        })
+            ->where('status', 'pendiente_cobrar')
+            ->get()
+            ->map(function ($bill) use ($dollarRate) {
+                $expirationDate = Carbon::parse($bill->expiration_date);
+                $today = Carbon::now();
+                // Facturas que NO están vencidas (expirarán en el futuro)
+                return $expirationDate->diffInDays($today, false) < 0 ?
+                    ($bill->companyreceivable->currency == 'MXN' ? $bill->total_payment / $dollarRate : $bill->total_payment) : 0;
+            })->sum();
+    }
+
+
+    public function array(): array
+    {   
+        $today = Carbon::now();
+        // Facturas vencidas
+        $facturaspubnov = Bill::where('status', '=', 'pendiente_cobrar')
+            ->whereHas('companyreceivable', function ($query) {
+                $query->where('type', 'Pemex');
+            })
+            ->get()
+            ->filter(function ($bill) use ($today){
+                $expirationDate = Carbon::parse($bill->expiration_date);
+                return $expirationDate->diffInDays($today, false) < 0; // Facturas vencidas o por vencer
+            })
+            ->map(function ($bill) use ($today){
+                $expirationDate = Carbon::parse($bill->expiration_date);
+                $bill->diasExpirados = floor($expirationDate->diffInDays($today, false));
+                
+                return[
+                    'Contrato' => $bill->companyreceivable->name,
+                    'No. Factura' => $bill->bill_number,
+                    'Fecha Factura' => Date::dateTimeToExcel(Carbon::parse($bill->bill_date)),
+                    'Fecha de Entrada'=> Date::dateTimeToExcel(Carbon::parse($bill->entry_date)),
+                    'Fecha de Expiración' => Date::dateTimeToExcel(Carbon::parse($bill->expiration_date)),
+                    'Dias Vencidos' => $bill->diasExpirados,
+                    'Total' => $bill->total_payment,
+                    'Gran Total Facturas NO Vencidas Pemex' => '',
+                ];
+            })
+            ->toArray();
+            return $facturaspubnov;
+    }
+
+    public function headings(): array
+    {
+        return[
+            'Contrato',
+            'No. Factura',
+            'Fecha Factura',
+            'Fecha de Entrada',
+            'Fecha de Expiración',
+            'Dias Vencidos',
+            'Total',
+            'Gran Total en USD Facturas NO Vencidas Pemex'
+        ];
+    }
+
+    public function title(): string
+    {
+        return 'Pemex NO Vencidas';
+    }
+
+    public function columnFormats(): array
+    {
+        return [
+            'C' => NumberFormat::FORMAT_DATE_DDMMYYYY,
+            'D' => NumberFormat::FORMAT_DATE_DDMMYYYY,
+            'E' => NumberFormat::FORMAT_DATE_DDMMYYYY,
+            'G' => '"$"#,##0.00_-', // Ajusta la columna 'G' según tu archivo
+            'H' => '"$"#,##0.00_-', 
+            
+        ];
+    }
+
+    public function registerEvents(): array
+    {
+        return [
+            AfterSheet::class => function (AfterSheet $event) {
+                // Coloca el total en la celda H2
+                $event->sheet->setCellValue('H2', $this->totalPublicasNoVencidas);
+            },
+        ];
+    }
+}

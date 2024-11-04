@@ -7,7 +7,11 @@ use App\Models\Bill;
 use App\Models\Currency;
 use App\Exports\EmpresasExport;
 use App\Models\CompanyReceivable;
+use App\Exports\privadasNoVenExport;
+use App\Exports\publicasNoVenExport;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\privadasvencidasExport;
+use App\Exports\publicasVencidasExport;
 use App\Http\Requests\StoreBillRequest;
 use App\Http\Requests\UpdateBillRequest;
 
@@ -339,6 +343,22 @@ class BillController extends Controller
         {
 
             
-        return Excel::download(new EmpresasExport, 'empresas.xlsx');
+        return Excel::download(new EmpresasExport, 'Información General '.Carbon::now()->format('d-m-Y').'.xlsx');
+    }
+
+    public function exportPrivadasVencidas(){
+        return Excel::download(new privadasvencidasExport, 'Privadas_Vencidas '.Carbon::now()->format('d-m-Y').'.xlsx');
+    }
+
+    public function exportPrivadasNoVencidas(){
+        return Excel::download(new privadasNoVenExport, 'Privadas_NO_Vencidas '.Carbon::now()->format('d-m-Y').'.xlsx');
+    }
+
+    public function exportPublicasVencidas(){
+        return Excel::download(new publicasVencidasExport,'Pemex_Vencidas '.Carbon::now()->format('d-m-Y').'.xlsx');
+    }
+
+    public function exportPublicasNoVencidas(){
+        return Excel::download(new publicasNoVenExport,'Pemex_NO_Vencidas' .Carbon::now()->format('d-m-Y').'.xlsx');
     }
 }

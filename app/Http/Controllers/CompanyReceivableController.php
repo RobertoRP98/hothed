@@ -4,9 +4,7 @@ namespace App\Http\Controllers;
 
 use Carbon\Carbon;
 use App\Models\Bill;
-use App\Exports\EmpresasExport;
 use App\Models\CompanyReceivable;
-use Maatwebsite\Excel\Facades\Excel;
 use App\Http\Requests\StoreCompanyReceivableRequest;
 use App\Http\Requests\UpdateCompanyReceivableRequest;
 

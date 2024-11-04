@@ -20,6 +20,10 @@
       Regresar
   </a> </button> 
 
+  <button type="button" class="btn btn-outline-info mb-3 mt-3 m-2"> <a class="text-dark text-decoration-none" href="{{ route('export.privadas-no-vencidas') }}">
+    Descargar Información
+</a> </button> 
+
   <div class="card">
     <div class="card-body">
     <h2>Empresas Privadas Pendiente de Cobrar NO Vencidas</h2>

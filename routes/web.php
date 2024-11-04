@@ -104,6 +104,13 @@ Route::get('/pemex-no-vencidas',[BillController::class,'facturasnovencidaspublic
 //Exportar Excel con todas las empresas
 Route::get('/export-empresas', [BillController::class, 'exportEmpresas'])->name('export.empresas');
 
+Route::get('/export-privadas-vencidas',[BillController::class,'exportPrivadasVencidas'])->name('export.privadas-vencidas');
+
+Route::get('/export-privadas-no-vencidas',[BillController::class,'exportPrivadasNoVencidas'])->name('export.privadas-no-vencidas');
+
+Route::get('/export-publicas-vencidas',[BillController::class,'exportPublicasVencidas'])->name('export.publicas-vencidas');
+
+Route::get('/export-publicas-no-vencidas',[BillController::class,'exportPublicasNoVencidas'])->name('export.publicas-no-vencidas');
 
 });
 
