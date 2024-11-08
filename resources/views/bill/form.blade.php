@@ -71,7 +71,13 @@
     <div class="col-md-3">
       <div class="form-outline">
           <input type="text" id="oil_well" name="oil_well" value="{{isset($bill) ? $bill->oil_well : ''}}" class="form-control text-uppercase" />
-          <label class="form-label" for="POZO">POZO</label>
+          <label class="form-label" for="POZO">
+            @if ($company->type==='Pemex')
+            DISTRITO
+            @else
+            POZO
+            @endif  
+          </label>
       </div>
   </div>   
 </div>
@@ -106,6 +112,7 @@
           <option value="pendiente_cobrar" {{isset($bill) && $bill->status == 'pendiente_cobrar' ? 'selected':''}}>Pendiente de cobrar</option>
           <option value="pagado" {{isset($bill) && $bill->status == 'pagado' ? 'selected':''}}>Pagado</option>
           <option value="aclaración" {{isset($bill) && $bill->status == 'aclaración' ? 'selected':''}}>Aclaración</option>
+          <option value="pendiente_entrada" {{isset($bill) && $bill->status == 'pendiente_entrada' ? 'selected':''}}>Pendiente de entrada</option>
           <option value="cancelado" {{isset($bill) && $bill->status == 'cancelado' ? 'selected':''}}>Cancelado</option>
 
           </select>
@@ -134,7 +141,13 @@
     <div class="col-md-3">
         <div class="form-outline">
             <input type="text" id="comentary" name="comentary" value="{{isset($bill) ? $bill->comentary : ''}}" class="form-control" />
-            <label class="form-label" for="COMENTARIO">COMENTARIO</label>
+            <label class="form-label" for="COMENTARIO">
+              @if($company->type==='Pemex')
+                POZO
+                @else 
+                COMENTARIO
+                @endif
+            </label>
         </div>
     </div>
 

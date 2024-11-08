@@ -146,7 +146,6 @@
         @endforeach
     </tbody>
 </table>
-{!! $facturas->links() !!}
 
 </div>
 </div>

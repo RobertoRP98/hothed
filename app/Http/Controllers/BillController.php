@@ -95,21 +95,26 @@ class BillController extends Controller
                     ($bill->companyreceivable->currency == 'MXN' ? $bill->total_payment / $dollarRate : $bill->total_payment) : 0;
             })->sum();
 
-        // Facturas vencidas o por vencer
+        // Definir la fecha actual
+        $today = Carbon::now();
 
-        $today = Carbon::now()->toDateString();
-
+        // Consulta de facturas vencidas
         $facturas = Bill::where('status', '=', 'pendiente_cobrar')
             ->whereHas('companyreceivable', function ($query) {
-                // Otras condiciones si las necesitas
+                $query->where('type', 'Privada');
             })
-            ->whereDate('expiration_date', '<=', $today) // Filtrar facturas vencidas directamente en la consulta
-            ->paginate(20) // Paginar
-            ->through(function ($bill) use ($today) {
+            ->get()
+            ->filter(function ($bill) use ($today) {
+                // Filtrar facturas vencidas o por vencer
                 $expirationDate = Carbon::parse($bill->expiration_date);
-
+                return $expirationDate->diffInDays($today, false) >= 0;
+            })
+            ->map(function ($bill) use ($today) {
                 // Asignar el cálculo de días expirados
+                $expirationDate = Carbon::parse($bill->expiration_date);
                 $bill->diasExpirados = $expirationDate->diffInDays($today, false);
+
+                // Asegurarse de devolver $bill
                 return $bill;
             });
 
@@ -123,6 +128,7 @@ class BillController extends Controller
             'totalPublicasNoVencidas',
             'facturas'
         ));
+        
     }
 
     //index donde se ven todas las facturas privadas al presionar la card de facturas
@@ -259,6 +265,12 @@ class BillController extends Controller
     $this->validate($request, $field, $message);
     $datosbill = $request->except('_token', 'diasexpirados');
 
+
+    //verificar si entry_date es null y establece el status correcto
+    if($request->input('entry_date')===null){
+        $datosbill['status'] = 'pendiente_entrada';
+    } else{
+
     // Calcula la fecha de expiración
     $entryDate = Carbon::parse($request->input('entry_date')); // Fecha de entrada
     $company = CompanyReceivable::findOrFail($companyreceivable_id);
@@ -267,7 +279,9 @@ class BillController extends Controller
     $expirationDate = $entryDate->copy()->addDays($creditDays);
 
     // Guarda el valor de la fecha de expiración en formato para la base de datos
-    $datosbill['expiration_date'] = $expirationDate;
+    $datosbill['expiration_date'] = $expirationDate;    
+    }
+
     $datosbill['companyreceivable_id'] = $companyreceivable_id;
 
     Bill::insert($datosbill);
@@ -312,6 +326,14 @@ class BillController extends Controller
     public function update(UpdateBillRequest $request, $companyreceivable_id, $id)
     {
         $datosbill = request()->except(['_token', 'diasexpirados', ('_method')]);
+
+
+        //Verifica si entry date es null y establece un status adecuado
+        if($request->input('entry_date')===null){
+            $datosbill ['status'] = 'pendiente_entrada';
+            $datosbill ['expiration_date'] = null;
+        } else{
+
         // Obtén la fecha de entrada y los días de crédito
         $entryDate = Carbon::parse($request->input('entry_date')); // Fecha de entrada
         $company = CompanyReceivable::findOrFail($companyreceivable_id);
@@ -322,6 +344,7 @@ class BillController extends Controller
 
         // Actualiza la fecha de expiración en los datos de la factura
         $datosbill['expiration_date'] = $expirationDate;
+    }
 
         // Actualiza la factura en la base de datos
         Bill::where('id', $id)->update($datosbill);

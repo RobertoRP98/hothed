@@ -110,7 +110,7 @@ class CompanyReceivableController extends Controller
         $empresa = CompanyReceivable::with('bills')->findOrFail($id);
 
         $unpaidBills = $empresa->bills
-            ->whereIn('status', ['pendiente_facturar', 'pendiente_cobrar'])
+            ->whereIn('status', ['pendiente_facturar', 'pendiente_cobrar','pendiente_entrada'])
             ->sortBy(function ($bill) {
                 return $bill->status === 'pendiente_facturar' ? 0 : 1;
             });
