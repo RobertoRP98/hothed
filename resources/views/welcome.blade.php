@@ -36,20 +36,13 @@
             <span class="visually-hidden">Next</span>
         </button>
 
-        <!-- Indicadores del carrusel -->
-        <ol class="carousel-indicators">
-            <li data-bs-target="#carouselExampleFade" data-bs-slide-to="0" class="active"></li>
-            <li data-bs-target="#carouselExampleFade" data-bs-slide-to="1"></li>
-            <li data-bs-target="#carouselExampleFade" data-bs-slide-to="2"></li>
-        </ol>
+      
     </div>
 </section>
 <br>
 
 <section id="about" class="about section">
-
   <div class="container">
-
   <!-- Section Title -->
  <br>
  <div class="container section-title text-center reveal" data-aos="fade-up">
@@ -67,7 +60,6 @@
 
       <div class="col-lg-7">
         <h3 class="pt-0 pt-lg-5">Explora nuestra Misión y Visión</h3>
-
         <!-- Tabs -->
         <ul class="nav nav-pills mb-3">
           <li><a class="nav-link active" data-bs-toggle="pill" href="#mission-tab">Misión</a></li>
@@ -102,149 +94,145 @@
 
   </div>
 </div>
-</section><!-- /Misión y Visión Section -->
+</section>
 
 
-
-{{-- <br>
-<!-- Services 2 Section -->
-<section id="services-2" class="services-2 section dark-background">
-  <!-- Section Title -->
-  <div class="container section-title" data-aos="fade-up">
-      <h2>Services</h2>
-      <p>Necessitatibus eius consequatur</p>
-  </div><!-- End Section Title -->
-
-  <div class="services-carousel-wrap">
-      <div class="container">
-          <div class="swiper init-swiper">
-              <script type="application/json" class="swiper-config">
-                  {
-                      "loop": true,
-                      "speed": 600,
-                      "autoplay": {
-                          "delay": 5000
-                      },
-                      "slidesPerView": "auto",
-                      "pagination": {
-                          "el": ".swiper-pagination",
-                          "type": "bullets",
-                          "clickable": true
-                      },
-                      "navigation": {
-                          "nextEl": ".js-custom-next",
-                          "prevEl": ".js-custom-prev"
-                      },
-                      "breakpoints": {
-                          "320": {
-                              "slidesPerView": 1,
-                              "spaceBetween": 40
-                          },
-                          "1200": {
-                              "slidesPerView": 3,
-                              "spaceBetween": 40
-                          }
-                      }
-                  }
-              </script>
-              <button class="navigation-prev js-custom-prev">
-                  <i class="bi bi-arrow-left-short"></i>
-              </button>
-              <button class="navigation-next js-custom-next">
-                  <i class="bi bi-arrow-right-short"></i>
-              </button>
-              <div class="swiper-wrapper">
-                  <div class="swiper-slide">
-                      <div class="service-item">
-                          <div class="service-item-contents">
-                              <a href="#">
-                                  <span class="service-item-category">We do</span>
-                                  <h2 class="service-item-title">Planting</h2>
-                              </a>
-                          </div>
-                          <img src="{{ asset('images/about.jpg') }}" alt="Image" class="img-fluid">
-                      </div>
-                  </div>
-                  <div class="swiper-slide">
-                      <div class="service-item">
-                          <div class="service-item-contents">
-                              <a href="#">
-                                  <span class="service-item-category">We do</span>
-                                  <h2 class="service-item-title">Mulching</h2>
-                              </a>
-                          </div>
-                          <img src="{{ asset('images/about.jpg') }}" alt="Image" class="img-fluid">
-                      </div>
-                  </div>
-                  <div class="swiper-slide">
-                      <div class="service-item">
-                          <div class="service-item-contents">
-                              <a href="#">
-                                  <span class="service-item-category">We do</span>
-                                  <h2 class="service-item-title">Watering</h2>
-                              </a>
-                          </div>
-                          <img src="{{ asset('images/about.jpg') }}" alt="Image" class="img-fluid">
-                      </div>
-                  </div>
-                  <div class="swiper-slide">
-                      <div class="service-item">
-                          <div class="service-item-contents">
-                              <a href="#">
-                                  <span class="service-item-category">We do</span>
-                                  <h2 class="service-item-title">Fertilizing</h2>
-                              </a>
-                          </div>
-                          <img src="{{ asset('images/about.jpg') }}" alt="Image" class="img-fluid">
-                      </div>
-                  </div>
-                  <div class="swiper-slide">
-                      <div class="service-item">
-                          <div class="service-item-contents">
-                              <a href="#">
-                                  <span class="service-item-category">We do</span>
-                                  <h2 class="service-item-title">Harvesting</h2>
-                              </a>
-                          </div>
-                          <img src="{{ asset('images/about.jpg') }}" alt="Image" class="img-fluid">
-                      </div>
-                  </div>
-                  <div class="swiper-slide">
-                      <div class="service-item">
-                          <div class="service-item-contents">
-                              <a href="#">
-                                  <span class="service-item-category">We do</span>
-                                  <h2 class="service-item-title">Mowing</h2>
-                              </a>
-                          </div>
-                          <img src="{{ asset('images/about.jpg') }}" alt="Image" class="img-fluid">
-                      </div>
-                  </div>
-                  <div class="swiper-slide">
-                      <div class="service-item">
-                          <div class="service-item-contents">
-                              <a href="#">
-                                  <span class="service-item-category">We do</span>
-                                  <h2 class="service-item-title">Seeding Plants</h2>
-                              </a>
-                          </div>
-                          <img src="{{ asset('images/about.jpg') }}" alt="Image" class="img-fluid">
-                      </div>
-                  </div>
-              </div>
-              <div class="swiper-pagination"></div>
-          </div>
-      </div>
+<!--CLIENTES -->
+<!-- CARRUSEL CLIENTES -->
+<section id="clients">
+<div class="container">
+<div class="container section-title text-center reveal" data-aos="fade-up">
+  <h2>NUESTROS CLIENTES</h2>
+  {{-- <p>Necessitatibus eius consequatur ex aliquid fuga eum quidem sint consectetur velit</p> --}}
+</div>
+<div class="logo-slider" data-v-4ef8651c="">
+  <div class="logos-slide" data-v-4ef8651c="">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d6/SLB_Logo_2022.svg/1280px-SLB_Logo_2022.svg.png" data-v-4ef8651c="">
+    <img src="https://1000marcas.net/wp-content/uploads/2021/06/Halliburton-Logo.png" data-v-4ef8651c="">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/99/Logo_Petr%C3%B3leos_Mexicanos.svg/1200px-Logo_Petr%C3%B3leos_Mexicanos.svg.png" data-v-4ef8651c="">
+    <img src="https://www.wirelinemexico.com/img/gsm-logo.png" data-v-4ef8651c="">
+    <img src="https://1000marcas.net/wp-content/uploads/2021/06/Weatherford-Logo-2.png" data-v-4ef8651c="">
+    <img src="https://jaguar-ep.com/wp-content/uploads/2020/09/logo_jaguar.png" data-v-4ef8651c="">
+    <img src="https://1000logos.net/wp-content/uploads/2020/06/Petrofac-Logo.png" data-v-4ef8651c="">
   </div>
-</section><!-- /Services 2 Section -->
+</div>
+</div>
+</section>
 
+<!--SERVICIOS -->
+<!-- CARRUSEL SERVICIOS -->
 
+<section id="services">
+<div class="container">
 
+  <div class="container section-title text-center reveal" data-aos="fade-up">
+    <h2>NUESTROS SERVICIOS</h2>
+    {{-- <p>Necessitatibus eius consequatur ex aliquid fuga eum quidem sint consectetur velit</p> --}}
+  </div>
 
-
-<section id="clientes">
-  
-</section>  --}}
+  <div id="carouselExampleControls" class="carousel carousel-dark slide" data-bs-ride="carousel">
+    <div class="carousel-inner">
+      <div class="carousel-item active">
+          
+          
+  <div class="row">
+      
+      <div class="col-lg-4">
+          <div class="card" style="width: 18rem;">
+    <img src="..." class="card-img-top" alt="...">
+    <div class="card-body">
+      <h5 class="card-title">Card title</h5>
+      <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+      <a href="#" class="btn btn-primary">Go somewhere</a>
+    </div>
+  </div>
+      </div>
+      
+      <div class="col-lg-4">
+          <div class="card" style="width: 18rem;">
+    <img src="..." class="card-img-top" alt="...">
+    <div class="card-body">
+      <h5 class="card-title">Card title</h5>
+      <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+      <a href="#" class="btn btn-primary">Go somewhere</a>
+    </div>
+  </div>
+      </div>
+      
+      
+      <div class="col-lg-4">
+          <div class="card" style="width: 18rem;">
+    <img src="..." class="card-img-top" alt="...">
+    <div class="card-body">
+      <h5 class="card-title">Card title</h5>
+      <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+      <a href="#" class="btn btn-primary">Go somewhere</a>
+    </div>
+  </div>
+      </div>
+      
+  </div>
+          
+          
+          
+      </div>
+      <div class="carousel-item">
+          
+          
+          
+  <div class="row">
+      
+      <div class="col-lg-4">
+          <div class="card" style="width: 18rem;">
+    <img src="..." class="card-img-top" alt="...">
+    <div class="card-body">
+      <h5 class="card-title">Card title</h5>
+      <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+      <a href="#" class="btn btn-primary">Go somewhere</a>
+    </div>
+  </div>
+      </div>
+      
+      <div class="col-lg-4">
+          <div class="card" style="width: 18rem;">
+    <img src="..." class="card-img-top" alt="...">
+    <div class="card-body">
+      <h5 class="card-title">Card title</h5>
+      <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+      <a href="#" class="btn btn-primary">Go somewhere</a>
+    </div>
+  </div>
+      </div>
+      
+      
+      <div class="col-lg-4">
+          <div class="card" style="width: 18rem;">
+    <img src="..." class="card-img-top" alt="...">
+    <div class="card-body">
+      <h5 class="card-title">Card title</h5>
+      <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+      <a href="#" class="btn btn-primary">Go somewhere</a>
+    </div>
+  </div>
+      </div>
+      
+  </div>
+      
+          
+      </div>
+      
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+    </button>
+  </div>
+  </div>
+</section>
 
 </body>
 @endsection

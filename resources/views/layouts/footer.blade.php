@@ -1,4 +1,6 @@
 <body>
+
+    <section id="footer">
     <br>
     <footer class="section bg-footer">
         <div class="container">
@@ -44,4 +46,5 @@
             <p class="footer-alt mb-0 f-14">2024 © HOT HED MÉXICO, All Rights Reserved</p>
         </div>
     </footer>
+</section>
 </body>

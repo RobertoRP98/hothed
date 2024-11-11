@@ -107,6 +107,7 @@
                 <th>Fecha de Expiración</th>
                 <th>Días Vencidos o por vencer</th>
                 <th>Total</th>
+                <th>Status</th>
                 <th>Opciones</th>
             </tr>
         </thead>
@@ -135,6 +136,7 @@
                     </td>
 
                     <td>{{ $bill->total_payment }}</td>
+                    <td>{{ $bill->status}}</td>
 
 
                     <td>

@@ -181,9 +181,14 @@ class EmpresaSheetExport implements
                 $sheet->getColumnDimension('G')->setAutoSize(false);
                 $sheet->getColumnDimension('G')->setWidth(30); // Ancho específico para la columna G
 
+                  // Establecer autoSize en false solo para la columna K
+                  $sheet->getColumnDimension('K')->setAutoSize(false);
+                  $sheet->getColumnDimension('K')->setWidth(30); // Ancho específico para la columna K
+
                 // Ajustar el encabezado y las filas de datos para que comiencen en A6
                 $sheet->fromArray($this->headings(), null, 'A6');
                 $sheet->fromArray($this->collection()->toArray(), null, 'A7');
+                
             },
         ];
     }

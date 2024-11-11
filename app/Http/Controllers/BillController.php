@@ -253,51 +253,82 @@ class BillController extends Controller
             compact('bill')
         );
     }
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(StoreBillRequest $request, $companyreceivable_id)
     {
         $field = [];
-    $message = ['required' => 'El :attribute es requerido'];
-
-    $this->validate($request, $field, $message);
-    $datosbill = $request->except('_token', 'diasexpirados');
-
-
-    //verificar si entry_date es null y establece el status correcto
-    if($request->input('entry_date')===null){
-        $datosbill['status'] = 'pendiente_entrada';
-    } else{
-
-    // Calcula la fecha de expiración
-    $entryDate = Carbon::parse($request->input('entry_date')); // Fecha de entrada
-    $company = CompanyReceivable::findOrFail($companyreceivable_id);
-    $creditDays = $company->creditdays;
-
-    $expirationDate = $entryDate->copy()->addDays($creditDays);
-
-    // Guarda el valor de la fecha de expiración en formato para la base de datos
-    $datosbill['expiration_date'] = $expirationDate;    
+        $message = ['required' => 'El :attribute es requerido'];
+    
+        $this->validate($request, $field, $message);
+        $datosbill = $request->except('_token', 'diasexpirados');
+    
+        // Obtener la empresa para verificar su nombre y tipo
+        $company = CompanyReceivable::findOrFail($companyreceivable_id);
+    
+        // Verificar si entry_date es null y la empresa cumple las condiciones
+        if ($request->input('entry_date') === null && $company->name === 'GSM BRONCO') {
+            $datosbill['status'] = 'pendiente_entrada';
+            $datosbill['expiration_date'] = null; // Asegúrate de establecer la expiración a null si no hay fecha de entrada
+        } else {
+            // Calcula la fecha de expiración si hay una fecha de entrada
+            $entryDate = Carbon::parse($request->input('entry_date'));
+            $creditDays = $company->creditdays;
+            $expirationDate = $entryDate->copy()->addDays($creditDays);
+    
+            // Guarda el valor de la fecha de expiración en el formato adecuado para la base de datos
+            $datosbill['expiration_date'] = $expirationDate;
+        }
+    
+        // Verifica si la empresa es pública, se llama "Publica Toms 854", y el porcentaje es true
+        if ($company->type === 'Pemex' && $company->name === 'PEMEX TOMS 854' && $request->input('porcent') === true) {
+            $datosbill['total_payment'] = $request->input('total_payment') * 0.2;
+        } else {
+            $datosbill['total_payment'] = $request->input('total_payment');
+        }
+    
+        $datosbill['companyreceivable_id'] = $companyreceivable_id;
+    
+        Bill::insert($datosbill);
+    
+        return redirect()->route('empresas.show', $companyreceivable_id)->with('message', 'Factura creada exitosamente');
     }
-
-    $datosbill['companyreceivable_id'] = $companyreceivable_id;
-
-    Bill::insert($datosbill);
-
-    return redirect()->route('empresas.show', $companyreceivable_id)->with('message', 'Factura creada exitosamente');
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Bill $bill)
+    
+    public function update(UpdateBillRequest $request, $companyreceivable_id, $id)
     {
-        //
+        $datosbill = $request->except(['_token', 'diasexpirados', '_method']);
+    
+        // Obtener la empresa para verificar su nombre y tipo
+        $company = CompanyReceivable::findOrFail($companyreceivable_id);
+    
+        // Verificar si entry_date es null y la empresa cumple las condiciones
+        if ($request->input('entry_date') === null && $company->name === 'GSM BRONCO') {
+            $datosbill['status'] = 'pendiente_entrada';
+            $datosbill['expiration_date'] = null; // Asegúrate de establecer la expiración a null si no hay fecha de entrada
+        } else {
+            // Si hay una fecha de entrada, calcula la fecha de expiración
+            $entryDate = Carbon::parse($request->input('entry_date'));
+            $creditDays = $company->creditdays;
+            $expirationDate = $entryDate->copy()->addDays($creditDays);
+    
+            // Actualiza la fecha de expiración en los datos de la factura
+            $datosbill['expiration_date'] = $expirationDate;
+        }
+    
+        // Verifica si la empresa es pública, se llama "Publica Toms 854", y el porcentaje es true
+        if ($company->type === 'Pemex' && $company->name === 'PEMEX TOMS 854' && $request->input('porcent') === true) {
+            $datosbill['total_payment'] = $request->input('total_payment') * 0.2;
+        } else {
+            $datosbill['total_payment'] = $request->input('total_payment');
+        }
+    
+        // Actualiza la factura en la base de datos
+        Bill::where('id', $id)->update($datosbill);
+    
+        // Redirige al perfil de la empresa
+        return redirect()->route('empresas.show', $companyreceivable_id)->with('message', 'Factura actualizada exitosamente');
     }
 
-    /**
+
+/**
      * Show the form for editing the specified resource.
      */
     public function edit($companyreceivable_id, $id)
@@ -318,39 +349,6 @@ class BillController extends Controller
                 'bill' => $bill
             ]
         );
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateBillRequest $request, $companyreceivable_id, $id)
-    {
-        $datosbill = request()->except(['_token', 'diasexpirados', ('_method')]);
-
-
-        //Verifica si entry date es null y establece un status adecuado
-        if($request->input('entry_date')===null){
-            $datosbill ['status'] = 'pendiente_entrada';
-            $datosbill ['expiration_date'] = null;
-        } else{
-
-        // Obtén la fecha de entrada y los días de crédito
-        $entryDate = Carbon::parse($request->input('entry_date')); // Fecha de entrada
-        $company = CompanyReceivable::findOrFail($companyreceivable_id);
-        $creditDays = $company->creditdays; // Días de crédito de la empresa
-
-        // Calcula la fecha de expiración
-        $expirationDate = $entryDate->copy()->addDays($creditDays);
-
-        // Actualiza la fecha de expiración en los datos de la factura
-        $datosbill['expiration_date'] = $expirationDate;
-    }
-
-        // Actualiza la factura en la base de datos
-        Bill::where('id', $id)->update($datosbill);
-
-        // Redirige al perfil de la empresa
-        return redirect()->route('empresas.show', $companyreceivable_id)->with('message', 'Factura actualizada exitosamente');
     }
 
     /**

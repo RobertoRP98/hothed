@@ -22,16 +22,17 @@
                 @endif
             @endauth
                 <li class="nav-item">
-                    <a href="{{ url('/#misionvision') }}" class="nav-link text-white {{ request()->is('#misionvision') ? 'active' : '' }}">Misión y Visión</a>
+                    <a href="{{ url('/#about') }}" class="nav-link text-white {{ request()->is('#misionvision') ? 'active' : '' }}">Misión y Visión</a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ url('/#servicios') }}" class="nav-link text-white {{ request()->is('#servicios') ? 'active' : '' }}">Nuestros Servicios</a>
+                    <a href="{{ url('/#clients') }}" class="nav-link text-white {{ request()->is('#clientes') ? 'active' : '' }}">Nuestros Clientes</a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ url('/#clientes') }}" class="nav-link text-white {{ request()->is('#clientes') ? 'active' : '' }}">Nuestros Clientes</a>
+                    <a href="{{ url('/#services') }}" class="nav-link text-white {{ request()->is('#servicios') ? 'active' : '' }}">Nuestros Servicios</a>
                 </li>
+                
                 <li class="nav-item">
-                    <a href="{{ url('/#contacto') }}" class="nav-link text-white {{ request()->is('#contacto') ? 'active' : '' }}">Contacto</a>
+                    <a href="{{ url('/#footer') }}" class="nav-link text-white {{ request()->is('#contacto') ? 'active' : '' }}">Contacto</a>
                 </li>
             </ul>
 

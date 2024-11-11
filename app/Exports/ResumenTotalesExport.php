@@ -13,7 +13,7 @@ use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Maatwebsite\Excel\Concerns\WithColumnFormatting;
 
 class ResumenTotalesExport implements 
-FromArray, WithTitle, WithColumnFormatting, ShouldAutoSize
+    FromArray, WithTitle, WithColumnFormatting, ShouldAutoSize
 {
 
     use RegistersEventListeners;
@@ -26,131 +26,101 @@ FromArray, WithTitle, WithColumnFormatting, ShouldAutoSize
         }
     }
 
-
     public function array(): array
-    {
-        // INICIAN PRIMEOS 6 CALCULOS
-        $dollarRate = Currency::where('currency', 'USD')->latest()->value('rate');
+{
+    $dollarRate = Currency::where('currency', 'USD')->latest()->value('rate');
 
-        // Calcular totales para empresas privadas
-        $totalPrivadasPendienteFacturar = Bill::whereHas('companyreceivable', function ($query) {
-            $query->where('type', 'Privada');
-        })->where('status', 'pendiente_facturar')->sum('total_payment');
+    // SECCIÓN IZQUIERDA: Totales Generales por Tipo de Empresa
+    $totalesGenerales = [
+        ['Tipo de Empresa', 'Estado', 'Gran Total en USD']
+    ];
 
-        $totalPrivadasVencidas = Bill::whereHas('companyreceivable', function ($query) {
-            $query->where('type', 'Privada');
-        })->where('status', 'pendiente_cobrar')->get()->filter(function ($bill) {
-            $expirationDate = Carbon::parse($bill->expiration_date);
-            $today = Carbon::now();
-            return $expirationDate->diffInDays($today, false) >= 0;
-        })->sum('total_payment');
+    // Calcular totales para empresas privadas
+    $totalPrivadasPendienteFacturar = Bill::whereHas('companyreceivable', function ($query) {
+        $query->where('type', 'Privada');
+    })->where('status', 'pendiente_facturar')->sum('total_payment');
 
-        $totalPrivadasNoVencidas = Bill::whereHas('companyreceivable', function ($query) {
-            $query->where('type', 'Privada');
-        })->where('status', 'pendiente_cobrar')->get()->filter(function ($bill) {
-            $expirationDate = Carbon::parse($bill->expiration_date);
-            $today = Carbon::now();
-            return $expirationDate->diffInDays($today, false) < 0;
-        })->sum('total_payment');
+    $totalPrivadasVencidas = Bill::whereHas('companyreceivable', function ($query) {
+        $query->where('type', 'Privada');
+    })->where('status', 'pendiente_cobrar')->get()->filter(function ($bill) {
+        $expirationDate = Carbon::parse($bill->expiration_date);
+        $today = Carbon::now();
+        return $expirationDate->diffInDays($today, false) >= 0;
+    })->sum('total_payment');
 
-        // Calcular totales para empresas públicas (Pemex)
-        $totalPublicasPendienteFacturar = Bill::whereHas('companyreceivable', function ($query) {
-            $query->where('type', 'Pemex');
-        })->where('status', 'pendiente_facturar')->get()->map(function ($bill) use ($dollarRate) {
-            return $bill->companyreceivable->currency == 'MXN' ? $bill->total_payment / $dollarRate : $bill->total_payment;
-        })->sum();
+    $totalPrivadasNoVencidas = Bill::whereHas('companyreceivable', function ($query) {
+        $query->where('type', 'Privada');
+    })->where('status', 'pendiente_cobrar')->get()->filter(function ($bill) {
+        $expirationDate = Carbon::parse($bill->expiration_date);
+        $today = Carbon::now();
+        return $expirationDate->diffInDays($today, false) < 0;
+    })->sum('total_payment');
 
-        $totalPublicasVencidas = Bill::whereHas('companyreceivable', function ($query) {
-            $query->where('type', 'Pemex');
-        })->where('status', 'pendiente_cobrar')->get()->map(function ($bill) use ($dollarRate) {
-            $expirationDate = Carbon::parse($bill->expiration_date);
-            $today = Carbon::now();
-            return $expirationDate->diffInDays($today, false) >= 0 ? ($bill->companyreceivable->currency == 'MXN' ? $bill->total_payment / $dollarRate : $bill->total_payment) : 0;
-        })->sum();
+    // Calcular totales para empresas públicas (Pemex)
+    $totalPublicasPendienteFacturar = Bill::whereHas('companyreceivable', function ($query) {
+        $query->where('type', 'Pemex');
+    })->where('status', 'pendiente_facturar')->get()->map(function ($bill) use ($dollarRate) {
+        return $bill->companyreceivable->currency == 'MXN' ? $bill->total_payment / $dollarRate : $bill->total_payment;
+    })->sum();
 
-        $totalPublicasNoVencidas = Bill::whereHas('companyreceivable', function ($query) {
-            $query->where('type', 'Pemex');
-        })->where('status', 'pendiente_cobrar')->get()->map(function ($bill) use ($dollarRate) {
-            $expirationDate = Carbon::parse($bill->expiration_date);
-            $today = Carbon::now();
-            return $expirationDate->diffInDays($today, false) < 0 ? ($bill->companyreceivable->currency == 'MXN' ? $bill->total_payment / $dollarRate : $bill->total_payment) : 0;
-        })->sum();
-        // TERMINAN PRIMEOS 6 CALCULOS
+    $totalPublicasVencidas = Bill::whereHas('companyreceivable', function ($query) {
+        $query->where('type', 'Pemex');
+    })->where('status', 'pendiente_cobrar')->get()->map(function ($bill) use ($dollarRate) {
+        $expirationDate = Carbon::parse($bill->expiration_date);
+        $today = Carbon::now();
+        return $expirationDate->diffInDays($today, false) >= 0 ? ($bill->companyreceivable->currency == 'MXN' ? $bill->total_payment / $dollarRate : $bill->total_payment) : 0;
+    })->sum();
 
+    $totalPublicasNoVencidas = Bill::whereHas('companyreceivable', function ($query) {
+        $query->where('type', 'Pemex');
+    })->where('status', 'pendiente_cobrar')->get()->map(function ($bill) use ($dollarRate) {
+        $expirationDate = Carbon::parse($bill->expiration_date);
+        $today = Carbon::now();
+        return $expirationDate->diffInDays($today, false) < 0 ? ($bill->companyreceivable->currency == 'MXN' ? $bill->total_payment / $dollarRate : $bill->total_payment) : 0;
+    })->sum();
 
+    // Agregar los totales generales por tipo de empresa al array
+    $totalesGenerales[] = ['Privada', 'Gran Total Pendiente de Facturar', $totalPrivadasPendienteFacturar];
+    $totalesGenerales[] = ['Privada', 'Gran Total Facturas Vencidas', $totalPrivadasVencidas];
+    $totalesGenerales[] = ['Privada', 'Gran Total Facturas No Vencidas', $totalPrivadasNoVencidas];
+    $totalesGenerales[] = ['Pemex', 'Gran Total Pendiente de Facturar', $totalPublicasPendienteFacturar];
+    $totalesGenerales[] = ['Pemex', 'Gran Total Facturas Vencidas', $totalPublicasVencidas];
+    $totalesGenerales[] = ['Pemex', 'Gran Total Facturas No Vencidas', $totalPublicasNoVencidas];
 
+    // SECCIÓN DERECHA: Totales por Empresa
+    $totalesPorEmpresa = [
+        ['Empresa', 'Total Global', 'Pendiente de Cobrar', 'Pendiente de Facturar', 'Pagado al día de hoy']
+    ];
 
-        //INICIAN TOTALES POR EMPRESA
-        $empresas = CompanyReceivable::with('bills')->get();
+    $empresas = CompanyReceivable::with('bills')->get();
 
-                // Generar los totales por cada empresa
     foreach ($empresas as $empresa) {
         $totalGlobal = $empresa->bills->where('status', '!=', 'cancelado')->sum('total_payment');
         $totalPendienteCobrar = $empresa->bills->where('status', 'pendiente_cobrar')->sum('total_payment');
         $totalPendienteFacturar = $empresa->bills->where('status', 'pendiente_facturar')->sum('total_payment');
         $totalPagado = $empresa->bills->where('status', 'pagado')->sum('total_payment');
-    
-        $totals[] = [$empresa->name, $totalGlobal, $totalPendienteCobrar, $totalPendienteFacturar, $totalPagado];
+
+        $totalesPorEmpresa[] = [
+            $empresa->name,
+            $totalGlobal,
+            $totalPendienteCobrar,
+            $totalPendienteFacturar,
+            $totalPagado
+        ];
     }
 
-        //TERMINAN TOTALES POR EMPRESA
+    // COMBINAR AMBAS SECCIONES LADO A LADO
+    $maxRows = max(count($totalesGenerales), count($totalesPorEmpresa));
+    $finalArray = [];
 
-        $totals = [
-            ['Tipo de Empresa', 'Estado', 'Gran Total en USD', '', 'Empresa', 'Total Global', 'Pendiente de Cobrar', 'Pendiente de Facturar', 'Pagado al dia de hoy'],
-        ];
-        
-        // Lista de empresas agrupadas por tipo de empresa
-        $empresasPorTipo = [
-            'Privada' => [
-                ['Gran Total Pendiente de Facturar', $totalPrivadasPendienteFacturar, isset($empresas[0]) ? $empresas[0] : null],
-                ['Gran Total Facturas Vencidas', $totalPrivadasVencidas, isset($empresas[1]) ? $empresas[1] : null],
-                ['Gran Total Facturas No Vencidas', $totalPrivadasNoVencidas, isset($empresas[2]) ? $empresas[2] : null],
-            ],
-            'Pemex' => [
-                ['Gran Total Pendiente de Facturar', $totalPublicasPendienteFacturar, isset($empresas[3]) ? $empresas[3] : null],
-                ['Gran Total Facturas Vencidas', $totalPublicasVencidas, isset($empresas[4]) ? $empresas[4] : null],
-                ['Gran Total Facturas No Vencidas', $totalPublicasNoVencidas, isset($empresas[5]) ? $empresas[5] : null],
-            ],
-        ];
-        
-        foreach ($empresasPorTipo as $tipoEmpresa => $estados) {
-            foreach ($estados as $estado) {
-                $estadoNombre = $estado[0];
-                $totalUSD = $estado[1];
-                $empresa = $estado[2];
-        
-                if ($empresa) {
-                    $totalGlobal = $empresa->bills->where('status', '!=', 'cancelado')->sum('total_payment');
-                    $totalPendienteCobrar = $empresa->bills->where('status', 'pendiente_cobrar')->sum('total_payment');
-                    $totalPendienteFacturar = $empresa->bills->where('status', 'pendiente_facturar')->sum('total_payment');
-                    $totalPagado = $empresa->bills->where('status', 'pagado')->sum('total_payment');
-        
-                    $totals[] = [
-                        $tipoEmpresa,
-                        $estadoNombre,
-                        $totalUSD,
-                        '', // Columna vacía para separar
-                        $empresa->name,
-                        $totalGlobal,
-                        $totalPendienteCobrar,
-                        $totalPendienteFacturar,
-                        $totalPagado,
-                    ];
-                } else {
-                    $totals[] = [
-                        $tipoEmpresa,
-                        $estadoNombre,
-                        $totalUSD,
-                        '', // Columna vacía para separar
-                        '', '', '', '', '', // Espacios vacíos ya que no hay empresa para esta fila
-                    ];
-                }
-            }
-        }
-        
-        return $totals;
+    for ($i = 0; $i < $maxRows; $i++) {
+        $leftSection = $totalesGenerales[$i] ?? ['', '', ''];
+        $rightSection = $totalesPorEmpresa[$i] ?? ['', '', '', '', ''];
+        $finalArray[] = array_merge($leftSection, [''], $rightSection);
     }
 
+    return $finalArray;
+}
     public function title(): string
     {
         return 'Resumen Global';
@@ -158,7 +128,7 @@ FromArray, WithTitle, WithColumnFormatting, ShouldAutoSize
 
     public function columnFormats(): array
     {
-        return[
+        return [
             'C' => '"$"#,##0.00_-',
             'F' => '"$"#,##0.00_-',
             'G' => '"$"#,##0.00_-',

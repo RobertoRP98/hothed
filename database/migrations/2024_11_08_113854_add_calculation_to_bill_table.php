@@ -11,9 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('companyreceivable', function (Blueprint $table) {
-            //
-            $table->enum('currency', ['MXN', 'USD'])->default('USD'); // Campo para divisa
+        Schema::table('bill', function (Blueprint $table) {
+            $table->boolean('porcent')->after('comentary')->default(true);
         });
     }
 
@@ -22,7 +21,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('companyreceivable', function (Blueprint $table) {
+        Schema::table('bill', function (Blueprint $table) {
             //
         });
     }

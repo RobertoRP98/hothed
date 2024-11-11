@@ -151,6 +151,18 @@
         </div>
     </div>
 
+    @if($company->name === 'PEMEX TOMS 854')
+    <div class="col-md-3">
+      <div class="form-outline">
+          <select id="porcent" name="porcent" class="form-select">
+              <option value="1" {{ isset($bill) && $bill->porcent ? 'selected' : '' }}>Primera Factura</option>
+              <option value="0" {{ isset($bill) && !$bill->porcent ? 'selected' : '' }}>Segunda o + Factura</option>
+          <label class="form-label" for="porcent">Tipo de Factura</label>
+          </select>
+      </div>
+  </div>
+  @endif
+  
        
 </div>
 

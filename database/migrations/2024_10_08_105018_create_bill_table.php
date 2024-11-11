@@ -23,10 +23,11 @@ return new class extends Migration
             $table->date('start_operation');
             $table->date('end_operation');
             $table->decimal('total_payment',15,2);
-            $table->enum('status',['pendiente_facturar','pendiente_cobrar','pagado','aclaración'])->default('pendiente_facturar');
+            $table->enum('status',['pendiente_facturar','pendiente_cobrar','pagado','aclaración','cancelado','pendiente_entrada'])->default('pendiente_facturar');
             $table->date('billing_date')->nullable();
             $table->date('payment_day')->nullable();
             $table->string('comentary')->nullable();
+            $table->boolean('porcent')->after('comentary');
             $table->foreignId('companyreceivable_id')->constrained('companyreceivable')->onDelete('cascade');
             $table->timestamps();
         });
