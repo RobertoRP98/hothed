@@ -19,11 +19,10 @@ class EmpresasExport implements WithMultipleSheets
         $sheets[] = new publicasVencidasExport();
         $sheets[] = new privadasvencidasExport();
 
-
         $sheets[] = new privadasNoVenExport();
         $sheets[] = new publicasNoVenExport();
 
-
+        //Mandar abajo el global y dar formato de pagina 
         foreach ($empresas as $empresa) {
             $sheets[] = new EmpresaSheetExport($empresa);
         }

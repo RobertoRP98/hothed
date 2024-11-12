@@ -69,7 +69,7 @@
             <div class="col-md-6">
                 <div class="card text-white bg-danger mb-3">
                     <div class="card-body">
-                        <h5 class="card-title"> Pendiente de Cobrar: </h5>
+                        <h5 class="card-title"> Facturado Pendiente de Cobro: </h5>
                         <p class="card-text display-6">${{ number_format($totalPendienteCobrar, 2) }}</p>
                     </div>
                 </div>

@@ -17,7 +17,7 @@
                 @auth
                 @if(Auth::user()->hasRole(['Cobranza', 'AdministracionKarla']))
                     <li class="nav-item">
-                        <a class="nav-link text-white" href="{{ url('facturas') }}">Facturas</a>
+                        <a class="nav-link text-white" href="{{ url('facturas') }}">Reporte de cobro</a>
                     </li>
                 @endif
             @endauth

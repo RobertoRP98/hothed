@@ -14,9 +14,7 @@
 @endpush
 
 <div class="container">
-    <br>
-
-    <h2>Facturación</h2>
+    <h2>COBRANZA</h2>
     <div class="container my-4">
         <div class="row">
     
@@ -35,7 +33,7 @@
                 <a href="{{ route('privadas-vencidas') }}" class="text-decoration-none">
                 <div class="card text-white bg-danger mb-3">
                     <div class="card-body">
-                        <h5 class="card-title">Privadas Pendiente de Cobrar : Vencido</h5>
+                        <h5 class="card-title">Privadas Facturado Vencido : Pendiente de Cobro</h5>
                         <p class="card-text display-6">${{ number_format($totalPrivadasVencidas, 2) }}</p>
                     </div>
                 </div>
@@ -47,7 +45,7 @@
                 <a href="{{ route('privadas-no-vencidas') }}" class="text-decoration-none">
                 <div class="card text-white bg-success mb-3">
                     <div class="card-body">
-                        <h5 class="card-title">Privadas Pendiente de Cobrar: No Vencido</h5>
+                        <h5 class="card-title">Privadas Facturado No Vencido: Pendiente de Cobro</h5>
                         <p class="card-text display-6">${{ number_format($totalPrivadasNoVencidas, 2) }}</p>
                     </div>
                 </div>
@@ -69,7 +67,7 @@
                 <a href=" {{route('publicas-vencidas')}} " class="text-decoration-none">
                 <div class="card text-white bg-danger mb-3">
                     <div class="card-body">
-                        <h5 class="card-title">PEMEX Pendiente de Cobrar: Vencido</h5>
+                        <h5 class="card-title">PEMEX Facturado Vencido: Pendiente de Cobro</h5>
                         <p class="card-text display-6">${{ number_format($totalPublicasVencidas, 2) }}</p>
                     </div>
                 </div>
@@ -81,7 +79,7 @@
                 <a href="{{ route('publicas-no-vencidas')}}" class="text-decoration-none">
                 <div class="card text-white bg-success mb-3">
                     <div class="card-body">
-                        <h5 class="card-title">PEMEX Pendiente de Cobrar: No Vencido</h5>
+                        <h5 class="card-title">PEMEX Facturado No Vencido: Pendiente de Cobro</h5>
                         <p class="card-text display-6">${{ number_format($totalPublicasNoVencidas, 2) }}</p>
                     </div>
                 </div>
@@ -109,7 +107,7 @@
     </a> </button> 
 
     <button type="button" class="btn btn-outline-info mb-3 mt-3 m-2"> <a class="text-dark text-decoration-none" href="{{ route('export.empresas') }}">
-        Descargar informacion de las empresas
+        Resumen General Excel
     </a> </button> 
 
     
