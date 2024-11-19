@@ -23,7 +23,7 @@ Route::get('/', function () {
 });
 
 
-Auth::routes(['reset'=>false,'register'=>false]);
+Auth::routes(['reset'=>false,]);
 //
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
@@ -111,6 +111,8 @@ Route::get('/export-privadas-no-vencidas',[BillController::class,'exportPrivadas
 Route::get('/export-publicas-vencidas',[BillController::class,'exportPublicasVencidas'])->name('export.publicas-vencidas');
 
 Route::get('/export-publicas-no-vencidas',[BillController::class,'exportPublicasNoVencidas'])->name('export.publicas-no-vencidas');
+
+Route::get('/catalogo/{id}/export', [CompanyReceivableController::class, 'exportEmpresaExcel'])->name('empresas.export')->middleware('auth');
 
 });
 

@@ -39,6 +39,17 @@
                         </div>
 
                         <div class="row mb-3">
+                            <label for="departament" class="col-md-4 col-form-label text-md-end">{{ __('departament') }}</label>
+
+                            <div class="form-outline col-md-6">
+                                <select class="form-select" name="departament" id="departament">
+                                <option value="ADM">ADMINISTRATIVO</option>
+                                <option value="OP">OPERATIVO</option>
+                                </select>
+                        </div>   
+                        </div>
+
+                        <div class="row mb-3">
                             <label for="password" class="col-md-4 col-form-label text-md-end">{{ __('Password') }}</label>
 
                             <div class="col-md-6">

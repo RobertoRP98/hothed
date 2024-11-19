@@ -6,25 +6,19 @@ use Carbon\Carbon;
 use App\Models\Bill;
 use App\Models\Currency;
 use App\Models\CompanyReceivable;
+use Maatwebsite\Excel\Events\AfterSheet;
 use Maatwebsite\Excel\Concerns\FromArray;
 use Maatwebsite\Excel\Concerns\WithTitle;
-use Maatwebsite\Excel\Concerns\RegistersEventListeners;
+use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Maatwebsite\Excel\Concerns\WithColumnFormatting;
+use Maatwebsite\Excel\Concerns\RegistersEventListeners;
 
 class ResumenTotalesExport implements 
-    FromArray, WithTitle, WithColumnFormatting, ShouldAutoSize
+    FromArray, WithTitle, WithColumnFormatting, ShouldAutoSize, WithEvents
 {
 
     use RegistersEventListeners;
-
-    public static function afterSheet(\Maatwebsite\Excel\Events\AfterSheet $event)
-    {
-        // Ajustar automáticamente el ancho de las columnas en esta hoja
-        foreach (range('A', $event->sheet->getDelegate()->getHighestColumn()) as $col) {
-            $event->sheet->getDelegate()->getColumnDimension($col)->setAutoSize(true);
-        }
-    }
 
     public function array(): array
 {
@@ -89,23 +83,23 @@ class ResumenTotalesExport implements
 
     // SECCIÓN DERECHA: Totales por Empresa
     $totalesPorEmpresa = [
-        ['Empresa', 'Total Global', 'Pendiente de Cobrar', 'Pendiente de Facturar', 'Pagado al día de hoy']
+        ['Empresa', 'Pendiente de Cobrar', 'Pendiente de Facturar', ]
     ];
 
     $empresas = CompanyReceivable::with('bills')->get();
 
     foreach ($empresas as $empresa) {
-        $totalGlobal = $empresa->bills->where('status', '!=', 'cancelado')->sum('total_payment');
+        //$totalGlobal = $empresa->bills->where('status', '!=', 'cancelado')->sum('total_payment');
         $totalPendienteCobrar = $empresa->bills->where('status', 'pendiente_cobrar')->sum('total_payment');
         $totalPendienteFacturar = $empresa->bills->where('status', 'pendiente_facturar')->sum('total_payment');
-        $totalPagado = $empresa->bills->where('status', 'pagado')->sum('total_payment');
+        //$totalPagado = $empresa->bills->where('status', 'pagado')->sum('total_payment');
 
         $totalesPorEmpresa[] = [
             $empresa->name,
-            $totalGlobal,
+            //$totalGlobal,
             $totalPendienteCobrar,
             $totalPendienteFacturar,
-            $totalPagado
+            //$totalPagado
         ];
     }
 
@@ -123,7 +117,7 @@ class ResumenTotalesExport implements
 }
     public function title(): string
     {
-        return 'Resumen Global';
+        return 'Resumen General';
     }
 
     public function columnFormats(): array
@@ -134,6 +128,58 @@ class ResumenTotalesExport implements
             'G' => '"$"#,##0.00_-',
             'H' => '"$"#,##0.00_-',
             'I' => '"$"#,##0.00_-',
+        ];
+    }
+
+    public static function afterSheet(AfterSheet $event)
+    {
+        // AutoSize para todas las columnas
+    foreach (range('A', strtoupper($event->sheet->getDelegate()->getHighestColumn())) as $col) {
+        $event->sheet->getDelegate()->getColumnDimension($col)->setAutoSize(true);
+    }
+
+    // Formato de la primera fila (cabecera)
+    $event->sheet->getStyle('A1:I1')->applyFromArray([
+        'font' => [
+            'bold' => true,
+        ],
+        'fill' => [
+            'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
+            'color' => ['argb' => 'FFCCCCCC'],
+        ],
+    ]);
+
+    // Alternar colores de fondo en las filas
+    $highestRow = $event->sheet->getDelegate()->getHighestRow();
+    for ($row = 2; $row <= $highestRow; $row++) { // Comienza en la segunda fila para no aplicar en la cabecera
+        $color = ($row % 2 === 0) ? 'FFE0EAF1' : 'FFFFFFFF'; // Azul claro y blanco
+        $event->sheet->getStyle("A{$row}:I{$row}")->applyFromArray([
+            'fill' => [
+                'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
+                'color' => ['argb' => $color],
+            ],
+        ]);
+    }
+
+    // Borde para todas las celdas en el rango
+    $cellRange = 'A1:' . strtoupper($event->sheet->getDelegate()->getHighestColumn()) . $highestRow;
+    $event->sheet->getStyle($cellRange)->applyFromArray([
+        'borders' => [
+            'allBorders' => [
+                'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                'color' => ['argb' => 'FF000000'],
+            ],
+        ],
+    ]);
+
+        // Aplicar filtro a todas las columnas del rango
+        $event->sheet->setAutoFilter($cellRange);
+    }
+
+    public function registerEvents(): array
+    {
+        return [
+            AfterSheet::class => [self::class, 'afterSheet'],
         ];
     }
 }

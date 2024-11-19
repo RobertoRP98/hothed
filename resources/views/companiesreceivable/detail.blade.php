@@ -31,7 +31,13 @@
             </a>
         </button>
 
-        <button type="button" class="btn btn-outline-success mb-3 mt-3 m-2">
+        <button type="button" class="btn btn-outline-success mb-3 mt-3  m-2">
+            <a class="text-dark text-decoration-none" href="{{ route('empresas.export', $empresa->id) }}">
+                Descargar Excel
+            </a>
+        </button>
+
+        <button type="button" class="btn btn-outline-success mb-3 mt-3 m-1">
             <a class="text-dark text-decoration-none" href="{{route('empresa.historial', ['company' => $empresa->id]) }} ">
                 Historial General
             </a>
@@ -41,6 +47,10 @@
             <a class="text-dark text-decoration-none" href="{{route('empresa.facturas-pagadas', ['company' => $empresa->id]) }} ">
                 Historial pagados
             </a>
+        </button>
+
+        <button type="button" id="resetFilter" class="btn btn-outline-success mb-3 mt-3 m-1">
+            Restablecer filtro
         </button>
     </div>
 
@@ -67,13 +77,14 @@
             </div>
 
             <div class="col-md-6">
-                <div class="card text-white bg-danger mb-3">
+                <div id="filterPendingCobro" class="card text-white bg-danger mb-3">
                     <div class="card-body">
                         <h5 class="card-title"> Facturado Pendiente de Cobro: </h5>
                         <p class="card-text display-6">${{ number_format($totalPendienteCobrar, 2) }}</p>
                     </div>
                 </div>
             </div>
+            
 
             <div class="col-md-6">
                 <div class="card text-white bg-success mb-3">
@@ -96,11 +107,11 @@
         <div class="card-body">
             
     <div class="table-responsive">
-    <table id="detalles" class="table table-light table-bordered table-hover">
+    <table id="detalles" class="table table-light table-bordered table-hover text-center">
     {{-- <table class="table table-striped" id="detalles"> --}}
         <thead class="thead-light">
             <tr>
-                <th>No. Orden</th>
+                {{-- <th>No. Orden</th> --}}
                 <th>No. Factura</th>
                 <th>Fecha de Factura</th>
                 <th>Fecha de Ingreso</th>
@@ -115,37 +126,47 @@
         <tbody>
             @foreach ($unpaidBills as $bill)
                 <tr>
-                    <td>{{ $bill->order_number }}</td>
                     <td>{{ $bill->bill_number }}</td>
-                    <td>{{ $bill->bill_date }}</td>
-                    <td>{{ $bill->entry_date }}</td>
-                    <td>{{ $bill->expiration_date }}</td>
+                    <td>{{ \Carbon\Carbon::parse($bill->bill_date)->format('d/m/Y') }}</td>
+                    <td>{{ \Carbon\Carbon::parse($bill->entry_date)->format('d/m/Y') }}</td>
+                    <td>{{ \Carbon\Carbon::parse($bill->expiration_date)->format('d/m/Y') }}</td>
                     
                     <td class="
-                    @if($bill->status==='pagado')
-                        table-info
-                    @elseif(\Carbon\Carbon::parse($bill->expiration_date)->diffInDay(now(),false)>=0)
-                        table-danger 
-                    @elseif(\Carbon\Carbon::parse($bill->expiration_date)->diffInDay(now(),false)<=-31)
-                        table-secondary
-                    @else
-                        table-warning        
-                    @endif    
-                    ">
-                    {{floor(\Carbon\Carbon::parse($bill->expiration_date)->diffInDay(now(),false))}}
+                        @if($bill->status === 'pagado')
+                            table-info
+                        @elseif(\Carbon\Carbon::parse($bill->expiration_date)->diffInDays(now(), false) >= 0)
+                            table-danger 
+                        @elseif(\Carbon\Carbon::parse($bill->expiration_date)->diffInDays(now(), false) <= -31)
+                            table-secondary
+                        @else
+                            table-warning        
+                        @endif">
+                        {{ floor(\Carbon\Carbon::parse($bill->expiration_date)->diffInDays(now(), false)) }}
                     </td>
 
-                    <td>{{ $bill->total_payment }}</td>
-                    <td>{{ $bill->status}}</td>
+                    <td>${{ number_format($bill->total_payment, 2, '.', ',') }}</td>
 
+                    <td>
+                        @switch($bill->status)
+                            @case('pendiente_cobrar')
+                                Pendiente por Cobrar
+                                @break
+                            @case('pendiente_facturar')
+                                Pendiente de Facturar
+                                @break
+                            @case('pendiente_entrada')
+                                Pendiente de Entrada
+                                @break
+                            @default
+                                {{ ucfirst($bill->status) }}
+                        @endswitch
+                    </td>
 
                     <td>
                         <button class="btn btn-warning mb-2">
                             <a class="text-white" href="{{ route('facturas.edit', [$empresa->id, $bill->id]) }}">Editar Factura</a> 
                         </button> 
-
                     </td>
-
                 </tr>
             @endforeach
         </tbody>
@@ -168,29 +189,41 @@
 
 <script>
     $(document).ready(function() {
-        $('#detalles').DataTable({
-            resposive:true,
+        // Almacenar la instancia de DataTable en una variable
+        var table = $('#detalles').DataTable({
+            responsive: false,
             autoWidth: false,
-
-            "language": {
-                "lengthMenu":     "Mostrar _MENU_ registros",
-    "loadingRecords": "Cargando...",
-    "processing":     "",
-    "info": "Mostrando la página _PAGE_ de _PAGES_",
-    "search":         "Buscar:",
-    "zeroRecords":    "Registro no encontrado - Verifica el texto, elimina espacios al inicio y al final",
-    "paginate": {
-        "first":      "Inicio",
-        "last":       "Ultimo",
-        "next":       "Siguiente",
-        "previous":   "Anterior"
-    },
-    "aria": {
-        "orderable":  "Ordenado por esta columna",
-        "orderableReverse": "Columna ordenada inversamente"
-    }
+            language: {
+                lengthMenu: "Mostrar _MENU_ registros",
+                loadingRecords: "Cargando...",
+                processing: "",
+                info: "Mostrando la página _PAGE_ de _PAGES_",
+                search: "Buscar:",
+                zeroRecords: "Registro no encontrado - Verifica el texto, elimina espacios al inicio y al final",
+                paginate: {
+                    first: "Inicio",
+                    last: "Último",
+                    next: "Siguiente",
+                    previous: "Anterior"
+                },
+                aria: {
+                    orderable: "Ordenado por esta columna",
+                    orderableReverse: "Columna ordenada inversamente"
+                }
             }
-        }); // Asegúrate de que el ID coincida con tu tabla
+        });
+
+        // Filtrar la tabla cuando se hace clic en la tarjeta "Facturado Pendiente de Cobro"
+        $('#filterPendingCobro').on('click', function() {
+            table.column(6) // Selecciona la columna del "Status" (índice basado en cero, ajusta si es necesario)
+                .search('Pendiente por Cobrar', true, false) // Aplica el filtro de búsqueda con coincidencia exacta (o ajusta el valor exacto si difiere)
+                .draw(); // Redibuja la tabla con el filtro aplicado
+        });
+
+        // Restablecer filtro y restaurar la vista completa al hacer clic en "Restablecer filtro"
+        $('#resetFilter').on('click', function() {
+            table.search('').columns().search('').draw(); // Limpia todas las búsquedas y redibuja la tabla
+        });
     });
 </script>
 @endpush

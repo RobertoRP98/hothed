@@ -662,7 +662,8 @@ footer {
 /* Clients Section */
 
 body {
-  background: #F8F8FF;
+  background-color: #F0F8FF;
+   /* Alice Blue */ color: #333;
 }
 
 .logo-slider {
@@ -700,3 +701,46 @@ body {
 
 
 /* Clients Section */
+
+/* General card styling */
+.card {
+  border-radius: 12px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.card .card-title {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.card .card-text {
+  font-weight: bold;
+}
+
+.icon-style {
+  font-size: 2rem;
+}
+
+
+
+/* Specific shadow effect */
+.shadow-sm {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Text decoration and hover styling for links */
+a.text-decoration-none:hover .card {
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+  transform: translateY(-10px);
+}
+
+ /* Background Color Classes */
+ .bg-primary { background-color: #3174f3 !important; }
+ .bg-danger { background-color: #f56c6c !important; }
+ .bg-success { background-color: #4caf50 !important; }
+

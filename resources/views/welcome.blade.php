@@ -5,7 +5,7 @@
     <div id="carouselExampleFade" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="5000">
         <div class="carousel-inner">
             <div class="carousel-item active">
-                <img src="{{ asset('images/trabajo.png') }}" class="d-block w-100" alt="">
+                <img src="{{ asset('images/logo-azul.jpg') }}" class="d-block w-100" alt="">
                 <div class="carousel-container position-absolute top-50 start-50 translate-middle text-center text-white">
                     
                 </div>
@@ -24,7 +24,7 @@
                     <p>Beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit.</p> --}}
                 </div>
             </div>
-        </div>
+
 
         <!-- Controles del carrusel -->
         <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="prev">
@@ -45,7 +45,7 @@
   <div class="container">
   <!-- Section Title -->
  <br>
- <div class="container section-title text-center reveal" data-aos="fade-up">
+ <div class="container section-title text-center " data-aos="fade-up">
   <h2>Acerca de Nosotros</h2>
   {{-- <p>Necessitatibus eius consequatur ex aliquid fuga eum quidem sint consectetur velit</p> --}}
 </div>

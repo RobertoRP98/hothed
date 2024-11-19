@@ -108,13 +108,13 @@ class EmpresaSheetExport implements
             AfterSheet::class => function (AfterSheet $event) {
                 $sheet = $event->sheet->getDelegate();
                 $empresa = $this->empresa; // Acceder a la empresa actual
-
+    
                 // Ajustar automáticamente el ancho de las columnas en esta hoja
                 foreach (range('A', $sheet->getHighestColumn()) as $col) {
                     $sheet->getColumnDimension($col)->setAutoSize(true);
                 }
-
-                // 1. Combinar y dar formato a la fila 1
+    
+                // Combinar y dar formato a las primeras filas (encabezado)
                 $sheet->mergeCells('A1:K1');
                 $sheet->setCellValue('A1', 'Empresa S.A DE CV');
                 $sheet->getStyle('A1')->applyFromArray([
@@ -128,8 +128,7 @@ class EmpresaSheetExport implements
                         'vertical' => Alignment::VERTICAL_CENTER,
                     ],
                 ]);
-
-                // 2. Combinar y dar formato a la fila 2
+    
                 $sheet->mergeCells('A2:K2');
                 $sheet->setCellValue('A2', $empresa->name);
                 $sheet->getStyle('A2')->applyFromArray([
@@ -146,7 +145,25 @@ class EmpresaSheetExport implements
                     ],
                 ]);
 
-                // 3. Combinar y dar formato a la fila 3
+
+                // 5. Agregar el logo de la empresa
+                $drawing = new Drawing();
+                $drawing->setName('Logo');
+                $drawing->setDescription('Logo de la empresa');
+                $drawing->setPath(public_path('images/logo.png')); // Cambia esta ruta a la del logo
+                $drawing->setHeight(64); // 2.26 cm = 64 pixeles aproximadamente
+                $drawing->setWidth(71); // 2.51 cm = 71 pixeles aproximadamente
+                $drawing->setCoordinates('C1');
+                $drawing->setWorksheet($sheet);
+
+                // Establecer autoSize en false solo para la columna G
+                $sheet->getColumnDimension('G')->setAutoSize(false);
+                $sheet->getColumnDimension('G')->setWidth(30); // Ancho específico para la columna G
+
+                  // Establecer autoSize en false solo para la columna K
+                  $sheet->getColumnDimension('K')->setAutoSize(false);
+                  $sheet->getColumnDimension('K')->setWidth(30); // Ancho específico para la columna K 
+    
                 $sheet->mergeCells('A3:K3');
                 $sheet->setCellValue('A3', 'Sucursal Villahermosa');
                 $sheet->getStyle('A3')->applyFromArray([
@@ -159,41 +176,60 @@ class EmpresaSheetExport implements
                         'vertical' => Alignment::VERTICAL_CENTER,
                     ],
                 ]);
-
-                // 4. Las filas 4 y 5 estarán vacías
-                // Asegurarse de que estén vacías
+    
+                // Rellenar las filas 4 y 5 con vacío (como espacio)
                 $sheet->setCellValue('A4', '');
                 $sheet->mergeCells('A4:K4');
                 $sheet->setCellValue('A5', '');
                 $sheet->mergeCells('A5:K5');
-
-                // 5. Agregar el logo de la empresa
-                $drawing = new Drawing();
-                $drawing->setName('Logo');
-                $drawing->setDescription('Logo de la empresa');
-                $drawing->setPath(public_path('images/logo.png')); // Cambia esta ruta a la del logo
-                $drawing->setHeight(64); // 2.26 cm = 64 pixeles aproximadamente
-                $drawing->setWidth(71); // 2.51 cm = 71 pixeles aproximadamente
-                $drawing->setCoordinates('B1');
-                $drawing->setWorksheet($sheet);
-
-                // Establecer autoSize en false solo para la columna G
-                $sheet->getColumnDimension('G')->setAutoSize(false);
-                $sheet->getColumnDimension('G')->setWidth(30); // Ancho específico para la columna G
-
-                  // Establecer autoSize en false solo para la columna K
-                  $sheet->getColumnDimension('K')->setAutoSize(false);
-                  $sheet->getColumnDimension('K')->setWidth(30); // Ancho específico para la columna K
-
-                // Ajustar el encabezado y las filas de datos para que comiencen en A6
+    
+                // Aplicar los encabezados en la fila 6 y los datos desde la fila 7
                 $sheet->fromArray($this->headings(), null, 'A6');
                 $sheet->fromArray($this->collection()->toArray(), null, 'A7');
-                
+    
+                // Aplicar estilos a la fila de encabezado (fila 6)
+                $sheet->getStyle('A6:K6')->applyFromArray([
+                    'font' => [
+                        'bold' => true,
+                    ],
+                    'fill' => [
+                        'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
+                        'color' => ['argb' => 'FFCCCCCC'], // Gris claro
+                    ],
+                    'alignment' => [
+                        'horizontal' => Alignment::HORIZONTAL_CENTER,
+                        'vertical' => Alignment::VERTICAL_CENTER,
+                    ],
+                ]);
+    
+                // Alternar colores de fondo en las filas para el efecto "striped"
+                $highestRow = $sheet->getHighestRow();
+                for ($row = 7; $row <= $highestRow; $row++) { // Comienza en la fila 7 para los datos
+                    $color = ($row % 2 === 0) ? 'FFE0EAF1' : 'FFFFFFFF'; // Azul claro y blanco
+                    $sheet->getStyle("A{$row}:K{$row}")->applyFromArray([
+                        'fill' => [
+                            'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
+                            'color' => ['argb' => $color],
+                        ],
+                    ]);
+                }
+    
+                // Aplicar bordes a todas las celdas del rango de datos
+                $cellRange = 'A6:K' . $highestRow;
+                $sheet->getStyle($cellRange)->applyFromArray([
+                    'borders' => [
+                        'allBorders' => [
+                            'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                            'color' => ['argb' => 'FF000000'],
+                        ],
+                    ],
+                ]);
+    
+                // Establecer filtros en la fila de encabezado
+                $sheet->setAutoFilter('A6:K6');
             },
         ];
     }
-
-
 }
 
 
