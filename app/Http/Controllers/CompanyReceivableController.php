@@ -118,7 +118,10 @@ class CompanyReceivableController extends Controller
             });
 
         // Calcular los totales
-        $totalGlobal = $empresa->bills->where('status', '!=', 'cancelado')->sum('total_payment');
+        //$totalGlobal = $empresa->bills->where('status', '!=', 'cancelado')->sum('total_payment');
+        $totalGlobal = $empresa->bills
+    ->whereNotIn('status', ['cancelado', 'pendiente_facturar'])
+    ->sum('total_payment');
         $totalPendienteFacturar = $empresa->bills->where('status', 'pendiente_facturar')->sum('total_payment');
         $totalPendienteCobrar = $empresa->bills->where('status', 'pendiente_cobrar')->sum('total_payment');
         $totalPagado = $empresa->bills->where('status', 'pagado')->sum('total_payment');
