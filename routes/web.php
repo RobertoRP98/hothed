@@ -23,7 +23,9 @@ Route::get('/', function () {
 });
 
 
-Auth::routes(['reset'=>false,]);
+Auth::routes(['reset'=>false]);
+
+
 //
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
@@ -61,9 +63,8 @@ Route::resource('historialalmacen',ToolHistoryController::class)->middleware('au
 
 //MODULOS DE COBRO
 //LIMITADOR A SOLOS CON ROLE COBRANZA PUEDAN ACCEDER
-Route::group(['middleware'=>['auth','checkrole:Cobranza']], function(){
 
-Route::resource('divisas',CurrencyController::class)->middleware('auth');
+Route::group(['middleware' => ['auth', 'role:Cobranza|Developer|AdministracionKarla']], function () {
 
 Route::resource('empresas',CompanyReceivableController::class)->middleware('auth');
 Route::get('catalogo/privadas', [CompanyReceivableController::class, 'indexprivate'])->name('empresas.privadas')->middleware('auth');
@@ -78,15 +79,6 @@ Route::get('facturas-pagadas/{company}', [CompanyReceivableController::class, 'p
 
 
 
-
-Route::get('/prefactura/create/{companyreceivable_id}', [BillController::class, 'createFactura'])->name('prefactura.create')->middleware('auth');
-// Para crear una factura y relacionarla con la empresa
-Route::post('/facturas/{companyreceivable_id}', [BillController::class, 'store'])->name('facturas.store')->middleware('auth');
-// Para actualizar una factura relacionada con la empresa
-Route::patch('facturas/update/{companyreceivable_id}/{factura}', [BillController::class, 'update'])->name('facturas.update')->middleware('auth');
-// Para editar una factura
-Route::get('/facturas/{companyreceivable_id}/edit/{factura}', [BillController::class, 'edit'])->name('facturas.edit')->middleware('auth');
-//
 Route::get('/facturas', [BillController::class,'index'])->name('facturas.index')->middleware('auth');
 
 //Index de todas las facturas privadas que estan vencidas
@@ -116,9 +108,21 @@ Route::get('/catalogo/{id}/export', [CompanyReceivableController::class, 'export
 
 });
 
+
+
+Route::group(['middleware' => ['auth', 'role:Cobranza']], function () {
+
+Route::resource('divisas',CurrencyController::class)->middleware('auth');
+
+Route::get('/prefactura/create/{companyreceivable_id}', [BillController::class, 'createFactura'])->name('prefactura.create')->middleware('auth');
+// Para crear una factura y relacionarla con la empresa
+Route::post('/facturas/{companyreceivable_id}', [BillController::class, 'store'])->name('facturas.store')->middleware('auth');
+// Para actualizar una factura relacionada con la empresa
+Route::patch('facturas/update/{companyreceivable_id}/{factura}', [BillController::class, 'update'])->name('facturas.update')->middleware('auth');
+// Para editar una factura
+Route::get('/facturas/{companyreceivable_id}/edit/{factura}', [BillController::class, 'edit'])->name('facturas.edit')->middleware('auth');
+//
+
+});
+
 //TERMINA MODULOS DE COBRO
-
-
-
-
-
