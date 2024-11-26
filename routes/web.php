@@ -23,7 +23,15 @@ Route::get('/', function () {
 });
 
 
-Auth::routes(['reset'=>false]);
+Auth::routes(['reset'=>false, 'register'=>false]);
+
+
+// Grupo de rutas protegido con auth y roles específicos
+Route::group(['middleware' => ['auth', 'role:Developer|AdministracionKarla']], function () {
+    // Ruta para registrar usuarios, accesible solo para Developer y AdministracionKarla
+    Route::get('/register', [App\Http\Controllers\Auth\RegisterController::class, 'showRegistrationForm'])->name('register');
+    Route::post('/register', [App\Http\Controllers\Auth\RegisterController::class, 'register']);
+});
 
 
 //

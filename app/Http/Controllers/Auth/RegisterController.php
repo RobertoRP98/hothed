@@ -37,7 +37,9 @@ class RegisterController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('guest');
+       // $this->middleware('guest');
+       $this->middleware('auth'); // Si tienes este middleware, ya está siendo cubierto por la ruta
+    $this->middleware('role:Developer|AdministracionKarla'); // Asegúrate de que coincida con tu lógica
     }
 
     /**

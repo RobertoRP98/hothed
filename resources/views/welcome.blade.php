@@ -64,7 +64,7 @@
         <ul class="nav nav-pills mb-3">
           <li><a class="nav-link active" data-bs-toggle="pill" href="#mission-tab">Misión</a></li>
           <li><a class="nav-link" data-bs-toggle="pill" href="#vision-tab">Visión</a></li>
-          <li><a class="nav-link" data-bs-toggle="pill" href="#about-tab3">Politica Integral</a></li>
+          <li><a class="nav-link" data-bs-toggle="pill" href="#about-tab3">Política Integral</a></li>
         </ul><!-- End Tabs -->
 
         <!-- Tab Content -->
@@ -82,7 +82,7 @@
           </div><!-- End Vision Tab Content -->
 
           <div class="tab-pane fade" id="about-tab3">
-            <p class="fst-italic">"Hot Hed México se cimpromete a lograr la conformidad en los servicios y la satisfacción de los requisitos de los clientes y demás partes interesadas"</p>
+            <p class="fst-italic">"Hot Hed México se compromete a lograr la conformidad en los servicios y la satisfacción de los requisitos de los clientes y demás partes interesadas"</p>
             <p>"Por lo que se ha establecido un sistema de gestión integral basado en las normas ISO 14001 e ISO 45001 enfocados en la mejora continua de todos sus procesos"</p>
           </div><!-- End About Tab 3 Content -->
 
