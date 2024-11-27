@@ -2,21 +2,22 @@
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\TaxController;
 use App\Http\Controllers\BaseController;
 use App\Http\Controllers\BillController;
 use App\Http\Controllers\ClientController;
-use App\Http\Controllers\CompanyReceivableController;
 use App\Http\Controllers\FamilyController;
 use App\Http\Controllers\StatusController;
 use App\Http\Controllers\WellOilController;
+use App\Http\Controllers\CurrencyController;
 use App\Http\Controllers\SubgroupController;
 use App\Http\Controllers\ToolrentController;
 use App\Http\Controllers\ConditionController;
-use App\Http\Controllers\CurrencyController;
 use App\Http\Controllers\TypemaintController;
 use App\Http\Controllers\ToolstatusController;
 use App\Http\Controllers\ToolHistoryController;
 use App\Http\Controllers\ToolwarehouseController;
+use App\Http\Controllers\CompanyReceivableController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -134,3 +135,7 @@ Route::get('/facturas/{companyreceivable_id}/edit/{factura}', [BillController::c
 });
 
 //TERMINA MODULOS DE COBRO
+
+
+//EMPIEZAN MODULOS DE COMPRAS 
+Route::resource('impuestos', TaxController::class)->middleware('auth');

@@ -13,7 +13,8 @@ class TaxController extends Controller
      */
     public function index()
     {
-        //
+        $datos ['taxes'] = Tax::paginate(30);
+        return view ('taxes.index', $datos);
     }
 
     /**
@@ -21,7 +22,7 @@ class TaxController extends Controller
      */
     public function create()
     {
-        //
+        return view ('taxes.create');
     }
 
     /**
@@ -29,7 +30,15 @@ class TaxController extends Controller
      */
     public function store(StoreTaxRequest $request)
     {
-        //
+        $field = ['name' => 'required', 'percent' => 'required'];
+        $message = ['required' => 'El :attribute es requerido'];
+
+        $this->validate($request, $field, $message);
+
+        $datostax = $request->except('_token');
+        Tax::insert($datostax);
+
+        return redirect ('impuestos')->with('message','Concepto agregado'); 
     }
 
     /**
@@ -37,23 +46,28 @@ class TaxController extends Controller
      */
     public function show(Tax $tax)
     {
-        //
+        
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Tax $tax)
+    public function edit($id)
     {
-        //
+        $tax = Tax::FindOrFail($id);
+        return view('tax.edit',compact('tax'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateTaxRequest $request, Tax $tax)
+    public function update(UpdateTaxRequest $request, $id)
     {
-        //
+        $datostax = request()->except(['_token',('_method')]);
+        Tax::where('id',$id)->update($datostax);
+        $tax = Tax::FindOrFail($id);
+
+        return redirect('impuestos')->with('message','Concepto Actualizado');
     }
 
     /**
