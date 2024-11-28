@@ -25,7 +25,7 @@
     <table id="pagadas" class="table table-light table-bordered table-hover">
         <thead class="thead-light">
             <tr>
-                <th>No. Orden</th>
+                <th>Fecha de pago</th>
                 <th>No. Factura</th>
                 <th>Fecha de Factura</th>
                 <th>Fecha de Ingreso</th>
@@ -38,7 +38,9 @@
         <tbody>
             @foreach ($paidBills as $bill)
                 <tr>
-                    <td>{{ $bill->order_number }}</td>
+                    <td>
+                        {{ $bill->payment_day ? \Carbon\Carbon::parse($bill->payment_day)->format('d-m-Y') : 'SIN FECHA ASIGNADA' }}
+                    </td>
                     <td>{{ $bill->bill_number }}</td>
                     <td>{{ \Carbon\Carbon::parse($bill->bill_date)->format('d-m-Y') }}</td>
                     <td>{{ \Carbon\Carbon::parse($bill->entry_date)->format('d-m-Y') }}</td>

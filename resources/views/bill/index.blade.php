@@ -120,6 +120,9 @@
     <a href="{{ route('export.empresas') }}" class="btn btn-lg btn-primary border-0 text-white shadow-sm m-2 w-auto">
         Resumen General Excel
     </a>
+    <a href="{{ route('export.resumen-semanal') }}" class="btn btn-lg btn-primary border-0 text-white shadow-sm m-2 w-auto">
+        Resumen Semanal
+    </a>
 </div>
 
     

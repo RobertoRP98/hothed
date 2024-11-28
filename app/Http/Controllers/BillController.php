@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use App\Models\Bill;
 use App\Models\Currency;
 use App\Exports\EmpresasExport;
+use App\Exports\ResumenSemanal;
 use App\Models\CompanyReceivable;
 use App\Exports\privadasNoVenExport;
 use App\Exports\publicasNoVenExport;
@@ -381,5 +382,9 @@ class BillController extends Controller
 
     public function exportPublicasNoVencidas(){
         return Excel::download(new publicasNoVenExport,'Pemex_NO_Vencidas' .Carbon::now()->format('d-m-Y').'.xlsx');
+    }
+
+    public function exportReporteSemanal(){
+        return Excel::download(new ResumenSemanal, 'Resumen Semanal.xlsx');
     }
 }

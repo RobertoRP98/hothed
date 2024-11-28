@@ -115,6 +115,8 @@ Route::get('/export-publicas-no-vencidas',[BillController::class,'exportPublicas
 
 Route::get('/catalogo/{id}/export', [CompanyReceivableController::class, 'exportEmpresaExcel'])->name('empresas.export')->middleware('auth');
 
+Route::get('/export-resumen-semanal',[BillController::class,'exportReporteSemanal'])->name('export.resumen-semanal');
+
 });
 
 
