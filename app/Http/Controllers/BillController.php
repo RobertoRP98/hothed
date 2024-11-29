@@ -11,6 +11,7 @@ use App\Models\CompanyReceivable;
 use App\Exports\privadasNoVenExport;
 use App\Exports\publicasNoVenExport;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\pendienteCobrarGlobal;
 use App\Exports\privadasvencidasExport;
 use App\Exports\publicasVencidasExport;
 use App\Http\Requests\StoreBillRequest;
@@ -382,6 +383,10 @@ class BillController extends Controller
 
     public function exportPublicasNoVencidas(){
         return Excel::download(new publicasNoVenExport,'Pemex_NO_Vencidas' .Carbon::now()->format('d-m-Y').'.xlsx');
+    }
+
+    public function exportpendienteCobrarGlobal(){
+        return Excel::download(new pendienteCobrarGlobal,'Pendientes Por Cobrar al ' .Carbon::now()->format('d-m-Y').'.xlsx');
     }
 
     public function exportReporteSemanal(){

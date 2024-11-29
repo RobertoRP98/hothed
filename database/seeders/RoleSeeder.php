@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use App\Models\User; 
+use App\Models\User;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 
@@ -21,6 +21,8 @@ class RoleSeeder extends Seeder
          $roleDeveloper = Role::firstOrCreate(['name' => 'Developer']);
          $roleDirOperaciones = Role::firstOrCreate(['name' => 'DirOperaciones']);
          $roleGerOperaciones = Role::firstOrCreate(['name' => 'GerOperaciones']);
+         $roleVerCobranza = Role::firstOrCreate(['name' => 'VerCobranza']);
+
 
 
 
@@ -31,10 +33,12 @@ class RoleSeeder extends Seeder
          $permisoDeveloper = Permission::firstOrCreate(['name'=> 'developer']);
          $permisoDirOperaciones = Permission::firstOrCreate(['name'=> 'diroperaciones']);
          $permisoGerOperaciones = Permission::firstOrCreate(['name'=> 'geroperaciones']);
+         $permisoVerCobranza = Permission::firstOrCreate(['name'=> 'vercobranza']);
 
 
 
- 
+
+
          // Asignar permisos al rol
          $roleAlmacen->givePermissionTo($permisoAlmacen);
          $roleCobranza->givePermissionTo($permisoCobranza);
@@ -42,9 +46,11 @@ class RoleSeeder extends Seeder
          $roleDeveloper->givePermissionTo($permisoDeveloper);
          $roleDirOperaciones->givePermissionTo($permisoGerOperaciones);
          $roleGerOperaciones->givePermissionTo($permisoDirOperaciones);
+         $roleVerCobranza->givePermissionTo($permisoVerCobranza);
 
 
- 
+
+
          // Asignar el rol a un usuario específico
          $user = User::find(3); // Cambia el ID de usuario según sea necesario
          if ($user) {
@@ -68,11 +74,21 @@ class RoleSeeder extends Seeder
 
          $user = User::find(6); // Cambia el ID de usuario según sea necesario
          if ($user) {
-             $user->assignRole('DirOperaciones');
+             $user->assignRole('VerCobranza');
          }
+
          $user = User::find(7); // Cambia el ID de usuario según sea necesario
          if ($user) {
-             $user->assignRole('Geroperaciones');
+             $user->assignRole('VerCobranza');
          }
+
+        //  $user = User::find(6); // Cambia el ID de usuario según sea necesario
+        //  if ($user) {
+        //      $user->assignRole('DirOperaciones');
+        //  }
+        //  $user = User::find(7); // Cambia el ID de usuario según sea necesario
+        //  if ($user) {
+        //      $user->assignRole('Geroperaciones');
+        //  }
      }
 }

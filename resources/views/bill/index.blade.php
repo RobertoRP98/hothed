@@ -103,7 +103,9 @@
         </div>
     </div>
 </div>
-<!-- Button Section -->
+
+
+<!-- Sección de Botones Generales -->
 <div class="d-flex justify-content-center flex-wrap mt-3">
     <a href="{{ route('empresas.privadas') }}" class="btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
         Empresas Privadas
@@ -117,11 +119,25 @@
     <a href="{{ url('divisas/') }}" class="btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
         Tipo de Cambio
     </a>
+</div>
+
+<!-- Sección de Botones para Exportar a Excel -->
+<h3 class="text-center my-4">Descargar Excel</h3>
+<div class="d-flex justify-content-center flex-wrap mt-3">
     <a href="{{ route('export.empresas') }}" class="btn btn-lg btn-primary border-0 text-white shadow-sm m-2 w-auto">
-        Resumen General Excel
+        Excel Resumen General 
     </a>
-    <a href="{{ route('export.resumen-semanal') }}" class="btn btn-lg btn-primary border-0 text-white shadow-sm m-2 w-auto">
-        Resumen Semanal
+
+    @auth
+    @if(Auth::user()->hasRole(['Cobranza']))
+        <a href="{{ route('export.resumen-semanal') }}" class="btn btn-lg btn-primary border-0 text-white shadow-sm m-2 w-auto">
+            Excel Resumen Semanal
+        </a>
+    @endif
+    @endauth
+
+    <a href="{{ route('export.pendientes-cobrar-global') }}" class="btn btn-lg btn-primary border-0 text-white shadow-sm m-2 w-auto">
+        Excel Resumen Facturado Pendiente de Cobro
     </a>
 </div>
 

@@ -73,7 +73,7 @@ Route::resource('historialalmacen',ToolHistoryController::class)->middleware('au
 //MODULOS DE COBRO
 //LIMITADOR A SOLOS CON ROLE COBRANZA PUEDAN ACCEDER
 
-Route::group(['middleware' => ['auth', 'role:Cobranza|Developer|AdministracionKarla']], function () {
+Route::group(['middleware' => ['auth', 'role:Cobranza|Developer|AdministracionKarla|VerCobranza']], function () {
 
 Route::resource('empresas',CompanyReceivableController::class)->middleware('auth');
 Route::get('catalogo/privadas', [CompanyReceivableController::class, 'indexprivate'])->name('empresas.privadas')->middleware('auth');
@@ -84,9 +84,6 @@ Route::get('historial/{company}', [CompanyReceivableController::class, 'history'
 
 // Ruta para el historial de facturas pagadas de una empresa específica
 Route::get('facturas-pagadas/{company}', [CompanyReceivableController::class, 'paid'])->name('empresa.facturas-pagadas')->middleware('auth');
-
-
-
 
 Route::get('/facturas', [BillController::class,'index'])->name('facturas.index')->middleware('auth');
 
@@ -113,7 +110,9 @@ Route::get('/export-publicas-vencidas',[BillController::class,'exportPublicasVen
 
 Route::get('/export-publicas-no-vencidas',[BillController::class,'exportPublicasNoVencidas'])->name('export.publicas-no-vencidas');
 
-Route::get('/export-resumen-semanal',[BillController::class,'exportReporteSemanal'])->name('export.resumen-semanal');
+Route::get('/export-pendientes-cobrar-global',[BillController::class,'exportpendienteCobrarGlobal'])->name('export.pendientes-cobrar-global');
+
+
 
 //EXCELES POR EMPRESA INDIVIDUAL
 Route::get('/catalogo/{id}/export', [CompanyReceivableController::class, 'exportEmpresaExcel'])->name('empresas.export')->middleware('auth');
@@ -141,6 +140,8 @@ Route::patch('facturas/update/{companyreceivable_id}/{factura}', [BillController
 // Para editar una factura
 Route::get('/facturas/{companyreceivable_id}/edit/{factura}', [BillController::class, 'edit'])->name('facturas.edit')->middleware('auth');
 //
+Route::get('/export-resumen-semanal',[BillController::class,'exportReporteSemanal'])->name('export.resumen-semanal');
+
 
 });
 

@@ -21,6 +21,15 @@
                     </li>
                 @endif
             @endauth
+
+            @auth
+            @if(Auth::user()->hasRole(['Developer', 'AdministracionKarla']))
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="{{ url('/register') }}">Registrar personal</a>
+                </li>
+            @endif
+        @endauth
+
                 <li class="nav-item">
                     <a href="{{ url('/#about') }}" class="nav-link text-white {{ request()->is('#misionvision') ? 'active' : '' }}">Misión y Visión</a>
                 </li>
