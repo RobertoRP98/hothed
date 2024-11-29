@@ -15,7 +15,7 @@
                     <a href="{{ url('/') }}" class="nav-link text-white {{ request()->is('/') ? 'active' : '' }}">Inicio</a>
                 </li>
                 @auth
-                @if(Auth::user()->hasRole(['Cobranza', 'AdministracionKarla']))
+                @if(Auth::user()->hasRole(['Cobranza', 'AdministracionKarla', 'VerCobranza']))
                     <li class="nav-item">
                         <a class="nav-link text-white" href="{{ url('facturas') }}">Reporte de cobro</a>
                     </li>
