@@ -7,6 +7,8 @@ use App\Models\Bill;
 use App\Models\CompanyReceivable;
 use App\Exports\EmpresaSheetExport;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\pendienteCobrarEmpresa;
+use App\Exports\pendienteFacturarEmpresa;
 use App\Http\Requests\StoreCompanyReceivableRequest;
 use App\Http\Requests\UpdateCompanyReceivableRequest;
 
@@ -210,7 +212,17 @@ class CompanyReceivableController extends Controller
     public function exportEmpresaExcel($id)
     {
         $empresa = CompanyReceivable::findOrFail($id);
-        return Excel::download(new EmpresaSheetExport($empresa), 'empresa_' . $empresa->name . '.xlsx');
+        return Excel::download(new EmpresaSheetExport($empresa), 'Empresa ' . $empresa->name . '.xlsx');
+    }
+
+    public function exportEmpresaPendienteFacturar($id){
+        $empresa = CompanyReceivable::findOrFail($id);
+        return Excel::download(new pendienteFacturarEmpresa($empresa), 'Pendiente Facturar '.$empresa->name.Carbon::now()->format('d-m-Y').' .xlsx');
+    }
+
+    public function exportEmpresaPendienteCobrar($id){
+        $empresa = CompanyReceivable::findOrFail($id);
+        return Excel::download(new pendienteCobrarEmpresa($empresa), 'Pendiente Cobrar '.$empresa->name.Carbon::now()->format('d-m-Y').' .xlsx');
     }
 
 

@@ -74,12 +74,12 @@ class ResumenTotalesExport implements
     })->sum();
 
     // Agregar los totales generales por tipo de empresa al array
-    $totalesGenerales[] = ['Privada', 'Gran Total Pendiente de Facturar', $totalPrivadasPendienteFacturar];
-    $totalesGenerales[] = ['Privada', 'Gran Total Facturas Vencidas', $totalPrivadasVencidas];
-    $totalesGenerales[] = ['Privada', 'Gran Total Facturas No Vencidas', $totalPrivadasNoVencidas];
-    $totalesGenerales[] = ['Pemex', 'Gran Total Pendiente de Facturar', $totalPublicasPendienteFacturar];
-    $totalesGenerales[] = ['Pemex', 'Gran Total Facturas Vencidas', $totalPublicasVencidas];
-    $totalesGenerales[] = ['Pemex', 'Gran Total Facturas No Vencidas', $totalPublicasNoVencidas];
+    $totalesGenerales[] = ['Privadas', 'Total Privadas Pendiente de Facturar', $totalPrivadasPendienteFacturar];
+    $totalesGenerales[] = ['Privadas', 'Total Privadas Facturas Vencidas', $totalPrivadasVencidas];
+    $totalesGenerales[] = ['Privadas', 'Total Privadas Facturas No Vencidas', $totalPrivadasNoVencidas];
+    $totalesGenerales[] = ['Pemex', 'Total Pemex Pendiente de Facturar', $totalPublicasPendienteFacturar];
+    $totalesGenerales[] = ['Pemex', 'Total Pemex Facturas Vencidas', $totalPublicasVencidas];
+    $totalesGenerales[] = ['Pemex', 'Total Pemex Facturas No Vencidas', $totalPublicasNoVencidas];
 
     // SECCIÓN DERECHA: Totales por Empresa
     $totalesPorEmpresa = [
@@ -126,8 +126,8 @@ class ResumenTotalesExport implements
             'C' => '"$"#,##0.00_-',
             'F' => '"$"#,##0.00_-',
             'G' => '"$"#,##0.00_-',
-            'H' => '"$"#,##0.00_-',
-            'I' => '"$"#,##0.00_-',
+            //'H' => '"$"#,##0.00_-',
+            //'I' => '"$"#,##0.00_-',
         ];
     }
 
@@ -139,9 +139,11 @@ class ResumenTotalesExport implements
     }
 
     // Formato de la primera fila (cabecera)
-    $event->sheet->getStyle('A1:I1')->applyFromArray([
+    $event->sheet->getStyle('A1:G1')->applyFromArray([
         'font' => [
+            'name' => 'Arial',
             'bold' => true,
+            'size'=> 15, // tamaño de la fuente de los encabezados
         ],
         'fill' => [
             'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
@@ -153,10 +155,14 @@ class ResumenTotalesExport implements
     $highestRow = $event->sheet->getDelegate()->getHighestRow();
     for ($row = 2; $row <= $highestRow; $row++) { // Comienza en la segunda fila para no aplicar en la cabecera
         $color = ($row % 2 === 0) ? 'FFE0EAF1' : 'FFFFFFFF'; // Azul claro y blanco
-        $event->sheet->getStyle("A{$row}:I{$row}")->applyFromArray([
+        $event->sheet->getStyle("A{$row}:G{$row}")->applyFromArray([
             'fill' => [
                 'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
                 'color' => ['argb' => $color],
+            ],
+            'font' => [
+               'name' => 'Arial',
+                'size' => 15, // tamaño de fuente del contenido
             ],
         ]);
     }
@@ -180,6 +186,8 @@ class ResumenTotalesExport implements
     {
         return [
             AfterSheet::class => [self::class, 'afterSheet'],
+
+            
         ];
     }
 }

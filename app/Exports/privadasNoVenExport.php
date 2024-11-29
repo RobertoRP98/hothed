@@ -61,9 +61,9 @@ class privadasNoVenExport implements
                     'Cliente ' => $bill->companyreceivable->name,
                     'No. Factura' => $bill->bill_number,
                     'Fecha Factura' => Date::dateTimeToExcel(Carbon::parse($bill->bill_date)),
-                    'Fecha de entrada' => Date::dateTimeToExcel(Carbon::parse($bill->entry_date)),
-                    'Fecha de expiración' => Date::dateTimeToExcel(Carbon::parse($bill->expiration_date)),
-                    'Dias vencidos' => $bill->diasExpirados,
+                  'Fecha de entrada' => Date::dateTimeToExcel(Carbon::parse($bill->entry_date)),
+                  'Fecha de expiración' => Date::dateTimeToExcel(Carbon::parse($bill->expiration_date)),
+                  'Dias vencidos' => $bill->diasExpirados,
                     'Total' => $bill->total_payment,
                     'Gran Total Facturas No Vencidas' => '', // Ahora puedes usar esta variable
                 ];

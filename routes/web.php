@@ -113,9 +113,17 @@ Route::get('/export-publicas-vencidas',[BillController::class,'exportPublicasVen
 
 Route::get('/export-publicas-no-vencidas',[BillController::class,'exportPublicasNoVencidas'])->name('export.publicas-no-vencidas');
 
+Route::get('/export-resumen-semanal',[BillController::class,'exportReporteSemanal'])->name('export.resumen-semanal');
+
+//EXCELES POR EMPRESA INDIVIDUAL
 Route::get('/catalogo/{id}/export', [CompanyReceivableController::class, 'exportEmpresaExcel'])->name('empresas.export')->middleware('auth');
 
-Route::get('/export-resumen-semanal',[BillController::class,'exportReporteSemanal'])->name('export.resumen-semanal');
+Route::get('/catalogo/{id}/exportpf', [CompanyReceivableController::class, 'exportEmpresaPendienteFacturar'])->name('empresas.export.pf')->middleware('auth');
+
+Route::get('/catalogo/{id}/exportpc', [CompanyReceivableController::class, 'exportEmpresaPendienteCobrar'])->name('empresas.export.pc')->middleware('auth');
+
+
+
 
 });
 
