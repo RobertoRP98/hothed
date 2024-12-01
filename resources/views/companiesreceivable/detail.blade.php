@@ -66,6 +66,11 @@
                class="btn btn-outline-success m-2 text-decoration-none text-dark">
                 Descargar Excel Pendiente Cobrar
             </a>
+
+            <a href="{{ route('empresas.export.pe', $empresa->id) }}" 
+                class="btn btn-outline-success m-2 text-decoration-none text-dark">
+                 Descargar Excel Pendiente Entrada
+             </a>
         </div>
     </div>
 

@@ -121,8 +121,12 @@ Route::get('/catalogo/{id}/exportpf', [CompanyReceivableController::class, 'expo
 
 Route::get('/catalogo/{id}/exportpc', [CompanyReceivableController::class, 'exportEmpresaPendienteCobrar'])->name('empresas.export.pc')->middleware('auth');
 
+Route::get('/catalogo/{id}/exportpe', [CompanyReceivableController::class, 'exportEmpresaPendienteEntrada'])->name('empresas.export.pe')->middleware('auth');
 
-
+//
+Route::get('/export-resumen-semanal',[BillController::class,'exportReporteSemanal'])->name('export.resumen-semanal');
+//
+Route::get('/export-resumen-semanal-actual',[BillController::class,'exportReporteSemanaActual'])->name('export.resumen-semana-actual');
 
 });
 
@@ -139,9 +143,6 @@ Route::post('/facturas/{companyreceivable_id}', [BillController::class, 'store']
 Route::patch('facturas/update/{companyreceivable_id}/{factura}', [BillController::class, 'update'])->name('facturas.update')->middleware('auth');
 // Para editar una factura
 Route::get('/facturas/{companyreceivable_id}/edit/{factura}', [BillController::class, 'edit'])->name('facturas.edit')->middleware('auth');
-//
-Route::get('/export-resumen-semanal',[BillController::class,'exportReporteSemanal'])->name('export.resumen-semanal');
-
 
 });
 

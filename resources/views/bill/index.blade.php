@@ -128,18 +128,31 @@
         Excel Resumen General 
     </a>
 
+    <a href="{{ route('export.pendientes-cobrar-global') }}" class="btn btn-lg btn-primary border-0 text-white shadow-sm m-2 w-auto">
+        Excel Resumen Facturado Pendiente de Cobro
+    </a>
+
+</div>
+
+<div class="d-flex justify-content-center flex-wrap mt-3">
     @auth
-    @if(Auth::user()->hasRole(['Cobranza']))
+    @if(Auth::user()->hasRole(['Cobranza','VerCobranza','Developer']))
         <a href="{{ route('export.resumen-semanal') }}" class="btn btn-lg btn-primary border-0 text-white shadow-sm m-2 w-auto">
             Excel Resumen Semanal
         </a>
     @endif
     @endauth
 
-    <a href="{{ route('export.pendientes-cobrar-global') }}" class="btn btn-lg btn-primary border-0 text-white shadow-sm m-2 w-auto">
-        Excel Resumen Facturado Pendiente de Cobro
-    </a>
+    @auth
+    @if(Auth::user()->hasRole(['Cobranza','VerCobranza','Developer']))
+        <a href="{{ route('export.resumen-semana-actual') }}" class="btn btn-lg btn-primary border-0 text-white shadow-sm m-2 w-auto">
+            Excel Resumen Semana Actual
+        </a>
+    @endif
+    @endauth
 </div>
+
+
 
     
     <h3 class="text-center my-4">Facturas vencidas</h3>

@@ -10,6 +10,7 @@ use App\Exports\ResumenSemanal;
 use App\Models\CompanyReceivable;
 use App\Exports\privadasNoVenExport;
 use App\Exports\publicasNoVenExport;
+use App\Exports\ResumenSemanaActual;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\pendienteCobrarGlobal;
 use App\Exports\privadasvencidasExport;
@@ -390,6 +391,10 @@ class BillController extends Controller
     }
 
     public function exportReporteSemanal(){
-        return Excel::download(new ResumenSemanal, 'Resumen Semanal.xlsx');
+        return Excel::download(new ResumenSemanal, 'Resumen Semanal '.Carbon::now()->format('d-m-Y').'.xlsx');
+    }
+
+    public function exportReporteSemanaActual(){
+        return Excel::download(new ResumenSemanaActual, 'Resumen Semana actual '.Carbon::now()->format('d-m-Y').'.xlsx');
     }
 }

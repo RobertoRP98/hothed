@@ -196,6 +196,10 @@ class EmpresaSheetExport implements
                         'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
                         'color' => ['argb' => 'FFCCCCCC'], // Gris claro
                     ],
+                ]);
+
+                  //Centrar texto
+                  $sheet->getStyle('A:Z')->applyFromArray([
                     'alignment' => [
                         'horizontal' => Alignment::HORIZONTAL_CENTER,
                         'vertical' => Alignment::VERTICAL_CENTER,

@@ -15,7 +15,7 @@ use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Maatwebsite\Excel\Concerns\WithColumnFormatting;
 
-class ResumenSemanal implements 
+class ResumenSemanaActual implements 
 FromCollection, 
 WithHeadings, 
 WithMapping,
@@ -23,28 +23,24 @@ WithTitle,
 WithColumnFormatting,
 ShouldAutoSize,
 WithEvents
+
 {
-    /**
-    * @return \Illuminate\Support\Collection
-    */
-    public function collection()
+public function collection()
     {
-       // Calcula la semana anterior
-       $hoy = Carbon::now(); // Fecha actual
-       $lunesAnterior = $hoy->copy()->previous('monday')->subDays(7); // Lunes de la semana anterior
-       $domingoAnterior = $lunesAnterior->copy()->addDays(6); // Domingo de la semana anterior
-   
-       // Filtra y agrupa los datos
-       $resultados = Bill::select(
-           'companyreceivable_id',
-           DB::raw("SUM(CASE WHEN status = 'pendiente_cobrar' AND bill_date BETWEEN '{$lunesAnterior}' AND '{$domingoAnterior}' THEN total_payment ELSE 0 END) AS total_pendiente_cobrar"),
-           DB::raw("SUM(CASE WHEN status = 'pagado' AND payment_day BETWEEN '{$lunesAnterior}' AND '{$domingoAnterior}' THEN total_payment ELSE 0 END) AS total_pagado")
-       )
-       ->groupBy('companyreceivable_id')
-       ->get();
-   
-       return $resultados;
-    
+        // Calcula el lunes de la semana en curso
+        $hoy = Carbon::now(); // Fecha actual
+        $lunesActual = $hoy->copy()->startOfWeek(); // Lunes de la semana actual
+
+        // Filtra y agrupa los datos de la semana en curso
+        $resultados = Bill::select(
+            'companyreceivable_id',
+            DB::raw("SUM(CASE WHEN status = 'pendiente_cobrar' AND bill_date >= '{$lunesActual}' THEN total_payment ELSE 0 END) AS total_pendiente_cobrar"),
+            DB::raw("SUM(CASE WHEN status = 'pagado' AND payment_day >= '{$lunesActual}' THEN total_payment ELSE 0 END) AS total_pagado")
+        )
+        ->groupBy('companyreceivable_id')
+        ->get();
+
+        return $resultados;
     }
 
     public function headings(): array
@@ -63,7 +59,7 @@ WithEvents
 
     public function title(): string
     {
-        return 'Resumen Semanal';
+        return 'Resumen Semana Actual';
     }
 
     public function columnFormats(): array
