@@ -60,43 +60,50 @@ class BillController extends Controller
             })
             ->sum('total_payment');
 
-        // **Totales empresas públicas (Pemex)**
+        // **Totales empresas públicas (Pemex)**//////////////////////////////
         // Pendiente de facturar
-        $totalPublicasPendienteFacturar = Bill::whereHas('companyreceivable', function ($query) {
-            $query->where('type', 'Pemex');
-        })
-            ->where('status', 'pendiente_facturar')
-            ->get()
-            ->map(function ($bill) use ($dollarRate) {
-                return $bill->companyreceivable->currency == 'MXN' ? $bill->total_payment / $dollarRate : $bill->total_payment;
-            })->sum();
+        // Monto total de las facturas públicas pendientes de facturar
+$totalPublicasPendienteFacturar = Bill::whereHas('companyreceivable', function ($query) {
+    $query->where('type', 'Pemex');
+})
+->where('status', 'pendiente_facturar')
+->get()
+->map(function ($bill) use ($dollarRate) {
+    // Determina la conversión según la moneda de la factura
+    return $bill->currency === 'MXN' ? $bill->total_payment / $dollarRate : $bill->total_payment;
+})->sum();
 
-        // Monto total de las facturas vencidas pendientes de cobrar
-        $totalPublicasVencidas = Bill::whereHas('companyreceivable', function ($query) {
-            $query->where('type', 'Pemex');
-        })
-            ->where('status', 'pendiente_cobrar')
-            ->get()
-            ->map(function ($bill) use ($dollarRate) {
-                $expirationDate = Carbon::parse($bill->expiration_date);
-                $today = Carbon::now();
-                return $expirationDate->diffInDays($today, false) >= 0 ?
-                    ($bill->companyreceivable->currency == 'MXN' ? $bill->total_payment / $dollarRate : $bill->total_payment) : 0;
-            })->sum();
+// Monto total de las facturas vencidas pendientes de cobrar
+$totalPublicasVencidas = Bill::whereHas('companyreceivable', function ($query) {
+    $query->where('type', 'Pemex');
+})
+->where('status', 'pendiente_cobrar')
+->get()
+->map(function ($bill) use ($dollarRate) {
+    $expirationDate = Carbon::parse($bill->expiration_date);
+    $today = Carbon::now();
 
-        // Monto total de las facturas no vencidas pendientes de cobrar (Públicas - Pemex)
-        $totalPublicasNoVencidas = Bill::whereHas('companyreceivable', function ($query) {
-            $query->where('type', 'Pemex');
-        })
-            ->where('status', 'pendiente_cobrar')
-            ->get()
-            ->map(function ($bill) use ($dollarRate) {
-                $expirationDate = Carbon::parse($bill->expiration_date);
-                $today = Carbon::now();
-                // Facturas que NO están vencidas (expirarán en el futuro)
-                return $expirationDate->diffInDays($today, false) < 0 ?
-                    ($bill->companyreceivable->currency == 'MXN' ? $bill->total_payment / $dollarRate : $bill->total_payment) : 0;
-            })->sum();
+    // Facturas vencidas
+    return $expirationDate->diffInDays($today, false) >= 0
+        ? ($bill->currency === 'MXN' ? $bill->total_payment / $dollarRate : $bill->total_payment)
+        : 0;
+})->sum();
+
+// Monto total de las facturas no vencidas pendientes de cobrar (Públicas - Pemex)
+$totalPublicasNoVencidas = Bill::whereHas('companyreceivable', function ($query) {
+    $query->where('type', 'Pemex');
+})
+->where('status', 'pendiente_cobrar')
+->get()
+->map(function ($bill) use ($dollarRate) {
+    $expirationDate = Carbon::parse($bill->expiration_date);
+    $today = Carbon::now();
+
+    // Facturas no vencidas
+    return $expirationDate->diffInDays($today, false) < 0
+        ? ($bill->currency === 'MXN' ? $bill->total_payment / $dollarRate : $bill->total_payment)
+        : 0;
+})->sum();
 
         // Definir la fecha actual
         $today = Carbon::now();
@@ -244,6 +251,10 @@ class BillController extends Controller
         //pasamos los demas datos de esa empresa
         $bill = null;
 
+        $currencyOptions = $company->currency === 'MIXTA' 
+        ? ['USD', 'MXN'] // Opciones para empresas mixtas
+        : [$company->currency]; // Solo la moneda configurada
+
 
         return view(
             'bill.create',
@@ -253,7 +264,7 @@ class BillController extends Controller
                 'company_type' => $company->type,
                 'company_creditdays' => $company->creditdays
             ],
-            compact('bill')
+            compact('bill','company','currencyOptions')
         );
     }
     public function store(StoreBillRequest $request, $companyreceivable_id)
@@ -266,6 +277,13 @@ class BillController extends Controller
     
         // Obtener la empresa para verificar su nombre y tipo
         $company = CompanyReceivable::findOrFail($companyreceivable_id);
+
+        // Validar y asignar la divisa
+    if ($company->currency === 'MIXTA') {
+        $datosbill['currency'] = $request->input('currency');
+    } else {
+        $datosbill['currency'] = $company->currency;
+    }
     
         // Verificar si entry_date es null y la empresa cumple las condiciones
         if ($request->input('entry_date') === null && $company->name === 'GSM BRONCO') {
@@ -301,6 +319,7 @@ class BillController extends Controller
     
         // Obtener la empresa para verificar su nombre y tipo
         $company = CompanyReceivable::findOrFail($companyreceivable_id);
+
     
         // Verificar si entry_date es null y la empresa cumple las condiciones
         if ($request->input('entry_date') === null && $company->name === 'GSM BRONCO') {
@@ -338,6 +357,10 @@ class BillController extends Controller
     {
         $company = CompanyReceivable::findOrFail($companyreceivable_id);
         $bill = Bill::findOrFail($id);
+
+        $currencyOptions = $company->currency === 'MIXTA' 
+        ? ['USD', 'MXN'] // Opciones para empresas mixtas
+        : [$company->currency]; // Solo la moneda configurada
     
         // Formato para expiration_date
         $bill->expiration_date = Carbon::parse($bill->expiration_date)->format('d-m-Y');
@@ -350,7 +373,8 @@ class BillController extends Controller
                 'company_type' => $company->type,
                 'company_creditdays' => $company->creditdays,
                 'bill' => $bill
-            ]
+            ],
+            compact('company','currencyOptions')
         );
     }
 

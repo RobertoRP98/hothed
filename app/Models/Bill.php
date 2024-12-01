@@ -8,6 +8,24 @@ use Illuminate\Database\Eloquent\Model;
 class Bill extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'companyreceivable_id',
+        'order_number',
+        'bill_number',
+        'bill_date',
+        'entry_date',
+        'expiration_date',
+        'description',
+        'oil_well',
+        'start_operation',
+        'end_operation',
+        'total_payment',
+        'currency', // Nuevo campo
+        'status',
+        'payment_day',
+        'comentary'
+    ];
     
     protected $dates = ['bill_date', 'entry_date', 'expiration_date', 'payment_day', 'created_at'];
 

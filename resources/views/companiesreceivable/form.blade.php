@@ -46,6 +46,8 @@
  <select class="form-select" name="currency" id="currency">
   <option value="USD" {{ isset($currency) && $currency->currency == 'USD' ? 'selected' : '' }}>USD</option>
   <option value="MXN" {{ isset($company) && $company->currency == 'MXN' ? 'selected' : '' }}>MXN</option>
+  <option value="MIXTA" {{ isset($company) && $company->currency == 'MIXTA' ? 'selected' : '' }}>MIXTA</option>
+
 </select>
     </div>
   </div>

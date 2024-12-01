@@ -83,15 +83,23 @@
 </div>
 
 <!-- Tercera fila -->
-<div class="row mb-4">  
-  <div class="col-md-3">
+<div class="row mb-4">
+@if($company->currency === 'MIXTA')
+  <div class="col-md-2">
+    @else
+    <div class="col-md-3">
+      @endif
     <div class="form-outline">
         <input type="date" id="start_operation" name="start_operation" value="{{isset($bill) ? $bill->start_operation : ''}}" class="form-control" />
         <label class="form-label" for="INICIO DE OPERACIÓN">INICIO DE OPERACIÓN</label>
     </div>
 </div>
 
-<div class="col-md-3">
+@if($company->currency === 'MIXTA')
+  <div class="col-md-2">
+    @else
+    <div class="col-md-3">
+      @endif
   <div class="form-outline">
       <input type="date" id="end_operation" name="end_operation" value="{{isset($bill) ? $bill->end_operation : ''}}" class="form-control" />
       <label class="form-label" for="FIN DE OPERACIÓN">FIN DE OPERACIÓN</label>
@@ -105,6 +113,21 @@
         </div>
     </div>
 
+
+    @if($company->currency === 'MIXTA')
+    <div class="col-md-2">
+      <div class="form-outline">
+    <select class="form-select" name="currency" id="currency" required>
+        <option value="USD" {{ old('currency', $bill->currency ?? 'USD') === 'USD' ? 'selected' : '' }}>USD</option>
+        <option value="MXN" {{ old('currency', $bill->currency ?? 'USD') === 'MXN' ? 'selected' : '' }}>MXN</option>
+    </select>
+    <label for="currency" class="form-label">Divisa</label>
+  </div>   
+</div>
+@else
+    <input type="hidden" name="currency" value="{{ $company->currency }}">
+@endif 
+
     <div class="col-md-3">
       <div class="form-outline">
           <select class="form-select" name="status" id="status">
@@ -114,21 +137,13 @@
           <option value="aclaración" {{isset($bill) && $bill->status == 'aclaración' ? 'selected':''}}>Aclaración</option>
           <option value="pendiente_entrada" {{isset($bill) && $bill->status == 'pendiente_entrada' ? 'selected':''}}>Pendiente de entrada</option>
           <option value="cancelado" {{isset($bill) && $bill->status == 'cancelado' ? 'selected':''}}>Cancelado</option>
-
           </select>
           <label class="form-label" for="IMPORTE">STATUS</label>
   </div>   
 </div>
-</div>
 
 <!-- Cuarta fila -->
 <div class="row mb-4">  
-  {{-- <div class="col-md-3">
-    <div class="form-outline">
-        <input type="date" id="billing_date" name="billing_date" value="{{isset($bill) ? $bill->billing_date : ''}}" class="form-control" />
-        <label class="form-label" for="FECHA DE FACTURACIÓN">FECHA DE FACTURACIÓN</label>
-    </div>
-</div> --}}
 
   <div class="col-md-3">
     <div class="form-outline">
