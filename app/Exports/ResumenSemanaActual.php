@@ -27,20 +27,23 @@ WithEvents
 {
 public function collection()
     {
-        // Calcula el lunes de la semana en curso
-        $hoy = Carbon::now(); // Fecha actual
-        $lunesActual = $hoy->copy()->startOfWeek(); // Lunes de la semana actual
+       // Fecha actual
+$hoy = Carbon::now();
 
-        // Filtra y agrupa los datos de la semana en curso
-        $resultados = Bill::select(
-            'companyreceivable_id',
-            DB::raw("SUM(CASE WHEN status = 'pendiente_cobrar' AND bill_date >= '{$lunesActual}' THEN total_payment ELSE 0 END) AS total_pendiente_cobrar"),
-            DB::raw("SUM(CASE WHEN status = 'pagado' AND payment_day >= '{$lunesActual}' THEN total_payment ELSE 0 END) AS total_pagado")
-        )
-        ->groupBy('companyreceivable_id')
-        ->get();
+// Calcular el lunes y el domingo de la semana en curso
+$lunesActual = $hoy->startOfWeek(); // Lunes de la semana actual
+$domingoActual = $hoy->endOfWeek(); // Domingo de la semana actual
 
-        return $resultados;
+// Filtrar y agrupar los datos de la semana en curso
+$resultados = Bill::select(
+    'companyreceivable_id',
+    DB::raw("SUM(CASE WHEN status = 'pendiente_cobrar' AND bill_date BETWEEN '{$lunesActual}' AND '{$domingoActual}' THEN total_payment ELSE 0 END) AS total_pendiente_cobrar"),
+    DB::raw("SUM(CASE WHEN status = 'pagado' AND payment_day BETWEEN '{$lunesActual}' AND '{$domingoActual}' THEN total_payment ELSE 0 END) AS total_pagado")
+)
+->groupBy('companyreceivable_id')
+->get();
+
+return $resultados;
     }
 
     public function headings(): array

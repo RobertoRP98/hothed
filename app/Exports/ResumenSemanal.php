@@ -29,22 +29,23 @@ WithEvents
     */
     public function collection()
     {
-       // Calcula la semana anterior
-       $hoy = Carbon::now(); // Fecha actual
-       $lunesAnterior = $hoy->copy()->previous('monday')->subDays(7); // Lunes de la semana anterior
-       $domingoAnterior = $lunesAnterior->copy()->addDays(6); // Domingo de la semana anterior
-   
-       // Filtra y agrupa los datos
-       $resultados = Bill::select(
-           'companyreceivable_id',
-           DB::raw("SUM(CASE WHEN status = 'pendiente_cobrar' AND bill_date BETWEEN '{$lunesAnterior}' AND '{$domingoAnterior}' THEN total_payment ELSE 0 END) AS total_pendiente_cobrar"),
-           //AÑADIR EL STATUS DE PENDIENTE DE ENTRADA
-           DB::raw("SUM(CASE WHEN status = 'pagado' AND payment_day BETWEEN '{$lunesAnterior}' AND '{$domingoAnterior}' THEN total_payment ELSE 0 END) AS total_pagado")
-       )
-       ->groupBy('companyreceivable_id')
-       ->get();
-   
-       return $resultados;
+      // Fecha actual
+    $hoy = Carbon::now();
+
+    // Calcular el rango de la semana pasada
+    $lunesAnterior = $hoy->startOfWeek()->subWeek(); // Lunes de la semana pasada
+    $domingoAnterior = $lunesAnterior->copy()->endOfWeek(); // Domingo de la semana pasada
+
+    // Filtrar y agrupar los datos
+    $resultados = Bill::select(
+        'companyreceivable_id',
+        DB::raw("SUM(CASE WHEN status = 'pendiente_cobrar' AND bill_date BETWEEN '{$lunesAnterior}' AND '{$domingoAnterior}' THEN total_payment ELSE 0 END) AS total_pendiente_cobrar"),
+        DB::raw("SUM(CASE WHEN status = 'pagado' AND payment_day BETWEEN '{$lunesAnterior}' AND '{$domingoAnterior}' THEN total_payment ELSE 0 END) AS total_pagado")
+    )
+    ->groupBy('companyreceivable_id')
+    ->get();
+
+    return $resultados;
     
     }
 
