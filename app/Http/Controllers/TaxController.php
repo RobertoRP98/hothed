@@ -14,7 +14,7 @@ class TaxController extends Controller
     public function index()
     {
         $datos ['taxes'] = Tax::paginate(30);
-        return view ('taxes.index', $datos);
+        return view ('tax.index', $datos);
     }
 
     /**
@@ -22,7 +22,7 @@ class TaxController extends Controller
      */
     public function create()
     {
-        return view ('taxes.create');
+        return view ('tax.create');
     }
 
     /**

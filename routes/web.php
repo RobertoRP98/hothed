@@ -150,4 +150,8 @@ Route::get('/facturas/{companyreceivable_id}/edit/{factura}', [BillController::c
 
 
 //EMPIEZAN MODULOS DE COMPRAS 
+Route::group(['middleware' => ['auth', 'role:Developer']], function () {
+
 Route::resource('impuestos', TaxController::class)->middleware('auth');
+
+});

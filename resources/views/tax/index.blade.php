@@ -6,11 +6,11 @@
  {{Session::get('message')}}
  @endif   
 
- <button type="button" class="btn btn-outline-success mb-3 mt-3 m-2"> <a class="text-dark" href="{{ route('facturas.index') }}">
+ <button type="button" class="btn btn-outline-success mb-3 mt-3 m-2"> <a class="text-dark" href="{{ url('impuestos/') }}">
     Regresar
 </a> </button> 
 
-<button type="button" class="btn btn-outline-success mb-3 mt-3"> <a class="text-dark" href="{{ url('empresas/create') }}">
+<button type="button" class="btn btn-outline-success mb-3 mt-3"> <a class="text-dark" href="{{ url('impuestos/create') }}">
     Agregar Concepto
 </a> </button> 
 

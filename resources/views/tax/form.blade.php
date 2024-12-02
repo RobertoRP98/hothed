@@ -14,8 +14,8 @@
  <div class="row mb-4 col-md-3">
    <div class="col">
      <div data-mdb-input-init class="form-outline">
-      <input type="text" id="name" name="name" value="{{ isset($company) ? $company->name : '' }}" class="form-control" />
-      <label class="form-label" for="nameclient">Nombre</label>
+      <input type="text" id="name" name="name" value="{{ isset($tax) ? $tax->name : '' }}" class="form-control" />
+      <label class="form-label" for="Porcentaje">Concepto</label>
      </div>
    </div>
  </div>
@@ -23,41 +23,19 @@
  <div class="row mb-4 col-md-3">
   <div class="col">
     <div data-mdb-input-init class="form-outline">
-     <input type="number" id="creditdays" name="creditdays" value="{{ isset($company) ? $company->creditdays : '' }}" class="form-control" />
-     <label class="form-label" for="nameclient">Dias de credito</label>
+     <input type="number" step="0.01" id="percent" name="percent" value="{{ isset($tax) ? $tax->percent : '' }}" class="form-control" />
+     <label class="form-label" for="Porcentaje">Porcentaje</label>
     </div>
   </div>
 </div>
-
- <div class="row mb-4 col-md-3">
-  <div class="col">
-    <div data-mdb-input-init class="form-outline">
- <select class="form-select" name="type" id="type">
-  <option value="Privada" {{ isset($company) && $company->type == 'Privada' ? 'selected' : '' }}>Privada</option>
-  <option value="Pemex" {{ isset($company) && $company->type == 'Pemex' ? 'selected' : '' }}>Pemex</option>
-</select>
-    </div>
-  </div>
- </div>
-
- <div class="row mb-4 col-md-3">
-  <div class="col">
-    <div data-mdb-input-init class="form-outline">
- <select class="form-select" name="currency" id="currency">
-  <option value="USD" {{ isset($currency) && $currency->currency == 'USD' ? 'selected' : '' }}>USD</option>
-  <option value="MXN" {{ isset($company) && $company->currency == 'MXN' ? 'selected' : '' }}>MXN</option>
-</select>
-    </div>
-  </div>
- </div>
 
 <br>
  <!-- Submit button -->
  <div class="row mb-4 col-md-6">
 
- <button type="submit" class="btn btn-primary btn-block col-md-3 m-1">{{$modo}} cliente</button>
+ <button type="submit" class="btn btn-primary btn-block col-md-3 m-1">{{$modo}} Concepto</button>
  
- <button type="button" class="btn btn-warning btn-block col-md-3 m-1"> <a class="text-white" href="{{ url('empresas/') }}">
+ <button type="button" class="btn btn-warning btn-block col-md-3 m-1"> <a class="text-white" href="{{ url('impuestos/') }}">
     Regresar
 </a> </button> 
 

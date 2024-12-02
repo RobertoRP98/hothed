@@ -12,7 +12,8 @@ class SupplierController extends Controller
      */
     public function index()
     {
-        //
+        $datos ['Suppliers'] = Supplier::paginate(30);
+        return view ('supplier.index',$datos);
     }
 
     /**
@@ -20,7 +21,7 @@ class SupplierController extends Controller
      */
     public function create()
     {
-        //
+        return view ('supplier.create');
     }
 
     /**
@@ -28,7 +29,15 @@ class SupplierController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $field = ['name'=>'required','rfc'=>'required', 'critic'=>'required', 'currency'=>'required','single_supplier'=>'required',];
+        $message = ['required' => 'El :attribute es requerido'];
+        
+        $this->validate($request, $field, $message);
+        $datossupplier=$request->except('_token');
+
+        Supplier::insert($datossupplier);
+
+        return redirect ('proveedores')->with('message','Proveedor agregado');
     }
 
     /**

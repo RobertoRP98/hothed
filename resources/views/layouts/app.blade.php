@@ -58,6 +58,11 @@
             @yield('editstatus') 
             @yield('indexprivate')
             @yield('error403')
+            @yield('indextax')
+            @yield('edittax')
+            @yield('createtax')
+
+
          @include('layouts.footer')   
         </main>
     </div>
