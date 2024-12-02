@@ -63,47 +63,47 @@ class BillController extends Controller
         // **Totales empresas públicas (Pemex)**//////////////////////////////
         // Pendiente de facturar
         // Monto total de las facturas públicas pendientes de facturar
-$totalPublicasPendienteFacturar = Bill::whereHas('companyreceivable', function ($query) {
-    $query->where('type', 'Pemex');
-})
-->where('status', 'pendiente_facturar')
-->get()
-->map(function ($bill) use ($dollarRate) {
-    // Determina la conversión según la moneda de la factura
-    return $bill->currency === 'MXN' ? $bill->total_payment / $dollarRate : $bill->total_payment;
-})->sum();
+        $totalPublicasPendienteFacturar = Bill::whereHas('companyreceivable', function ($query) {
+            $query->where('type', 'Pemex');
+        })
+            ->where('status', 'pendiente_facturar')
+            ->get()
+            ->map(function ($bill) use ($dollarRate) {
+                // Determina la conversión según la moneda de la factura
+                return $bill->currency === 'MXN' ? $bill->total_payment / $dollarRate : $bill->total_payment;
+            })->sum();
 
-// Monto total de las facturas vencidas pendientes de cobrar
-$totalPublicasVencidas = Bill::whereHas('companyreceivable', function ($query) {
-    $query->where('type', 'Pemex');
-})
-->where('status', 'pendiente_cobrar')
-->get()
-->map(function ($bill) use ($dollarRate) {
-    $expirationDate = Carbon::parse($bill->expiration_date);
-    $today = Carbon::now();
+        // Monto total de las facturas vencidas pendientes de cobrar
+        $totalPublicasVencidas = Bill::whereHas('companyreceivable', function ($query) {
+            $query->where('type', 'Pemex');
+        })
+            ->where('status', 'pendiente_cobrar')
+            ->get()
+            ->map(function ($bill) use ($dollarRate) {
+                $expirationDate = Carbon::parse($bill->expiration_date);
+                $today = Carbon::now();
 
-    // Facturas vencidas
-    return $expirationDate->diffInDays($today, false) >= 0
-        ? ($bill->currency === 'MXN' ? $bill->total_payment / $dollarRate : $bill->total_payment)
-        : 0;
-})->sum();
+                // Facturas vencidas
+                return $expirationDate->diffInDays($today, false) >= 0
+                    ? ($bill->currency === 'MXN' ? $bill->total_payment / $dollarRate : $bill->total_payment)
+                    : 0;
+            })->sum();
 
-// Monto total de las facturas no vencidas pendientes de cobrar (Públicas - Pemex)
-$totalPublicasNoVencidas = Bill::whereHas('companyreceivable', function ($query) {
-    $query->where('type', 'Pemex');
-})
-->where('status', 'pendiente_cobrar')
-->get()
-->map(function ($bill) use ($dollarRate) {
-    $expirationDate = Carbon::parse($bill->expiration_date);
-    $today = Carbon::now();
+        // Monto total de las facturas no vencidas pendientes de cobrar (Públicas - Pemex)
+        $totalPublicasNoVencidas = Bill::whereHas('companyreceivable', function ($query) {
+            $query->where('type', 'Pemex');
+        })
+            ->where('status', 'pendiente_cobrar')
+            ->get()
+            ->map(function ($bill) use ($dollarRate) {
+                $expirationDate = Carbon::parse($bill->expiration_date);
+                $today = Carbon::now();
 
-    // Facturas no vencidas
-    return $expirationDate->diffInDays($today, false) < 0
-        ? ($bill->currency === 'MXN' ? $bill->total_payment / $dollarRate : $bill->total_payment)
-        : 0;
-})->sum();
+                // Facturas no vencidas
+                return $expirationDate->diffInDays($today, false) < 0
+                    ? ($bill->currency === 'MXN' ? $bill->total_payment / $dollarRate : $bill->total_payment)
+                    : 0;
+            })->sum();
 
         // Definir la fecha actual
         $today = Carbon::now();
@@ -138,7 +138,6 @@ $totalPublicasNoVencidas = Bill::whereHas('companyreceivable', function ($query)
             'totalPublicasNoVencidas',
             'facturas'
         ));
-        
     }
 
     //index donde se ven todas las facturas privadas al presionar la card de facturas
@@ -251,9 +250,9 @@ $totalPublicasNoVencidas = Bill::whereHas('companyreceivable', function ($query)
         //pasamos los demas datos de esa empresa
         $bill = null;
 
-        $currencyOptions = $company->currency === 'MIXTA' 
-        ? ['USD', 'MXN'] // Opciones para empresas mixtas
-        : [$company->currency]; // Solo la moneda configurada
+        $currencyOptions = $company->currency === 'MIXTA'
+            ? ['USD', 'MXN'] // Opciones para empresas mixtas
+            : [$company->currency]; // Solo la moneda configurada
 
 
         return view(
@@ -264,27 +263,27 @@ $totalPublicasNoVencidas = Bill::whereHas('companyreceivable', function ($query)
                 'company_type' => $company->type,
                 'company_creditdays' => $company->creditdays
             ],
-            compact('bill','company','currencyOptions')
+            compact('bill', 'company', 'currencyOptions')
         );
     }
     public function store(StoreBillRequest $request, $companyreceivable_id)
     {
         $field = [];
         $message = ['required' => 'El :attribute es requerido'];
-    
+
         $this->validate($request, $field, $message);
         $datosbill = $request->except('_token', 'diasexpirados');
-    
+
         // Obtener la empresa para verificar su nombre y tipo
         $company = CompanyReceivable::findOrFail($companyreceivable_id);
 
         // Validar y asignar la divisa
-    if ($company->currency === 'MIXTA') {
-        $datosbill['currency'] = $request->input('currency');
-    } else {
-        $datosbill['currency'] = $company->currency;
-    }
-    
+        if ($company->currency === 'MIXTA') {
+            $datosbill['currency'] = $request->input('currency');
+        } else {
+            $datosbill['currency'] = $company->currency;
+        }
+
         // Verificar si entry_date es null y la empresa cumple las condiciones
         if ($request->input('entry_date') === null && $company->name === 'GSM BRONCO') {
             $datosbill['status'] = 'pendiente_entrada';
@@ -294,33 +293,33 @@ $totalPublicasNoVencidas = Bill::whereHas('companyreceivable', function ($query)
             $entryDate = Carbon::parse($request->input('entry_date'));
             $creditDays = $company->creditdays;
             $expirationDate = $entryDate->copy()->addDays($creditDays);
-    
+
             // Guarda el valor de la fecha de expiración en el formato adecuado para la base de datos
             $datosbill['expiration_date'] = $expirationDate;
         }
-    
+
         // Verifica si la empresa es pública, se llama "Publica Toms 854", y el porcentaje es true
         if ($company->type === 'Pemex' && $company->name === 'PEMEX TOMS 854' && $request->input('porcent') === true) {
             $datosbill['total_payment'] = $request->input('total_payment') * 0.2;
         } else {
             $datosbill['total_payment'] = $request->input('total_payment');
         }
-    
+
         $datosbill['companyreceivable_id'] = $companyreceivable_id;
-    
+
         Bill::insert($datosbill);
-    
+
         return redirect()->route('empresas.show', $companyreceivable_id)->with('message', 'Factura creada exitosamente');
     }
-    
+
     public function update(UpdateBillRequest $request, $companyreceivable_id, $id)
     {
         $datosbill = $request->except(['_token', 'diasexpirados', '_method']);
-    
+
         // Obtener la empresa para verificar su nombre y tipo
         $company = CompanyReceivable::findOrFail($companyreceivable_id);
 
-    
+
         // Verificar si entry_date es null y la empresa cumple las condiciones
         if ($request->input('entry_date') === null && $company->name === 'GSM BRONCO') {
             $datosbill['status'] = 'pendiente_entrada';
@@ -330,27 +329,27 @@ $totalPublicasNoVencidas = Bill::whereHas('companyreceivable', function ($query)
             $entryDate = Carbon::parse($request->input('entry_date'));
             $creditDays = $company->creditdays;
             $expirationDate = $entryDate->copy()->addDays($creditDays);
-    
+
             // Actualiza la fecha de expiración en los datos de la factura
             $datosbill['expiration_date'] = $expirationDate;
         }
-    
+
         // Verifica si la empresa es pública, se llama "Publica Toms 854", y el porcentaje es true
         if ($company->type === 'Pemex' && $company->name === 'PEMEX TOMS 854' && $request->input('porcent') === true) {
             $datosbill['total_payment'] = $request->input('total_payment') * 0.2;
         } else {
             $datosbill['total_payment'] = $request->input('total_payment');
         }
-    
+
         // Actualiza la factura en la base de datos
         Bill::where('id', $id)->update($datosbill);
-    
+
         // Redirige al perfil de la empresa
         return redirect()->route('empresas.show', $companyreceivable_id)->with('message', 'Factura actualizada exitosamente');
     }
 
 
-/**
+    /**
      * Show the form for editing the specified resource.
      */
     public function edit($companyreceivable_id, $id)
@@ -358,13 +357,13 @@ $totalPublicasNoVencidas = Bill::whereHas('companyreceivable', function ($query)
         $company = CompanyReceivable::findOrFail($companyreceivable_id);
         $bill = Bill::findOrFail($id);
 
-        $currencyOptions = $company->currency === 'MIXTA' 
-        ? ['USD', 'MXN'] // Opciones para empresas mixtas
-        : [$company->currency]; // Solo la moneda configurada
-    
+        $currencyOptions = $company->currency === 'MIXTA'
+            ? ['USD', 'MXN'] // Opciones para empresas mixtas
+            : [$company->currency]; // Solo la moneda configurada
+
         // Formato para expiration_date
         $bill->expiration_date = Carbon::parse($bill->expiration_date)->format('d-m-Y');
-    
+
         return view(
             'bill.edit',
             [
@@ -374,7 +373,7 @@ $totalPublicasNoVencidas = Bill::whereHas('companyreceivable', function ($query)
                 'company_creditdays' => $company->creditdays,
                 'bill' => $bill
             ],
-            compact('company','currencyOptions')
+            compact('company', 'currencyOptions')
         );
     }
 
@@ -386,39 +385,46 @@ $totalPublicasNoVencidas = Bill::whereHas('companyreceivable', function ($query)
         //
     }
 
-    
+
     public function exportEmpresas()
-        {
+    {
 
-            
-        return Excel::download(new EmpresasExport, 'Información General '.Carbon::now()->format('d-m-Y').'.xlsx');
+
+        return Excel::download(new EmpresasExport, 'Información General ' . Carbon::now()->format('d-m-Y') . '.xlsx');
     }
 
-    public function exportPrivadasVencidas(){
-        return Excel::download(new privadasvencidasExport, 'Privadas_Vencidas '.Carbon::now()->format('d-m-Y').'.xlsx');
+    public function exportPrivadasVencidas()
+    {
+        return Excel::download(new privadasvencidasExport, 'Privadas_Vencidas ' . Carbon::now()->format('d-m-Y') . '.xlsx');
     }
 
-    public function exportPrivadasNoVencidas(){
-        return Excel::download(new privadasNoVenExport, 'Privadas_NO_Vencidas '.Carbon::now()->format('d-m-Y').'.xlsx');
+    public function exportPrivadasNoVencidas()
+    {
+        return Excel::download(new privadasNoVenExport, 'Privadas_NO_Vencidas ' . Carbon::now()->format('d-m-Y') . '.xlsx');
     }
 
-    public function exportPublicasVencidas(){
-        return Excel::download(new publicasVencidasExport,'Pemex_Vencidas '.Carbon::now()->format('d-m-Y').'.xlsx');
+    public function exportPublicasVencidas()
+    {
+        return Excel::download(new publicasVencidasExport, 'Pemex_Vencidas ' . Carbon::now()->format('d-m-Y') . '.xlsx');
     }
 
-    public function exportPublicasNoVencidas(){
-        return Excel::download(new publicasNoVenExport,'Pemex_NO_Vencidas' .Carbon::now()->format('d-m-Y').'.xlsx');
+    public function exportPublicasNoVencidas()
+    {
+        return Excel::download(new publicasNoVenExport, 'Pemex_NO_Vencidas' . Carbon::now()->format('d-m-Y') . '.xlsx');
     }
 
-    public function exportpendienteCobrarGlobal(){
-        return Excel::download(new pendienteCobrarGlobal,'Pendientes Por Cobrar al ' .Carbon::now()->format('d-m-Y').'.xlsx');
+    public function exportpendienteCobrarGlobal()
+    {
+        return Excel::download(new pendienteCobrarGlobal, 'Pendientes Por Cobrar al ' . Carbon::now()->format('d-m-Y') . '.xlsx');
     }
 
-    public function exportReporteSemanal(){
-        return Excel::download(new ResumenSemanal, 'Resumen Semanal '.Carbon::now()->format('d-m-Y').'.xlsx');
+    public function exportReporteSemanal()
+    {
+        return Excel::download(new ResumenSemanal, 'Resumen Semanal ' . Carbon::now()->format('d-m-Y') . '.xlsx');
     }
 
-    public function exportReporteSemanaActual(){
-        return Excel::download(new ResumenSemanaActual, 'Resumen Semana actual '.Carbon::now()->format('d-m-Y').'.xlsx');
+    public function exportReporteSemanaActual()
+    {
+        return Excel::download(new ResumenSemanaActual, 'Resumen Semana actual ' . Carbon::now()->format('d-m-Y') . '.xlsx');
     }
 }

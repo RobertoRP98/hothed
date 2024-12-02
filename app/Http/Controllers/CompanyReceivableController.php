@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Carbon\Carbon;
 use App\Models\Bill;
+use App\Models\Currency;
 use App\Models\CompanyReceivable;
 use App\Exports\EmpresaSheetExport;
 use Maatwebsite\Excel\Facades\Excel;
@@ -113,21 +114,47 @@ class CompanyReceivableController extends Controller
     public function showEmpresa($id)
     {
         $empresa = CompanyReceivable::with('bills')->findOrFail($id);
+        // Obtener el valor del dólar desde el modelo
+        $dollarRate = Currency::where('currency', 'USD')->latest()->value('rate');
 
         $unpaidBills = $empresa->bills
-            ->whereIn('status', ['pendiente_facturar', 'pendiente_cobrar','pendiente_entrada'])
+            ->whereIn('status', ['pendiente_facturar', 'pendiente_cobrar', 'pendiente_entrada'])
             ->sortBy(function ($bill) {
                 return $bill->status === 'pendiente_facturar' ? 0 : 1;
             });
 
+        // Calcular los totales para las empresas
         // Calcular los totales
-        //$totalGlobal = $empresa->bills->where('status', '!=', 'cancelado')->sum('total_payment');
         $totalGlobal = $empresa->bills
-    ->whereNotIn('status', ['cancelado', 'pendiente_facturar'])
-    ->sum('total_payment');
-        $totalPendienteFacturar = $empresa->bills->where('status', 'pendiente_facturar')->sum('total_payment');
-        $totalPendienteCobrar = $empresa->bills->where('status', 'pendiente_cobrar')->sum('total_payment');
-        $totalPagado = $empresa->bills->where('status', 'pagado')->sum('total_payment');
+            ->whereNotIn('status', ['cancelado', 'pendiente_facturar'])
+            ->map(function ($bill) use ($dollarRate) {
+                return $bill->currency === 'MXN' ? $bill->total_payment / $dollarRate : $bill->total_payment;
+            })
+            ->sum();
+
+        $totalPendienteFacturar = $empresa->bills
+            ->where('status', 'pendiente_facturar')
+            ->map(function ($bill) use ($dollarRate) {
+                return $bill->currency === 'MXN' ? $bill->total_payment / $dollarRate : $bill->total_payment;
+            })
+            ->sum();
+
+        $totalPendienteCobrar = $empresa->bills
+            ->where('status', 'pendiente_cobrar')
+            ->map(function ($bill) use ($dollarRate) {
+                return $bill->currency === 'MXN' ? $bill->total_payment / $dollarRate : $bill->total_payment;
+            })
+            ->sum();
+
+        $totalPagado = $empresa->bills
+            ->where('status', 'pagado')
+            ->map(function ($bill) use ($dollarRate) {
+                return $bill->currency === 'MXN' ? $bill->total_payment / $dollarRate : $bill->total_payment;
+            })
+            ->sum();
+
+        // Retornar los cálculos
+
 
         return view('companiesreceivable.detail', compact(
             'empresa',
@@ -213,23 +240,24 @@ class CompanyReceivableController extends Controller
     public function exportEmpresaExcel($id)
     {
         $empresa = CompanyReceivable::findOrFail($id);
-        return Excel::download(new EmpresaSheetExport($empresa), 'Empresa ' .$empresa->name.Carbon::now()->format('d-m-Y').' .xlsx');
+        return Excel::download(new EmpresaSheetExport($empresa), 'Empresa ' . $empresa->name . Carbon::now()->format('d-m-Y') . ' .xlsx');
     }
 
-    public function exportEmpresaPendienteFacturar($id){
+    public function exportEmpresaPendienteFacturar($id)
+    {
         $empresa = CompanyReceivable::findOrFail($id);
-        return Excel::download(new pendienteFacturarEmpresa($empresa), 'Pendiente Facturar '.$empresa->name.Carbon::now()->format('d-m-Y').' .xlsx');
+        return Excel::download(new pendienteFacturarEmpresa($empresa), 'Pendiente Facturar ' . $empresa->name . Carbon::now()->format('d-m-Y') . ' .xlsx');
     }
 
-    public function exportEmpresaPendienteCobrar($id){
+    public function exportEmpresaPendienteCobrar($id)
+    {
         $empresa = CompanyReceivable::findOrFail($id);
-        return Excel::download(new pendienteCobrarEmpresa($empresa), 'Pendiente Cobrar '.$empresa->name.Carbon::now()->format('d-m-Y').' .xlsx');
+        return Excel::download(new pendienteCobrarEmpresa($empresa), 'Pendiente Cobrar ' . $empresa->name . Carbon::now()->format('d-m-Y') . ' .xlsx');
     }
 
-    public function exportEmpresaPendienteEntrada($id){
+    public function exportEmpresaPendienteEntrada($id)
+    {
         $empresa = CompanyReceivable::findOrFail($id);
-        return Excel::download(new pendienteEntradaEmpresa($empresa), 'Pendiente Entrada '.$empresa->name.Carbon::now()->format('d-m-Y').' .xlsx');
+        return Excel::download(new pendienteEntradaEmpresa($empresa), 'Pendiente Entrada ' . $empresa->name . Carbon::now()->format('d-m-Y') . ' .xlsx');
     }
-
-
 }

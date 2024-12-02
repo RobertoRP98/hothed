@@ -38,6 +38,7 @@ $domingoActual = $hoy->endOfWeek(); // Domingo de la semana actual
 $resultados = Bill::select(
     'companyreceivable_id',
     DB::raw("SUM(CASE WHEN status = 'pendiente_cobrar' AND bill_date BETWEEN '{$lunesActual}' AND '{$domingoActual}' THEN total_payment ELSE 0 END) AS total_pendiente_cobrar"),
+    DB::raw("SUM(CASE WHEN status = 'pendiente_entrada' AND bill_date BETWEEN '{$lunesActual}' AND '{$domingoActual}' THEN total_payment ELSE 0 END) AS total_pendiente_entrada"),
     DB::raw("SUM(CASE WHEN status = 'pagado' AND payment_day BETWEEN '{$lunesActual}' AND '{$domingoActual}' THEN total_payment ELSE 0 END) AS total_pagado")
 )
 ->groupBy('companyreceivable_id')
@@ -48,7 +49,7 @@ return $resultados;
 
     public function headings(): array
     {
-        return ['COMPAÑIA', 'FACTURADO USD', 'PAGADO USD'];
+        return ['COMPAÑIA', 'FACTURADO USD','FACTURADO PENDIENTE DE ENTRADA USD', 'PAGADO USD'];
     }
 
     public function map($row): array
@@ -56,6 +57,7 @@ return $resultados;
         return [
             $row->companyReceivable->name, // Nombre de la empresa usando la relación
             $row->total_pendiente_cobrar,
+            $row->total_pendiente_entrada,
             $row->total_pagado,
         ];
     }
@@ -71,6 +73,8 @@ return $resultados;
             //MONTOS
             'B' => '"$"#,##0.00_-',
             'C' => '"$"#,##0.00_-',
+            'D' => '"$"#,##0.00_-',
+
         ];
     }
 
@@ -85,10 +89,10 @@ return $resultados;
                     $sheet->getColumnDimension($col)->setAutoSize(true);
                 }
                 //FILTROS
-                $sheet->setAutoFilter('A1:C1');
+                $sheet->setAutoFilter('A1:D1');
 
                 // Aplicar estilos a la fila de encabezado (fila 1)
-                $sheet->getStyle('A1:C1')->applyFromArray([
+                $sheet->getStyle('A1:D1')->applyFromArray([
                     'font' => [
                         'bold' => true,
                     ],
@@ -107,7 +111,7 @@ return $resultados;
                 $highestRow = $sheet->getHighestRow();
                 for ($row = 2; $row <= $highestRow; $row++) { // Comienza en la fila 7 para los datos
                     $color = ($row % 2 === 0) ? 'FFE0EAF1' : 'FFFFFFFF'; // Azul claro y blanco
-                    $sheet->getStyle("A{$row}:C{$row}")->applyFromArray([
+                    $sheet->getStyle("A{$row}:D{$row}")->applyFromArray([
                         'fill' => [
                             'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
                             'color' => ['argb' => $color],
