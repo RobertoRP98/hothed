@@ -82,8 +82,11 @@
           </div><!-- End Vision Tab Content -->
 
           <div class="tab-pane fade" id="about-tab3">
-            <p class="fst-italic">"Hot Hed México se compromete a lograr la conformidad en los servicios y la satisfacción de los requisitos de los clientes y demás partes interesadas"</p>
-            <p>"Por lo que se ha establecido un sistema de gestión integral basado en las normas ISO 14001 e ISO 45001 enfocados en la mejora continua de todos sus procesos"</p>
+            <p class="fst-italic">"Hot Hed México se compromete a lograr la conformidad en los servicios y la satisfacción de los requisitos de los clientes y demás partes interesadas, a manetener
+              canales apropiados de consulta y participación de los trabajadores, a operar bajo condiciones seguras y saludables, para la prevención de lesiones y deterioro de la salud 
+              relacionados con el trabajo, eliminando peligros y reduciendo los riesgos para sus empleados y para aquellas personas afectadas por sus actividades; asi como a la preservación del medio ambiente 
+              previniendo la contaminación y cumpliendo con los requisitos legales y reglamentarios aplicables"</p>
+            <p>"Por lo que se ha establecido un sistema de gestión integral basado en las normas ISO 9001, ISO 14001 e ISO 45001 enfocados en la mejora continua de todos sus procesos"</p>
           </div><!-- End About Tab 3 Content -->
 
         </div>

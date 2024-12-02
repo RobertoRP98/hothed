@@ -30,19 +30,27 @@
       </div>
   </div>
 
-  <div class="col-md-3">
+  <div class="col-md-2">
     <div class="form-outline">
         <input type="date" id="bill_date" name="bill_date" value="{{isset($bill) ? $bill->bill_date : ''}}" class="form-control" />
         <label class="form-label" for="FECHA DE LA FACTURA">FECHA DE LA FACTURA</label>
     </div>
 </div>
 
-<div class="col-md-3">
+<div class="col-md-2">
   <div class="form-outline">
       <input type="date" id="entry_date" name="entry_date" value="{{isset($bill) ? $bill->entry_date : ''}}" class="form-control" />
       <label class="form-label" for="FECHA DE LA FACTURA">FECHA DE INGRESO DE LA FACTURA</label>
    </div>
- </div>    
+ </div>
+
+ <div class="col-md-2">
+  <div class="form-outline">
+      <input type="number" id="diascredito" name="diascredito" value="" class="form-control" placeholder="VERIFICAR ANTES DE ACTUALIZAR"/>
+      <label class="form-label" for="DIAS DE CREDITO">DIAS DE CREDITO (VERIFICAR) </label>
+  </div>
+</div>
+
 </div>
 
 <!-- Segunda fila -->

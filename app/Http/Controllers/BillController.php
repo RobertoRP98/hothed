@@ -272,7 +272,7 @@ class BillController extends Controller
         $message = ['required' => 'El :attribute es requerido'];
 
         $this->validate($request, $field, $message);
-        $datosbill = $request->except('_token', 'diasexpirados');
+        $datosbill = $request->except('_token', 'diasexpirados','diascredito');
 
         // Obtener la empresa para verificar su nombre y tipo
         $company = CompanyReceivable::findOrFail($companyreceivable_id);
@@ -289,10 +289,10 @@ class BillController extends Controller
             $datosbill['status'] = 'pendiente_entrada';
             $datosbill['expiration_date'] = null; // Asegúrate de establecer la expiración a null si no hay fecha de entrada
         } else {
-            // Calcula la fecha de expiración si hay una fecha de entrada
-            $entryDate = Carbon::parse($request->input('entry_date'));
-            $creditDays = $company->creditdays;
-            $expirationDate = $entryDate->copy()->addDays($creditDays);
+            // Calcula la fecha de expiración usando el valor del input `diascredito`
+        $entryDate = Carbon::parse($request->input('entry_date'));
+        $creditDays = (int) $request->input('diascredito'); // Tomamos el valor del input
+        $expirationDate = $entryDate->copy()->addDays($creditDays);
 
             // Guarda el valor de la fecha de expiración en el formato adecuado para la base de datos
             $datosbill['expiration_date'] = $expirationDate;
@@ -314,7 +314,7 @@ class BillController extends Controller
 
     public function update(UpdateBillRequest $request, $companyreceivable_id, $id)
     {
-        $datosbill = $request->except(['_token', 'diasexpirados', '_method']);
+        $datosbill = $request->except(['_token', 'diasexpirados', '_method','diascredito']);
 
         // Obtener la empresa para verificar su nombre y tipo
         $company = CompanyReceivable::findOrFail($companyreceivable_id);
@@ -325,10 +325,10 @@ class BillController extends Controller
             $datosbill['status'] = 'pendiente_entrada';
             $datosbill['expiration_date'] = null; // Asegúrate de establecer la expiración a null si no hay fecha de entrada
         } else {
-            // Si hay una fecha de entrada, calcula la fecha de expiración
-            $entryDate = Carbon::parse($request->input('entry_date'));
-            $creditDays = $company->creditdays;
-            $expirationDate = $entryDate->copy()->addDays($creditDays);
+             // Calcula la fecha de expiración usando el valor del input `diascredito`
+        $entryDate = Carbon::parse($request->input('entry_date'));
+        $creditDays = (int) $request->input('diascredito'); // Tomamos el valor del input
+        $expirationDate = $entryDate->copy()->addDays($creditDays);
 
             // Actualiza la fecha de expiración en los datos de la factura
             $datosbill['expiration_date'] = $expirationDate;
