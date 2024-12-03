@@ -40,28 +40,29 @@ class SupplierController extends Controller
         return redirect ('proveedores')->with('message','Proveedor agregado');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Supplier $supplier)
+  
+    public function edit($id)
     {
-        //
-    }
+        $supplier = Supplier::FindOrFail($id);
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Supplier $supplier)
-    {
-        //
+        return view('supplier.edit',compact('supplier'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Supplier $supplier)
+    public function update(Request $request, $id)
     {
-        //
+        $field = ['name'=>'required','rfc'=>'required', 'critic'=>'required', 'currency'=>'required','single_supplier'=>'required',];
+        $message = ['required' => 'El :attribute es requerido'];
+         $this->validate($request, $field, $message);
+
+        $datossupplier = request()->except(['_token',('_method')]);
+        Supplier::where('id',$id)->update($datossupplier);
+       // $supplier = Supplier::FindOrFail($id);
+
+        return redirect('proveedores')->with('message','Proveedor Actualizado');
+
     }
 
     /**

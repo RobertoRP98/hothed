@@ -41,17 +41,6 @@ class TaxController extends Controller
         return redirect ('impuestos')->with('message','Concepto agregado'); 
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Tax $tax)
-    {
-        
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit($id)
     {
         $tax = Tax::FindOrFail($id);

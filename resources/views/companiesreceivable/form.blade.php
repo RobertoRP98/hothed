@@ -36,6 +36,8 @@
   <option value="Privada" {{ isset($company) && $company->type == 'Privada' ? 'selected' : '' }}>Privada</option>
   <option value="Pemex" {{ isset($company) && $company->type == 'Pemex' ? 'selected' : '' }}>Pemex</option>
 </select>
+<label class="form-label" for="critic">Tipo de Empresa</label>
+
     </div>
   </div>
  </div>
@@ -47,8 +49,9 @@
   <option value="USD" {{ isset($currency) && $currency->currency == 'USD' ? 'selected' : '' }}>USD</option>
   <option value="MXN" {{ isset($company) && $company->currency == 'MXN' ? 'selected' : '' }}>MXN</option>
   <option value="MIXTA" {{ isset($company) && $company->currency == 'MIXTA' ? 'selected' : '' }}>MIXTA</option>
-
 </select>
+<label class="form-label" for="critic">Tipo de Divisa</label>
+
     </div>
   </div>
  </div>

@@ -298,8 +298,8 @@ class BillController extends Controller
             $datosbill['expiration_date'] = $expirationDate;
         }
 
-        // Verifica si la empresa es pública, se llama "Publica Toms 854", y el porcentaje es true
-        if ($company->type === 'Pemex' && $company->name === 'PEMEX TOMS 854' && $request->input('porcent') === true) {
+        // Verifica si la empresa es pública, se llama "PEMEX CONTRATO TOMS  646203854", y el porcentaje es true
+        if ($company->type === 'Pemex' && $company->name === 'PEMEX CONTRATO TOMS  646203854' && $request->input('porcent') === true) {
             $datosbill['total_payment'] = $request->input('total_payment') * 0.2;
         } else {
             $datosbill['total_payment'] = $request->input('total_payment');
@@ -334,8 +334,8 @@ class BillController extends Controller
             $datosbill['expiration_date'] = $expirationDate;
         }
 
-        // Verifica si la empresa es pública, se llama "Publica Toms 854", y el porcentaje es true
-        if ($company->type === 'Pemex' && $company->name === 'PEMEX TOMS 854' && $request->input('porcent') === true) {
+        // Verifica si la empresa es pública, se llama "PEMEX CONTRATO TOMS  646203854", y el porcentaje es true
+        if ($company->type === 'Pemex' && $company->name === 'PEMEX CONTRATO TOMS  646203854' && $request->input('porcent') === true) {
             $datosbill['total_payment'] = $request->input('total_payment') * 0.2;
         } else {
             $datosbill['total_payment'] = $request->input('total_payment');

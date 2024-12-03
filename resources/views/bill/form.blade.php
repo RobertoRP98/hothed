@@ -174,7 +174,7 @@
         </div>
     </div>
 
-    @if($company->name === 'PEMEX TOMS 854')
+    @if($company->name === 'PEMEX CONTRATO TOMS  646203854')
     <div class="col-md-3">
       <div class="form-outline">
           <select id="porcent" name="porcent" class="form-select">
