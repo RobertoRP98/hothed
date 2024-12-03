@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Tax;
 use App\Models\Product;
 use Illuminate\Http\Request;
 
@@ -12,7 +13,8 @@ class ProductController extends Controller
      */
     public function index()
     {
-        //
+        $datos ['Products'] = Product::paginate(30);
+        return view ('product.index',$datos);
     }
 
     /**
@@ -20,7 +22,9 @@ class ProductController extends Controller
      */
     public function create()
     {
-        //
+
+        $impuestos = Tax::all();
+        return view ('product.create', compact('impuestos'));
     }
 
     /**
@@ -28,31 +32,48 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $field = ['name'=>'required',
+        'udm'=>'required',
+        'category'=>'required',
+        'precio'=>'required',
+        ];
+        $message = ['required'=> 'El :attribute es requerido'];
+
+        $this->validate($request, $field, $message);
+        $datosproduct=$request->except('_token');
+
+        Product::insert($datosproduct);
+
+        return redirect('productos')->with('message','Producto Agregado');
+
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Product $product)
+    public function edit($id)
     {
-        //
-    }
+        $product = Product::FindOrFail($id);
+        $impuestos = Tax::all();
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Product $product)
-    {
-        //
+        return view ('product.edit',compact('product','impuestos'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Product $product)
+    public function update(Request $request, $id)
     {
-        //
+        $field = ['name'=>'required',
+        'udm'=>'required',
+        'category'=>'required',
+        'precio'=>'required',
+        ];
+        $message = ['required'=> 'El :attribute es requerido'];
+        $this->validate($request, $field, $message);
+
+        $datosproduct = request()->except(['token',('_method')]);
+        Product::where('id',$id)->update($datosproduct);
+
+        return redirect('productos')->with('message','Producto Actualizado');
+
     }
 
     /**

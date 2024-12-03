@@ -17,17 +17,36 @@
 
     <div class="col-md-6">
         <div class="form-outline">
-            <input type="text" id="name" name="name" value="{{ isset($supplier) ? $supplier->name : '' }}" class="form-control" />
-            <label class="form-label" for="name">NOMBRE</label>
+            <input type="text" id="name" name="name" value="{{ isset($product) ? $product->name : '' }}" class="form-control" />
+            <label class="form-label" for="name">NOMBRE DEL PRODUCTO</label>
         </div>
     </div>
 
-    <div class="col-md-6">
+    <div class="col-md-3">
       <div class="form-outline">
-          <input type="text" id="rfc" name="rfc" value="{{isset($supplier) ? $supplier->rfc : ''}}" class="form-control" placeholder="VERIFICA CON LA CONSTANCIA DE SITUACION FISCAL DE SER NECESARIO" />
-          <label class="form-label" for="rfc">RFC</label>
-      </div>
-  </div>
+        <select class="form-select" name="udm" id="udm">
+          <option value="Pieza" {{ isset($product) && $product->udm == 'Pieza' ? 'selected' : '' }}>PIEZA</option>
+          <option value="Kilo" {{ isset($product) && $product->udm == 'Kilo' ? 'selected' : '' }}>KILO</option>
+          <option value="Litro" {{ isset($product) && $product->udm == 'Litro' ? 'selected' : '' }}>LITRO</option>
+          <option value="Galón" {{ isset($product) && $product->udm == 'Galón' ? 'selected' : '' }}>GALÓN</option>
+          <option value="Garrafa" {{ isset($product) && $product->udm == 'Garrafa' ? 'selected' : '' }}>GARRAFA</option>
+          <option value="Servicio" {{ isset($product) && $product->udm == 'Servicio' ? 'selected' : '' }}>SERVICIO</option>
+        </select>
+        <label class="form-label" for="udm">UNIDAD DE MEDIDA</label>
+    </div>
+    </div>
+
+    <div class="col-md-3">
+      <div class="form-outline">
+        <select class="form-select" name="category" id="category">
+          <option value="Consumible" {{ isset($product) && $product->category == 'Consumible' ? 'selected' : '' }}>CONSUMIBLE</option>
+          <option value="No Consumible" {{ isset($product) && $product->category == 'No Consumible' ? 'selected' : '' }}>NO CONSUMIBLE</option>
+          <option value="Producto Almacenable" {{ isset($product) && $product->category == 'Producto Almacenable' ? 'selected' : '' }}>PRODUCTO ALMACENABLE</option>
+          <option value="Servicio" {{ isset($product) && $product->category == 'Servicio' ? 'selected' : '' }}>SERVICIO</option>
+        </select>
+        <label class="form-label" for="category">CATEGORIA</label>
+    </div>
+    </div>
 
 </div>
 
@@ -91,6 +110,7 @@
       <option value="MXN" {{ isset($supplier) && $supplier->currency == 'MXN' ? 'selected' : '' }}>MXN</option>
     </select>
     <label class="form-label" for="currency">TIPO DE DIVISA</label>
+
 </div>
 </div>
 

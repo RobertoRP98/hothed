@@ -44,8 +44,7 @@ class SupplierController extends Controller
     public function edit($id)
     {
         $supplier = Supplier::FindOrFail($id);
-
-        return view('supplier.edit',compact('supplier'));
+        return view('supplier.edit');
     }
 
     /**

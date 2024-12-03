@@ -19,7 +19,6 @@ return new class extends Migration
             $table->enum('udm', ['Pieza','Kilo', 'Litro', 'Galón', 'Garrafa', 'Servicio']);
             $table->enum('category', ['Consumible','No Consumible', 'Servicio', 'Producto Almacenable']);
             $table->decimal('precio', 10, 2)->default(0.00);
-
             $table->unsignedBigInteger('taxes_id')->nullable();
             
             $table->decimal('discount', 5, 2)->default(0.00);

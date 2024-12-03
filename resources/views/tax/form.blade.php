@@ -23,7 +23,7 @@
  <div class="row mb-4 col-md-3">
   <div class="col">
     <div data-mdb-input-init class="form-outline">
-     <input type="number" step="0.01" id="percent" name="percent" value="{{ isset($tax) ? $tax->percent : '' }}" class="form-control" />
+     <input type="number" step="0.01" id="percent" name="percent" value="{{ isset($tax) ? $tax->percent : '' }}" class="form-control" placeholder="0.16 = IVA "/>
      <label class="form-label" for="Porcentaje">Porcentaje</label>
     </div>
   </div>
