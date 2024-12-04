@@ -22,6 +22,8 @@ class RoleSeeder extends Seeder
          $roleDirOperaciones = Role::firstOrCreate(['name' => 'DirOperaciones']);
          $roleGerOperaciones = Role::firstOrCreate(['name' => 'GerOperaciones']);
          $roleVerCobranza = Role::firstOrCreate(['name' => 'VerCobranza']);
+         $roleCompras = Role::firstOrCreate(['name' => 'Compras']);
+
 
 
 
@@ -34,6 +36,8 @@ class RoleSeeder extends Seeder
          $permisoDirOperaciones = Permission::firstOrCreate(['name'=> 'diroperaciones']);
          $permisoGerOperaciones = Permission::firstOrCreate(['name'=> 'geroperaciones']);
          $permisoVerCobranza = Permission::firstOrCreate(['name'=> 'vercobranza']);
+         $permisoCompras = Permission::firstOrCreate(['name'=> 'Compras']);
+
 
 
 
@@ -47,6 +51,8 @@ class RoleSeeder extends Seeder
          $roleDirOperaciones->givePermissionTo($permisoGerOperaciones);
          $roleGerOperaciones->givePermissionTo($permisoDirOperaciones);
          $roleVerCobranza->givePermissionTo($permisoVerCobranza);
+         $roleCompras->givePermissionTo($permisoCompras);
+
 
 
 
@@ -98,16 +104,12 @@ class RoleSeeder extends Seeder
              $user->assignRole('VerCobranza');
          }
 
+         $user = User::find(11); // Cambia el ID de usuario según sea necesario
+         if ($user) {
+             $user->assignRole('Compras');
+         }
+
          //AUX COBRANZA PARA BIANCA Y PERLA
 
-
-        //  $user = User::find(6); // Cambia el ID de usuario según sea necesario
-        //  if ($user) {
-        //      $user->assignRole('DirOperaciones');
-        //  }
-        //  $user = User::find(7); // Cambia el ID de usuario según sea necesario
-        //  if ($user) {
-        //      $user->assignRole('Geroperaciones');
-        //  }
      }
 }
