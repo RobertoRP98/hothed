@@ -14,6 +14,7 @@
                 <li class="nav-item">
                     <a href="{{ url('/') }}" class="nav-link text-white {{ request()->is('/') ? 'active' : '' }}">Inicio</a>
                 </li>
+
                 @auth
                 @if(Auth::user()->hasRole(['Cobranza', 'AdministracionKarla', 'VerCobranza','Developer']))
                     <li class="nav-item">
@@ -29,6 +30,14 @@
                 </li>
             @endif
         @endauth
+
+        @auth
+        @if(Auth::user()->hasRole(['Compras','Developer']))
+            <li class="nav-item">
+                <a class="nav-link text-white" href="{{ url('/') }}">Compras</a>
+            </li>
+        @endif
+    @endauth
 
                 <li class="nav-item">
                     <a href="{{ url('/#about') }}" class="nav-link text-white {{ request()->is('#misionvision') ? 'active' : '' }}">Misión y Visión</a>
