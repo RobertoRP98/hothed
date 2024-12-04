@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\Tax;
 use App\Models\Product;
 use Illuminate\Http\Request;
@@ -24,7 +25,8 @@ class ProductController extends Controller
     {
 
         $impuestos = Tax::all();
-        return view ('product.create', compact('impuestos'));
+        $today = Carbon::now()->format('Y-m-d');
+        return view ('product.create', compact('impuestos','today'));
     }
 
     /**
@@ -52,8 +54,8 @@ class ProductController extends Controller
     {
         $product = Product::FindOrFail($id);
         $impuestos = Tax::all();
-
-        return view ('product.edit',compact('product','impuestos'));
+        $today = Carbon::now()->format('Y-m-d');
+        return view ('product.edit',compact('product','impuestos','today'));
     }
 
     /**
@@ -69,7 +71,7 @@ class ProductController extends Controller
         $message = ['required'=> 'El :attribute es requerido'];
         $this->validate($request, $field, $message);
 
-        $datosproduct = request()->except(['token',('_method')]);
+        $datosproduct = request()->except(['_token',('_method')]);
         Product::where('id',$id)->update($datosproduct);
 
         return redirect('productos')->with('message','Producto Actualizado');
