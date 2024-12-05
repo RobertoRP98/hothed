@@ -14,7 +14,7 @@ class Requisition extends Model
         'user_departament',
         'status_requi',
         'finalizado',
-        'importante',
+        'importance',
     ];
 
     //Relacion con usuario

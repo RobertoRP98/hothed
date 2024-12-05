@@ -15,41 +15,43 @@ use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Maatwebsite\Excel\Concerns\WithColumnFormatting;
 
-class ResumenSemanaActual implements 
-FromCollection, 
-WithHeadings, 
-WithMapping,
-WithTitle,
-WithColumnFormatting,
-ShouldAutoSize,
-WithEvents
+class ResumenSemanaActual implements
+    FromCollection,
+    WithHeadings,
+    WithMapping,
+    WithTitle,
+    WithColumnFormatting,
+    ShouldAutoSize,
+    WithEvents
 
 {
-public function collection()
+    public function collection()
     {
-       // Fecha actual
-$hoy = Carbon::now();
+        // Fecha actual
+        $hoy = Carbon::now();
 
-// Calcular el lunes y el domingo de la semana en curso
-$lunesActual = $hoy->startOfWeek(); // Lunes de la semana actual
-$domingoActual = $hoy->endOfWeek(); // Domingo de la semana actual
+        // Lunes y domingo de la semana actual
+        $lunesActual = $hoy->copy()->startOfWeek(Carbon::MONDAY)->format('Y-m-d');
+        $domingoActual = $hoy->copy()->endOfWeek(Carbon::SUNDAY)->format('Y-m-d');
 
-// Filtrar y agrupar los datos de la semana en curso
-$resultados = Bill::select(
-    'companyreceivable_id',
-    DB::raw("SUM(CASE WHEN status = 'pendiente_cobrar' AND bill_date BETWEEN '{$lunesActual}' AND '{$domingoActual}' THEN total_payment ELSE 0 END) AS total_pendiente_cobrar"),
-    DB::raw("SUM(CASE WHEN status = 'pendiente_entrada' AND bill_date BETWEEN '{$lunesActual}' AND '{$domingoActual}' THEN total_payment ELSE 0 END) AS total_pendiente_entrada"),
-    DB::raw("SUM(CASE WHEN status = 'pagado' AND payment_day BETWEEN '{$lunesActual}' AND '{$domingoActual}' THEN total_payment ELSE 0 END) AS total_pagado")
-)
-->groupBy('companyreceivable_id')
-->get();
+        // Filtra y agrupa los datos de la semana en curso
+        $resultados = Bill::select(
+            'companyreceivable_id',
+            DB::raw("SUM(CASE WHEN status = 'pendiente_cobrar' AND bill_date BETWEEN ? AND ? THEN total_payment ELSE 0 END) AS total_pendiente_cobrar"),
+            DB::raw("SUM(CASE WHEN status = 'pendiente_entrada' AND bill_date BETWEEN ? AND ? THEN total_payment ELSE 0 END) AS total_pendiente_entrada"),
+            DB::raw("SUM(CASE WHEN status = 'pagado' AND payment_day BETWEEN ? AND ? THEN total_payment ELSE 0 END) AS total_pagado")
+        )
+            ->setBindings([$lunesActual, $domingoActual, $lunesActual, $domingoActual, $lunesActual, $domingoActual])
+            ->groupBy('companyreceivable_id')
+            ->get();
 
-return $resultados;
+        return $resultados;
     }
+
 
     public function headings(): array
     {
-        return ['COMPAÑIA', 'FACTURADO USD','FACTURADO PENDIENTE DE ENTRADA USD', 'PAGADO USD'];
+        return ['COMPAÑIA', 'FACTURADO USD', 'FACTURADO PENDIENTE DE ENTRADA USD', 'PAGADO USD'];
     }
 
     public function map($row): array
@@ -83,7 +85,7 @@ return $resultados;
         return [
             AfterSheet::class => function (AfterSheet $event) {
                 $sheet = $event->sheet->getDelegate();
-    
+
                 // Ajustar automáticamente el ancho de las columnas en esta hoja
                 foreach (range('A', $sheet->getHighestColumn()) as $col) {
                     $sheet->getColumnDimension($col)->setAutoSize(true);
@@ -127,7 +129,7 @@ return $resultados;
                         'wrapText' => true,
                     ],
                 ]);
-    }
-];
+            }
+        ];
     }
 }

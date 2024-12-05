@@ -98,7 +98,7 @@
                 </div>
             </div>
 
-            <div class="col-md-6">
+            {{-- <div class="col-md-6">
                 <div class="card text-white bg-secondary mb-3">
                     <div class="card-body">
                         <h5 class="card-title">Total Historico: </h5>
@@ -115,7 +115,7 @@
                         <p class="card-text display-6">${{ number_format($totalPagado , 2) }}</p>
                     </div>
                 </div>
-            </div>
+            </div> --}}
 
 
         </div>
