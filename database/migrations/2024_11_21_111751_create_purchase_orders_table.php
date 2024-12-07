@@ -25,12 +25,19 @@ return new class extends Migration
             $table->enum('status_manager4', ['Autorizado', 'Cancelado'])->default('Autorizado');
             $table->enum('po_importance', ['Alto', 'Medio', 'Bajo'])->default('Bajo');
             $table->enum('currency', ['USD', 'MXN']);
-            $table->decimal('total', 10, 2)->default(0.00);
-            $table->decimal('subtotal', 10, 2)->default(0.00);
-            $table->unsignedBigInteger('taxes_id')->nullable();
+           
+
             $table->enum('po_status', ['Pagado', 'Aduana', 'En espera de entrega', 'Otro'])->default('En espera de entrega');
             $table->enum('bill', ['Sin generar', 'Pendiente', 'Generada', 'Cancelada'])->default('Sin generar');
             $table->boolean('finalizado')->default(false);
+
+            
+            $table->decimal('subtotal', 10, 2)->default(0.00);
+            $table->unsignedBigInteger('taxes_id')->nullable();
+            $table->decimal('total', 10, 2)->default(0.00);
+
+
+
             $table->timestamps();
             $table->foreign('requisition_id')->references('id')->on('requisitions')->onDelete('cascade');
             $table->foreign('supplier_id')->references('id')->on('suppliers')->onDelete('cascade');
