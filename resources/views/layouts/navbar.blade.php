@@ -39,6 +39,15 @@
         @endif
     @endauth
 
+
+    @auth
+    @if(Auth::user()->hasRole(['Almacen','Developer']))
+        <li class="nav-item">
+            <a class="nav-link text-white" href="{{ url('/almacenherramientas') }}">Almacen Herramientas</a>
+        </li>
+    @endif
+@endauth
+
                 <li class="nav-item">
                     <a href="{{ url('/#about') }}" class="nav-link text-white {{ request()->is('#misionvision') ? 'active' : '' }}">Misión y Visión</a>
                 </li>

@@ -357,6 +357,15 @@ class BillController extends Controller
         $company = CompanyReceivable::findOrFail($companyreceivable_id);
         $bill = Bill::findOrFail($id);
 
+        $creditDays = (int) request()->input('diascredito', 0); // Tomar 'diascredito' si está presente
+
+        if ($bill->entry_date && $creditDays) {
+            $expirationDate = Carbon::parse($bill->entry_date)->addDays($creditDays)->format('Y-m-d');
+        } else {
+            $expirationDate = $bill->expiration_date ? Carbon::parse($bill->expiration_date)->format('Y-m-d') : null;
+        }
+
+
         $currencyOptions = $company->currency === 'MIXTA'
             ? ['USD', 'MXN'] // Opciones para empresas mixtas
             : [$company->currency]; // Solo la moneda configurada
@@ -373,7 +382,7 @@ class BillController extends Controller
                 'company_creditdays' => $company->creditdays,
                 'bill' => $bill
             ],
-            compact('company', 'currencyOptions')
+            compact('company', 'currencyOptions','expirationDate')
         );
     }
 

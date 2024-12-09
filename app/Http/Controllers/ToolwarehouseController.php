@@ -62,7 +62,7 @@ class ToolwarehouseController extends Controller
         $families=Family::select('id','name')->get();
         $subgroups=Subgroup::select('id','name')->get();
         $bases=Base::select('id','name')->get();
-        $toolstatus=Toolstatus::select('id','name')->get();
+        $toolstatus=Toolstatus::select('id','status')->get();
         return view('toolwarehouse.create', compact('families','subgroups','bases','toolstatus'));
     }
 
@@ -97,7 +97,7 @@ class ToolwarehouseController extends Controller
         $families=Family::select('id','name')->get();
         $subgroups=Subgroup::select('id','name')->get();
         $bases=Base::select('id','name')->get();
-        $toolstatus=Toolstatus::select('id','name')->get();
+        $toolstatus=Toolstatus::select('id','status')->get();
         return view('toolwarehouse.show', compact('toolwarehouse', 'families', 'subgroups','bases', 'toolstatus'));
     }
 
@@ -110,7 +110,7 @@ class ToolwarehouseController extends Controller
         $families=Family::select('id','name')->get();
         $subgroups=Subgroup::select('id','name')->get();
         $bases=Base::select('id','name')->get();
-        $toolstatus=Toolstatus::select('id','name')->get();
+        $toolstatus=Toolstatus::select('id','status')->get();
         return view('toolwarehouse.edit', compact('toolwarehouse', 'families', 'subgroups','bases', 'toolstatus'));
     }
 
