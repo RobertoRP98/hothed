@@ -82,6 +82,12 @@ class RoleSeeder extends Seeder
              $user->assignRole('VerCobranza');
          }
 
+         
+         $user = User::find(8); // Cambia el ID de usuario según sea necesario
+         if ($user) {
+             $user->assignRole('VerCobranza');
+         }
+
          //AUX COBRANZA PARA BIANCA Y PERLA
 
 
