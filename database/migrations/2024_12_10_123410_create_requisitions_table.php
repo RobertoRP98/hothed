@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->enum('status_requisition', ['Pendiente', 'Autorizado', 'Rechazado'])->default('Pendiente');
-            $table->enum('importance', ['Alta', 'Media', 'Baja'])->default('Low');
+            $table->enum('importance', ['Alta', 'Media', 'Baja'])->default('Baja');
             $table->boolean('finished')->default(false);
             $table->date('production_date');
             $table->date('request_date');

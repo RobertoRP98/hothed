@@ -17,7 +17,7 @@ return new class extends Migration
             $table->text('description');
             $table->string('brand')->nullable();
             $table->integer('quantity')->default(0);
-            $table->enum('udm', ['Pieza', 'Kg', 'Litro', 'Servicio','Kilometro','Metro Cubico','Metro cuadrado', 'Metro', 'Libra', 'Galon', 'Cubeta', 'Tambor', 'Juego', 'Horas', 'Dias', 'Servicio'])->default('Pieza');
+            $table->enum('udm', ['Pieza', 'Kg', 'Litro', 'Servicio','Kilometro','Metro Cubico','Metro cuadrado', 'Metro', 'Libra', 'Galon', 'Cubeta', 'Tambor', 'Juego', 'Horas', 'Dias'])->default('Pieza');
             $table->enum('category', ['ACCESORIO', 'CONSUMIBLE', 'EMPAQUES', 'EPP','HERRAMIENTA','REFACCION', 'TORQUE','SERVICIO'])->default('CONSUMIBLE');
             $table->decimal('price', 10, 2)->default(0.00);
             $table->decimal('discount', 5, 2)->default(0.00);
