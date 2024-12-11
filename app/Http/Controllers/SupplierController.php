@@ -13,7 +13,8 @@ class SupplierController extends Controller
      */
     public function index()
     {
-        //
+        $datos ['suppliers'] = Supplier::paginate(20);
+        return view('supplier.index',$datos);
     }
 
     /**
@@ -21,7 +22,7 @@ class SupplierController extends Controller
      */
     public function create()
     {
-        //
+        return view('supplier.create');
     }
 
     /**
@@ -29,7 +30,11 @@ class SupplierController extends Controller
      */
     public function store(StoreSupplierRequest $request)
     {
-        //
+        $datossupplier = $request->validated();
+
+        Supplier::create($datossupplier);
+
+        return redirect ('proveedores')->with('message', 'Proveedor Creado');
     }
 
     /**
@@ -43,17 +48,23 @@ class SupplierController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Supplier $supplier)
+    public function edit($id)
     {
-        //
+        $supplier = Supplier::FindOrFail($id);
+
+        return view('supplier.edit', compact('supplier'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateSupplierRequest $request, Supplier $supplier)
+    public function update(UpdateSupplierRequest $request, $id)
     {
-        //
+        $datossupplier = $request->validated();
+        Supplier::where('id',$id)->update($datossupplier);
+        $supplier = Supplier::FindOrFail($id);
+
+        return redirect('proveedores')->with('message','Proveedor Actualizado');
     }
 
     /**

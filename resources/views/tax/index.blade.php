@@ -30,8 +30,8 @@
     <tbody>
         @foreach($taxes as $tax)
         <tr>
-            <td>{{$tax->name}}</td>
-            <td>{{$tax->percent}}</td>
+            <td>{{$tax->concept}}</td>
+            <td>{{$tax->percentage}}</td>
            
 
             <td>

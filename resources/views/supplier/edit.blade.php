@@ -2,11 +2,11 @@
 @section('edittax')
 <div class="container">
     <br>
-    <form action="{{ url('/proveedores/' . $supplier->id) }}" method="post" enctype="multipart/form-data">
+    <form action="{{ url('/impuestos/' . $tax->id) }}" method="post" enctype="multipart/form-data">
         @csrf
         {{method_field('PATCH')}}    
- <H1>Editar Proveedor</H1>
-    @include('supplier.form',['modo'=>'Editar'])
+ <H1>Editar Concepto</H1>
+    @include('tax.form',['modo'=>'Editar'])
   </form>
 </div>
 @endsection

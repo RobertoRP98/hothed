@@ -14,8 +14,8 @@
  <div class="row mb-4 col-md-3">
    <div class="col">
      <div data-mdb-input-init class="form-outline">
-      <input type="text" id="name" name="name" value="{{ isset($tax) ? $tax->name : '' }}" class="form-control" />
-      <label class="form-label" for="Porcentaje">Concepto</label>
+      <input type="text" id="concept" name="concept" value="{{ isset($tax) ? $tax->concept : '' }}" class="form-control" />
+      <label class="form-label" for="concept">Concepto</label>
      </div>
    </div>
  </div>
@@ -23,7 +23,7 @@
  <div class="row mb-4 col-md-3">
   <div class="col">
     <div data-mdb-input-init class="form-outline">
-     <input type="number" step="0.01" id="percent" name="percent" value="{{ isset($tax) ? $tax->percent : '' }}" class="form-control" placeholder="0.16 = IVA "/>
+     <input type="number" step="0.01" id="percentage" name="percentage" value="{{ isset($tax) ? $tax->percentage : '' }}" class="form-control" placeholder="0.16 = IVA "/>
      <label class="form-label" for="Porcentaje">Porcentaje</label>
     </div>
   </div>

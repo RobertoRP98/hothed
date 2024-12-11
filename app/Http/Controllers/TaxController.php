@@ -13,7 +13,8 @@ class TaxController extends Controller
      */
     public function index()
     {
-        //
+        $datos ['taxes'] = Tax::paginate(30);
+        return view ('tax.index', $datos);
     }
 
     /**
@@ -21,7 +22,7 @@ class TaxController extends Controller
      */
     public function create()
     {
-        //
+        return view('tax.create');
     }
 
     /**
@@ -29,7 +30,11 @@ class TaxController extends Controller
      */
     public function store(StoreTaxRequest $request)
     {
-        //
+        $datostax = $request->validated();
+
+        Tax::create($datostax);
+
+        return redirect('impuestos')->with('message','Impuesto Creado');
     }
 
     /**
@@ -43,17 +48,21 @@ class TaxController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Tax $tax)
+    public function edit($id)
     {
-        //
+        $tax = Tax::FindOrFail($id);
+        return view('tax.edit', compact('tax'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateTaxRequest $request, Tax $tax)
-    {
-        //
+    public function update(UpdateTaxRequest $request, $id)
+    {   
+        $datostax = $request->validated();
+        Tax::where('id', $id)->update($datostax);
+        //$tax = Tax::FindOrFail($id);
+        return redirect('impuestos')->with('message','Impuesto Actualizado');
     }
 
     /**

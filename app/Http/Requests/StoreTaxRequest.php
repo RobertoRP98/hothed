@@ -22,7 +22,23 @@ class StoreTaxRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'concept' => 'required',
+            'percentage' => 'required',
         ];
+    }
+
+    public function messages(){
+        return [
+        'required' => 'El :attribute es requerido' ,
+        'numeric' => 'El :attribute debe ser numerico',
+        
+        ];
+    }
+
+    protected function prepareForValidation()
+    {
+        $this->merge(
+            $this->except(['_token'])
+        );
     }
 }

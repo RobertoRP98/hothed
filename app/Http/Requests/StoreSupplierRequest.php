@@ -22,7 +22,30 @@ class StoreSupplierRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name' => 'required',
+            'rfc' => 'required|string|max:13',
+            'number' => 'required|string|max:12',
+            'address' => 'required',
+            'critic' => 'required',
+            'currency' => 'required',
+            'credit_days' => 'required',
+            'unique' => 'required',       
         ];
+    }
+
+    public function messages(){
+        return [
+        'required' => 'El :attribute es requerido' ,
+        'numeric' => 'El :attribute debe ser numerico',
+        'rfc.max' => 'El RFC no puede tener más de 13 caracteres.',
+        'number.max' => 'El número de contacto no puede tener más de 12 caracteres.',
+        ];
+    }
+
+    protected function prepareForValidation()
+    {
+        $this->merge(
+            $this->except(['_token'])
+        );
     }
 }
