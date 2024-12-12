@@ -27,6 +27,7 @@ class UpdateSupplierRequest extends FormRequest
            'rfc' => 'required|string|max:13',
             'number' => 'required|string|max:12',
             'address' => 'required',
+            'email' => 'nullable|email',            
             'critic' => 'required',
             'currency' => 'required',
             'credit_days' => 'required',
@@ -38,7 +39,7 @@ class UpdateSupplierRequest extends FormRequest
         return [
         'required' => 'El :attribute es requerido' ,
         'numeric' => 'El :attribute debe ser numerico',
-        'rfc.max' => 'El RFC no puede tener más de 12 caracteres.',
+        'rfc.max' => 'El RFC no puede tener más de 13 caracteres.',
         'number.max' => 'El número de contacto no puede tener más de 12 caracteres.',
         ];
     }

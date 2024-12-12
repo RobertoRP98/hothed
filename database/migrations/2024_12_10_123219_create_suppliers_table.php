@@ -11,12 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('suppliers', function (Blueprint $table) {
             Schema::create('suppliers', function (Blueprint $table) {
                 $table->id();
                 $table->string('name');
                 $table->string('rfc');
                 $table->string('number');
+                $table->string('email')->nullable();
                 $table->string('address');
                 $table->boolean('critic')->default(false);
                 $table->enum('currency', ['MXN', 'USD', 'MIXTO'])->default('MXN');
@@ -24,7 +24,7 @@ return new class extends Migration
                 $table->boolean('unique')->default(false);
                 $table->timestamps();
             });
-        });
+        
     }
 
     /**

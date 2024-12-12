@@ -17,22 +17,22 @@
 
     <div class="col-md-3">
         <div class="form-outline">
-            <input type="text" id="internal_id" name="internal_id" value="{{ isset($product) ? $product->internal_id : '' }}" class="form-control text-uppercase" placeholder="ESTE IDENTIFICADOR ES UNICO"/>
-            <label class="form-label" for="internal_id ">IDENTIFICADOR INTERNO</label>
+            <input type="text" id="internal_id" name="internal_id" value="{{ old('internal_id', isset($product) ? $product->internal_id : '' )}}" class="form-control text-uppercase" placeholder="ESTE IDENTIFICADOR ES UNICO"/>
+            <label class="form-label">IDENTIFICADOR INTERNO</label>
         </div>
     </div>
 
     <div class="col-md-6">
       <div class="form-outline">
-          <input type="text" id="description" name="description" value="{{ isset($product) ? $product->description : '' }}" class="form-control text-uppercase" placeholder="NOMBRE DEL PRODUCTO"/>
-          <label class="form-label" for="internal_id ">DESCRIPCIÓN</label>
+          <input type="text" id="description" name="description" value="{{ old('description',isset($product) ? $product->description : '' )}}" class="form-control text-uppercase" placeholder="NOMBRE DEL PRODUCTO"/>
+          <label class="form-label">DESCRIPCIÓN</label>
       </div>
   </div>
 
   <div class="col-md-3">
     <div class="form-outline">
-        <input type="text" id="brand" name="brand" value="{{ isset($product) ? $product->brand : '' }}" class="form-control text-uppercase"/>
-        <label class="form-label" for="internal_id ">MARCA DEL PRODUCTO</label>
+        <input type="text" id="brand" name="brand" value="{{ old('brand',isset($product) ? $product->brand : '' )}}" class="form-control text-uppercase"/>
+        <label class="form-label">MARCA DEL PRODUCTO</label>
     </div>
 </div>
     
@@ -42,60 +42,66 @@
 <!-- Segunda fila -->
 <div class="row mb-4">  
 
-  <div class="col-md-3">
+  <div class="col-md-4">
     <div class="form-outline">
-        <input type="number" id="quantity" name="quantity" value="{{ isset($supplier) ? $supplier->quantity : 0 }}" class="form-control" />
-        <label class="form-label" for="quantity">CANTIDAD</label>
+        <input type="number" id="quantity" name="quantity" value="{{ old('quantity',isset($product) ? $product->quantity : 0 )}}" class="form-control" />
+        <label class="form-label">CANTIDAD</label>
     </div>
   </div>
 
-
-<div class="col-md-8">
-  <div class="form-outline">
-      <input type="text" id="address" name="address" value="{{isset($supplier) ? $supplier->address : ''}}" class="form-control" />
-      <label class="form-label" for="address">DIRECCIÓN</label>
+  <div class="col-md-4">
+    <div class="form-outline">
+      <select class="form-select" name="udm" id="udm"> <option value="PIEZAS" {{ old('udm', isset($product) && $product->udm == 'PIEZAS' ? 'selected' : '') }}>PIEZAS</option> <option value="KG" {{ old('udm', isset($product) && $product->udm == 'KG' ? 'selected' : '') }}>KGS</option> <option value="LITROS" {{ old('udm', isset($product) && $product->udm == 'LITROS' ? 'selected' : '') }}>LITROS</option> <option value="SERVICIO" {{ old('udm', isset($product) && $product->udm == 'SERVICIO' ? 'selected' : '') }}>SERVICIO</option> <option value="KILOMETROS" {{ old('udm', isset($product) && $product->udm == 'KILOMETROS' ? 'selected' : '') }}>KILOMETROS</option> <option value="METROS" {{ old('udm', isset($product) && $product->udm == 'METROS' ? 'selected' : '') }}>METROS</option> <option value="METROS CUBICOS" {{ old('udm', isset($product) && $product->udm == 'METROS CUBICOS' ? 'selected' : '') }}>METROS CUBICOS</option> <option value="METROS CUADRADOS" {{ old('udm', isset($product) && $product->udm == 'METROS CUADRADOS' ? 'selected' : '') }}>METROS CUADRADOS</option> <option value="LIBRAS" {{ old('udm', isset($product) && $product->udm == 'LIBRAS' ? 'selected' : '') }}>LIBRAS</option> <option value="GALONES" {{ old('udm', isset($product) && $product->udm == 'GALONES' ? 'selected' : '') }}>GALONES</option> <option value="CUBETAS" {{ old('udm', isset($product) && $product->udm == 'CUBETAS' ? 'selected' : '') }}>CUBETAS</option> <option value="TAMBORES" {{ old('udm', isset($product) && $product->udm == 'TAMBORES' ? 'selected' : '') }}>TAMBORES</option> <option value="JUEGOS" {{ old('udm', isset($product) && $product->udm == 'JUEGOS' ? 'selected' : '') }}>JUEGOS</option> <option value="HORAS" {{ old('udm', isset($product) && $product->udm == 'HORAS' ? 'selected' : '') }}>HORAS</option> <option value="DIAS" {{ old('udm', isset($product) && $product->udm == 'DIAS' ? 'selected' : '') }}>DIAS</option>
+        </select>
+        <label class="form-label">UNIDAD DE MEDIDA</label>
+  </div>   
   </div>
-</div>
 
+  <div class="col-md-4">
+    <div class="form-outline">
+        <select class="form-select" name="category" id="category">
+        <option value="ACCESORIO" {{old('category',isset($product) && $product->category == 'ACCESORIO' ? 'selected':'')}}>ACCESORIO</option>
+        <option value="CONSUMIBLE" {{old('category',isset($product) && $product->category == 'CONSUMIBLE' ? 'selected':'')}}>CONSUMIBLE</option>
+        <option value="EMPAQUES" {{old('category',isset($product) && $product->category == 'EMPAQUES' ? 'selected':'')}}>EMPAQUES</option>
+        <option value="EPP" {{old('category',isset($product) && $product->category == 'EPP' ? 'selected':'')}}>EPP</option>
+        <option value="HERRAMIENTA" {{old('category',isset($product) && $product->category == 'HERRAMIENTA' ? 'selected':'')}}>HERRAMIENTA</option>
+        <option value="REFACCION" {{old('category',isset($product) && $product->category == 'REFACCION' ? 'selected':'')}}>REFACCIÓN</option>
+        <option value="TORQUE" {{old('category',isset($product) && $product->category == 'TORQUE' ? 'selected':'')}}>TORQUE</option>
+        <option value="SERVICIO" {{old('category',isset($product) && $product->category == 'SERVICIO' ? 'selected':'')}}>SERVICIO</option>
+        </select>
+        <label class="form-label">CATEGORIA</label>
+  </div>   
+  </div>
 </div>
 
 <!-- Tercera fila -->
 <div class="row mb-4">
 
-  <div class="col-md-3">
+  <div class="col-md-4">
     <div class="form-outline">
-        <select id="critic" name="critic" class="form-select">
-          <option value="0" {{ isset($supplier) && $supplier->critic ? 'selected' : '' }}>NO</option>
-          <option value="1" {{ isset($supplier) && $supplier->critic ? 'selected' : '' }}>SI</option>
-        </select>
-        <label class="form-label" for="critic">¿PROVEEDOR CRITICO?</label>
-
+        <input type="number" step="0.01" id="price" name="price" value="{{old('price',isset($product) ? $product->price : 0)}}" class="form-control" />
+        <label class="form-label">PRECIO</label>
     </div>
 </div>
 
-<div class="col-md-3">
+<div class="col-md-4">
   <div class="form-outline">
-      <select class="form-select" name="currency" id="currency">
-      <option value="MXN" {{isset($supplier) && $supplier->currency == 'MXN' ? 'selected':''}}>MXN</option>
-      <option value="USD" {{isset($supplier) && $supplier->currency == 'USD' ? 'selected':''}}>USD</option>
-      <option value="MIXTO" {{isset($supplier) && $supplier->currency == 'MIXTO' ? 'selected':''}}>MIXTO</option>
-      </select>
-      <label class="form-label" for="currency">DIVISA</label>
-</div>   
-</div>
-
-
-
-<div class="col-md-3">
-  <div class="form-outline">
-      <select id="unique" name="unique" class="form-select">
-        <option value="0" {{ isset($supplier) && $supplier->unique ? 'selected' : '' }}>NO</option>
-        <option value="1" {{ isset($supplier) && $supplier->unique ? 'selected' : '' }}>SI</option>
-      </select>
-      <label class="form-label" for="critic">¿PROVEEDOR UNICO?</label>
-
+      <input type="number" id="discount" name="discount" value="{{old('discount',isset($product) ? $product->discount : 0)}}" class="form-control" placeholder="ENTEROS 5,8,10 ETC" />
+      <label class="form-label">DESCUENTO (5,10,8,ETC)</label>
   </div>
 </div>
+
+<div class="col-md-4">
+  <select class="form-select" name="tax_id" id="tax_id">
+    @foreach ($taxes as $tax)
+        <option value="{{ $tax->id }}" {{ (old('tax_id', $product->tax_id ?? '') == $tax->id) ? 'selected' : '' }}>
+            {{ $tax->concept }}
+        </option>
+    @endforeach
+</select>
+    <label class="form-label">IMPUESTO</label>
+</div>
+
 
 </div>
 
@@ -103,9 +109,9 @@
  <!-- Submit button -->
  <div class="row mb-4 col-md-6">
 
- <button type="submit" class="btn btn-primary btn-block col-md-3 m-1">{{$modo}} Proveedor</button>
+ <button type="submit" class="btn btn-primary btn-block col-md-3 m-1">{{$modo}} Producto</button>
  
- <button type="button" class="btn btn-warning btn-block col-md-3 m-1"> <a class="text-white" href="{{ url('proveedores/') }}">
+ <button type="button" class="btn btn-warning btn-block col-md-3 m-1"> <a class="text-white" href="{{ url('productos/') }}">
     Regresar
 </a> </button> 
 

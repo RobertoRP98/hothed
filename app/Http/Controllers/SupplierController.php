@@ -61,8 +61,14 @@ class SupplierController extends Controller
     public function update(UpdateSupplierRequest $request, $id)
     {
         $datossupplier = $request->validated();
-        Supplier::where('id',$id)->update($datossupplier);
-        $supplier = Supplier::FindOrFail($id);
+
+        $supplier= Supplier::findOrFail($id);
+
+        $supplier->fill($datossupplier);
+
+        $supplier->setAttributesToUppercase(['name','rfc','address']);
+
+        $supplier->save();
 
         return redirect('proveedores')->with('message','Proveedor Actualizado');
     }

@@ -14,7 +14,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $datos ['products'] = Product::all();
+        $datos['products'] = Product::all();
         return view('product.index', $datos);
     }
 
@@ -24,7 +24,7 @@ class ProductController extends Controller
     public function create()
     {
         $taxes = Tax::all();
-        return view ('product.create', compact('taxes'));
+        return view('product.create', compact('taxes'));
     }
 
     /**
@@ -36,7 +36,7 @@ class ProductController extends Controller
 
         Product::create($datosproduct);
 
-        return redirect('productos')->with('message','Producto Agregado');
+        return redirect('productos')->with('message', 'Producto Agregado');
     }
 
     /**
@@ -54,7 +54,7 @@ class ProductController extends Controller
     {
         $product = Product::FindOrFail($id);
         $taxes = Tax::all();
-        return view('product.edit', compact('product','taxes'));
+        return view('product.edit', compact('product', 'taxes'));
     }
 
     /**
@@ -63,9 +63,20 @@ class ProductController extends Controller
     public function update(UpdateProductRequest $request, $id)
     {
         $datosproduct = $request->validated();
-        Product::where('id', $id)->update($datosproduct);
+        // Obtener el modelo
+        $product = Product::findOrFail($id);
 
-        return redirect('productos')->with('message','Producto Actualizado');
+        // Actualizar los atributos del producto
+        $product->fill($datosproduct); // Usar fill para actualizar el modelo
+
+        // Convertir los campos a mayúsculas antes de guardar
+        $product->setAttributesToUppercase(['internal_id', 'description', 'brand']);
+
+
+        // Guardar el modelo
+        $product->save();
+
+        return redirect('productos')->with('message', 'Producto Actualizado');
     }
 
     /**

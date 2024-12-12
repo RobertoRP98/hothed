@@ -22,7 +22,7 @@ class StoreProductRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'internal_id' => 'required',
+            'internal_id' => 'required|unique:products',
             'description' => 'required',
             'brand' => 'required',
             'quantity' => 'required',
@@ -38,7 +38,7 @@ class StoreProductRequest extends FormRequest
         return [
         'required' => 'El :attribute es requerido' ,
         'numeric' => 'El :attribute debe ser numerico',
-        
+        'unique' => 'El :attribute debe ser unico',
         ];
     }
 

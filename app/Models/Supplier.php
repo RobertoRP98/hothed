@@ -13,9 +13,33 @@ class Supplier extends Model
 
     protected $guarded = ['id'];
 
+    protected $fillable = [
+        'name', 'rfc', 'number', 'address', 'critic', 'currency', 'credit_days', 'unique', 'email'
+    ];
+
+    
+
 
     public function purchaseOrders()
     {
         return $this->hasMany(PurchaseOrder::class);
+    }
+
+    public function setAttributesToUppercase(array $attributes)
+    {
+        foreach ($attributes as $attribute) {
+            if (isset($this->attributes[$attribute])) {
+                $this->attributes[$attribute] = strtoupper($this->attributes[$attribute]);
+            }
+        }
+    }
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::saving(function ($model) {
+            $model->setAttributesToUppercase(['name','rfc','address']);
+        });
     }
 }

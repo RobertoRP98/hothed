@@ -21,8 +21,9 @@ class UpdateProductRequest extends FormRequest
      */
     public function rules(): array
     {
+
+
         return [
-            'internal_id' => 'required',
             'description' => 'required',
             'brand' => 'required',
             'quantity' => 'required',
@@ -38,6 +39,7 @@ class UpdateProductRequest extends FormRequest
         return [
         'required' => 'El :attribute es requerido' ,
         'numeric' => 'El :attribute debe ser numerico',
+
         
         ];
     }
