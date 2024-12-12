@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('createcondition')
+@section('createsupplier')
 <div class="container">
     <br>
 <form action="{{url(('/proveedores'))}}" method="post" enctype="multipart/form-data">

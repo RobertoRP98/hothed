@@ -14,7 +14,7 @@
  <div class="row mb-4 col-md-3">
    <div class="col">
      <div data-mdb-input-init class="form-outline">
-      <input type="text" id="name" name="name" value="{{ isset($company) ? $company->name : '' }}" class="form-control" />
+      <input type="text" id="name" name="name" value="{{ isset($company) ? $company->name : '' }}" class="form-control text-uppercase" />
       <label class="form-label" for="nameclient">Nombre</label>
      </div>
    </div>

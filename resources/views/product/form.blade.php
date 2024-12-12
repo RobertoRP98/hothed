@@ -15,35 +15,44 @@
 <!-- Primera fila -->
 <div class="row mb-4">
 
-    <div class="col-md-6">
+    <div class="col-md-3">
         <div class="form-outline">
-            <input type="text" id="name" name="name" value="{{ isset($supplier) ? $supplier->name : '' }}" class="form-control text-uppercase" />
-            <label class="form-label" for="name">NOMBRE</label>
+            <input type="text" id="internal_id" name="internal_id" value="{{ isset($product) ? $product->internal_id : '' }}" class="form-control text-uppercase" placeholder="ESTE IDENTIFICADOR ES UNICO"/>
+            <label class="form-label" for="internal_id ">IDENTIFICADOR INTERNO</label>
         </div>
     </div>
 
     <div class="col-md-6">
       <div class="form-outline">
-          <input type="text" id="rfc" name="rfc" minlength="12" maxlength="13" value="{{isset($supplier) ? $supplier->rfc : ''}}" class="form-control text-uppercase" />
-          <label class="form-label" for="rfc">RFC</label>
+          <input type="text" id="description" name="description" value="{{ isset($product) ? $product->description : '' }}" class="form-control text-uppercase" placeholder="NOMBRE DEL PRODUCTO"/>
+          <label class="form-label" for="internal_id ">DESCRIPCIÓN</label>
       </div>
   </div>
+
+  <div class="col-md-3">
+    <div class="form-outline">
+        <input type="text" id="brand" name="brand" value="{{ isset($product) ? $product->brand : '' }}" class="form-control text-uppercase"/>
+        <label class="form-label" for="internal_id ">MARCA DEL PRODUCTO</label>
+    </div>
+</div>
+    
 
 </div>
 
 <!-- Segunda fila -->
 <div class="row mb-4">  
 
-  <div class="col-md-4">
+  <div class="col-md-3">
     <div class="form-outline">
-        <input type="text" id="number" name="number" minlength="10" maxlength="12" value="{{ isset($supplier) ? $supplier->number : '' }}" class="form-control" />
-        <label class="form-label" for="rumber">NUMERO DE CONTACTO</label>
+        <input type="number" id="quantity" name="quantity" value="{{ isset($supplier) ? $supplier->quantity : 0 }}" class="form-control" />
+        <label class="form-label" for="quantity">CANTIDAD</label>
     </div>
-</div>
+  </div>
+
 
 <div class="col-md-8">
   <div class="form-outline">
-      <input type="text" id="address" name="address" value="{{isset($supplier) ? $supplier->address : ''}}" class="form-control text-uppercase" />
+      <input type="text" id="address" name="address" value="{{isset($supplier) ? $supplier->address : ''}}" class="form-control" />
       <label class="form-label" for="address">DIRECCIÓN</label>
   </div>
 </div>
@@ -75,12 +84,7 @@
 </div>   
 </div>
 
-<div class="col-md-3">
-  <div class="form-outline">
-      <input type="number" id="credit_days" name="credit_days" value="{{ isset($supplier) ? $supplier->credit_days : 0 }}" class="form-control" />
-      <label class="form-label" for="credit_days">DIAS DE CREDITO</label>
-  </div>
-</div>
+
 
 <div class="col-md-3">
   <div class="form-outline">

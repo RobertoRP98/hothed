@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('indexcondition')
+@section('indexsupplier')
 
 <div class="container">
  @if(Session::has('message'))

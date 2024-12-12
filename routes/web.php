@@ -19,6 +19,7 @@ use App\Http\Controllers\ToolstatusController;
 use App\Http\Controllers\ToolHistoryController;
 use App\Http\Controllers\ToolwarehouseController;
 use App\Http\Controllers\CompanyReceivableController;
+use App\Http\Controllers\ProductController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -154,7 +155,7 @@ Route::get('/facturas/{companyreceivable_id}/edit/{factura}', [BillController::c
 Route::group(['middleware' => ['auth', 'role:Developer']], function () {
 
     Route::resource('/impuestos',TaxController::class)->middleware('auth');
-
     Route::resource('/proveedores',SupplierController::class)->middleware('auth');
+    Route::resource('/productos',ProductController::class)->middleware('auth');
 
 });

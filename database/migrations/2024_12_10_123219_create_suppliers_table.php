@@ -20,7 +20,7 @@ return new class extends Migration
                 $table->string('address');
                 $table->boolean('critic')->default(false);
                 $table->enum('currency', ['MXN', 'USD', 'MIXTO'])->default('MXN');
-                $table->tinyInteger('credit_days')->default(0);
+                $table->smallInteger('credit_days')->default(0);
                 $table->boolean('unique')->default(false);
                 $table->timestamps();
             });
