@@ -22,7 +22,27 @@ class UpdateRequisitionRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'user_id' => 'required',
+            'status_requisition' => 'required',
+            'importance' => 'required',
+            'finished' => 'required',
+            'production_date' => 'required',
+            'request_date' => 'required',
         ];
+    }
+
+    
+    public function messages(){
+        return [
+        'required' => 'El campo :attribute requerido' ,
+        ];
+    }
+
+    protected function prepareForValidation()
+    {
+        $this->merge(
+            $this->except(['_token', ('_method')])
+            
+        );
     }
 }

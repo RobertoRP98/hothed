@@ -31,7 +31,9 @@ class UpdateSupplierRequest extends FormRequest
             'critic' => 'required',
             'currency' => 'required',
             'credit_days' => 'required',
-            'unique' => 'required',         
+            'unique' => 'required',      
+            'account' => 'nullable',       
+
         ];
     }
 

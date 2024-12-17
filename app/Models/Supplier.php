@@ -14,7 +14,7 @@ class Supplier extends Model
     protected $guarded = ['id'];
 
     protected $fillable = [
-        'name', 'rfc', 'number', 'address', 'critic', 'currency', 'credit_days', 'unique', 'email'
+        'name', 'rfc', 'number', 'address', 'critic', 'currency', 'credit_days', 'unique', 'email','account'
     ];
 
     
@@ -39,7 +39,7 @@ class Supplier extends Model
         parent::boot();
 
         static::saving(function ($model) {
-            $model->setAttributesToUppercase(['name','rfc','address']);
+            $model->setAttributesToUppercase(['name','rfc','address','account']);
         });
     }
 }

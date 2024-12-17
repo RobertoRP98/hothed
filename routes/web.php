@@ -8,6 +8,7 @@ use App\Http\Controllers\BillController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\FamilyController;
 use App\Http\Controllers\StatusController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\WellOilController;
 use App\Http\Controllers\CurrencyController;
 use App\Http\Controllers\SubgroupController;
@@ -17,9 +18,11 @@ use App\Http\Controllers\ConditionController;
 use App\Http\Controllers\TypemaintController;
 use App\Http\Controllers\ToolstatusController;
 use App\Http\Controllers\ToolHistoryController;
+use App\Http\Controllers\PurchaseOrderController;
 use App\Http\Controllers\ToolwarehouseController;
 use App\Http\Controllers\CompanyReceivableController;
-use App\Http\Controllers\ProductController;
+use App\Http\Controllers\RequisitionController;
+use App\Models\Requisition;
 
 Route::get('/', function () {
     return view('welcome');
@@ -157,5 +160,10 @@ Route::group(['middleware' => ['auth', 'role:Developer']], function () {
     Route::resource('/impuestos',TaxController::class)->middleware('auth');
     Route::resource('/proveedores',SupplierController::class)->middleware('auth');
     Route::resource('/productos',ProductController::class)->middleware('auth');
+    Route::resource('/compras',PurchaseOrderController::class)->middleware('auth');
+
+    Route::resource('/requisiciones',RequisitionController::class)->middleware('auth');
+
+
 
 });

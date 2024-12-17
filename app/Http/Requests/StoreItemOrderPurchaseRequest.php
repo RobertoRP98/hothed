@@ -22,7 +22,23 @@ class StoreItemOrderPurchaseRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'purchase_order_id' => 'required',
+            'product_id' => 'required',
+            'quantity' => 'required',
+            'subtotal' => 'required',
         ];
+    }
+
+    public function messages(){
+        return [
+        'required' => 'El :attribute es requerido' ,
+        ];
+    }
+
+    protected function prepareForValidation()
+    {
+        $this->merge(
+            $this->except(['_token'])
+        );
     }
 }

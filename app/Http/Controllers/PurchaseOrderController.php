@@ -13,7 +13,9 @@ class PurchaseOrderController extends Controller
      */
     public function index()
     {
-        //
+        $datos ['compras'] = PurchaseOrder::all();
+        return view('compras.index',$datos);
+
     }
 
     /**
@@ -21,7 +23,7 @@ class PurchaseOrderController extends Controller
      */
     public function create()
     {
-        //
+        return view('compras.create');
     }
 
     /**

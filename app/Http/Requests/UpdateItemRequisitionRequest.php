@@ -22,7 +22,23 @@ class UpdateItemRequisitionRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'requisition_id' => 'required',
+            'product_id'=> 'required',
+            'quantity' => 'required',
         ];
+    }
+
+    public function messages(){
+        return [
+        'required' => 'El campo :attribute requerido' ,
+        ];
+    }
+
+    protected function prepareForValidation()
+    {
+        $this->merge(
+            $this->except(['_token', ('_method')])
+            
+        );
     }
 }

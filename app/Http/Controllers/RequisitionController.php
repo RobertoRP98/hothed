@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreItemRequisitionRequest;
+use App\Models\User;
+use App\Models\Product;
 use App\Models\Requisition;
 use App\Http\Requests\StoreRequisitionRequest;
 use App\Http\Requests\UpdateRequisitionRequest;
@@ -12,8 +15,11 @@ class RequisitionController extends Controller
      * Display a listing of the resource.
      */
     public function index()
-    {
-        //
+    {   
+
+        $datos ['requisiciones'] = Requisition::all();
+
+        return view('requisition.index', $datos);
     }
 
     /**
@@ -21,7 +27,9 @@ class RequisitionController extends Controller
      */
     public function create()
     {
-        //
+        $productos = Product::all();
+
+        return view('requisition.create', compact('productos'));
     }
 
     /**
@@ -37,7 +45,7 @@ class RequisitionController extends Controller
      */
     public function show(Requisition $requisition)
     {
-        //
+        return view('requisition.show');
     }
 
     /**

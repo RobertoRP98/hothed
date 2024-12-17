@@ -100,6 +100,16 @@
 
 </div>
 
+<!-- Cuarta fila -->
+<div class="row mb-4">
+    <div class="col-md-6">
+        <div class="form-outline">
+            <input type="text" id="account" name="account" value="{{ old('account', isset($supplier) ? $supplier->account : '') }}" class="form-control text-uppercase" />
+            <label class="form-label" for="name">CLABE O CUENTA BANCARIA</label>
+        </div>
+    </div>
+</div>
+
 <br>
  <!-- Submit button -->
  <div class="row mb-4 col-md-6">

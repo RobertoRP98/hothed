@@ -66,7 +66,7 @@ class SupplierController extends Controller
 
         $supplier->fill($datossupplier);
 
-        $supplier->setAttributesToUppercase(['name','rfc','address']);
+        $supplier->setAttributesToUppercase(['name','rfc','address','account']);
 
         $supplier->save();
 
