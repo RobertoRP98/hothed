@@ -117,6 +117,8 @@ Route::get('/export-resumen-semanal',[BillController::class,'exportReporteSemana
 //
 Route::get('/export-resumen-semanal-actual',[BillController::class,'exportReporteSemanaActual'])->name('export.resumen-semana-actual');
 
+Route::get('/send-email', [BillController::class, 'sendHelloWorldEmail']);
+
 });
 
 
