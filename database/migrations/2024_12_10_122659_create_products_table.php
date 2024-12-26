@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('brand')->nullable();
             $table->integer('quantity')->default(0);
             $table->integer('min_stock')->default(0);
-            $table->integer('max_stock')->nullable(); // Null si no hay límite superior.
+            $table->integer('max_stock')->default(0)->nullable(); // Null si no hay límite superior.
 
 
             $table->enum('udm', ['PIEZAS', 'KG', 'LITROS', 'SERVICIO','KILOMETROS','METROS CUBICOS','METROS CUADRADOS', 

@@ -42,14 +42,28 @@
 <!-- Segunda fila -->
 <div class="row mb-4">  
 
-  <div class="col-md-4">
+  <div class="col-md-2">
     <div class="form-outline">
         <input type="number" id="quantity" name="quantity" value="{{ old('quantity',isset($product) ? $product->quantity : 0 )}}" class="form-control" />
         <label class="form-label">CANTIDAD</label>
     </div>
   </div>
+  
+  <div class="col-md-2">
+    <div class="form-outline">
+        <input type="number" id="min_stock" name="min_stock" value="{{ old('min_stock',isset($product) ? $product->min_stock : 0 )}}" class="form-control" />
+        <label class="form-label">STOCK MINIMO</label>
+    </div>
+  </div>
 
-  <div class="col-md-4">
+  <div class="col-md-2">
+    <div class="form-outline">
+        <input type="number" id="max_stock" name="max_stock" value="{{ old('max_stock',isset($product) ? $product->max_stock : 0 )}}" class="form-control" />
+        <label class="form-label">STOCK MAXIMO</label>
+    </div>
+  </div>
+
+  <div class="col-md-3">
     <div class="form-outline">
       <select class="form-select" name="udm" id="udm"> <option value="PIEZAS" {{ old('udm', isset($product) && $product->udm == 'PIEZAS' ? 'selected' : '') }}>PIEZAS</option> <option value="KG" {{ old('udm', isset($product) && $product->udm == 'KG' ? 'selected' : '') }}>KGS</option> <option value="LITROS" {{ old('udm', isset($product) && $product->udm == 'LITROS' ? 'selected' : '') }}>LITROS</option> <option value="SERVICIO" {{ old('udm', isset($product) && $product->udm == 'SERVICIO' ? 'selected' : '') }}>SERVICIO</option> <option value="KILOMETROS" {{ old('udm', isset($product) && $product->udm == 'KILOMETROS' ? 'selected' : '') }}>KILOMETROS</option> <option value="METROS" {{ old('udm', isset($product) && $product->udm == 'METROS' ? 'selected' : '') }}>METROS</option> <option value="METROS CUBICOS" {{ old('udm', isset($product) && $product->udm == 'METROS CUBICOS' ? 'selected' : '') }}>METROS CUBICOS</option> <option value="METROS CUADRADOS" {{ old('udm', isset($product) && $product->udm == 'METROS CUADRADOS' ? 'selected' : '') }}>METROS CUADRADOS</option> <option value="LIBRAS" {{ old('udm', isset($product) && $product->udm == 'LIBRAS' ? 'selected' : '') }}>LIBRAS</option> <option value="GALONES" {{ old('udm', isset($product) && $product->udm == 'GALONES' ? 'selected' : '') }}>GALONES</option> <option value="CUBETAS" {{ old('udm', isset($product) && $product->udm == 'CUBETAS' ? 'selected' : '') }}>CUBETAS</option> <option value="TAMBORES" {{ old('udm', isset($product) && $product->udm == 'TAMBORES' ? 'selected' : '') }}>TAMBORES</option> <option value="JUEGOS" {{ old('udm', isset($product) && $product->udm == 'JUEGOS' ? 'selected' : '') }}>JUEGOS</option> <option value="HORAS" {{ old('udm', isset($product) && $product->udm == 'HORAS' ? 'selected' : '') }}>HORAS</option> <option value="DIAS" {{ old('udm', isset($product) && $product->udm == 'DIAS' ? 'selected' : '') }}>DIAS</option>
         </select>
@@ -57,7 +71,7 @@
   </div>   
   </div>
 
-  <div class="col-md-4">
+  <div class="col-md-3">
     <div class="form-outline">
         <select class="form-select" name="category" id="category">
         <option value="ACCESORIO" {{old('category',isset($product) && $product->category == 'ACCESORIO' ? 'selected':'')}}>ACCESORIO</option>
@@ -104,6 +118,17 @@
 
 
 </div>
+
+<div class="row mb-4">
+  <div class="col-md-6">
+    <div class="form-outline">
+        <input type="text" id="commentary" name="commentary" value="{{ old('commentary',isset($product) ? $product->commentary : '' )}}" class="form-control text-uppercase" placeholder="CAMPO OPCIONAL"/>
+        <label class="form-label">COMENTARIO</label>
+    </div>
+  </div>
+
+</div>
+
 
 <br>
  <!-- Submit button -->

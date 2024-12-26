@@ -26,6 +26,8 @@ class StoreProductRequest extends FormRequest
             'description' => 'required',
             'brand' => 'required',
             'quantity' => 'required',
+            'min_stock' => 'required',       
+            'max_stock' => 'nullable',
             'udm' => 'required',
             'category' => 'required',
             'price' => 'required',

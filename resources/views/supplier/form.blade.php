@@ -102,13 +102,48 @@
 
 <!-- Cuarta fila -->
 <div class="row mb-4">
+
     <div class="col-md-6">
         <div class="form-outline">
-            <input type="text" id="account" name="account" value="{{ old('account', isset($supplier) ? $supplier->account : '') }}" class="form-control text-uppercase" />
-            <label class="form-label" for="name">CLABE O CUENTA BANCARIA</label>
+            <input type="text" id="account" name="account" value="{{ old('account', isset($supplier) ? $supplier->account : '') }}" class="form-control text-uppercase" placeholder="El campo es opcional"/>
+            <label class="form-label" for="account">CLABE O CUENTA BANCARIA</label>
         </div>
     </div>
+
+    <div class="col-md-3">
+        <div class="form-outline">
+            <select id="contract" name="contract" class="form-select">
+                <option value="0" {{ old('contract', isset($supplier) ? $supplier->contract : 0) == 0 ? 'selected' : '' }}>NO</option>
+                <option value="1" {{ old('contract', isset($supplier) ? $supplier->contract : 0) == 1 ? 'selected' : '' }}>SI</option>
+            </select>
+            <label class="form-label" for="contract">¿CONTRATO?</label>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="form-outline">
+            <select class="form-select" name="status" id="status">
+                <option value="APROVADO" {{ old('status', isset($supplier) ? $supplier->status : '') == 'APROVADO' ? 'selected' : '' }}>APROVADO</option>
+                <option value="CONDICIONADO" {{ old('status', isset($supplier) ? $supplier->status : '') == 'CONDICIONADO' ? 'selected' : '' }}>CONDICIONADO</option>
+                <option value="BAJA" {{ old('status', isset($supplier) ? $supplier->status : '') == 'BAJA' ? 'selected' : '' }}>BAJA</option>
+            </select>
+            <label class="form-label" for="status">STATUS</label>
+        </div>
+    </div>
+
 </div>
+
+<div class="row mb-4">
+    
+    <div class="col-md-6">
+        <div class="form-outline">
+            <input type="text" id="notes" name="notes" value="{{ old('notes', isset($supplier) ? $supplier->notes : '') }}" class="form-control text-uppercase" placeholder="El campo es opcional"/>
+            <label class="form-label" for="name">COMENTARIO</label>
+        </div>
+    </div>
+
+</div>
+
 
 <br>
  <!-- Submit button -->
