@@ -17,7 +17,7 @@ return new class extends Migration
             $table->unsignedBigInteger('requisition_id')->nullable();
             $table->unsignedBigInteger('tax_id')->nullable();
 
-            $table->enum('importance_op', ['Alta', 'Media', 'Baja'])->default('Baja');
+            $table->enum('importance_op', ['Alta', 'Media', 'Baja','Critico'])->default('Baja');
             $table->enum('type_op', ['Local', 'Extranjera'])->default('Local');
             $table->date('date_start');
             $table->date('date_end')->nullable();

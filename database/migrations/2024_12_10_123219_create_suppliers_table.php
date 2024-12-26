@@ -23,6 +23,9 @@ return new class extends Migration
                 $table->smallInteger('credit_days')->default(0);
                 $table->boolean('unique')->default(false);
                 $table->string('account');
+                $table->boolean('contract')->default(false);
+                $table->enum('status',['APROVADO','BAJA','CONDICIONADO'])->default('APROVADO');
+                $table->text('notes')->nullable();
                 $table->timestamps();
             });
         

@@ -9,5 +9,7 @@
     <div >
         <img src="{{ $message->embed("https://media.tenor.com/HBUOq9xUz7wAAAAM/breakdance-moves.gif") }}"> 
     </div>
+
+    <p><i>Directiva principal, Restaurar y mantener el orden.</i></p>
 </body>
 </html>
