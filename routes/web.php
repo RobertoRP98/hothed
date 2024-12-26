@@ -5,7 +5,6 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TaxController;
 use App\Http\Controllers\BaseController;
 use App\Http\Controllers\BillController;
-use App\Http\Controllers\ClientController;
 use App\Http\Controllers\FamilyController;
 use App\Http\Controllers\StatusController;
 use App\Http\Controllers\ProductController;
@@ -16,6 +15,7 @@ use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\ToolrentController;
 use App\Http\Controllers\ConditionController;
 use App\Http\Controllers\TypemaintController;
+
 use App\Http\Controllers\ToolstatusController;
 use App\Http\Controllers\ToolHistoryController;
 use App\Http\Controllers\PurchaseOrderController;
@@ -54,12 +54,7 @@ Route::get('/new-index',function(){return view('errors.newindex');})->name('newi
 
 
 
-Route::resource('clientes', ClientController::class)->middleware('auth');
-Route::resource('condiciones', ConditionController::class)->middleware('auth');
 Route::resource('status', StatusController::class)->middleware('auth');
-Route::resource('pozos', WellOilController::class)->middleware('auth');
-Route::resource('herramientasrenta', ToolrentController::class)->middleware('auth');
-Route::resource('tiposmantenimiento', TypemaintController::class)->middleware('auth');
 
 // EMPIEZA ALMACEN
 Route::group(['middleware'=> ['auth','checkrole:Almacen']], function(){
@@ -132,6 +127,8 @@ Route::get('/catalogo/{id}/exportpe', [CompanyReceivableController::class, 'expo
 Route::get('/export-resumen-semanal',[BillController::class,'exportReporteSemanal'])->name('export.resumen-semanal');
 //
 Route::get('/export-resumen-semanal-actual',[BillController::class,'exportReporteSemanaActual'])->name('export.resumen-semana-actual');
+
+Route::get('/send-email', [BillController::class, 'sendHelloWorldEmail']);
 
 });
 

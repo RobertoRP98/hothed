@@ -5,12 +5,14 @@ namespace App\Http\Controllers;
 use Carbon\Carbon;
 use App\Models\Bill;
 use App\Models\Currency;
+use App\Mail\HelloWorldMail;
 use App\Exports\EmpresasExport;
 use App\Exports\ResumenSemanal;
 use App\Models\CompanyReceivable;
 use App\Exports\privadasNoVenExport;
 use App\Exports\publicasNoVenExport;
 use App\Exports\ResumenSemanaActual;
+use Illuminate\Support\Facades\Mail;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\pendienteCobrarGlobal;
 use App\Exports\privadasvencidasExport;
@@ -435,5 +437,11 @@ class BillController extends Controller
     public function exportReporteSemanaActual()
     {
         return Excel::download(new ResumenSemanaActual, 'Resumen Semana actual ' . Carbon::now()->format('d-m-Y') . '.xlsx');
+    }
+
+    public function sendHelloWorldEmail()
+    {
+        Mail::to('digital@hothedmex.mx')->send(new HelloWorldMail());
+        return 'Correo enviado con éxito';
     }
 }

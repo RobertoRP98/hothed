@@ -110,6 +110,14 @@ class RoleSeeder extends Seeder
          }
 
          //AUX COBRANZA PARA BIANCA Y PERLA
+         $user = User::find(13); // Bianca
+         if ($user) {
+             $user->assignRole('Cobranza');
+         }
+         $user = User::find(15); // Perla
+         if ($user) {
+             $user->assignRole('Cobranza');
+         }
 
      }
 }
