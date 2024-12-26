@@ -27,7 +27,7 @@ class HelloWorldMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Hola desde adminhothedmex.mx',
+            subject: 'Notificaciones adminhothedmex.mx',
         );
     }
 

@@ -441,7 +441,7 @@ class BillController extends Controller
 
     public function sendHelloWorldEmail()
     {
-        Mail::to('karla.mondragon@hothedmex.mx')->send(new HelloWorldMail());
+        Mail::to('digital@hothedmex.mx')->send(new HelloWorldMail());
         return 'Correo enviado con éxito';
     }
 }
