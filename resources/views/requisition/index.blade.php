@@ -36,10 +36,11 @@
     <table id="compras" class="table table-light table-bordered table-hover text-center">
 <thead class="thead-light">
         <tr>
-            <th>ID</th>
+            <th>NUM. REQUISICIÓN</th>
             <th>USUARIO</th>
-            <th>VER</th>
-            <th>OC</th>
+            <th>DEPARTAMENTO</th>
+            <th>PRIORIDAD</th>
+            <th>OPCIONES</th>
 
         </tr>
     </thead>
@@ -47,7 +48,9 @@
         @foreach($requisiciones as $requisicion)
         <tr>
             <td>{{ $requisicion->id }}</td>
-            <td>{{ $requisicion->user->name }}</td>          
+            <td>{{ $requisicion->user->name }}</td>
+            <td>{{ $requisicion->user->departament }}</td>        
+            <td>{{ $requisicion->importance }}</td>
             <td>
                <button class="btn btn-warning mb-2"> <a class="text-white" href="{{ url('requisiciones/'.$requisicion->id.'/show') }}">
                     VER

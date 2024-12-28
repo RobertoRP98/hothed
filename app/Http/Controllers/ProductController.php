@@ -6,6 +6,7 @@ use App\Models\Tax;
 use App\Models\Product;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
+use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
@@ -85,5 +86,25 @@ class ProductController extends Controller
     public function destroy(Product $product)
     {
         //
+    }
+
+    public function search(Request $request){
+
+       // Recuperamos el término de búsqueda enviado por el frontend
+    $query = $request->input('query'); // Aquí usamos 'query' para que coincida con el frontend
+
+    // Si no hay término de búsqueda, devolver un array vacío
+    if (!$query) {
+        return response()->json([]);
+    }
+
+    // Realizamos la búsqueda en la base de datos
+    $products = Product::where('description', 'like', '%' . $query . '%')
+        ->orderBy('description', 'asc') // Opcional, ordena alfabéticamente
+        ->get();
+
+    // Devolvemos los resultados como respuesta JSON
+    return response()->json($products);
+
     }
 }

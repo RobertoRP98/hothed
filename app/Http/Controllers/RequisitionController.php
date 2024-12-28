@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreItemRequisitionRequest;
-use App\Models\User;
 use App\Models\Product;
 use App\Models\Requisition;
 use App\Http\Requests\StoreRequisitionRequest;
 use App\Http\Requests\UpdateRequisitionRequest;
+use App\Models\ItemRequisition;
+use Illuminate\Support\Facades\DB;
+
 
 class RequisitionController extends Controller
 {
@@ -15,9 +16,9 @@ class RequisitionController extends Controller
      * Display a listing of the resource.
      */
     public function index()
-    {   
+    {
 
-        $datos ['requisiciones'] = Requisition::all();
+        $datos['requisiciones'] = Requisition::all();
 
         return view('requisition.index', $datos);
     }
@@ -37,15 +38,37 @@ class RequisitionController extends Controller
      */
     public function store(StoreRequisitionRequest $request)
     {
-        //
-    }
+        DB::transaction(function () use ($request) {
+            //Crear la requisicion principal
+            $requisition = Requisition::create([
+                'user_id' => auth()->user->id(),
+                'status_requisition' => $request->status_requisition,
+                'importance' => $request->importance,
+                'finished' => $request->finished,
+                'production_date' => $request->production_date,
+                'request_date' => $request->request_date,
+                'days_remaining' => $request->days_remaining,
+            ]);
 
+            foreach ($request->input('items_requisition') as $item) {
+                ItemRequisition::create([
+                    'requisition_id' => $requisition->id,
+                    'product_id' => $item['product_id'],
+                    'quantity' => $item['quantity'],
+                ]);
+            }
+        });
+        return redirect('requisiciones')->with('message', 'Requisicion Agregada');
+    }
     /**
      * Display the specified resource.
      */
-    public function show(Requisition $requisition)
+    public function show($id)
     {
-        return view('requisition.show');
+
+        //mostrar la requisicion
+        $requisition = Requisition::find($id);
+        return view('requisition.show', compact('requisition'));
     }
 
     /**
