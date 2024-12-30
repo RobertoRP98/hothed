@@ -22,16 +22,16 @@ class StoreRequisitionRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'user_id' => 'required|integer',
-            'status_requisition' => 'required|string',
-            'importance' => 'required|string',
-            'finished' => 'required|boolean',
-            'production_date' => 'required|date',
-            'request_date' => 'required|date',
-            'days_remaining' => 'required|integer',
-            'items_requisition' => 'required|array|min:1',
-            'items_requisition.*.product_id' => 'required|string',
-            'items_requisition.*.quantity' => 'required|integer|min:1',
+            'user_id' => 'required|exists:users,id',
+        'status_requisition' => 'required|string',
+        'importance' => 'required|string',
+        'finished' => 'required|boolean',
+        'production_date' => 'required|date',
+        'request_date' => 'required|date',
+        'days_remaining' => 'required|integer',
+        'items_requisition' => 'required|array|min:1',
+        'items_requisition.*.product_id' => 'required|exists:products,id',
+        'items_requisition.*.quantity' => 'required|integer|min:1',
         ];
     }
 

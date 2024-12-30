@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\Product;
 use App\Models\Requisition;
+use App\Models\ItemRequisition;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Request;
 use App\Http\Requests\StoreRequisitionRequest;
 use App\Http\Requests\UpdateRequisitionRequest;
-use App\Models\ItemRequisition;
-use Carbon\Carbon;
-use Illuminate\Support\Facades\DB;
 
 
 class RequisitionController extends Controller
@@ -29,7 +31,6 @@ class RequisitionController extends Controller
      */
     public function create()
     {
-
         $today = Carbon::now()->format('Y-m-d');
         $initialData = [
             'formData' => [
@@ -43,6 +44,7 @@ class RequisitionController extends Controller
             ],
             'productData' => [], // Inicialmente vacío
         ];
+
         $productos = Product::all();
 
 
@@ -54,9 +56,10 @@ class RequisitionController extends Controller
      */
     public function store(StoreRequisitionRequest $request)
     {
-        Log::info('Entrando al método store', ['request_data' => $request->all()]);
-        dd($request->all()); // Inspecciona el contenido recibido
-        
+    
+        Log::info('Items recibidos:', $request->input('items_requisition'));
+
+
         DB::transaction(function () use ($request) {
             // Crear la requisición principal
             $requisition = Requisition::create($request->only([

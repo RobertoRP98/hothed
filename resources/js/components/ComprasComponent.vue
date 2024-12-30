@@ -107,14 +107,11 @@
                     :key="index"
                     class="row"
                 >
-                    {{ value }}
-                    <!-- Temporal para depurar -->
-                    <input type="text" v-model="value.product_id" />
-
+                    <!-- Input de descripción -->
                     <div class="col-md-4 mt-2">
                         <input
                             type="text"
-                            v-model="value.product_id"
+                            v-model="value.description"
                             @input="searchProducts(index)"
                             class="form-control"
                             placeholder="Busque un producto"
@@ -124,9 +121,7 @@
                             class="list-group"
                         >
                             <li
-                                v-for="(
-                                    product, suggestionIndex
-                                ) in value.suggestions"
+                                v-for="(product, suggestionIndex) in value.suggestions"
                                 :key="suggestionIndex"
                                 @click="selectProduct(index, product)"
                                 class="list-group-item"
@@ -135,6 +130,8 @@
                             </li>
                         </ul>
                     </div>
+
+                    <!-- Input de cantidad -->
                     <div class="col-md-4 mt-2">
                         <input
                             type="number"
@@ -143,6 +140,8 @@
                             placeholder="Cantidad"
                         />
                     </div>
+
+                    <!-- Botón para eliminar producto -->
                     <div class="col-md-4 mt-2">
                         <button
                             class="btn btn-danger"
@@ -170,53 +169,37 @@ import axios from "axios";
 export default {
     name: "ComprasComponent",
     props: {
-        initialData: Object, // Para datos iniciales al editar
+        initialData: Object,
         required: true,
     },
-    defaultRequestDate: {
-        type: String,
-        required: true,
-    },
-
     data() {
         return {
             formData: {
-                user_id: this.initialData.user_id || "",
+                user_id: "",
                 status_requisition: "Pendiente",
                 importance: "Baja",
                 finished: "0",
-                production_date: "this.defaultRequestDate",
+                production_date: "",
                 request_date: "",
                 days_remaining: "",
             },
-            productData: this.initialData.productData || [
-                { product_id: "", quantity: 0, suggestions: [] },
+            productData: [
+                { product_id: "", description: "", quantity: 1, suggestions: [] },
             ],
         };
     },
     mounted() {
-        this.formData.user_id =
-        document
-            .querySelector('meta[name="user-id"]')
-            .getAttribute("content") || this.formData.user_id;
-
-    console.log("User ID cargado:", this.formData.user_id); // Verificar si el ID está presente
-    
-        console.log("Datos iniciales:", this.initialData);
         if (this.initialData) {
             this.formData = { ...this.initialData.formData };
             this.productData = [...this.initialData.productData];
         }
-        this.formData.user_id =
-            document
-                .querySelector('meta[name="user-id"]')
-                .getAttribute("content") || this.formData.user_id;
     },
     methods: {
         addFields() {
             this.productData.push({
                 product_id: "",
-                quantity: 0,
+                description: "",
+                quantity: 1,
                 suggestions: [],
             });
         },
@@ -224,7 +207,7 @@ export default {
             this.productData.splice(index, 1);
         },
         searchProducts(index) {
-            const query = this.productData[index].product_id;
+            const query = this.productData[index].description;
             if (query.length < 2) {
                 this.productData[index].suggestions = [];
                 return;
@@ -236,23 +219,30 @@ export default {
                 });
         },
         selectProduct(index, product) {
-            this.productData[index].product_id = product.description;
-            this.productData[index].suggestions = [];
+            this.productData[index].product_id = product.id; // Guardar ID
+            this.productData[index].description = product.description; // Mostrar descripción
+            this.productData[index].suggestions = []; // Limpiar sugerencias
         },
         submitForm() {
             const payload = {
                 ...this.formData,
-                items_requisition: this.productData,
+                items_requisition: this.productData.map((item) => ({
+                    product_id: item.product_id,
+                    quantity: item.quantity,
+                })),
             };
-            console.log("Payload enviado al backend:", payload); // Verificar qué datos estás enviando
-            console.log("Productos de la requisición:", this.productData);
 
             axios
                 .post("/requisiciones", payload)
-                .then(() => alert("Requisición enviada"))
-                .catch((error) =>
-                    console.error("Error al enviar datos:", error.response.data)
-                ); // Capturar el error completo
+                .then(() => {
+                    window.location.href = "/requisiciones";
+                })
+                .catch((error) => {
+                    alert(
+                        "Error: " +
+                            (error.response?.data?.message || "Error desconocido")
+                    );
+                });
         },
     },
 };
