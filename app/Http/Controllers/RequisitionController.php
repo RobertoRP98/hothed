@@ -7,6 +7,7 @@ use App\Models\Requisition;
 use App\Http\Requests\StoreRequisitionRequest;
 use App\Http\Requests\UpdateRequisitionRequest;
 use App\Models\ItemRequisition;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
 
@@ -28,9 +29,24 @@ class RequisitionController extends Controller
      */
     public function create()
     {
+
+        $today = Carbon::now()->format('Y-m-d');
+        $initialData = [
+            'formData' => [
+                'user_id' => auth()->id(),
+                'status_requisition' => 'Pendiente',
+                'importance' => 'Baja',
+                'finished' => '0',
+                'production_date' => $today,
+                'request_date' => $today,
+                'days_remaining' => 0,
+            ],
+            'productData' => [], // Inicialmente vacío
+        ];
         $productos = Product::all();
 
-        return view('requisition.create', compact('productos'));
+
+        return view('requisition.create', compact('productos', 'today','initialData'));
     }
 
     /**
@@ -38,18 +54,22 @@ class RequisitionController extends Controller
      */
     public function store(StoreRequisitionRequest $request)
     {
+        Log::info('Entrando al método store', ['request_data' => $request->all()]);
+        dd($request->all()); // Inspecciona el contenido recibido
+        
         DB::transaction(function () use ($request) {
-            //Crear la requisicion principal
-            $requisition = Requisition::create([
-                'user_id' => auth()->user->id(),
-                'status_requisition' => $request->status_requisition,
-                'importance' => $request->importance,
-                'finished' => $request->finished,
-                'production_date' => $request->production_date,
-                'request_date' => $request->request_date,
-                'days_remaining' => $request->days_remaining,
-            ]);
-
+            // Crear la requisición principal
+            $requisition = Requisition::create($request->only([
+                'user_id',
+                'status_requisition',
+                'importance',
+                'finished',
+                'production_date',
+                'request_date',
+                'days_remaining'
+            ]));
+    
+            // Crear los ítems relacionados
             foreach ($request->input('items_requisition') as $item) {
                 ItemRequisition::create([
                     'requisition_id' => $requisition->id,
@@ -58,7 +78,8 @@ class RequisitionController extends Controller
                 ]);
             }
         });
-        return redirect('requisiciones')->with('message', 'Requisicion Agregada');
+    
+        return redirect('requisiciones')->with('message', 'Requisición Agregada');
     }
     /**
      * Display the specified resource.

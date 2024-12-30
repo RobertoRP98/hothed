@@ -22,19 +22,25 @@ class StoreRequisitionRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'user_id' => 'required',
-            'status_requisition' => 'required',
-            'importance' => 'required',
-            'finished' => 'required',
-            'production_date' => 'required',
-            'request_date' => 'required',
-
+            'user_id' => 'required|integer',
+            'status_requisition' => 'required|string',
+            'importance' => 'required|string',
+            'finished' => 'required|boolean',
+            'production_date' => 'required|date',
+            'request_date' => 'required|date',
+            'days_remaining' => 'required|integer',
+            'items_requisition' => 'required|array|min:1',
+            'items_requisition.*.product_id' => 'required|string',
+            'items_requisition.*.quantity' => 'required|integer|min:1',
         ];
     }
 
     public function messages(){
         return [
         'required' => 'El campo :attribute requerido' ,
+        'items_requisition.required' => 'Debes agregar al menos un ítem a la requisición.',
+        'items_requisition.*.product_id.required' => 'Cada ítem debe tener un producto asociado.',
+        'items_requisition.*.quantity.required' => 'Cada ítem debe tener una cantidad.',
         ];
     }
 

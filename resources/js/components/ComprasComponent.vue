@@ -1,197 +1,258 @@
 <template>
-    <div class="form-compras">
-        <div class="row justify-content-center">
-            <div class="col-md-12">
-                <div class="card mt-2">
-                    <div class="card-header">
-                        Productos de Requisición &nbsp;&nbsp;&nbsp;
-                        <span class="float-right">
-                            <button
-                                class="btn btn-primary d-inline float-right"
-                                @click.prevent="addFields"
-                            >
-                                Agregar
-                            </button>
-                        </span>
-                    </div>
-
-                    <div class="card-body">
-                        <div v-for="(value, index) in productData" :key="index">
-                            <div class="row">
-                                <div class="col-md-4 mt-2">
-                                    <div class="form-group">
-                                        <h5 class="text-center">Producto</h5>
-                                        <input
-                                            @input="searchProducts(index)"
-                                            type="text"
-                                            v-model="value.product_id"
-                                            class="form-control"
-                                            placeholder="Busque un producto"
-                                        />
-
-                                        <ul
-                                            v-if="value.suggestions.length > 0"
-                                            class="list-group"
-                                        >
-                                            <li
-                                                class="list-group-item"
-                                                v-for="(
-                                                    product, suggestionIndex
-                                                ) in value.suggestions"
-                                                :key="suggestionIndex"
-                                                @click="
-                                                    selectProduct(
-                                                        index,
-                                                        product
-                                                    )
-                                                "
-                                            >
-                                                {{ product.description }}
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-4 mt-2">
-                                    <div class="form-group">
-                                        <h5 class="text-center">Cantidad</h5>
-                                        <input
-                                            type="number"
-                                            v-model="value.quantity"
-                                            class="form-control"
-                                            placeholder="Cantidad del producto"
-                                        />
-                                    </div>
-                                </div>
-
-                                <div class="col-md-4 mt-2">
-                                    <div class="form-group">
-                                        <button
-                                            class="btn btn-danger d-inline float-right"
-                                            @click.prevent="removeField(index)"
-                                        >
-                                            Remover
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Cierre de card-body -->
+    <div>
+        <!-- Primera fila -->
+        <div class="row mb-4">
+            <div class="col-md-4">
+                <div class="form-outline">
+                    <select
+                        v-model="formData.status_requisition"
+                        class="form-select"
+                        disabled
+                    >
+                        <option value="Pendiente">
+                            PENDIENTE DE AUTORIZACIÓN
+                        </option>
+                        <option value="Autorizado">AUTORIZADO</option>
+                        <option value="Rechazado">RECHAZADO</option>
+                    </select>
+                    <label class="form-label">STATUS DE LA REQUISICIÓN</label>
                 </div>
-                <!-- Cierre de card -->
             </div>
-            <!-- Cierre de col-md-12 -->
+
+            <div class="col-md-4">
+                <div class="form-outline">
+                    <select
+                        v-model="formData.importance"
+                        class="form-select"
+                        disabled
+                    >
+                        <option value="Baja">BAJA</option>
+                        <option value="Media">MEDIA</option>
+                        <option value="Alta">ALTA</option>
+                    </select>
+                    <label class="form-label"
+                        >IMPORTANCIA DE LA REQUISICIÓN</label
+                    >
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="form-outline">
+                    <select
+                        v-model="formData.finished"
+                        class="form-select"
+                        disabled
+                    >
+                        <option value="0">NO</option>
+                        <option value="1">SI</option>
+                    </select>
+                    <label class="form-label">¿REQUISICIÓN FINALIZADA?</label>
+                </div>
+            </div>
         </div>
-        <!-- Cierre de row -->
+
+        <!-- Segunda fila -->
+        <div class="row mb-4">
+            <div class="col-md-4">
+                <div class="form-outline">
+                    <input
+                        type="date"
+                        v-model="formData.request_date"
+                        class="form-control"
+                        readonly
+                    />
+                    <label class="form-label">FECHA DE SOLICITUD</label>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="form-outline">
+                    <input
+                        type="date"
+                        v-model="formData.production_date"
+                        class="form-control"
+                        readonly
+                    />
+                    <label class="form-label">FECHA DE RESPUESTA</label>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="form-outline">
+                    <input
+                        type="number"
+                        v-model="formData.days_remaining"
+                        class="form-control"
+                        readonly
+                    />
+                    <label class="form-label">DÍAS FALTANTES</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Productos de Requisición -->
+        <div class="card mt-2">
+            <div class="card-header">
+                Productos de Requisición
+                <button
+                    class="btn btn-primary float-right"
+                    @click.prevent="addFields"
+                >
+                    Agregar
+                </button>
+            </div>
+            <div class="card-body">
+                <div
+                    v-for="(value, index) in productData"
+                    :key="index"
+                    class="row"
+                >
+                    {{ value }}
+                    <!-- Temporal para depurar -->
+                    <input type="text" v-model="value.product_id" />
+
+                    <div class="col-md-4 mt-2">
+                        <input
+                            type="text"
+                            v-model="value.product_id"
+                            @input="searchProducts(index)"
+                            class="form-control"
+                            placeholder="Busque un producto"
+                        />
+                        <ul
+                            v-if="value.suggestions.length > 0"
+                            class="list-group"
+                        >
+                            <li
+                                v-for="(
+                                    product, suggestionIndex
+                                ) in value.suggestions"
+                                :key="suggestionIndex"
+                                @click="selectProduct(index, product)"
+                                class="list-group-item"
+                            >
+                                {{ product.description }}
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-md-4 mt-2">
+                        <input
+                            type="number"
+                            v-model="value.quantity"
+                            class="form-control"
+                            placeholder="Cantidad"
+                        />
+                    </div>
+                    <div class="col-md-4 mt-2">
+                        <button
+                            class="btn btn-danger"
+                            @click.prevent="removeField(index)"
+                        >
+                            Remover
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Botones -->
+        <div class="mt-3">
+            <button @click="submitForm" class="btn btn-primary">
+                Enviar Requisición
+            </button>
+        </div>
     </div>
-    <!-- Cierre de form-compras -->
 </template>
 
 <script>
-import ComprasComponent from './ComprasComponent.vue';
-
 import axios from "axios";
-
 
 export default {
     name: "ComprasComponent",
+    props: {
+        initialData: Object, // Para datos iniciales al editar
+        required: true,
+    },
+    defaultRequestDate: {
+        type: String,
+        required: true,
+    },
 
     data() {
         return {
-            productData: [
-                {
-                    product_id: "",
-                    quantity: 0,
-                    suggestions: [],
-                },
-            ],
             formData: {
-                user_id:'',
-                status_requisition: '',
-                importance: '',
-                finished: '',
-                production_date: '',
-                request_date:'',
-                days_remaining:'', 
-
+                user_id: this.initialData.user_id || "",
+                status_requisition: "Pendiente",
+                importance: "Baja",
+                finished: "0",
+                production_date: "this.defaultRequestDate",
+                request_date: "",
+                days_remaining: "",
             },
+            productData: this.initialData.productData || [
+                { product_id: "", quantity: 0, suggestions: [] },
+            ],
         };
     },
-    mounted() {},
+    mounted() {
+        this.formData.user_id =
+        document
+            .querySelector('meta[name="user-id"]')
+            .getAttribute("content") || this.formData.user_id;
 
-    methods: {
-        someMethod() {
-            console.log(undeclaredVariable); // Esto causa un error.
-        }, 
-
-        submitForm() {
-            //captura de los campos hijos 
-            const itemsRequisition = this.$refs.comprasComponent.productData;
-        
-        //se empaqueta los datos
-        const payload = {
-            ...this.formData,
-            items_requisition: itemsRequisition,
+    console.log("User ID cargado:", this.formData.user_id); // Verificar si el ID está presente
+    
+        console.log("Datos iniciales:", this.initialData);
+        if (this.initialData) {
+            this.formData = { ...this.initialData.formData };
+            this.productData = [...this.initialData.productData];
         }
-        axios.post("requisitiones",payload)
-        .then((response) => {
-            console.log("Requisicion almacenada con exito ", response);
-        })
-        .catch((error) => {
-            console.error("error al enviar la requisicion: ",error.response);
-        });
+        this.formData.user_id =
+            document
+                .querySelector('meta[name="user-id"]')
+                .getAttribute("content") || this.formData.user_id;
     },
-
-
+    methods: {
         addFields() {
             this.productData.push({
                 product_id: "",
                 quantity: 0,
-                suggestions: [], // Inicializamos un array vacío de sugerencias para la nueva fila
+                suggestions: [],
             });
         },
-
         removeField(index) {
-            if (this.productData.length > 1) {
-                this.productData.splice(index, 1);
-            } else {
-                this.productData = [
-                    {
-                        product_id: "",
-                        quantity: 0,
-                        suggestions: [], // Re-inicializamos las sugerencias si se elimina la última fila
-                    },
-                ];
-            }
+            this.productData.splice(index, 1);
         },
-
         searchProducts(index) {
             const query = this.productData[index].product_id;
-            // Si el término de búsqueda tiene menos de 2 caracteres, no hacer la búsqueda
             if (query.length < 2) {
                 this.productData[index].suggestions = [];
                 return;
             }
-
-            // Solicitud al backend
             axios
-                .get("/api/product-requisition", {
-                    params: { query }, // Cambiar 'query' para que coincida con el backend
-                })
+                .get("/api/product-requisition", { params: { query } })
                 .then((response) => {
-                    // Almacenar las sugerencias para el producto en la fila actual
                     this.productData[index].suggestions = response.data;
-                })
-                .catch((error) => {
-                    console.error("Error al buscar productos:", error);
                 });
         },
-
-        // Cuando el usuario selecciona un producto de las sugerencias
         selectProduct(index, product) {
-            this.productData[index].product_id = product.description; // Establecer el nombre del producto
-            this.productData[index].suggestions = []; // Limpiar las sugerencias
+            this.productData[index].product_id = product.description;
+            this.productData[index].suggestions = [];
+        },
+        submitForm() {
+            const payload = {
+                ...this.formData,
+                items_requisition: this.productData,
+            };
+            console.log("Payload enviado al backend:", payload); // Verificar qué datos estás enviando
+            console.log("Productos de la requisición:", this.productData);
+
+            axios
+                .post("/requisiciones", payload)
+                .then(() => alert("Requisición enviada"))
+                .catch((error) =>
+                    console.error("Error al enviar datos:", error.response.data)
+                ); // Capturar el error completo
         },
     },
 };

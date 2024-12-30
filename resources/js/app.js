@@ -8,9 +8,12 @@ import { createApp } from 'vue';
 
 const app = createApp({});
 app.component('search-component', searchComponent);
+// Registrar el componente global
 app.component('compras-component', ComprasComponent);
 
-app.mount('#app'); // Asume que tienes un <div id="app"></div> en tu layout Blade.
+// Montar la aplicación en el contenedor principal
+app.mount('#app');// Asume que tienes un <div id="app"></div> en tu layout Blade.
+
 
 
 window.addEventListener('scroll', reveal);
