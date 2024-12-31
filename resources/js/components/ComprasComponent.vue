@@ -121,7 +121,9 @@
                             class="list-group"
                         >
                             <li
-                                v-for="(product, suggestionIndex) in value.suggestions"
+                                v-for="(
+                                    product, suggestionIndex
+                                ) in value.suggestions"
                                 :key="suggestionIndex"
                                 @click="selectProduct(index, product)"
                                 class="list-group-item"
@@ -184,7 +186,12 @@ export default {
                 days_remaining: "",
             },
             productData: [
-                { product_id: "", description: "", quantity: 1, suggestions: [] },
+                {
+                    product_id: "",
+                    description: "",
+                    quantity: 1,
+                    suggestions: [],
+                },
             ],
         };
     },
@@ -234,13 +241,18 @@ export default {
 
             axios
                 .post("/requisiciones", payload)
-                .then(() => {
-                    window.location.href = "/requisiciones";
+                .then((response) => {
+                    // Capturar el mensaje desde la respuesta del servidor
+                    const message = encodeURIComponent(response.data.message);
+                    console.log("Redirigiendo a /requisiciones con mensaje...");
+                    window.location.href = `/requisiciones?message=${message}`;
                 })
                 .catch((error) => {
+                    console.error("Error en la solicitud:", error);
                     alert(
                         "Error: " +
-                            (error.response?.data?.message || "Error desconocido")
+                            (error.response?.data?.message ||
+                                "Error desconocido")
                     );
                 });
         },

@@ -4,7 +4,15 @@
 <div class="container">
  @if(Session::has('message'))
  {{Session::get('message')}}
- @endif   
+ @endif
+ 
+ 
+ @if(request()->has('message'))
+    <div class="alert alert-success">
+        {{ request('message') }}
+    </div>
+@endif
+
 
  @push('css')
  <!-- CSS -->

@@ -60,29 +60,35 @@ class RequisitionController extends Controller
         Log::info('Items recibidos:', $request->input('items_requisition'));
 
 
-        DB::transaction(function () use ($request) {
-            // Crear la requisición principal
-            $requisition = Requisition::create($request->only([
-                'user_id',
-                'status_requisition',
-                'importance',
-                'finished',
-                'production_date',
-                'request_date',
-                'days_remaining'
-            ]));
-    
-            // Crear los ítems relacionados
-            foreach ($request->input('items_requisition') as $item) {
-                ItemRequisition::create([
-                    'requisition_id' => $requisition->id,
-                    'product_id' => $item['product_id'],
-                    'quantity' => $item['quantity'],
-                ]);
-            }
-        });
-    
-        return redirect('requisiciones')->with('message', 'Requisición Agregada');
+        try {
+            DB::transaction(function () use ($request) {
+                $requisition = Requisition::create($request->only([
+                    'user_id',
+                    'status_requisition',
+                    'importance',
+                    'finished',
+                    'production_date',
+                    'request_date',
+                    'days_remaining'
+                ]));
+        
+                foreach ($request->input('items_requisition') as $item) {
+                    ItemRequisition::create([
+                        'requisition_id' => $requisition->id,
+                        'product_id' => $item['product_id'],
+                        'quantity' => $item['quantity'],
+                    ]);
+                }
+            });
+        
+            return response()->json(['message' => 'Requisición Agregada']);
+        } catch (\Exception $e) {
+            Log::error('Error al guardar la requisición: ' . $e->getMessage());
+            return response()->json(['message' => 'Error al guardar la requisición'], 500);
+        }
+        
+        // Enviar el mensaje en la respuesta JSON
+    return response()->json(['message' => 'Requisición Agregada']);    
     }
     /**
      * Display the specified resource.
