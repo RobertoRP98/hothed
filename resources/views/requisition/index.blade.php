@@ -23,13 +23,15 @@
 
 
 <div class="d-flex flex-wrap mt-3">
-    <a href="{{ url('requisiciones/') }}" class="btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
-        Regresar
-    </a>
-
     <a href="{{ url('requisiciones/create') }}" class="btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
         Agregar Requisición
     </a>
+
+    <a href="{{ url('/productos') }}" class="btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
+        Productos
+    </a>
+
+   
 </div>
 
 
@@ -44,7 +46,7 @@
     <table id="compras" class="table table-light table-bordered table-hover text-center">
 <thead class="thead-light">
         <tr>
-            <th>NUM. REQUISICIÓN</th>
+            <th class="col-md-1">NUM. REQUISICIÓN</th>
             <th>USUARIO</th>
             <th>DEPARTAMENTO</th>
             <th>PRIORIDAD</th>

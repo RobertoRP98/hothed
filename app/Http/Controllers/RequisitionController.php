@@ -8,8 +8,8 @@ use App\Models\Requisition;
 use App\Models\ItemRequisition;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Request;
 use App\Http\Requests\StoreRequisitionRequest;
+use Illuminate\Validation\ValidationException;
 use App\Http\Requests\UpdateRequisitionRequest;
 
 
@@ -61,6 +61,19 @@ class RequisitionController extends Controller
 
 
         try {
+
+            // Validar que todos los IDs sean válidos
+        $productIds = array_column($request->input('items_requisition', []), 'product_id');
+        $validProductIds = Product::whereIn('id', $productIds)->pluck('id')->toArray();
+
+        foreach ($productIds as $id) {
+            if (!in_array($id, $validProductIds)) {
+                throw ValidationException::withMessages([
+                    'items_requisition' => 'Uno o más productos seleccionados no son válidos.',
+                ]);
+            }
+        } 
+        
             DB::transaction(function () use ($request) {
                 $requisition = Requisition::create($request->only([
                     'user_id',

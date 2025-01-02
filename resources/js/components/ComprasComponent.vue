@@ -93,7 +93,7 @@
         <!-- Productos de Requisición -->
         <div class="card mt-2">
             <div class="card-header">
-                Productos de Requisición
+                Pulse "Agregar" para añadir productos a la requisición
                 <button
                     class="btn btn-primary float-right"
                     @click.prevent="addFields"
@@ -231,6 +231,17 @@ export default {
             this.productData[index].suggestions = []; // Limpiar sugerencias
         },
         submitForm() {
+            // Validar que todos los productos tengan un ID válido
+            const invalidItems = this.productData.filter(
+                (item) => !item.product_id
+            );
+
+            if (invalidItems.length > 0) {
+                alert(
+                    "Por favor, selecciona únicamente productos válidos de las sugerencias. Si no aparece el producto que buscas consulta al área de compras"
+                );
+                return;
+            }
             const payload = {
                 ...this.formData,
                 items_requisition: this.productData.map((item) => ({

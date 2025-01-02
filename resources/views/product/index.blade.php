@@ -15,8 +15,8 @@
 
 
 <div class="d-flex flex-wrap mt-3">
-    <a href="{{ url('productos/') }}" class="btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
-        Regresar
+    <a href="{{ url('/requisiciones') }}" class="btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
+        Requisiciones
     </a>
 
     <a href="{{ url('productos/create') }}" class="btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
