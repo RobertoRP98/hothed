@@ -1,11 +1,44 @@
 @extends('layouts.app')
 @section('createsupplier')
 <div class="container">
-    <br>
 <form action="{{url(('/requisiciones'))}}" method="post" enctype="multipart/form-data">
     @csrf
- <H1>Agregar Requisición</H1>
-    @include('requisition.form', ['modo'=>'Crear'])
+    <div class="row align-items-center">
+      <div class="mb-3">
+        <button type="button" class="btn btn-warning btn-block">
+          <a class="text-white" href="{{ url('requisiciones/') }}">
+            REGRESAR
+          </a>
+        </button>
+      </div>
+      <div class="col-md-6">
+        <h1>Agregar Requisición</h1>
+      </div>
+     
+    </div>
+    
+
+<br>
+
+ <!-- 2 column grid layout with text inputs for the first and last names -->
+ @if ($errors->any())
+ <div class="alert alert-danger" role="alert">
+   <ul>
+     @foreach ($errors->all() as $error)
+     <li>{{ $error }}</li>
+     @endforeach
+   </ul>
+ </div>
+ @endif
+
+ <meta name="user-id" content="{{ auth()->id() }}">
+
+<!-- Tercera fila -->
+<div id="app">
+  <create-requisition :initial-data="{{ json_encode($initialData) }}"  :default-request-date="'{{ $today }}'"></create-requisition>
+
+</div>
+
   </form>
 </div>
 @endsection

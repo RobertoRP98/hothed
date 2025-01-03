@@ -14,11 +14,11 @@ class ItemRequisition extends Model
 
     public function requisition()
     {
-        return $this->belongsTo(Requisition::class);
+        return $this->belongsTo(Requisition::class, 'requisition_id');
     }
 
     public function product()
     {
-        return $this->belongsTo(Product::class);
+        return $this->belongsTo(Product::class, 'product_id');
     }
 }

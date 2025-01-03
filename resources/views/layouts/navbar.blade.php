@@ -34,7 +34,7 @@
         @auth
         @if(Auth::user()->hasRole(['Compras','Developer']))
             <li class="nav-item">
-                <a class="nav-link text-white" href="{{ url('/') }}">Compras</a>
+                <a class="nav-link text-white" href="{{ url('/requisiciones') }}">Compras</a>
             </li>
         @endif
     @endauth

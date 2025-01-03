@@ -154,7 +154,8 @@ Route::group(['middleware' => ['auth', 'role:Developer']], function () {
     Route::resource('/productos',ProductController::class)->middleware('auth');
     Route::resource('/compras',PurchaseOrderController::class)->middleware('auth');
 
-    Route::resource('/requisiciones',RequisitionController::class)->middleware('auth');
+    Route::resource('/requisiciones', RequisitionController::class)->middleware('auth');
+
 
 
 

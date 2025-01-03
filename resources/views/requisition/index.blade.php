@@ -62,10 +62,18 @@
             <td>{{ $requisicion->user->departament }}</td>        
             <td>{{ $requisicion->importance }}</td>
             <td>
-               <button class="btn btn-warning mb-2"> <a class="text-white" href="{{ url('requisiciones/'.$requisicion->id.'/show') }}">
-                    VER
-                </a> </button> 
+                <a class="text-white" href="{{ url('requisiciones/'.$requisicion->id.'/show') }}">
+                    <button class="btn btn-primary mb-2">
+                        VER
+                    </button>
+                </a> |
+                <a class="text-white" href="{{ url('requisiciones/'.$requisicion->id.'/edit') }}">
+                    <button class="btn btn-success mb-2">
+                        Editar
+                    </button>
+                </a>
             </td>
+            
         </tr>
         @endforeach
     </tbody>

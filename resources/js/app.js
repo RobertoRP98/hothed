@@ -1,6 +1,8 @@
 import './bootstrap';
 import searchComponent from './components/searchComponent.vue';
-import ComprasComponent from './components/ComprasComponent.vue';
+import CreateRequisition from './components/Requisition/CreateRequisition.vue';
+import EditRequisition from './components/Requisition/EditRequisition.vue';
+
 
 import * as bootstrap from 'bootstrap';
 
@@ -9,7 +11,9 @@ import { createApp } from 'vue';
 const app = createApp({});
 app.component('search-component', searchComponent);
 // Registrar el componente global
-app.component('compras-component', ComprasComponent);
+app.component('create-requisition', CreateRequisition);
+app.component('edit-requisition', EditRequisition);
+
 
 // Montar la aplicación en el contenedor principal
 app.mount('#app');// Asume que tienes un <div id="app"></div> en tu layout Blade.

@@ -106,6 +106,9 @@ class RequisitionController extends Controller
     /**
      * Display the specified resource.
      */
+    /**
+     * Display the specified resource.
+     */
     public function show($id)
     {
 
@@ -117,17 +120,76 @@ class RequisitionController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Requisition $requisition)
+    public function edit($id)
     {
-        //
+        $requisition = Requisition::with('itemsRequisition')->findOrFail($id);
+        $today = Carbon::now()->format('Y-m-d');
+
+
+        $initialData = [
+            'formData' => [
+                'id' => $requisition->id,
+                'user_id' => $requisition->user_id,
+                'status_requisition' => $requisition->status_requisition,
+                'importance' => $requisition->importance,
+                'finished' => $requisition->finished,
+                'production_date' => $requisition->production_date,
+                'request_date' => $requisition->request_date,
+                'days_remaining' => $requisition->days_remaining,
+            ],
+            'productData' => $requisition->itemsRequisition->map(function ($item) {
+                return [
+                    'product_id' => $item->product_id,
+                    'description' => optional($item->product)->description ?? 'Producto no encontrado',
+                    'quantity' => $item->quantity,
+                    'suggestions' => [],
+                ];
+            })->toArray(),
+        ];
+
+        return view('requisition.edit', compact(['initialData','requisition','today']));
     }
+
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateRequisitionRequest $request, Requisition $requisition)
+    public function update(UpdateRequisitionRequest $request, Requisition $requisicione)
     {
-        //
+        try {
+
+            Log::info('Payload recibido:', $request->all());
+            Log::info('Requisition ID:', ['id' => $requisicione->id]);
+
+            DB::transaction(function () use ($request, $requisicione) {
+                //Actualizar los datos generales
+                $requisicione->update($request->only([
+                    'status_requisition',
+                    'importance',
+                    'finished',
+                    'production_date',
+                    'request_date',
+                    'days_remaining',
+                ]));
+
+                //Depurar la lista antigua de productos para que entre la nueva
+                $requisicione->itemsRequisition()->delete();
+                //Nuevos productos que se hayan agregado o eliminado
+
+                foreach ($request->input('items_requisition') as $item) {
+                    Log::info('Insertando item:', ['requisition_id' => $requisicione->id, 'item' => $item]);
+                    $requisicione->itemsRequisition()->create([
+                        'product_id' => $item['product_id'],
+                        'quantity' => $item['quantity'],
+                    ]);
+                }
+            });
+
+            return response()->json(['message' => 'Requisición actualizada exitosamente']);
+        } catch (\Exception $e) {
+            Log::error('Error al actualizar la requisición: ' . $e->getMessage());
+            return response()->json(['message' => 'Error al actualizar la requisición'], 500);
+        }
     }
 
     /**

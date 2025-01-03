@@ -19,7 +19,7 @@ class Requisition extends Model
 
     public function itemsRequisition()
     {
-        return $this->hasMany(ItemRequisition::class);
+        return $this->hasMany(ItemRequisition::class, 'requisition_id');
     }
 
     public function purchaseOrders()
