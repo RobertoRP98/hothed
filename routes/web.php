@@ -148,15 +148,30 @@ Route::get('/facturas/{companyreceivable_id}/edit/{factura}', [BillController::c
 
 //EMPIEZAN MODULOS DE COMPRAS 
 Route::group(['middleware' => ['auth', 'role:Developer']], function () {
+    // Rutas accesibles solo por Developer
+    Route::resource('/impuestos', TaxController::class);
+    Route::resource('/proveedores', SupplierController::class);
+    Route::resource('/productos', ProductController::class);
+    Route::resource('/compras', PurchaseOrderController::class);
 
-    Route::resource('/impuestos',TaxController::class)->middleware('auth');
-    Route::resource('/proveedores',SupplierController::class)->middleware('auth');
-    Route::resource('/productos',ProductController::class)->middleware('auth');
-    Route::resource('/compras',PurchaseOrderController::class)->middleware('auth');
-
-    Route::resource('/requisiciones', RequisitionController::class)->middleware('auth');
-
-
-
-
+    // Todas las rutas de requisiciones
+    Route::get('/requisiciones', [RequisitionController::class, 'index'])->name('requisiciones.index');
+    Route::get('/requisiciones/create', [RequisitionController::class, 'create'])->name('requisiciones.create');
+    Route::post('/requisiciones', [RequisitionController::class, 'store'])->name('requisiciones.store');
+    Route::get('/requisiciones/{requisicione}', [RequisitionController::class, 'show'])->name('requisiciones.show');
+    Route::get('/requisiciones/{requisicione}/edit', [RequisitionController::class, 'edit'])->name('requisiciones.edit');
+    Route::put('/requisiciones/{requisicione}', [RequisitionController::class, 'update'])->name('requisiciones.update');
 });
+
+
+
+Route::group(['middleware' => ['auth', 'role:Cobranza|Developer']], function () {
+    // Rutas accesibles por Cobranza y Developer
+    Route::get('/requisiciones/create', [RequisitionController::class, 'create'])->name('requisiciones.create');
+    Route::post('/requisiciones', [RequisitionController::class, 'store'])->name('requisiciones.store');
+
+
+    Route::get('/requisiciones/{requisicione}', [RequisitionController::class, 'show'])->name('requisiciones.show');
+});
+
+

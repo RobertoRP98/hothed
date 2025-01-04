@@ -12,8 +12,8 @@
                         <option value="Pendiente">
                             PENDIENTE DE AUTORIZACIÓN
                         </option>
-                        <option value="Autorizado">AUTORIZADO</option>
-                        <option value="Rechazado">RECHAZADO</option>
+                        <!-- <option value="Autorizado">AUTORIZADO</option>
+                        <option value="Rechazado">RECHAZADO</option> -->
                     </select>
                     <label class="form-label">STATUS DE LA REQUISICIÓN</label>
                 </div>
@@ -27,8 +27,10 @@
                         disabled
                     >
                         <option value="Baja">BAJA</option>
-                        <option value="Media">MEDIA</option>
+                        <!-- <option value="Media">MEDIA</option>
                         <option value="Alta">ALTA</option>
+                        <option value="Critico">CRITICO</option> -->
+
                     </select>
                     <label class="form-label"
                         >IMPORTANCIA DE LA REQUISICIÓN</label

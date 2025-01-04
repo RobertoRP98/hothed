@@ -7,7 +7,6 @@
                     <select
                         v-model="formData.status_requisition"
                         class="form-select"
-                        disabled
                     >
                         <option value="Pendiente">
                             PENDIENTE DE AUTORIZACIÓN
@@ -29,6 +28,7 @@
                         <option value="Baja">BAJA</option>
                         <option value="Media">MEDIA</option>
                         <option value="Alta">ALTA</option>
+                        <option value="Critico">CRITICO</option> -->
                     </select>
                     <label class="form-label"
                         >IMPORTANCIA DE LA REQUISICIÓN</label

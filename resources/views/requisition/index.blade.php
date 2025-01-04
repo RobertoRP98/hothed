@@ -59,10 +59,10 @@
         <tr>
             <td>{{ $requisicion->id }}</td>
             <td>{{ $requisicion->user->name }}</td>
-            <td>{{ $requisicion->user->departament }}</td>        
+            <td>{{ $requisicion->user->area }}</td>        
             <td>{{ $requisicion->importance }}</td>
             <td>
-                <a class="text-white" href="{{ url('requisiciones/'.$requisicion->id.'/show') }}">
+                <a class="text-white" href="{{ url('requisiciones/'.$requisicion->id) }}">
                     <button class="btn btn-primary mb-2">
                         VER
                     </button>

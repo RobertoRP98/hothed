@@ -111,11 +111,42 @@ class RequisitionController extends Controller
      */
     public function show($id)
     {
-
-        //mostrar la requisicion
-        $requisition = Requisition::find($id);
-        return view('requisition.show', compact('requisition'));
+        $query = Requisition::query();
+    
+        // Si el usuario no es Developer, filtrar por user_id
+        if (!auth()->user()->hasRole('Developer')) {
+            $query->where('user_id', auth()->id());
+        }
+    
+        // Obtener la requisición o lanzar un 404 si no existe
+        $requisition = $query->where('id', $id)->firstOrFail();
+    
+        $today = Carbon::now()->format('Y-m-d');
+    
+        $initialData = [
+            'formData' => [
+                'id' => $requisition->id,
+                'user_id' => $requisition->user_id,
+                'status_requisition' => $requisition->status_requisition,
+                'importance' => $requisition->importance,
+                'finished' => $requisition->finished,
+                'production_date' => $requisition->production_date,
+                'request_date' => $requisition->request_date,
+                'days_remaining' => $requisition->days_remaining,
+            ],
+            'productData' => $requisition->itemsRequisition->map(function ($item) {
+                return [
+                    'product_id' => $item->product_id,
+                    'description' => optional($item->product)->description ?? 'Producto no encontrado',
+                    'quantity' => $item->quantity,
+                    'suggestions' => [],
+                ];
+            })->toArray(),
+        ];
+    
+        return view('requisition.show', compact('requisition', 'today', 'initialData'));
     }
+    
 
     /**
      * Show the form for editing the specified resource.

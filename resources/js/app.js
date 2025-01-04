@@ -2,6 +2,8 @@ import './bootstrap';
 import searchComponent from './components/searchComponent.vue';
 import CreateRequisition from './components/Requisition/CreateRequisition.vue';
 import EditRequisition from './components/Requisition/EditRequisition.vue';
+import ViewRequisition from './components/Requisition/ViewRequisition.vue';
+
 
 
 import * as bootstrap from 'bootstrap';
@@ -13,6 +15,8 @@ app.component('search-component', searchComponent);
 // Registrar el componente global
 app.component('create-requisition', CreateRequisition);
 app.component('edit-requisition', EditRequisition);
+app.component('view-requisition', ViewRequisition);
+
 
 
 // Montar la aplicación en el contenedor principal
