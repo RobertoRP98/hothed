@@ -4,8 +4,31 @@
     <br>
     <form action="{{ url('/requisiciones/' . $requisition->id) }}" method="post" enctype="multipart/form-data">
         @csrf
-        {{method_field('PATCH')}}    
- <H1>Editar Producto</H1>
+        {{method_field('PATCH')}}   
+        
+        <div class="row align-items-center">
+          <div class="mb-3">
+            <button type="button" class="btn btn-warning btn-block">
+              @if(auth()->user()->hasRole('Cobranza2'))
+              <a class="text-white" href="{{ url('requisiciones-ope') }}">
+                  REGRESAR
+              </a>
+          @elseif(auth()->user()->hasRole('Cobranza'))
+              <a class="text-white" href="{{ url('requisiciones-adm') }}">
+                  REGRESAR
+              </a>
+          @else
+              <a class="text-white" href="{{ url('requisiciones/') }}">
+                  REGRESAR
+              </a>
+          @endif          
+            </button>
+          </div>
+          <div class="col-md-12">
+            <h1>Editar la requisición número {{$requisition->id}}</h1>
+          </div>
+         
+        </div>
 
  <!-- 2 column grid layout with text inputs for the first and last names -->
  @if ($errors->any())

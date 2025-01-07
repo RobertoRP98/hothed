@@ -9,9 +9,20 @@
          <div class="row align-items-center">
       <div class="mb-3">
         <button type="button" class="btn btn-warning btn-block">
-          <a class="text-white" href="{{ url('requisiciones/') }}">
-            REGRESAR
+          @if(auth()->user()->hasRole('Cobranza2'))
+          <a class="text-white" href="{{ url('requisiciones-ope') }}">
+              REGRESAR
           </a>
+      @elseif(auth()->user()->hasRole('Cobranza'))
+          <a class="text-white" href="{{ url('requisiciones-adm') }}">
+              REGRESAR
+          </a>
+      @else
+          <a class="text-white" href="{{ url('requisiciones/') }}">
+              REGRESAR
+          </a>
+      @endif
+      
         </button>
       </div>
       <div class="col-md-12">

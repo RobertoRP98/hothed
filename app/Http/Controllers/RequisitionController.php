@@ -114,7 +114,7 @@ class RequisitionController extends Controller
         $query = Requisition::query();
     
         // Si el usuario no es Developer, filtrar por user_id
-        if (!auth()->user()->hasRole('Developer')) {
+        if (!auth()->user()->hasRole(['Developer', 'Ope', 'Cobranza'])) {
             $query->where('user_id', auth()->id());
         }
     

@@ -11,13 +11,14 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CurrencyController;
 use App\Http\Controllers\SubgroupController;
 use App\Http\Controllers\SupplierController;
-
 use App\Http\Controllers\ToolstatusController;
+
+use App\Http\Controllers\RequisitionController;
 use App\Http\Controllers\ToolHistoryController;
 use App\Http\Controllers\PurchaseOrderController;
 use App\Http\Controllers\ToolwarehouseController;
 use App\Http\Controllers\CompanyReceivableController;
-use App\Http\Controllers\RequisitionController;
+use App\Http\Controllers\AuthorizationRequisitionController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -142,36 +143,39 @@ Route::patch('facturas/update/{companyreceivable_id}/{factura}', [BillController
 Route::get('/facturas/{companyreceivable_id}/edit/{factura}', [BillController::class, 'edit'])->name('facturas.edit')->middleware('auth');
 
 });
-
 //TERMINA MODULOS DE COBRO
 
 
-//EMPIEZAN MODULOS DE COMPRAS 
+//EMPIEZAN MODULOS DE COMPRAS  
+//RUTAS PARA TODO EL PERSONAL CREAR Y GUARDAR SUS REQUISICIONES Y VER SUS PROPIAS REQUIS
+Route::group(['middleware' => ['auth', 'role:Cobranza|Developer']], function () {
+    Route::get('/requisiciones/create', [RequisitionController::class, 'create'])->name('requisiciones.create');
+    Route::post('/requisiciones', [RequisitionController::class, 'store'])->name('requisiciones.store');
+    Route::get('/requisiciones/{requisicione}', [RequisitionController::class, 'show'])->name('requisiciones.show');
+});
+
+//RUTAS QUE SOLO SON ACCESIBLES AL ENCARGADO DE COMPRAS
+
 Route::group(['middleware' => ['auth', 'role:Developer']], function () {
-    // Rutas accesibles solo por Developer
     Route::resource('/impuestos', TaxController::class);
     Route::resource('/proveedores', SupplierController::class);
     Route::resource('/productos', ProductController::class);
     Route::resource('/compras', PurchaseOrderController::class);
-
-    // Todas las rutas de requisiciones
     Route::get('/requisiciones', [RequisitionController::class, 'index'])->name('requisiciones.index');
-    Route::get('/requisiciones/create', [RequisitionController::class, 'create'])->name('requisiciones.create');
-    Route::post('/requisiciones', [RequisitionController::class, 'store'])->name('requisiciones.store');
-    Route::get('/requisiciones/{requisicione}', [RequisitionController::class, 'show'])->name('requisiciones.show');
+});
+
+//RUTAS PARA EDITAR SOLO SON ACCESIBLES PARA GERENCIA Y RESPONSABLE DE COMPRAS
+Route::group(['middleware' => ['auth', 'role:Developer|Cobranza']], function () {
     Route::get('/requisiciones/{requisicione}/edit', [RequisitionController::class, 'edit'])->name('requisiciones.edit');
     Route::put('/requisiciones/{requisicione}', [RequisitionController::class, 'update'])->name('requisiciones.update');
+
 });
 
-
-
-Route::group(['middleware' => ['auth', 'role:Cobranza|Developer']], function () {
-    // Rutas accesibles por Cobranza y Developer
-    Route::get('/requisiciones/create', [RequisitionController::class, 'create'])->name('requisiciones.create');
-    Route::post('/requisiciones', [RequisitionController::class, 'store'])->name('requisiciones.store');
-
-
-    Route::get('/requisiciones/{requisicione}', [RequisitionController::class, 'show'])->name('requisiciones.show');
+//ACCESOS LOS INDEX DONDE GERENCIA VE LAS REQUISICIONES QUE DEBE APROBAR
+Route::group(['middleware' => ['auth','role:Cobranza|Developer']], function(){
+    //Rutas para ver las requisiciones por departamentos ADM U OP
+    Route::get('requisiciones-adm',[AuthorizationRequisitionController::class,'indexadm'])->name('requisicionesadm.index');
+    Route::get('requisiciones-ope',[AuthorizationRequisitionController::class,'indexope'])->name('requisicionesope.index');
 });
-
+//TERMINAN MODULOS DE COMPRAS
 
