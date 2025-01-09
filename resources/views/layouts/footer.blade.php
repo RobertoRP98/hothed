@@ -34,7 +34,7 @@
                 <div class="col-lg-4">
                     <div class="">
                         <h6 class="footer-heading text-uppercase text-white">Contacto</h6>
-                        <p class="contact-info mt-4">roberto.romero@hothedmex.mx</p>
+                        {{-- <p class="contact-info mt-4">roberto.romero@hothedmex.mx</p> --}}
                         <p class="contact-info">+52 9933335105</p>
                     </div>
                 </div>

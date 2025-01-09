@@ -9,12 +9,16 @@
          <div class="row align-items-center">
       <div class="mb-3">
         <button type="button" class="btn btn-warning btn-block">
-          @if(auth()->user()->hasRole('Cobranza2'))
+          @if(auth()->user()->hasRole('Ope'))
           <a class="text-white" href="{{ url('requisiciones-ope') }}">
               REGRESAR
           </a>
-      @elseif(auth()->user()->hasRole('Cobranza'))
+      @elseif(auth()->user()->hasRole('Adm'))
           <a class="text-white" href="{{ url('requisiciones-adm') }}">
+              REGRESAR
+          </a>
+          @elseif(auth()->user()->hasRole('Cobranza'))
+          <a class="text-white" href="{{ url('mis-requisiciones') }}">
               REGRESAR
           </a>
       @else

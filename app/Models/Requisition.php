@@ -26,4 +26,23 @@ class Requisition extends Model
     {
         return $this->hasMany(PurchaseOrder::class);
     }
+
+    protected static function boot(){
+
+        parent::boot();
+
+        static::saving(function ($requisition) {
+            $daysRemaining = $requisition->days_remaining;
+
+            if ($daysRemaining <= 15) {
+                $requisition->importance = 'Critico';
+            } elseif ($daysRemaining <= 30) {
+                $requisition->importance = 'Alta';
+            } elseif ($daysRemaining <= 60) {
+                $requisition->importance = 'Media';
+            } else {
+                $requisition->importance = 'Baja';
+            }
+        });
+    }
 }

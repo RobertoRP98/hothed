@@ -25,6 +25,7 @@
                         v-model="formData.importance"
                         class="form-select"
                         disabled
+                        
                     >
                         <option value="Baja">BAJA</option>
                         <!-- <option value="Media">MEDIA</option>
@@ -90,6 +91,8 @@
                     <label class="form-label">DÍAS FALTANTES</label>
                 </div>
             </div>
+
+            
         </div>
 
         <!-- Productos de Requisición -->
@@ -186,6 +189,7 @@ export default {
                 production_date: "",
                 request_date: "",
                 days_remaining: "",
+                finished_date: "",
             },
             productData: [
                 {
@@ -202,6 +206,8 @@ export default {
             this.formData = { ...this.initialData.formData };
             this.productData = [...this.initialData.productData];
         }
+        // Asignar una fecha temporal al campo production_date
+    this.formData.request_date = new Date().toISOString().split('T')[0]; // Fecha actual
     },
     methods: {
         addFields() {

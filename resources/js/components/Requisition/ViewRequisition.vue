@@ -41,7 +41,7 @@
 
         <!-- Segunda fila -->
         <div class="row mb-4">
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <div class="form-outline">
                     <input
                         type="text"
@@ -53,7 +53,7 @@
                 </div>
             </div>
 
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <div class="form-outline">
                     <input
                         type="text"
@@ -65,7 +65,7 @@
                 </div>
             </div>
 
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <div class="form-outline">
                     <input
                         type="text"
@@ -74,6 +74,18 @@
                         readonly
                     />
                     <label class="form-label">DIAS FALTANTES</label>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="form-outline">
+                    <input
+                        type="date"
+                        v-model="formData.finished_date"
+                        class="form-control"
+                        readonly
+                    />
+                    <label class="form-label">FECHA DE TERMINACIÓN</label>
                 </div>
             </div>
 

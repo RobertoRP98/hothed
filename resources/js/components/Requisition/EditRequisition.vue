@@ -41,7 +41,6 @@
                     <select
                         v-model="formData.finished"
                         class="form-select"
-                        disabled
                     >
                         <option value="0">NO</option>
                         <option value="1">SI</option>
@@ -53,7 +52,7 @@
 
         <!-- Segunda fila -->
         <div class="row mb-4">
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <div class="form-outline">
                     <input
                         type="date"
@@ -65,7 +64,7 @@
                 </div>
             </div>
 
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <div class="form-outline">
                     <input
                         type="date"
@@ -77,7 +76,7 @@
                 </div>
             </div>
 
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <div class="form-outline">
                     <input
                         type="number"
@@ -86,6 +85,17 @@
                         readonly
                     />
                     <label class="form-label">DÍAS FALTANTES</label>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="form-outline">
+                    <input
+                        type="date"
+                        v-model="formData.finished_date"
+                        class="form-control"
+                    />
+                    <label class="form-label">FECHA DE TERMINACIÓN</label>
                 </div>
             </div>
         </div>
@@ -184,6 +194,8 @@ export default {
                 production_date: "",
                 request_date: "",
                 days_remaining: "",
+                finished_date: "",
+
             },
             productData: [
                 {

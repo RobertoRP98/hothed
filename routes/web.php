@@ -152,6 +152,8 @@ Route::group(['middleware' => ['auth', 'role:Cobranza|Developer']], function () 
     Route::get('/requisiciones/create', [RequisitionController::class, 'create'])->name('requisiciones.create');
     Route::post('/requisiciones', [RequisitionController::class, 'store'])->name('requisiciones.store');
     Route::get('/requisiciones/{requisicione}', [RequisitionController::class, 'show'])->name('requisiciones.show');
+    Route::get('/mis-requisiciones', [AuthorizationRequisitionController::class, 'indexclient'])->name('requisicionesclient.index');
+
 });
 
 //RUTAS QUE SOLO SON ACCESIBLES AL ENCARGADO DE COMPRAS
@@ -167,7 +169,7 @@ Route::group(['middleware' => ['auth', 'role:Developer']], function () {
 //RUTAS PARA EDITAR SOLO SON ACCESIBLES PARA GERENCIA Y RESPONSABLE DE COMPRAS
 Route::group(['middleware' => ['auth', 'role:Developer|Cobranza']], function () {
     Route::get('/requisiciones/{requisicione}/edit', [RequisitionController::class, 'edit'])->name('requisiciones.edit');
-    Route::put('/requisiciones/{requisicione}', [RequisitionController::class, 'update'])->name('requisiciones.update');
+    Route::patch('/requisiciones/{requisicione}', [RequisitionController::class, 'update'])->name('requisiciones.update');
 
 });
 

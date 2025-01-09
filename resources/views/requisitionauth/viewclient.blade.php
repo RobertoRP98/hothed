@@ -26,15 +26,7 @@
     <a href="{{ url('requisiciones/create') }}" class="btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
         Agregar Requisición
     </a>
-
-    <a href="{{ url('/productos') }}" class="btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
-        Productos
-    </a>
-
-   
 </div>
-
-
  
 <h3 class="text-center my-4">Requisiciones</h3>
 
@@ -47,59 +39,32 @@
 <thead class="thead-light">
         <tr>
             <th class="col-md-1">NUM. REQUISICIÓN</th>
-            <th class="col-md-1">USER</th>
-            <th class="col-md-1">DEP</th>
-            <th class="col-md-1">PRIORIDAD</th>
-            <th class="col-md-1">INGRESO</th>
-            <th class="col-md-1">FECHA MAX DE RESPUESTA</th>
-            <th class="col-md-1">DIAS VENCIDOS O POR VENCER </th>
-            <th class="col-md-1">OPCIONES</th>
+            <th>USUARIO</th>
+            <th>DEPARTAMENTO</th>
+            <th>PRIORIDAD</th>
+            <th>OPCIONES</th>
 
         </tr>
     </thead>
     <tbody>
-        @foreach($requisiciones as $requisicion)
+        @foreach($requisitionclient as $requisicion)
         <tr>
             <td>{{ $requisicion->id }}</td>
             <td>{{ $requisicion->user->name }}</td>
             <td>{{ $requisicion->user->area }}</td>        
             <td>{{ $requisicion->importance }}</td>
-            <td>{{ \Carbon\Carbon::parse($requisicion->request_date)->format('d/m/Y') }}</td>
-            <td>{{ \Carbon\Carbon::parse($requisicion->production_date)->format('d/m/Y') }}</td>
-      
-            <td class="
-            @if(\Carbon\Carbon::parse($requisicion->production_date)->diffInDays(now(), false) >= -15)
-                table-danger text-danger fw-bold
-            @elseif(\Carbon\Carbon::parse($requisicion->production_date)->diffInDays(now(), false) >= -30)
-                table-danger
-            @elseif(\Carbon\Carbon::parse($requisicion->production_date)->diffInDays(now(), false) >= -60)
-                table-warning
-            @else
-                table-success
-            @endif">
-            {{ floor(\Carbon\Carbon::parse($requisicion->production_date)->diffInDays(now(), false)) }}
-        </td>
-        
-
             <td>
                 <a class="text-white" href="{{ url('requisiciones/'.$requisicion->id) }}">
                     <button class="btn btn-primary mb-2">
                         VER
                     </button>
                 </a> 
-                <a class="text-white" href="{{ url('requisiciones/'.$requisicion->id.'/edit') }}">
-                    <button class="btn btn-success mb-2">
-                        Editar
-                    </button>
-                </a>
             </td>
             
         </tr>
         @endforeach
     </tbody>
 </table>
-</div>
-</div>
 </div>
 </div>
 

@@ -20,8 +20,8 @@ return new class extends Migration
             $table->date('production_date');
             $table->date('request_date');
             $table->integer('days_remaining');
+            $table->date('finished_date')->nullable();
             $table->timestamps();
-
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }

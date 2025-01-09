@@ -32,23 +32,23 @@ class RequisitionController extends Controller
     public function create()
     {
         $today = Carbon::now()->format('Y-m-d');
+
         $initialData = [
             'formData' => [
                 'user_id' => auth()->id(),
                 'status_requisition' => 'Pendiente',
                 'importance' => 'Baja',
                 'finished' => '0',
-                'production_date' => $today,
                 'request_date' => $today,
+                'production_date' => '',
                 'days_remaining' => 0,
+                'finished_date' => '',
             ],
             'productData' => [], // Inicialmente vacío
         ];
 
         $productos = Product::all();
-
-
-        return view('requisition.create', compact('productos', 'today','initialData'));
+        return view('requisition.create', compact('productos', 'today', 'initialData'));
     }
 
     /**
@@ -56,35 +56,54 @@ class RequisitionController extends Controller
      */
     public function store(StoreRequisitionRequest $request)
     {
-    
         Log::info('Items recibidos:', $request->input('items_requisition'));
-
-
+    
         try {
-
+            $today = Carbon::now();
+            $importanceDays = [
+                'Baja' => 90,
+                'Media' => 60,
+                'Alta' => 30,
+                'Critico' => 15,
+            ];
+    
+            $importance = $request->input('importance', 'Baja');
+            $daysToAdd = $importanceDays[$importance] ?? 90;
+            $calculatedDate = $today->copy()->addDays($daysToAdd);
+    
             // Validar que todos los IDs sean válidos
-        $productIds = array_column($request->input('items_requisition', []), 'product_id');
-        $validProductIds = Product::whereIn('id', $productIds)->pluck('id')->toArray();
-
-        foreach ($productIds as $id) {
-            if (!in_array($id, $validProductIds)) {
-                throw ValidationException::withMessages([
-                    'items_requisition' => 'Uno o más productos seleccionados no son válidos.',
-                ]);
+            $productIds = array_column($request->input('items_requisition', []), 'product_id');
+            $validProductIds = Product::whereIn('id', $productIds)->pluck('id')->toArray();
+    
+            foreach ($productIds as $id) {
+                if (!in_array($id, $validProductIds)) {
+                    throw ValidationException::withMessages([
+                        'items_requisition' => 'Uno o más productos seleccionados no son válidos.',
+                    ]);
+                }
             }
-        } 
-        
-            DB::transaction(function () use ($request) {
-                $requisition = Requisition::create($request->only([
-                    'user_id',
-                    'status_requisition',
-                    'importance',
-                    'finished',
-                    'production_date',
-                    'request_date',
-                    'days_remaining'
-                ]));
-        
+    
+            DB::transaction(function () use ($request, $calculatedDate, $daysToAdd) {
+            $today_production = Carbon::now()->format('Y-m-d');
+
+                // Asignar valores calculados al almacenar la requisición
+                $requisition = Requisition::create(array_merge(
+                    $request->only([
+                        'user_id',
+                        'status_requisition',
+                        'importance',
+                        'finished',
+                        'finished_date',
+                    ]),
+                    [
+                        // Asignar fechas calculadas
+                        'request_date' => $today_production, //DIA DONDE SE REALIZA LA REQUI 
+                        'production_date' => $calculatedDate->format('Y-m-d'), //DIA MAXIMO DE DESPACHO
+                        'days_remaining' => $daysToAdd,
+                    ]
+                ));
+    
+                // Guardar los ítems de la requisición
                 foreach ($request->input('items_requisition') as $item) {
                     ItemRequisition::create([
                         'requisition_id' => $requisition->id,
@@ -93,36 +112,34 @@ class RequisitionController extends Controller
                     ]);
                 }
             });
-        
+    
             return response()->json(['message' => 'Requisición Agregada']);
+        } catch (ValidationException $e) {
+            // Capturar errores de validación específicos
+            return response()->json(['errors' => $e->errors()], 422);
         } catch (\Exception $e) {
             Log::error('Error al guardar la requisición: ' . $e->getMessage());
             return response()->json(['message' => 'Error al guardar la requisición'], 500);
         }
-        
-        // Enviar el mensaje en la respuesta JSON
-    return response()->json(['message' => 'Requisición Agregada']);    
     }
-    /**
-     * Display the specified resource.
-     */
+    
     /**
      * Display the specified resource.
      */
     public function show($id)
     {
         $query = Requisition::query();
-    
+
         // Si el usuario no es Developer, filtrar por user_id
         if (!auth()->user()->hasRole(['Developer', 'Ope', 'Cobranza'])) {
             $query->where('user_id', auth()->id());
         }
-    
+
         // Obtener la requisición o lanzar un 404 si no existe
         $requisition = $query->where('id', $id)->firstOrFail();
-    
+
         $today = Carbon::now()->format('Y-m-d');
-    
+
         $initialData = [
             'formData' => [
                 'id' => $requisition->id,
@@ -130,9 +147,11 @@ class RequisitionController extends Controller
                 'status_requisition' => $requisition->status_requisition,
                 'importance' => $requisition->importance,
                 'finished' => $requisition->finished,
-                'production_date' => $requisition->production_date,
                 'request_date' => $requisition->request_date,
+                'production_date' => $requisition->production_date,
                 'days_remaining' => $requisition->days_remaining,
+                'finished_date' => $requisition->finished_date,
+
             ],
             'productData' => $requisition->itemsRequisition->map(function ($item) {
                 return [
@@ -143,10 +162,10 @@ class RequisitionController extends Controller
                 ];
             })->toArray(),
         ];
-    
+
         return view('requisition.show', compact('requisition', 'today', 'initialData'));
     }
-    
+
 
     /**
      * Show the form for editing the specified resource.
@@ -167,6 +186,9 @@ class RequisitionController extends Controller
                 'production_date' => $requisition->production_date,
                 'request_date' => $requisition->request_date,
                 'days_remaining' => $requisition->days_remaining,
+                'finished_date' => $requisition->finished_date,
+
+                
             ],
             'productData' => $requisition->itemsRequisition->map(function ($item) {
                 return [
@@ -178,7 +200,7 @@ class RequisitionController extends Controller
             })->toArray(),
         ];
 
-        return view('requisition.edit', compact(['initialData','requisition','today']));
+        return view('requisition.edit', compact(['initialData', 'requisition', 'today']));
     }
 
 
@@ -186,42 +208,73 @@ class RequisitionController extends Controller
      * Update the specified resource in storage.
      */
     public function update(UpdateRequisitionRequest $request, Requisition $requisicione)
-    {
-        try {
+{
+    try {
+        Log::info('Payload recibido:', $request->all());
+        Log::info('Requisition ID:', ['id' => $requisicione->id]);
 
-            Log::info('Payload recibido:', $request->all());
-            Log::info('Requisition ID:', ['id' => $requisicione->id]);
+        $today = Carbon::now();
+        $importanceDays = [
+            'Baja' => 90,
+            'Media' => 60,
+            'Alta' => 30,
+            'Critico' => 15,
+        ];
 
-            DB::transaction(function () use ($request, $requisicione) {
-                //Actualizar los datos generales
-                $requisicione->update($request->only([
-                    'status_requisition',
-                    'importance',
-                    'finished',
-                    'production_date',
-                    'request_date',
-                    'days_remaining',
-                ]));
+        // Calcular nueva fecha de producción basada en la importancia
+        $importance = $request->input('importance', 'Baja');
+        $daysToAdd = $importanceDays[$importance] ?? 90;
+        $calculatedDate = $today->copy()->addDays($daysToAdd);
 
-                //Depurar la lista antigua de productos para que entre la nueva
-                $requisicione->itemsRequisition()->delete();
-                //Nuevos productos que se hayan agregado o eliminado
+        // Validar que todos los IDs sean válidos
+        $productIds = array_column($request->input('items_requisition', []), 'product_id');
+        $validProductIds = Product::whereIn('id', $productIds)->pluck('id')->toArray();
 
-                foreach ($request->input('items_requisition') as $item) {
-                    Log::info('Insertando item:', ['requisition_id' => $requisicione->id, 'item' => $item]);
-                    $requisicione->itemsRequisition()->create([
-                        'product_id' => $item['product_id'],
-                        'quantity' => $item['quantity'],
-                    ]);
-                }
-            });
-
-            return response()->json(['message' => 'Requisición actualizada exitosamente']);
-        } catch (\Exception $e) {
-            Log::error('Error al actualizar la requisición: ' . $e->getMessage());
-            return response()->json(['message' => 'Error al actualizar la requisición'], 500);
+        foreach ($productIds as $id) {
+            if (!in_array($id, $validProductIds)) {
+                throw ValidationException::withMessages([
+                    'items_requisition' => 'Uno o más productos seleccionados no son válidos.',
+                ]);
+            }
         }
+
+        DB::transaction(function () use ($request, $requisicione, $calculatedDate, $daysToAdd) {
+            // Actualizar los datos generales de la requisición
+            $requisicione->update(array_merge(
+                $request->only([
+                    'status_requisition',
+                    'finished',
+                ]),
+                [
+                    'importance' => $request->input('importance', 'Baja'),
+                    'production_date' => $calculatedDate->format('Y-m-d'),
+                    'days_remaining' => $daysToAdd,
+                ]
+            ));
+
+            // Depurar la lista antigua de productos para que entre la nueva
+            $requisicione->itemsRequisition()->delete();
+
+            // Guardar los ítems de la requisición
+            foreach ($request->input('items_requisition') as $item) {
+                Log::info('Insertando item:', ['requisition_id' => $requisicione->id, 'item' => $item]);
+                $requisicione->itemsRequisition()->create([
+                    'product_id' => $item['product_id'],
+                    'quantity' => $item['quantity'],
+                ]);
+            }
+        });
+
+        return response()->json(['message' => 'Requisición actualizada exitosamente']);
+    } catch (ValidationException $e) {
+        // Capturar errores de validación específicos
+        return response()->json(['errors' => $e->errors()], 422);
+    } catch (\Exception $e) {
+        Log::error('Error al actualizar la requisición: ' . $e->getMessage());
+        return response()->json(['message' => 'Error al actualizar la requisición'], 500);
     }
+}
+
 
     /**
      * Remove the specified resource from storage.

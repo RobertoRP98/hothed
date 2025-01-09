@@ -30,6 +30,7 @@ class UpdateRequisitionRequest extends FormRequest
         'production_date' => 'required|date',
         'request_date' => 'required|date',
         'days_remaining' => 'required|integer',
+        'finished_date' => 'nullable',
         'items_requisition' => 'required|array|min:1',
         'items_requisition.*.product_id' => 'required|exists:products,id',
         'items_requisition.*.quantity' => 'required|integer|min:1',
