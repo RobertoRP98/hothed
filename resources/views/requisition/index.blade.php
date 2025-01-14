@@ -62,8 +62,28 @@
         <tr>
             <td>{{ $requisicion->id }}</td>
             <td>{{ $requisicion->user->name }}</td>
-            <td>{{ $requisicion->user->area }}</td>        
-            <td>{{ $requisicion->importance }}</td>
+            <td>{{ $requisicion->user->area }}</td>
+            <td class="
+    @if(\Carbon\Carbon::parse($requisicion->production_date)->diffInDays(now(), false) >= -15)
+        table-danger text-danger fw-bold
+    @elseif(\Carbon\Carbon::parse($requisicion->production_date)->diffInDays(now(), false) >= -30)
+        table-danger
+    @elseif(\Carbon\Carbon::parse($requisicion->production_date)->diffInDays(now(), false) >= -60)
+        table-warning
+    @else
+        table-success
+    @endif">
+    @if(\Carbon\Carbon::parse($requisicion->production_date)->diffInDays(now(), false) >= -15)
+        Crítico
+    @elseif(\Carbon\Carbon::parse($requisicion->production_date)->diffInDays(now(), false) >= -30)
+        Alta
+    @elseif(\Carbon\Carbon::parse($requisicion->production_date)->diffInDays(now(), false) >= -60)
+        Media
+    @else
+        Baja
+    @endif
+</td>
+        
             <td>{{ \Carbon\Carbon::parse($requisicion->request_date)->format('d/m/Y') }}</td>
             <td>{{ \Carbon\Carbon::parse($requisicion->production_date)->format('d/m/Y') }}</td>
       

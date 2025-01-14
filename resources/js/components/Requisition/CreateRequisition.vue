@@ -263,8 +263,8 @@ export default {
                 .then((response) => {
                     // Capturar el mensaje desde la respuesta del servidor
                     const message = encodeURIComponent(response.data.message);
-                    console.log("Redirigiendo a /requisiciones con mensaje...");
-                    window.location.href = `/requisiciones?message=${message}`;
+                    console.log("Redirigiendo a /mis-requisiciones con mensaje...");
+                    window.location.href = `/mis-requisiciones?message=${message}`;
                 })
                 .catch((error) => {
                     console.error("Error en la solicitud:", error);

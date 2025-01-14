@@ -2,7 +2,7 @@
     <div>
         <!-- Primera fila -->
         <div class="row mb-4">
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <div class="form-outline">
                     <select
                         v-model="formData.status_requisition"
@@ -18,7 +18,7 @@
                 </div>
             </div>
 
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <div class="form-outline">
                     <select
                         v-model="formData.importance"
@@ -31,12 +31,24 @@
                         <option value="Critico">CRITICO</option> -->
                     </select>
                     <label class="form-label"
-                        >IMPORTANCIA DE LA REQUISICIÓN</label
+                        >IMPORTANCIA A EDITAR</label
                     >
                 </div>
             </div>
 
-            <div class="col-md-4">
+            <div class="col-md-3">
+                <div class="form-outline">
+                    <input
+                        type="text"
+                        v-model="formData.importance_now"
+                        class="form-control"
+                        readonly
+                    />
+                    <label class="form-label">IMPORTANCIA ACTUAL</label>
+                </div>
+            </div>
+
+            <div class="col-md-3">
                 <div class="form-outline">
                     <select
                         v-model="formData.finished"
@@ -75,16 +87,16 @@
                     <label class="form-label">FECHA DE RESPUESTA</label>
                 </div>
             </div>
-
+            
             <div class="col-md-3">
                 <div class="form-outline">
                     <input
-                        type="number"
-                        v-model="formData.days_remaining"
+                        type="text"
+                        v-model="formData.days_remaining_now"
                         class="form-control"
                         readonly
                     />
-                    <label class="form-label">DÍAS FALTANTES</label>
+                    <label class="form-label">DIAS FALTANTES</label>
                 </div>
             </div>
 

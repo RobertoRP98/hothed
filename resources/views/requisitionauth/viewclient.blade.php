@@ -28,7 +28,7 @@
     </a>
 </div>
  
-<h3 class="text-center my-4">Requisiciones</h3>
+<h3 class="text-center my-4">Mis Requisiciones</h3>
 
 
 <div class="card">
@@ -39,10 +39,13 @@
 <thead class="thead-light">
         <tr>
             <th class="col-md-1">NUM. REQUISICIÓN</th>
-            <th>USUARIO</th>
-            <th>DEPARTAMENTO</th>
-            <th>PRIORIDAD</th>
-            <th>OPCIONES</th>
+            <th class="col-md-1">USUARIO</th>
+            <th class="col-md-1">DEP</th>
+            <th class="col-md-1">PRIORIDAD</th>
+            <th class="col-md-1">INGRESO</th>
+            <th class="col-md-1">FECHA MAX DE RESPUESTA</th>
+            <th class="col-md-1">DIAS VENCIDOS O POR VENCER </th>
+            <th class="col-md-1">OPCIONES</th>
 
         </tr>
     </thead>
@@ -51,8 +54,45 @@
         <tr>
             <td>{{ $requisicion->id }}</td>
             <td>{{ $requisicion->user->name }}</td>
-            <td>{{ $requisicion->user->area }}</td>        
-            <td>{{ $requisicion->importance }}</td>
+            <td>{{ $requisicion->user->area }}</td>
+
+            <td class="
+            @if(\Carbon\Carbon::parse($requisicion->production_date)->diffInDays(now(), false) >= -15)
+                table-danger text-danger fw-bold
+            @elseif(\Carbon\Carbon::parse($requisicion->production_date)->diffInDays(now(), false) >= -30)
+                table-danger
+            @elseif(\Carbon\Carbon::parse($requisicion->production_date)->diffInDays(now(), false) >= -60)
+                table-warning
+            @else
+                table-success
+            @endif">
+            @if(\Carbon\Carbon::parse($requisicion->production_date)->diffInDays(now(), false) >= -15)
+                Crítico
+            @elseif(\Carbon\Carbon::parse($requisicion->production_date)->diffInDays(now(), false) >= -30)
+                Alta
+            @elseif(\Carbon\Carbon::parse($requisicion->production_date)->diffInDays(now(), false) >= -60)
+                Media
+            @else
+                Baja
+            @endif
+        </td>     
+        
+        <td>{{ \Carbon\Carbon::parse($requisicion->request_date)->format('d/m/Y') }}</td>
+        <td>{{ \Carbon\Carbon::parse($requisicion->production_date)->format('d/m/Y') }}</td>
+  
+        <td class="
+        @if(\Carbon\Carbon::parse($requisicion->production_date)->diffInDays(now(), false) >= -15)
+            table-danger text-danger fw-bold
+        @elseif(\Carbon\Carbon::parse($requisicion->production_date)->diffInDays(now(), false) >= -30)
+            table-danger
+        @elseif(\Carbon\Carbon::parse($requisicion->production_date)->diffInDays(now(), false) >= -60)
+            table-warning
+        @else
+            table-success
+        @endif">
+        {{ floor(\Carbon\Carbon::parse($requisicion->production_date)->diffInDays(now(), false)) }}
+    </td>
+    
             <td>
                 <a class="text-white" href="{{ url('requisiciones/'.$requisicion->id) }}">
                     <button class="btn btn-primary mb-2">

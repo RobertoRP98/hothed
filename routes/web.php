@@ -148,7 +148,7 @@ Route::get('/facturas/{companyreceivable_id}/edit/{factura}', [BillController::c
 
 //EMPIEZAN MODULOS DE COMPRAS  
 //RUTAS PARA TODO EL PERSONAL CREAR Y GUARDAR SUS REQUISICIONES Y VER SUS PROPIAS REQUIS
-Route::group(['middleware' => ['auth', 'role:Cobranza|Developer']], function () {
+Route::group(['middleware' => ['auth', 'role:Cobranza|Developer|Almacen']], function () {
     Route::get('/requisiciones/create', [RequisitionController::class, 'create'])->name('requisiciones.create');
     Route::post('/requisiciones', [RequisitionController::class, 'store'])->name('requisiciones.store');
     Route::get('/requisiciones/{requisicione}', [RequisitionController::class, 'show'])->name('requisiciones.show');

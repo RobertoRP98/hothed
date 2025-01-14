@@ -18,7 +18,7 @@
                 <div class="form-outline">
                     <input
                         type="text"
-                        v-model="formData.importance"
+                        v-model="formData.importance_now"
                         class="form-control"
                         readonly
                     />
@@ -69,7 +69,7 @@
                 <div class="form-outline">
                     <input
                         type="text"
-                        v-model="formData.days_remaining"
+                        v-model="formData.days_remaining_now"
                         class="form-control"
                         readonly
                     />
