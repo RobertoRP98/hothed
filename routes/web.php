@@ -187,6 +187,10 @@ Route::group(['middleware' => ['auth', 'role:Developer|AdmCompras|OpeCompras|Res
     Route::get('requisiciones-ope-canceladas',[AuthorizationRequisitionController::class,'indexopecan'])->name('requisicionesopecan.index');
     Route::get('requisiciones-ope-finalizadas',[AuthorizationRequisitionController::class,'indexopefin'])->name('requisicionesopefin.index');
 
+    Route::get('requisiciones-resp-autorizadas',[AuthorizationRequisitionController::class,'indexrespaut'])->name('requisicionesrespaut.index');
+    Route::get('requisiciones-resp-canceladas',[AuthorizationRequisitionController::class,'indexrespcan'])->name('requisicionesrespcan.index');
+    Route::get('requisiciones-resp-finalizadas',[AuthorizationRequisitionController::class,'indexrespfin'])->name('requisicionesrespfin.index');
+
 });
 //TERMINAN MODULOS DE COMPRAS
 

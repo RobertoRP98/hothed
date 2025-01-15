@@ -21,7 +21,7 @@ class RequisitionController extends Controller
     public function index()
     {
 
-        $datos['requisiciones'] = Requisition::all();
+        $datos['requisiciones'] = Requisition::where('status_requisition', 'Pendiente')->get();
 
         return view('requisition.index', $datos);
     }
@@ -113,7 +113,34 @@ class RequisitionController extends Controller
                 }
             });
 
-            return response()->json(['message' => 'Requisición Agregada']);
+
+
+            $message = "Requisición creada con éxito";
+
+            // Definir redirecciones por rol
+            $roleRedirects = [
+                'RespCompras' => '/requisiciones',
+                'Developer' => '/requisiciones',
+                'ClientCompras' => '/mis-requisiciones',
+                'AdmCompras' => '/requisiciones-adm',
+                'OpeCompras' => '/requisiciones-ope',
+            ];
+
+            // Obtener la ruta correspondiente según el rol del usuario
+            foreach ($roleRedirects as $role => $redirect) {
+                if (auth()->user()->hasRole($role)) {
+                    return response()->json([
+                        'message' => $message,
+                        'redirect' => $redirect,
+                    ]);
+                }
+            }
+
+            // Respuesta por defecto si no tiene un rol esperado
+            return response()->json([
+                'message' => $message,
+                'redirect' => '/',
+            ]);
         } catch (ValidationException $e) {
             // Capturar errores de validación específicos
             return response()->json(['errors' => $e->errors()], 422);
@@ -122,6 +149,7 @@ class RequisitionController extends Controller
             return response()->json(['message' => 'Error al guardar la requisición'], 500);
         }
     }
+
 
     /**
      * Display the specified resource.
@@ -302,14 +330,43 @@ class RequisitionController extends Controller
                 }
             });
 
-            return response()->json(['message' => 'Requisición actualizada exitosamente']);
+
+            
+            $message = "Requisición creada con éxito";
+
+            // Definir redirecciones por rol
+            $roleRedirects = [
+                'RespCompras' => '/requisiciones',
+                'Developer' => '/requisiciones',
+                'ClientCompras' => '/mis-requisiciones',
+                'AdmCompras' => '/requisiciones-adm',
+                'OpeCompras' => '/requisiciones-ope',
+            ];
+
+            // Obtener la ruta correspondiente según el rol del usuario
+            foreach ($roleRedirects as $role => $redirect) {
+                if (auth()->user()->hasRole($role)) {
+                    return response()->json([
+                        'message' => $message,
+                        'redirect' => $redirect,
+                    ]);
+                }
+            }
+
+            // Respuesta por defecto si no tiene un rol esperado
+            return response()->json([
+                'message' => $message,
+                'redirect' => '/',
+            ]);
         } catch (ValidationException $e) {
             // Capturar errores de validación específicos
             return response()->json(['errors' => $e->errors()], 422);
         } catch (\Exception $e) {
-            Log::error('Error al actualizar la requisición: ' . $e->getMessage());
-            return response()->json(['message' => 'Error al actualizar la requisición'], 500);
+            Log::error('Error al guardar la requisición: ' . $e->getMessage());
+            return response()->json(['message' => 'Error al guardar la requisición'], 500);
         }
+
+        
     }
 
 

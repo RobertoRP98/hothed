@@ -25,13 +25,11 @@
                         v-model="formData.importance"
                         class="form-select"
                         disabled
-                        
                     >
                         <option value="Baja">BAJA</option>
                         <!-- <option value="Media">MEDIA</option>
                         <option value="Alta">ALTA</option>
                         <option value="Critico">CRITICO</option> -->
-
                     </select>
                     <label class="form-label"
                         >IMPORTANCIA DE LA REQUISICIÓN</label
@@ -91,8 +89,6 @@
                     <label class="form-label">DÍAS FALTANTES</label>
                 </div>
             </div>
-
-            
         </div>
 
         <!-- Productos de Requisición -->
@@ -207,7 +203,7 @@ export default {
             this.productData = [...this.initialData.productData];
         }
         // Asignar una fecha temporal al campo production_date
-    this.formData.request_date = new Date().toISOString().split('T')[0]; // Fecha actual
+        this.formData.request_date = new Date().toISOString().split("T")[0]; // Fecha actual
     },
     methods: {
         addFields() {
@@ -261,10 +257,13 @@ export default {
             axios
                 .post("/requisiciones", payload)
                 .then((response) => {
-                    // Capturar el mensaje desde la respuesta del servidor
-                    const message = encodeURIComponent(response.data.message);
-                    console.log("Redirigiendo a /mis-requisiciones con mensaje...");
-                    window.location.href = `/mis-requisiciones?message=${message}`;
+                    console.log("Mensaje:", response.data.message);
+
+                    // Redirigir a la URL proporcionada por el backend
+                    if (response.data.redirect) {
+                        console.log("Redirigiendo a:", response.data.redirect);
+                        window.location.href = response.data.redirect;
+                    }
                 })
                 .catch((error) => {
                     console.error("Error en la solicitud:", error);

@@ -137,6 +137,56 @@ class AuthorizationRequisitionController extends Controller
 
 
     //FINALIZA INDICES DE OPERACIONES
+    //INICIA INDICES DE RESPONSABLE 
+
+    public function indexrespaut()
+    {
+        // Verificar explícitamente que el usuario tiene el rol correcto
+        if (!auth()->user()->hasRole(['Developer', 'RespCompras'])) {
+            abort(403, 'No tienes permiso para acceder a esta vista.');
+        }
+        $requisitionresp = Requisition::where('status_requisition', 'Autorizado')
+            ->where('finished', false)
+            ->whereHas('user', function ($query) {
+                $query->whereIn('departament', ['OP','ADM']);
+            })
+            ->get();
+        return view('requisitionauth.viewrespaut', compact('requisitionresp'));
+    }
+
+    public function indexrespcan()
+    {
+        // Verificar explícitamente que el usuario tiene el rol correcto
+        if (!auth()->user()->hasRole(['Developer', 'RespCompras' ])) {
+            abort(403, 'No tienes permiso para acceder a esta vista.');
+        }
+        $requisitionresp = Requisition::where('status_requisition', 'Rechazado')
+            ->where('finished', false)
+            ->whereHas('user', function ($query) {
+                $query->whereIn('departament', ['OP','ADM']);
+            })
+            ->get();
+        return view('requisitionauth.viewrespcan', compact('requisitionresp'));
+    }
+
+    public function indexrespfin()
+    {
+        // Verificar explícitamente que el usuario tiene el rol correcto
+        if (!auth()->user()->hasRole(['Developer', 'RespCompras'])) {
+            abort(403, 'No tienes permiso para acceder a esta vista.');
+        }
+        $requisitionresp = Requisition::whereIn('status_requisition', ['Pendiente', 'Autorizado', 'Rechazado'])
+            ->where('finished', true)
+            ->whereHas('user', function ($query) {
+                $query->whereIn('departament', ['OP','ADM']);
+            })
+            ->get();
+        return view('requisitionauth.viewrespfin', compact('requisitionresp'));
+    }
+
+    //FINALIZA INDICES DE RESPONSABLE
+
+//INICIA INDICE DE CLIENTE - MIS REQUISICIONES
 
     public function indexclient()
     {
@@ -147,9 +197,6 @@ class AuthorizationRequisitionController extends Controller
         if (!auth()->user()->hasRole([''])) {
             $query->where('user_id', auth()->id());
         }
-        //FINALIZA INDICES DE OPERACIONES
-
-
         // Obtener las requisiciones con los filtros aplicados
         $requisitionclient = $query->get();
 

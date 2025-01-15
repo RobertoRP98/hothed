@@ -275,13 +275,17 @@ export default {
                 })),
             };
             console.log(`URL: /requisiciones/${this.formData.id}`, payload);
-            axios
+
+                axios
                 .patch(`/requisiciones/${this.formData.id}`, payload)
                 .then((response) => {
-                    // Capturar el mensaje desde la respuesta del servidor
-                    const message = encodeURIComponent(response.data.message);
-                    console.log("Redirigiendo a /requisiciones con mensaje...");
-                    window.location.href = `/requisiciones?message=${message}`;
+                    console.log("Mensaje:", response.data.message);
+
+                    // Redirigir a la URL proporcionada por el backend
+                    if (response.data.redirect) {
+                        console.log("Redirigiendo a:", response.data.redirect);
+                        window.location.href = response.data.redirect;
+                    }
                 })
                 .catch((error) => {
                     console.error("Error en la solicitud:", error);
