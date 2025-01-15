@@ -20,27 +20,15 @@
 @endpush
 
 
-<div class="col-md-12">
-    <a href="{{ url('requisiciones/create') }}" class="col-md-3 btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
-        Agregar Requisición
-    </a>
-
-    <a href="{{ url('/requisiciones-ope-autorizadas') }}" class="col-md-3 btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
-        Requisiciones Autorizadas
-    </a>
-
-    <a href="{{ url('/requisiciones-ope-canceladas') }}" class="col-md-3 btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
-        Requisiciones Canceladas
-    </a>
-
-    <a href="{{ url('/requisiciones-ope-finalizadas') }}" class="col-md-3 btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
-        Requisiciones Finalizadas
-    </a>
+<div class="d-flex flex-wrap mt-3">
+    <a href="{{ url('/requisiciones-adm') }}" class="btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
+        Regresar
+    </a>   
 </div>
 
 
  
-<h3 class="text-center my-4">Requisiciones de Operaciones</h3>
+<h3 class="text-center my-4">Requisiciones Autorizadas de Administración</h3>
 
 
 <div class="card">
@@ -63,7 +51,7 @@
 
     </thead>
     <tbody>
-        @foreach($requisitionope as $requisicion)
+        @foreach($requisitionadm as $requisicion)
         <tr>
             <td>{{ $requisicion->id }}</td>
             <td>{{ $requisicion->user->name }}</td>

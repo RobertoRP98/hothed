@@ -39,8 +39,7 @@
 <thead class="thead-light">
         <tr>
             <th class="col-md-1">NUM. REQUISICIÓN</th>
-            <th class="col-md-1">USUARIO</th>
-            <th class="col-md-1">DEP</th>
+            <th class="col-md-1">STATUS</th>
             <th class="col-md-1">PRIORIDAD</th>
             <th class="col-md-1">INGRESO</th>
             <th class="col-md-1">FECHA MAX DE RESPUESTA</th>
@@ -53,8 +52,7 @@
         @foreach($requisitionclient as $requisicion)
         <tr>
             <td>{{ $requisicion->id }}</td>
-            <td>{{ $requisicion->user->name }}</td>
-            <td>{{ $requisicion->user->area }}</td>
+            <td>{{ $requisicion->status_requisition }}</td>
 
             <td class="
             @if(\Carbon\Carbon::parse($requisicion->production_date)->diffInDays(now(), false) >= -15)
