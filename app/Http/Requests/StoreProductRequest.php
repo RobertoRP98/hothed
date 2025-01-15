@@ -1,0 +1,53 @@
+<?php
+
+namespace App\Http\Requests;
+
+use Illuminate\Foundation\Http\FormRequest;
+
+class StoreProductRequest extends FormRequest
+{
+    /**
+     * Determine if the user is authorized to make this request.
+     */
+    public function authorize(): bool
+    {
+        return true;
+    }
+
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     */
+    public function rules(): array
+    {
+        return [
+            'internal_id' => 'required|unique:products',
+            'description' => 'required',
+            'brand' => 'required',
+            'quantity' => 'required',
+            'min_stock' => 'required',       
+            'max_stock' => 'nullable',
+            'udm' => 'required',
+            'category' => 'required',
+            'price' => 'required',
+            'discount' => 'required',
+            'tax_id' => 'required',   
+        ];
+    }
+
+    public function messages(){
+        return [
+        'required' => 'El :attribute es requerido' ,
+        'numeric' => 'El :attribute debe ser numerico',
+        'unique' => 'El :attribute debe ser unico',
+        ];
+    }
+
+    protected function prepareForValidation()
+    {
+        $this->merge(
+            $this->except(['_token'])
+        );
+    }
+}

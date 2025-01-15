@@ -11,20 +11,24 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('suppliers', function (Blueprint $table) {
             Schema::create('suppliers', function (Blueprint $table) {
                 $table->id();
                 $table->string('name');
                 $table->string('rfc');
                 $table->string('number');
+                $table->string('email')->nullable();
                 $table->string('address');
                 $table->boolean('critic')->default(false);
                 $table->enum('currency', ['MXN', 'USD', 'MIXTO'])->default('MXN');
-                $table->tinyInteger('credit_days')->default(0);
+                $table->smallInteger('credit_days')->default(0);
                 $table->boolean('unique')->default(false);
+                $table->string('account')->nullable();
+                $table->boolean('contract')->default(false);
+                $table->enum('status',['APROVADO','BAJA','CONDICIONADO'])->default('APROVADO');
+                $table->text('notes')->nullable();
                 $table->timestamps();
             });
-        });
+        
     }
 
     /**

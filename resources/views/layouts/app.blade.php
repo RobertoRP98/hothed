@@ -61,6 +61,9 @@
             @yield('indextax')
             @yield('edittax')
             @yield('createtax')
+            @yield('indexsupplier')
+            @yield('editsupplier')
+            @yield('createsupplier')
 
 
          @include('layouts.footer')   

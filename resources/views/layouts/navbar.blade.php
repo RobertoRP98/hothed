@@ -24,21 +24,32 @@
             @endauth
 
             @auth
+            @php
+                // Determinar la ruta según el rol del usuario
+                $comprasUrl = '#'; // Enlace por defecto
+                if (Auth::user()->hasRole(['Developer', 'RespCompras'])) {
+                    $comprasUrl = '/requisiciones';
+                } elseif (Auth::user()->hasRole('AdmCompras')) {
+                    $comprasUrl = '/requisiciones-adm';
+                } elseif (Auth::user()->hasRole('OpeCompras')) {
+                    $comprasUrl = '/requisiciones-ope';
+                } elseif (Auth::user()->hasRole('ClientCompras')) {
+                    $comprasUrl = '/mis-requisiciones';
+                }
+            @endphp
+        
+            <li class="nav-item">
+                <a class="nav-link text-white" href="{{ url($comprasUrl) }}">Compras</a>
+            </li>
+        @endauth
+
+            @auth
             @if(Auth::user()->hasRole(['Developer', 'AdministracionKarla']))
                 <li class="nav-item">
                     <a class="nav-link text-white" href="{{ url('/register') }}">Registrar personal</a>
                 </li>
             @endif
         @endauth
-
-        @auth
-        @if(Auth::user()->hasRole(['Compras','Developer']))
-            <li class="nav-item">
-                <a class="nav-link text-white" href="{{ url('/') }}">Compras</a>
-            </li>
-        @endif
-    @endauth
-
 
     @auth
     @if(Auth::user()->hasRole(['Almacen','Developer']))

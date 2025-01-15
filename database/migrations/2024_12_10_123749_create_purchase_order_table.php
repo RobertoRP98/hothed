@@ -17,7 +17,7 @@ return new class extends Migration
             $table->unsignedBigInteger('requisition_id')->nullable();
             $table->unsignedBigInteger('tax_id')->nullable();
 
-            $table->enum('importance_op', ['Alta', 'Media', 'Baja'])->default('Baja');
+            $table->enum('importance_op', ['Alta', 'Media', 'Baja','Critico'])->default('Baja');
             $table->enum('type_op', ['Local', 'Extranjera'])->default('Local');
             $table->date('date_start');
             $table->date('date_end')->nullable();
@@ -31,7 +31,7 @@ return new class extends Migration
             $table->enum('status_3', ['Pendiente', 'Autorizado', 'Rechazado'])->default('Pendiente');
             $table->enum('status_4', ['Pendiente', 'Autorizado', 'Rechazado'])->default('Pendiente');
             
-            
+            //AÑADIR CAMPO DE COTIZACIÓN
             $table->enum('po_status', ['Iniciada', 'Pendiente de Pago', 'Cancelado', 'Pendiente Comparativa', 'En Transito'])->default('Iniciada');
             $table->enum('bill', ['Facturado', 'Pendiente Facturar'])->default('Pendiente Facturar');
             $table->boolean('finished')->default(false);

@@ -2,16 +2,23 @@
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\TaxController;
 use App\Http\Controllers\BaseController;
 use App\Http\Controllers\BillController;
 use App\Http\Controllers\FamilyController;
 use App\Http\Controllers\StatusController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CurrencyController;
 use App\Http\Controllers\SubgroupController;
+use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\ToolstatusController;
+
+use App\Http\Controllers\RequisitionController;
 use App\Http\Controllers\ToolHistoryController;
+use App\Http\Controllers\PurchaseOrderController;
 use App\Http\Controllers\ToolwarehouseController;
 use App\Http\Controllers\CompanyReceivableController;
+use App\Http\Controllers\AuthorizationRequisitionController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -136,12 +143,55 @@ Route::patch('facturas/update/{companyreceivable_id}/{factura}', [BillController
 Route::get('/facturas/{companyreceivable_id}/edit/{factura}', [BillController::class, 'edit'])->name('facturas.edit')->middleware('auth');
 
 });
-
 //TERMINA MODULOS DE COBRO
 
 
-//EMPIEZAN MODULOS DE COMPRAS 
-Route::group(['middleware' => ['auth', 'role:Developer']], function () {
-
+//EMPIEZAN MODULOS DE COMPRAS  
+//RUTAS PARA TODO EL PERSONAL CREAR Y GUARDAR SUS REQUISICIONES Y VER SUS PROPIAS REQUIS
+Route::group(['middleware' => ['auth', 'role:Developer|AdmCompras|OpeCompras|RespCompras|ClientCompras']], function () {
+    Route::get('/requisiciones/create', [RequisitionController::class, 'create'])->name('requisiciones.create');
+    Route::post('/requisiciones', [RequisitionController::class, 'store'])->name('requisiciones.store');
+    Route::get('/requisiciones/{requisicione}', [RequisitionController::class, 'show'])->name('requisiciones.show');
+    Route::get('/mis-requisiciones', [AuthorizationRequisitionController::class, 'indexclient'])->name('requisicionesclient.index');
 
 });
+
+//RUTAS QUE SOLO SON ACCESIBLES AL ENCARGADO DE COMPRAS
+
+Route::group(['middleware' => ['auth', 'role:Developer|RespCompras']], function () {
+    Route::resource('/impuestos', TaxController::class);
+    Route::resource('/proveedores', SupplierController::class);
+    Route::resource('/productos', ProductController::class);
+    Route::resource('/compras', PurchaseOrderController::class);
+    Route::get('/requisiciones', [RequisitionController::class, 'index'])->name('requisiciones.index');
+});
+
+//RUTAS PARA EDITAR SOLO SON ACCESIBLES PARA GERENCIA Y RESPONSABLE DE COMPRAS
+Route::group(['middleware' => ['auth', 'role:Developer|AdmCompras|OpeCompras|RespCompras']], function () {
+    Route::get('/requisiciones/{requisicione}/edit', [RequisitionController::class, 'edit'])->name('requisiciones.edit');
+    Route::patch('/requisiciones/{requisicione}', [RequisitionController::class, 'update'])->name('requisiciones.update');
+
+
+//ACCESOS LOS INDEX DONDE GERENCIA VE LAS REQUISICIONES QUE DEBE APROBAR
+    //Rutas para ver las requisiciones por departamentos ADM U OP
+    Route::get('requisiciones-adm',[AuthorizationRequisitionController::class,'indexadm'])->name('requisicionesadm.index');
+    Route::get('requisiciones-ope',[AuthorizationRequisitionController::class,'indexope'])->name('requisicionesope.index');
+
+
+    Route::get('requisiciones-adm-autorizadas',[AuthorizationRequisitionController::class,'indexadmaut'])->name('requisicionesadmaut.index');
+    Route::get('requisiciones-adm-canceladas',[AuthorizationRequisitionController::class,'indexadmcan'])->name('requisicionesadmcan.index');
+    Route::get('requisiciones-adm-finalizadas',[AuthorizationRequisitionController::class,'indexadmfin'])->name('requisicionesadmfin.index');
+
+
+    Route::get('requisiciones-ope-autorizadas',[AuthorizationRequisitionController::class,'indexopeaut'])->name('requisicionesopeaut.index');
+    Route::get('requisiciones-ope-canceladas',[AuthorizationRequisitionController::class,'indexopecan'])->name('requisicionesopecan.index');
+    Route::get('requisiciones-ope-finalizadas',[AuthorizationRequisitionController::class,'indexopefin'])->name('requisicionesopefin.index');
+
+    Route::get('requisiciones-resp-autorizadas',[AuthorizationRequisitionController::class,'indexrespaut'])->name('requisicionesrespaut.index');
+    Route::get('requisiciones-resp-canceladas',[AuthorizationRequisitionController::class,'indexrespcan'])->name('requisicionesrespcan.index');
+    Route::get('requisiciones-resp-finalizadas',[AuthorizationRequisitionController::class,'indexrespfin'])->name('requisicionesrespfin.index');
+
+});
+//TERMINAN MODULOS DE COMPRAS
+
+

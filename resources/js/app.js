@@ -1,5 +1,10 @@
 import './bootstrap';
 import searchComponent from './components/searchComponent.vue';
+import CreateRequisition from './components/Requisition/CreateRequisition.vue';
+import EditRequisition from './components/Requisition/EditRequisition.vue';
+import ViewRequisition from './components/Requisition/ViewRequisition.vue';
+
+
 
 import * as bootstrap from 'bootstrap';
 
@@ -7,7 +12,16 @@ import { createApp } from 'vue';
 
 const app = createApp({});
 app.component('search-component', searchComponent);
-app.mount('#app'); // Asume que tienes un <div id="app"></div> en tu layout Blade.
+// Registrar el componente global
+app.component('create-requisition', CreateRequisition);
+app.component('edit-requisition', EditRequisition);
+app.component('view-requisition', ViewRequisition);
+
+
+
+// Montar la aplicación en el contenedor principal
+app.mount('#app');// Asume que tienes un <div id="app"></div> en tu layout Blade.
+
 
 
 window.addEventListener('scroll', reveal);
