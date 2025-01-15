@@ -41,6 +41,7 @@
             <th class="col-md-1">NUM. REQUISICIÓN</th>
             <th class="col-md-1">STATUS</th>
             <th class="col-md-1">PRIORIDAD</th>
+            <th class="col-md-1">FINALIZADO</th>
             <th class="col-md-1">INGRESO</th>
             <th class="col-md-1">FECHA MAX DE RESPUESTA</th>
             <th class="col-md-1">DIAS VENCIDOS O POR VENCER </th>
@@ -73,8 +74,8 @@
             @else
                 Baja
             @endif
-        </td>     
-        
+        </td>
+        <td>{{ $requisicion->finished ? 'SI' : 'NO' }}</td>
         <td>{{ \Carbon\Carbon::parse($requisicion->request_date)->format('d/m/Y') }}</td>
         <td>{{ \Carbon\Carbon::parse($requisicion->production_date)->format('d/m/Y') }}</td>
   
