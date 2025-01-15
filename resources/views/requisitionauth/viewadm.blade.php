@@ -40,7 +40,7 @@
 
 
  
-<h3 class="text-center my-4">Requisiciones Autorizadas de Administración</h3>
+<h3 class="text-center my-4">Requisiciones de Administración</h3>
 
 
 <div class="card">
