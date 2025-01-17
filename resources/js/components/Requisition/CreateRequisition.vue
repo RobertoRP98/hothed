@@ -2,7 +2,7 @@
     <div>
         <!-- Primera fila -->
         <div class="row mb-4">
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <div class="form-outline">
                     <select
                         v-model="formData.status_requisition"
@@ -12,32 +12,30 @@
                         <option value="Pendiente">
                             PENDIENTE DE AUTORIZACIÓN
                         </option>
-                        <!-- <option value="Autorizado">AUTORIZADO</option>
-                        <option value="Rechazado">RECHAZADO</option> -->
+                        <option value="Autorizado">AUTORIZADO</option>
+                        <option value="Rechazado">RECHAZADO</option>
                     </select>
                     <label class="form-label">STATUS DE LA REQUISICIÓN</label>
                 </div>
             </div>
 
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <div class="form-outline">
                     <select
                         v-model="formData.importance"
                         class="form-select"
-                        disabled
                     >
                         <option value="Baja">BAJA</option>
-                        <!-- <option value="Media">MEDIA</option>
+                        <option value="Media">MEDIA</option>
                         <option value="Alta">ALTA</option>
-                        <option value="Critico">CRITICO</option> -->
                     </select>
                     <label class="form-label"
-                        >IMPORTANCIA DE LA REQUISICIÓN</label
+                        >PRIORIDAD DE LA REQUISICIÓN</label
                     >
                 </div>
             </div>
 
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <div class="form-outline">
                     <select
                         v-model="formData.finished"
@@ -50,6 +48,8 @@
                     <label class="form-label">¿REQUISICIÓN FINALIZADA?</label>
                 </div>
             </div>
+
+           
         </div>
 
         <!-- Segunda fila -->

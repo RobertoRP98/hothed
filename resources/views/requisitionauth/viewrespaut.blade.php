@@ -66,13 +66,13 @@
                 table-success
             @endif">
             @if(\Carbon\Carbon::parse($requisicion->production_date)->diffInDays(now(), false) >= -15)
-                Crítico
+                ALTA 
             @elseif(\Carbon\Carbon::parse($requisicion->production_date)->diffInDays(now(), false) >= -30)
-                Alta
+                ALTA 
             @elseif(\Carbon\Carbon::parse($requisicion->production_date)->diffInDays(now(), false) >= -60)
-                Media
+                MEDIA 
             @else
-                Baja
+                BAJA
             @endif
         </td>     
         

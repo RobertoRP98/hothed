@@ -21,7 +21,7 @@ class RequisitionController extends Controller
     public function index()
     {
 
-        $datos['requisiciones'] = Requisition::where('status_requisition', 'Pendiente')->get();
+        $datos['requisiciones'] = Requisition::where('status_requisition', 'Autorizado')->get();
 
         return view('requisition.index', $datos);
     }
@@ -63,8 +63,7 @@ class RequisitionController extends Controller
             $importanceDays = [
                 'Baja' => 90,
                 'Media' => 60,
-                'Alta' => 30,
-                'Critico' => 15,
+                'Alta' => 15,
             ];
 
             $importance = $request->input('importance', 'Baja');
@@ -173,7 +172,7 @@ class RequisitionController extends Controller
 
         // Calcular importancia
         if ($days_remaining_now >= -15) {
-            $importance_now = 'CRITICO';
+            $importance_now = 'ALTA';
         } elseif ($days_remaining_now >= -30) {
             $importance_now = 'ALTA';
         } elseif ($days_remaining_now >= -60) {
@@ -227,7 +226,7 @@ class RequisitionController extends Controller
 
         // Calcular importancia
         if ($days_remaining_now >= -15) {
-            $importance_now = 'CRITICO';
+            $importance_now = 'ALTA';
         } elseif ($days_remaining_now >= -30) {
             $importance_now = 'ALTA';
         } elseif ($days_remaining_now >= -60) {
@@ -282,8 +281,7 @@ class RequisitionController extends Controller
             $importanceDays = [
                 'Baja' => 90,
                 'Media' => 60,
-                'Alta' => 30,
-                'Critico' => 15,
+                'Alta' => 15,
             ];
 
             // Calcular nueva fecha de producción basada en la importancia

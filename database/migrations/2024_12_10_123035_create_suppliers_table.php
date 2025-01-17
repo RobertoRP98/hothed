@@ -24,7 +24,7 @@ return new class extends Migration
                 $table->boolean('unique')->default(false);
                 $table->string('account')->nullable();
                 $table->boolean('contract')->default(false);
-                $table->enum('status',['APROVADO','BAJA','CONDICIONADO'])->default('APROVADO');
+                $table->enum('status',['APROBADO','BAJA','CONDICIONADO'])->default('APROBADO');
                 $table->text('notes')->nullable();
                 $table->timestamps();
             });

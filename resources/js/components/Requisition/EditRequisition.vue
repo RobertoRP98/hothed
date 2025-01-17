@@ -28,7 +28,6 @@
                         <option value="Baja">BAJA</option>
                         <option value="Media">MEDIA</option>
                         <option value="Alta">ALTA</option>
-                        <option value="Critico">CRITICO</option> -->
                     </select>
                     <label class="form-label"
                         >IMPORTANCIA A EDITAR</label

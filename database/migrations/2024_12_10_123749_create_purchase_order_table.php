@@ -17,22 +17,23 @@ return new class extends Migration
             $table->unsignedBigInteger('requisition_id')->nullable();
             $table->unsignedBigInteger('tax_id')->nullable();
 
-            $table->enum('importance_op', ['Alta', 'Media', 'Baja','Critico'])->default('Baja');
+            $table->enum('importance_op', ['Alta', 'Media', 'Baja','Critico'])->default('Baja'); // BORRAR
             $table->enum('type_op', ['Local', 'Extranjera'])->default('Local');
             $table->date('date_start');
             $table->date('date_end')->nullable();
-            $table->enum('status_time', ['Bajo', 'Medio', 'Alto', 'Critico'])->default('Bajo');
+            $table->enum('status_time', ['Bajo', 'Medio', 'Alto', 'Critico'])->default('Bajo'); //BORRAR
+
             $table->enum('payment_type', ['Credito', 'Debito', 'Efectivo', 'Transferencia'])->default('Credito');
             $table->enum('payment_condition', ['Normal','50-50', '100% Antes Entrega', '100% Post Entrega'])->default('Normal');
-            $table->boolean('payment_display')->default(true);
+            $table->boolean('payment_display')->default(true); //PAGO EN UNA EXI
 
             $table->enum('status_1', ['Pendiente', 'Autorizado', 'Rechazado'])->default('Pendiente');
             $table->enum('status_2', ['Pendiente', 'Autorizado', 'Rechazado'])->default('Pendiente');
             $table->enum('status_3', ['Pendiente', 'Autorizado', 'Rechazado'])->default('Pendiente');
-            $table->enum('status_4', ['Pendiente', 'Autorizado', 'Rechazado'])->default('Pendiente');
+            $table->enum('status_4', ['Pendiente', 'Autorizado', 'Rechazado'])->default('Pendiente'); //ANTES DE IVA
             
             //AÑADIR CAMPO DE COTIZACIÓN
-            $table->enum('po_status', ['Iniciada', 'Pendiente de Pago', 'Cancelado', 'Pendiente Comparativa', 'En Transito'])->default('Iniciada');
+            $table->enum('po_status', ['En Proceso', 'Pendiente de Pago', 'Cancelado', 'Pendiente Comparativa', 'En Transito'])->default('Iniciada');
             $table->enum('bill', ['Facturado', 'Pendiente Facturar'])->default('Pendiente Facturar');
             $table->boolean('finished')->default(false);
 
