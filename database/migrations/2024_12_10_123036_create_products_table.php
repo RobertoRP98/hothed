@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('brand')->nullable();
             $table->integer('quantity')->default(0);
             $table->integer('min_stock')->default(0);
+            $table->integer('reorder_point')->default(0);
             $table->integer('max_stock')->default(0)->nullable(); // Null si no hay límite superior.
 
 
