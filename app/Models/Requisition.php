@@ -35,8 +35,6 @@ class Requisition extends Model
             $daysRemaining = $requisition->days_remaining;
 
             if ($daysRemaining <= 15) {
-                $requisition->importance = 'Critico';
-            } elseif ($daysRemaining <= 30) {
                 $requisition->importance = 'Alta';
             } elseif ($daysRemaining <= 60) {
                 $requisition->importance = 'Media';

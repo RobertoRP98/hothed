@@ -21,10 +21,7 @@
 
             <div class="col-md-3">
                 <div class="form-outline">
-                    <select
-                        v-model="formData.importance"
-                        class="form-select"
-                    >
+                    <select v-model="formData.importance" class="form-select">
                         <option value="Baja">BAJA</option>
                         <option value="Media">MEDIA</option>
                         <option value="Alta">ALTA</option>
@@ -37,10 +34,7 @@
 
             <div class="col-md-3">
                 <div class="form-outline">
-                    <select
-                        v-model="formData.petty_cash"
-                        class="form-select"
-                    >
+                    <select v-model="formData.petty_cash" class="form-select">
                         <option value="0">NO</option>
                         <option value="1">SI</option>
                     </select>
@@ -60,8 +54,6 @@
                     <label class="form-label">¿REQUISICIÓN FINALIZADA?</label>
                 </div>
             </div>
-
-           
         </div>
 
         <!-- Segunda fila -->
@@ -112,12 +104,10 @@
                     <label class="form-label">DÍAS FALTANTES</label>
                 </div>
             </div>
-
         </div>
 
         <!-- tercera fila -->
         <div class="row mb-4">
-
             <div class="col-md-6">
                 <div class="form-outline">
                     <input
@@ -129,11 +119,7 @@
                     <label class="form-label">ESCRIBIR NOTA</label>
                 </div>
             </div>
-
         </div>
-
-        
-        
 
         <!-- Productos de Requisición -->
         <div class="card mt-2">
@@ -223,7 +209,7 @@ export default {
         return {
             formData: {
                 user_id: "",
-                
+
                 status_requisition: "Pendiente",
                 importance: "Baja",
                 finished: "0",
@@ -234,8 +220,8 @@ export default {
 
                 required_date: "",
                 petty_cash: "0",
-                notes_client:"",
-                notes_resp:null,
+                notes_client: "",
+                notes_resp: null,
             },
             productData: [
                 {
@@ -303,7 +289,11 @@ export default {
                     quantity: item.quantity,
                 })),
             };
-
+            console.log(
+                "Valor enviado para 'importance':",
+                this.formData.importance
+            );
+            console.log("Payload completo:", payload);
             axios
                 .post("/requisiciones", payload)
                 .then((response) => {

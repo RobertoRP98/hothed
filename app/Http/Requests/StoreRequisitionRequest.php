@@ -26,6 +26,8 @@ class StoreRequisitionRequest extends FormRequest
 
         'status_requisition' => 'required|string',
         'importance' => 'required|string',
+
+       // 'importance' => 'required|string',
         'finished' => 'required|boolean',
         'request_date' => 'required|date',
         'production_date' => 'nullable',

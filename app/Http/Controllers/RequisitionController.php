@@ -38,7 +38,7 @@ class RequisitionController extends Controller
         $initialData = [
             'formData' => [
                 'user_id' => auth()->id(),
-                
+
                 'status_requisition' => 'Pendiente',
                 'importance' => 'Baja',
                 'petty_cash' => '0',
@@ -47,9 +47,9 @@ class RequisitionController extends Controller
                 'request_date' => $today,
                 'required_date' => '',
                 'production_date' => '',
-                
+
                 'days_remaining' => 0,
-                
+
                 'finished_date' => '',
                 'notes_client' => '',
                 'notes_resp' => '',
@@ -161,6 +161,9 @@ class RequisitionController extends Controller
         } catch (\Exception $e) {
             Log::error('Error al guardar la requisición: ' . $e->getMessage());
             return response()->json(['message' => 'Error al guardar la requisición'], 500);
+
+            Log::info('Valor de importance:', ['importance' => $request->input('importance')]);
+            Log::info('Datos recibidos:', $request->all());
         }
     }
 
