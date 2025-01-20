@@ -21,7 +21,9 @@ class RequisitionController extends Controller
     public function index()
     {
 
-        $datos['requisiciones'] = Requisition::where('status_requisition', 'Autorizado')->get();
+        $datos['requisiciones'] = Requisition::where('status_requisition', 'Autorizado')
+            ->where('finished', false)
+            ->get();
 
         return view('requisition.index', $datos);
     }
@@ -36,13 +38,21 @@ class RequisitionController extends Controller
         $initialData = [
             'formData' => [
                 'user_id' => auth()->id(),
+                
                 'status_requisition' => 'Pendiente',
                 'importance' => 'Baja',
+                'petty_cash' => '0',
                 'finished' => '0',
+
                 'request_date' => $today,
+                'required_date' => '',
                 'production_date' => '',
+                
                 'days_remaining' => 0,
+                
                 'finished_date' => '',
+                'notes_client' => '',
+                'notes_resp' => '',
             ],
             'productData' => [], // Inicialmente vacío
         ];
@@ -93,6 +103,11 @@ class RequisitionController extends Controller
                         'importance',
                         'finished',
                         'finished_date',
+
+                        'required_date',
+                        'petty_cash',
+                        'notes_client',
+                        'notes_resp'
                     ]),
                     [
                         // Asignar fechas calculadas
@@ -195,6 +210,11 @@ class RequisitionController extends Controller
                 'days_remaining' => $requisition->days_remaining,
                 'finished_date' => $requisition->finished_date,
 
+                'required_date' => $requisition->required_date,
+                'petty_cash' => $requisition->petty_cash,
+                'notes_client' => $requisition->notes_client,
+                'notes_resp' => $requisition->notes_resp,
+
                 'importance_now' => $importance_now, // Agregar importancia calculada
                 'days_remaining_now' => $days_remaining_now, // Agregar días restantes calculados
 
@@ -252,6 +272,11 @@ class RequisitionController extends Controller
                 'importance_now' => $importance_now, // Agregar importancia calculada
                 'days_remaining_now' => $days_remaining_now, // Agregar días restantes calculados
 
+                'required_date' => $requisition->required_date,
+                'petty_cash' => $requisition->petty_cash,
+                'notes_client' => $requisition->notes_client,
+                'notes_resp' => $requisition->notes_resp,
+
 
             ],
             'productData' => $requisition->itemsRequisition->map(function ($item) {
@@ -307,6 +332,9 @@ class RequisitionController extends Controller
                     $request->only([
                         'status_requisition',
                         'finished',
+                        'petty_cash',
+                        'notes_client',
+                        'notes_resp'
                     ]),
                     [
                         'importance' => $request->input('importance', 'Baja'),
@@ -329,7 +357,7 @@ class RequisitionController extends Controller
             });
 
 
-            
+
             $message = "Requisición creada con éxito";
 
             // Definir redirecciones por rol
@@ -363,8 +391,6 @@ class RequisitionController extends Controller
             Log::error('Error al guardar la requisición: ' . $e->getMessage());
             return response()->json(['message' => 'Error al guardar la requisición'], 500);
         }
-
-        
     }
 
 

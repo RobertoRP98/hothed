@@ -12,8 +12,8 @@
                         <option value="Pendiente">
                             PENDIENTE DE AUTORIZACIÓN
                         </option>
-                        <option value="Autorizado">AUTORIZADO</option>
-                        <option value="Rechazado">RECHAZADO</option>
+                        <!-- <option value="Autorizado">AUTORIZADO</option>
+                        <option value="Rechazado">RECHAZADO</option> -->
                     </select>
                     <label class="form-label">STATUS DE LA REQUISICIÓN</label>
                 </div>
@@ -38,12 +38,24 @@
             <div class="col-md-3">
                 <div class="form-outline">
                     <select
+                        v-model="formData.petty_cash"
+                        class="form-select"
+                    >
+                        <option value="0">NO</option>
+                        <option value="1">SI</option>
+                    </select>
+                    <label class="form-label">¿CAJA CHICA?</label>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="form-outline">
+                    <select
                         v-model="formData.finished"
                         class="form-select"
                         disabled
                     >
                         <option value="0">NO</option>
-                        <option value="1">SI</option>
                     </select>
                     <label class="form-label">¿REQUISICIÓN FINALIZADA?</label>
                 </div>
@@ -54,7 +66,7 @@
 
         <!-- Segunda fila -->
         <div class="row mb-4">
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <div class="form-outline">
                     <input
                         type="date"
@@ -66,7 +78,18 @@
                 </div>
             </div>
 
-            <div class="col-md-4">
+            <div class="col-md-3">
+                <div class="form-outline">
+                    <input
+                        type="date"
+                        v-model="formData.required_date"
+                        class="form-control"
+                    />
+                    <label class="form-label">FECHA REQUERIDA</label>
+                </div>
+            </div>
+
+            <div class="col-md-3">
                 <div class="form-outline">
                     <input
                         type="date"
@@ -74,11 +97,11 @@
                         class="form-control"
                         readonly
                     />
-                    <label class="form-label">FECHA DE RESPUESTA</label>
+                    <label class="form-label">FECHA MAX DE ENTREGA</label>
                 </div>
             </div>
 
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <div class="form-outline">
                     <input
                         type="number"
@@ -89,7 +112,28 @@
                     <label class="form-label">DÍAS FALTANTES</label>
                 </div>
             </div>
+
         </div>
+
+        <!-- tercera fila -->
+        <div class="row mb-4">
+
+            <div class="col-md-6">
+                <div class="form-outline">
+                    <input
+                        type="text"
+                        v-model="formData.notes_client"
+                        class="form-control"
+                        placeholder="EJEMPLO: EL MOTIVO DE LA PRIORIDAD"
+                    />
+                    <label class="form-label">ESCRIBIR NOTA</label>
+                </div>
+            </div>
+
+        </div>
+
+        
+        
 
         <!-- Productos de Requisición -->
         <div class="card mt-2">
@@ -179,6 +223,7 @@ export default {
         return {
             formData: {
                 user_id: "",
+                
                 status_requisition: "Pendiente",
                 importance: "Baja",
                 finished: "0",
@@ -186,6 +231,11 @@ export default {
                 request_date: "",
                 days_remaining: "",
                 finished_date: "",
+
+                required_date: "",
+                petty_cash: "0",
+                notes_client:"",
+                notes_resp:null,
             },
             productData: [
                 {

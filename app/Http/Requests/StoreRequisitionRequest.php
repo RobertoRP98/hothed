@@ -22,7 +22,8 @@ class StoreRequisitionRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'user_id' => 'required|exists:users,id',
+        'user_id' => 'required|exists:users,id',
+
         'status_requisition' => 'required|string',
         'importance' => 'required|string',
         'finished' => 'required|boolean',
@@ -30,6 +31,12 @@ class StoreRequisitionRequest extends FormRequest
         'production_date' => 'nullable',
         'days_remaining' => 'required|integer',
         'finished_date' => 'nullable',
+
+        'petty_cash' => 'required|boolean',
+        'required_date' => 'required|date',
+        'notes_client' => 'nullable',
+        'notes_resp' => 'nullable',
+
         'items_requisition' => 'required|array|min:1',
         'items_requisition.*.product_id' => 'required|exists:products,id',
         'items_requisition.*.quantity' => 'required|integer|min:1',

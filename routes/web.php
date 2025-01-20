@@ -53,7 +53,7 @@ Route::get('/new-index',function(){return view('errors.newindex');})->name('newi
 Route::resource('status', StatusController::class)->middleware('auth');
 
 // EMPIEZA ALMACEN
-Route::group(['middleware'=> ['auth','checkrole:Almacen']], function(){
+Route::group(['middleware'=> ['auth','role:Developer']], function(){
 Route::resource('bases', BaseController::class)->middleware('auth');
 Route::resource('familias', FamilyController::class)->middleware('auth');
 Route::resource('subgrupos', SubgroupController::class)->middleware('auth');
