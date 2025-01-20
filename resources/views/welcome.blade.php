@@ -18,7 +18,7 @@
                 </div>
             </div>
             <div class="carousel-item">
-                <img src="{{ asset('images/Imagen3.jpg') }}" class="d-block w-100" alt="">
+                <img src="{{ asset('images/imagen3.jpg') }}" class="d-block w-100" alt="">
                 <div class="carousel-container position-absolute top-50 start-50 translate-middle text-center text-white">
                     {{-- <h2>Temporibus autem quibusdam</h2>
                     <p>Beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit.</p> --}}
