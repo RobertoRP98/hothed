@@ -33,7 +33,7 @@ return new class extends Migration
             $table->enum('status_4', ['Pendiente', 'Autorizado', 'Rechazado'])->default('Pendiente'); //ANTES DE IVA
             
             //AÑADIR CAMPO DE COTIZACIÓN
-            $table->enum('po_status', ['En Proceso', 'Pendiente de Pago', 'Cancelado', 'Pendiente Comparativa', 'En Transito'])->default('Iniciada');
+            $table->enum('po_status', ['En Proceso', 'Pendiente de Pago', 'Cancelado', 'Pendiente Comparativa', 'En Transito'])->default('En Proceso');
             $table->enum('bill', ['Facturado', 'Pendiente Facturar'])->default('Pendiente Facturar');
             $table->boolean('finished')->default(false);
 
