@@ -56,7 +56,14 @@
     </div>
   </div>
 
-  <div class="col-md-2">
+  <div class="col-md-1">
+    <div class="form-outline">
+        <input type="number" id="reorder_point" name="reorder_point" value="{{ old('reorder_point',isset($product) ? $product->reorder_point : 0 )}}" class="form-control" />
+        <label class="form-label">PUNTO REORDEN</label>
+    </div>
+  </div>
+
+  <div class="col-md-1">
     <div class="form-outline">
         <input type="number" id="max_stock" name="max_stock" value="{{ old('max_stock',isset($product) ? $product->max_stock : 0 )}}" class="form-control" />
         <label class="form-label">STOCK MAXIMO</label>

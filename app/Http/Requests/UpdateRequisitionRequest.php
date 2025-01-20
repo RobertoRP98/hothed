@@ -24,34 +24,42 @@ class UpdateRequisitionRequest extends FormRequest
         return [
             'id' => 'required|exists:requisitions,id',
             'user_id' => 'required|exists:users,id',
-        'status_requisition' => 'required|string',
-        'importance' => 'required|string',
-        'finished' => 'required|boolean',
-        'production_date' => 'required|date',
-        'request_date' => 'required|date',
-        'days_remaining' => 'required|integer',
-        'finished_date' => 'nullable',
-        'items_requisition' => 'required|array|min:1',
-        'items_requisition.*.product_id' => 'required|exists:products,id',
-        'items_requisition.*.quantity' => 'required|integer|min:1',
+            'status_requisition' => 'required|string',
+            'importance' => 'required|string',
+            'finished' => 'required|boolean',
+            'production_date' => 'required|date',
+            'request_date' => 'required|date',
+            'days_remaining' => 'required|integer',
+            'finished_date' => 'nullable',
+
+            'petty_cash' => 'required|boolean',
+            'required_date' => 'required|date',
+            'notes_client' => 'nullable',
+            'notes_resp' => 'nullable',
+
+
+            'items_requisition' => 'required|array|min:1',
+            'items_requisition.*.product_id' => 'required|exists:products,id',
+            'items_requisition.*.quantity' => 'required|integer|min:1',
         ];
     }
 
-    
-    public function messages(){
+
+    public function messages()
+    {
         return [
-            'required' => 'El campo :attribute requerido' ,
+            'required' => 'El campo :attribute requerido',
             'items_requisition.required' => 'Debes agregar al menos un ítem a la requisición.',
             'items_requisition.*.product_id.required' => 'Cada ítem debe tener un producto asociado.',
             'items_requisition.*.quantity.required' => 'Cada ítem debe tener una cantidad.',
-            ];
+        ];
     }
 
     protected function prepareForValidation()
     {
         $this->merge(
             $this->except(['_token', ('_method')])
-            
+
         );
     }
 }

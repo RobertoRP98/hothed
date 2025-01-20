@@ -12,8 +12,7 @@
                         <option value="Pendiente">
                             PENDIENTE DE AUTORIZACIÓN
                         </option>
-                        <!-- <option value="Autorizado">AUTORIZADO</option>
-                        <option value="Rechazado">RECHAZADO</option> -->
+                
                     </select>
                     <label class="form-label">STATUS DE LA REQUISICIÓN</label>
                 </div>

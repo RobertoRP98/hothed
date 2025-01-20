@@ -26,6 +26,12 @@
     <a href="{{ url('requisiciones/create') }}" class="btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
         Agregar Requisición
     </a>
+
+    <a href="{{ url('/productos-cliente') }}" class="btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
+        Ver Productos Autorizados
+    </a>
+
+    
 </div>
  
 <h3 class="text-center my-4">Mis Requisiciones</h3>

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Product;
 use App\Models\Requisition;
 
 class AuthorizationRequisitionController extends Controller
@@ -201,5 +202,14 @@ class AuthorizationRequisitionController extends Controller
         $requisitionclient = $query->get();
 
         return view('requisitionauth.viewclient', compact('requisitionclient'));
+    }
+
+
+    public function productclient()
+    {
+        $datos['products'] = Product::select(
+            'internal_id', 'description', 'brand', 'udm', 'category')->get();
+
+        return view('product.indexclient', $datos);
     }
 }

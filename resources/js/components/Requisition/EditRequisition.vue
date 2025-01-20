@@ -20,18 +20,12 @@
 
             <div class="col-md-3">
                 <div class="form-outline">
-                    <select
-                        v-model="formData.importance"
-                        class="form-select"
-                        
-                    >
+                    <select v-model="formData.importance" class="form-select">
                         <option value="Baja">BAJA</option>
                         <option value="Media">MEDIA</option>
                         <option value="Alta">ALTA</option>
                     </select>
-                    <label class="form-label"
-                        >IMPORTANCIA A EDITAR</label
-                    >
+                    <label class="form-label">PRIORIDAD A EDITAR</label>
                 </div>
             </div>
 
@@ -43,20 +37,17 @@
                         class="form-control"
                         readonly
                     />
-                    <label class="form-label">IMPORTANCIA ACTUAL</label>
+                    <label class="form-label">PRIORIDAD ACTUAL</label>
                 </div>
             </div>
 
             <div class="col-md-3">
                 <div class="form-outline">
-                    <select
-                        v-model="formData.finished"
-                        class="form-select"
-                    >
+                    <select v-model="formData.petty_cash" class="form-select">
                         <option value="0">NO</option>
                         <option value="1">SI</option>
                     </select>
-                    <label class="form-label">¿REQUISICIÓN FINALIZADA?</label>
+                    <label class="form-label">¿CAJA CHICA?</label>
                 </div>
             </div>
         </div>
@@ -79,14 +70,26 @@
                 <div class="form-outline">
                     <input
                         type="date"
+                        v-model="formData.required_date"
+                        class="form-control"
+                        readonly
+                    />
+                    <label class="form-label">FECHA REQUERIDA</label>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="form-outline">
+                    <input
+                        type="date"
                         v-model="formData.production_date"
                         class="form-control"
                         readonly
                     />
-                    <label class="form-label">FECHA DE RESPUESTA</label>
+                    <label class="form-label">FECHA MAX DE ENTREGA</label>
                 </div>
             </div>
-            
+
             <div class="col-md-3">
                 <div class="form-outline">
                     <input
@@ -98,8 +101,48 @@
                     <label class="form-label">DIAS FALTANTES</label>
                 </div>
             </div>
+        </div>
 
-            <div class="col-md-3">
+        <!-- Tercera fila -->
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <div class="form-outline">
+                    <input
+                        type="text"
+                        v-model="formData.notes_client"
+                        class="form-control"
+                        placeholder="EJEMPLO: EL MOTIVO DE LA PRIORIDAD"
+                    />
+                    <label class="form-label">NOTAS DEL SOLICITANTE</label>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-outline">
+                    <input
+                        type="text"
+                        v-model="formData.notes_resp"
+                        class="form-control"
+                        placeholder="EJEMPLO: CAMBIOS O PENDIENTES"
+                    />
+                    <label class="form-label">NOTAS DEL RESP DE COMPRAS</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Cuarta fila -->
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <div class="form-outline">
+                    <select v-model="formData.finished" class="form-select">
+                        <option value="0">NO</option>
+                        <option value="1">SI</option>
+                    </select>
+                    <label class="form-label">¿REQUISICIÓN FINALIZADA?</label>
+                </div>
+            </div>
+
+            <div class="col-md-6">
                 <div class="form-outline">
                     <input
                         type="date"
@@ -207,6 +250,12 @@ export default {
                 days_remaining: "",
                 finished_date: "",
 
+                required_date: "",
+                petty_cash: "0",
+                notes_client: "",
+                notes_resp: "",
+
+
             },
             productData: [
                 {
@@ -275,7 +324,7 @@ export default {
             };
             console.log(`URL: /requisiciones/${this.formData.id}`, payload);
 
-                axios
+            axios
                 .patch(`/requisiciones/${this.formData.id}`, payload)
                 .then((response) => {
                     console.log("Mensaje:", response.data.message);

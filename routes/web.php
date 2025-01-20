@@ -153,6 +153,8 @@ Route::group(['middleware' => ['auth', 'role:Developer|AdmCompras|OpeCompras|Res
     Route::post('/requisiciones', [RequisitionController::class, 'store'])->name('requisiciones.store');
     Route::get('/requisiciones/{requisicione}', [RequisitionController::class, 'show'])->name('requisiciones.show');
     Route::get('/mis-requisiciones', [AuthorizationRequisitionController::class, 'indexclient'])->name('requisicionesclient.index');
+    Route::get('/productos-cliente', [AuthorizationRequisitionController::class, 'productclient'])->name('productclient.index');
+
 
 });
 
