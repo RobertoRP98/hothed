@@ -162,7 +162,7 @@ class AuthorizationRequisitionController extends Controller
             abort(403, 'No tienes permiso para acceder a esta vista.');
         }
         $requisitionresp = Requisition::where('status_requisition', 'Rechazado')
-            ->where('finished', false)
+            ->whereIn('finished', [false, true])
             ->whereHas('user', function ($query) {
                 $query->whereIn('departament', ['OP','ADM']);
             })
