@@ -43,6 +43,9 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Route::get('/error-403',function(){return view('errors.403');})->name('error403');
 
 //Errores 
+Route::get('/error-405',function(){return view('errors.405');})->name('error405');
+
+//Errores 
 Route::get('/new-index',function(){return view('errors.newindex');})->name('newindex');
 
 // Ruta comodín para capturar todas las rutas no definidas

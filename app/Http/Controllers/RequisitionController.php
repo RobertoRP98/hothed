@@ -292,6 +292,9 @@ class RequisitionController extends Controller
             })->toArray(),
         ];
 
+
+
+
         return view('requisition.edit', compact(['initialData', 'requisition', 'today']));
     }
 
@@ -361,7 +364,7 @@ class RequisitionController extends Controller
 
 
 
-            $message = "Requisición creada con éxito";
+            $message = "Requisición actualizada con éxito";
 
             // Definir redirecciones por rol
             $roleRedirects = [
@@ -391,8 +394,8 @@ class RequisitionController extends Controller
             // Capturar errores de validación específicos
             return response()->json(['errors' => $e->errors()], 422);
         } catch (\Exception $e) {
-            Log::error('Error al guardar la requisición: ' . $e->getMessage());
-            return response()->json(['message' => 'Error al guardar la requisición'], 500);
+            Log::error('Error al actualizar la requisición: ' . $e->getMessage());
+            return response()->json(['message' => 'Error al actualizar la requisición'], 500);
         }
     }
 

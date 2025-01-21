@@ -119,6 +119,12 @@
                         Editar
                     </button>
                 </a>
+
+                <a class="text-white" href="{{ url('/error-405') }}">
+                    <button class="btn btn-danger mb-2">
+                        Crear OC
+                    </button>
+                </a>
             </td>
             
         </tr>

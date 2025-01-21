@@ -2,7 +2,7 @@
     <div>
         <!-- Primera fila -->
         <div class="row mb-4">
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <div class="form-outline">
                     <input
                         type="text"
@@ -14,7 +14,7 @@
                 </div>
             </div>
 
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <div class="form-outline">
                     <input
                         type="text"
@@ -26,7 +26,19 @@
                 </div>
             </div>
 
-            <div class="col-md-4">
+            <div class="col-md-3">
+                <div class="form-outline">
+                    <input
+                        type="text"
+                        :value="pettycashText"
+                        class="form-control"
+                        readonly
+                    />
+                    <label class="form-label">¿CAJA CHICA?</label>
+                </div>
+            </div>
+
+            <div class="col-md-3">
                 <div class="form-outline">
                     <input
                         type="text"
@@ -57,11 +69,23 @@
                 <div class="form-outline">
                     <input
                         type="text"
+                        :value="formattedRequiredDate"
+                        class="form-control"
+                        readonly
+                    />
+                    <label class="form-label">FECHA REQUERIDA</label>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="form-outline">
+                    <input
+                        type="text"
                         :value="formattedProductionDate"
                         class="form-control"
                         readonly
                     />
-                    <label class="form-label">FECHA DE RESPUESTA</label>
+                    <label class="form-label">FECHA MAX DE ENTREGA</label>
                 </div>
             </div>
 
@@ -76,20 +100,36 @@
                     <label class="form-label">DIAS FALTANTES</label>
                 </div>
             </div>
+        </div>
 
-            <div class="col-md-3">
+           <!-- tercera fila -->
+           <div class="row mb-4">
+            <div class="col-md-6">
                 <div class="form-outline">
                     <input
-                        type="date"
-                        v-model="formData.finished_date"
+                        type="text"
+                        v-model="formData.notes_client"
                         class="form-control"
                         readonly
                     />
-                    <label class="form-label">FECHA DE TERMINACIÓN</label>
+                    <label class="form-label">NOTAS DEL SOLICITANTE</label>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-outline">
+                    <input
+                        type="text"
+                        v-model="formData.notes_resp"
+                        class="form-control"
+                        readonly
+                    />
+                    <label class="form-label">NOTAS DEL RESP DE COMPRAS</label>
                 </div>
             </div>
 
         </div>
+
 
         <!-- Productos de Requisición -->
         <div class="card mt-2">
@@ -153,6 +193,12 @@ export default {
                 production_date: "",
                 request_date: "",
                 days_remaining: "",
+
+
+                required_date: "",
+                petty_cash: "0",
+                notes_client: "",
+                notes_resp: "",
             },
             productData: [
                 {
@@ -185,7 +231,13 @@ export default {
 
         finishedText(){
                 return this.formData.finished === 1 ? "SI" : "NO";
-        }, 
+        },
+        
+        pettycashText(){
+                return this.formData.petty_cash === 1 ? "SI" : "NO";
+        },
+
+
 
         formattedRequestDate() {
             if (!this.formData.request_date) return "";
@@ -199,6 +251,12 @@ export default {
         const [year,month,day] = this.formData.production_date.split("-");
         return `${day}-${month}-${year}`;
 
+    },
+
+    formattedRequiredDate() {
+        if(!this.formData.required_date) return "";
+        const [year,month,day] = this.formData.required_date.split("-");
+        return `${day}-${month}-${year}`;
 
     },
 },

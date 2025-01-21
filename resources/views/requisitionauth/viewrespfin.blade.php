@@ -25,7 +25,7 @@
     </a>   
 </div>
  
-<h3 class="text-center my-4">Requisiciones de Operaciones</h3>
+<h3 class="text-center my-4">Requisiciones Finalizadas</h3>
 
 
 <div class="card">
