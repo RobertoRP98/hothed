@@ -17,22 +17,23 @@ return new class extends Migration
             $table->unsignedBigInteger('requisition_id')->nullable();
             $table->unsignedBigInteger('tax_id')->nullable();
 
-            $table->enum('importance_op', ['Alta', 'Media', 'Baja','Critico'])->default('Baja'); // BORRAR
             $table->enum('type_op', ['Local', 'Extranjera'])->default('Local');
             $table->date('date_start');
+            $table->date('payment_day')->nullable();
             $table->date('date_end')->nullable();
-            $table->enum('status_time', ['Bajo', 'Medio', 'Alto', 'Critico'])->default('Bajo'); //BORRAR
+           // $table->enum('status_time', ['Bajo', 'Medio', 'Alto', 'Critico'])->default('Bajo'); //NO APLICA PERO LLAMARLO DAYS_PAYMENT Y ES EL CALCULO QUE YA SE TIENE EN LAS REQUIS
 
             $table->enum('payment_type', ['Credito', 'Debito', 'Efectivo', 'Transferencia'])->default('Credito');
-            $table->enum('payment_condition', ['Normal','50-50', '100% Antes Entrega', '100% Post Entrega'])->default('Normal');
-            $table->boolean('payment_display')->default(true); //PAGO EN UNA EXI
+            $table->enum('delivery_condition', ['50-50', '100% Antes Entrega', '100% Post Entrega'])->default('100% Antes Entrega');
+            $table->boolean('unique_payment')->default(true); //PAGO EN UNA EXI
 
-            $table->enum('status_1', ['Pendiente', 'Autorizado', 'Rechazado'])->default('Pendiente');
-            $table->enum('status_2', ['Pendiente', 'Autorizado', 'Rechazado'])->default('Pendiente');
-            $table->enum('status_3', ['Pendiente', 'Autorizado', 'Rechazado'])->default('Pendiente');
-            $table->enum('status_4', ['Pendiente', 'Autorizado', 'Rechazado'])->default('Pendiente'); //ANTES DE IVA
+            //$table->enum('status_1', ['Pendiente', 'Autorizado', 'Rechazado'])->default('Pendiente'); //JEFES INMEDIATOS QUE VIENE DE LA REQUISICION
+            $table->enum('authorization_2', ['Pendiente', 'Autorizado', 'Rechazado'])->default('Pendiente'); // FLORES Y KARLA
+            $table->enum('authorization_3', ['Pendiente', 'Autorizado', 'Rechazado'])->default('Pendiente'); // SANTOS ANTES DE IVA - TOMAR SUBTOTAL
+            $table->enum('authorization_4', ['Pendiente', 'Autorizado', 'Rechazado'])->default('Pendiente'); // LIC KARLA
             
-            //AÑADIR CAMPO DE COTIZACIÓN
+            $table->string('quotation')->nullable();
+
             $table->enum('po_status', ['En Proceso', 'Pendiente de Pago', 'Cancelado', 'Pendiente Comparativa', 'En Transito'])->default('En Proceso');
             $table->enum('bill', ['Facturado', 'Pendiente Facturar'])->default('Pendiente Facturar');
             $table->boolean('finished')->default(false);

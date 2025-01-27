@@ -75,6 +75,46 @@
                         </div>
 
                         <div class="row mb-3">
+                            <label for="area" class="col-md-4 col-form-label text-md-end">{{ __('SUBAREA') }}</label>
+
+                            <div class="form-outline col-md-6">
+                                <select class="form-select" name="subarea" id="subarea">
+                                <option value="AUXILIAR DE SGI">AUXILIAR DE SGI</option>
+                                <option value="RESP. DE SGI">RESP. DE SGI</option>
+                                <option value="AUXILIAR DE HSE">AUXILIAR DE HSE</option>
+                                <option value="COORD. DE HSE">COORD. DE HSE</option>
+                                <option value="AUXILIAR DE VENTAS Y OP">AUXILIAR DE VENTAS Y OP</option>
+                                <option value="AUXILIAR DE VENTAS">AUXILIAR DE VENTAS</option>
+                                <option value="COORD. DE VENTAS">COORD. DE VENTAS</option>
+                                <option value="AUX DE LOGISTICA">AUX DE LOGISTICA</option>
+                                <option value="AUX DE LOGISTICA Y MANTO">AUX DE LOGISTICA Y MANTO</option>
+                                <option value="COORD. DE LOGISTICA">COORD. DE LOGISTICA</option>
+                                <option value="AUXILIAR DE ALMACEN">AUXILIAR DE ALMACEN</option>
+                                <option value="COORD. DE ALMACEN">COORD. DE ALMACEN</option>
+                                <option value="COORD. DE MANTENIMIENTO">COORD. DE MANTENIMIENTO</option>
+                                <option value="OPERATIVOS">OPERATIVOS</option>
+                                <option value="COORD. DE RECURSOS HUMANOS">COORD. DE RECURSOS HUMANOS</option>
+                                <option value="AUXILIAR DE RECURSOS HUMANOS">AUXILIAR DE RECURSOS HUMANOS</option>
+                                <option value="AUXILIAR DE TI">AUXILIAR DE TI</option>
+                                <option value="RESP. DE TI">RESP. DE TI</option>
+                                <option value="COORD. CONTRATOS">COORD. CONTRATOS</option>
+                                <option value="AUX. CONTRATOS">AUX. CONTRATOS</option>
+                                <option value="COORD. CONTABILIDAD">COORD. CONTABILIDAD</option>
+                                <option value="AUXILIAR DE CONTABILIDAD">AUXILIAR DE CONTABILIDAD</option>
+                                <option value="RESP. DE COMPRAS">RESP. DE COMPRAS</option>
+                                <option value="AUX. DE COMPRAS">AUX. DE COMPRAS</option>
+                                <option value="COORD. ADMINISTRATIVO">COORD. ADMINISTRATIVO</option>
+                                <option value="AUX. ADMINISTRATIVO">AUX. ADMINISTRATIVO</option>
+                                <option value="RESP. MANTENIMIENTO DE INFRAESCTRUCTURA">RESP. MANTENIMIENTO DE INFRAESCTRUCTURA</option>
+                                <option value="RESP. DE SERVICIOS">RESP. DE SERVICIOS</option>
+                                <option value="RESP. FONDO FIJO">RESP. FONDO FIJO</option>
+
+
+                                </select>
+                        </div>   
+                        </div>
+
+                        <div class="row mb-3">
                             <label for="password" class="col-md-4 col-form-label text-md-end">{{ __('CONTRASEÑA') }}</label>
 
                             <div class="col-md-6">
