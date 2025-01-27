@@ -23,12 +23,36 @@ class RoleSeeder extends Seeder
          $roleGerOperaciones = Role::firstOrCreate(['name' => 'GerOperaciones']);
          $roleVerCobranza = Role::firstOrCreate(['name' => 'VerCobranza']);
          $roleCompras = Role::firstOrCreate(['name' => 'Compras']);
-         
-         $roleClientCompras = Role::firstOrCreate(['name' => 'ClientCompras']);
-         $roleAdmCompras = Role::firstOrCreate(['name' => 'AdmCompras']);
-         $roleOpeCompras = Role::firstOrCreate(['name' => 'OpeCompras']);
-         $roleRespCompras = Role::firstOrCreate(['name' => 'RespCompras']);
 
+         //ROLES COMPRAS ESTRUCTURADO CON ORGANIGRAMA
+
+         $roleAuxconta = Role::firstOrCreate(['name' => 'Auxconta']);
+
+         $roleAuxlogmanto = Role::firstOrCreate(['name' => 'Auxlogmanto']); //NO HAY PERSONAL
+         $roleCoordalm = Role::firstOrCreate(['name' => 'Coordalm']); // ES EDUARDO
+         $roleAuxopeventas = Role::firstOrCreate(['name' => 'Auxopeventas']);
+
+         
+         $roleCoordhse = Role::firstOrCreate(['name' => 'Coordhse']);//NO HAY PERSONAL
+         
+         $roleRespsgi = Role::firstOrCreate(['name' => 'Respsgi']);
+         $roleAuxti = Role::firstOrCreate(['name' => 'Auxti']);
+         $roleCoordrh = Role::firstOrCreate(['name' => 'Coordrh']);
+         $roleRespcomp = Role::firstOrCreate(['name' => 'Respcomp']);
+         $roleCoordcontratos = Role::firstOrCreate(['name' => 'Coordcontratos']);
+         $roleCoordconta = Role::firstOrCreate(['name' => 'Coordconta']);
+         $roleDiradmin = Role::firstOrCreate(['name' => 'Diradmin']);
+
+         $roleSubgerope = Role::firstOrCreate(['name' => 'Subgerope']);
+         $roleVentas = Role::firstOrCreate(['name' => 'Ventas']); //NO HAY PERSONAL
+         $roleGerope = Role::firstOrCreate(['name' => 'Gerope']);
+
+         $roleAuxcontratos = Role::firstOrCreate(['name' => 'Auxcontratos']);
+
+         $roleDirope = Role::firstOrCreate(['name' => 'Dirope']);
+
+
+         //FIN ROLES COMPRAS ESTRUCTURADO CON ORGANIGRAMA
 
          // Crear permisos
          $permisoAlmacen = Permission::firstOrCreate(['name' => 'manage_almacen']);
@@ -40,15 +64,32 @@ class RoleSeeder extends Seeder
          $permisoVerCobranza = Permission::firstOrCreate(['name'=> 'vercobranza']);
          $permisoCompras = Permission::firstOrCreate(['name'=> 'Compras']);
 
-         $permisoClientCompras = Permission::firstOrCreate(['name' => 'ClientCompras']);
-         $permisoAdmCompras = Permission::firstOrCreate(['name' => 'AdmCompras']);
-         $permisoOpeCompras = Permission::firstOrCreate(['name' => 'OpeCompras']);
-         $permisoRespCompras = Permission::firstOrCreate(['name' => 'RespCompras']);
+         //PERMISOS COMPRAS ESTRUCTURADO CON ORGANIGRAMA
+         $permisoAuxconta = Permission::firstOrCreate(['name' => 'Auxconta']);
 
+         $permisoAuxlogmanto = Permission::firstOrCreate(['name' => 'Auxlogmanto']);
+         $permisoCoordalm = Permission::firstOrCreate(['name' => 'Coordalm']);
+         $permisoAuxopeventas = Permission::firstOrCreate(['name' => 'Auxopeventas']);
 
+         $permisoCoordhse = Permission::firstOrCreate(['name' => 'Coordhse']);
 
+         $permisoRespsgi = Permission::firstOrCreate(['name' => 'Respsgi']);
+         $permisoAuxti = Permission::firstOrCreate(['name' => 'Auxti']);
+         $permisoCoordrh = Permission::firstOrCreate(['name' => 'Coordrh']);
+         $permisoRespcomp = Permission::firstOrCreate(['name' => 'Respcomp']);
+         $permisoCoordcontratos = Permission::firstOrCreate(['name' => 'Coordcontratos']);
+         $permisoCoordconta = Permission::firstOrCreate(['name' => 'Coordconta']);
+         $permisoDiradmin = Permission::firstOrCreate(['name' => 'Diradmin']);
 
+         $permisoSubgerope = Permission::firstOrCreate(['name' => 'Subgerope']);
+         $permisoVentas = Permission::firstOrCreate(['name' => 'Ventas']);
+         $permisoGerope = Permission::firstOrCreate(['name' => 'Gerope']);
 
+         $permisoAuxcontratos = Permission::firstOrCreate(['name' => 'Auxcontratos']);
+
+         $permisoDirope = Permission::firstOrCreate(['name' => 'Dirope']);
+
+         // FIN PERMISOS COMPRAS ESTRUCTURADO CON ORGANIGRAMA
 
          // Asignar permisos al rol
          $roleAlmacen->givePermissionTo($permisoAlmacen);
@@ -60,11 +101,32 @@ class RoleSeeder extends Seeder
          $roleVerCobranza->givePermissionTo($permisoVerCobranza);
          $roleCompras->givePermissionTo($permisoCompras);
 
+         //PERMISOS COMPRAS ESTRUCTURADO CON ORGANIGRAMA
+         $roleAuxconta->givePermissionTo($permisoAuxconta);
 
-         $roleClientCompras->givePermissionTo($permisoClientCompras);
-         $roleAdmCompras->givePermissionTo($permisoAdmCompras);
-         $roleOpeCompras->givePermissionTo($permisoOpeCompras);
-         $roleRespCompras->givePermissionTo($permisoRespCompras);
+         $roleAuxlogmanto->givePermissionTo($permisoAuxlogmanto);
+         $roleCoordalm->givePermissionTo($permisoCoordalm);
+         $roleAuxopeventas->givePermissionTo($permisoAuxopeventas);
+
+         $roleCoordhse->givePermissionTo($permisoCoordhse);
+
+         $roleRespsgi->givePermissionTo($permisoRespsgi);
+         $roleAuxti->givePermissionTo($permisoAuxti);
+         $roleCoordrh->givePermissionTo($permisoCoordrh);
+         $roleRespcomp->givePermissionTo($permisoRespcomp);
+         $roleCoordcontratos->givePermissionTo($permisoCoordcontratos);
+         $roleCoordconta->givePermissionTo($permisoCoordconta);
+         $roleDiradmin->givePermissionTo($permisoDiradmin);
+
+         $roleSubgerope->givePermissionTo($permisoSubgerope);
+         $roleVentas->givePermissionTo($permisoVentas);
+         $roleGerope->givePermissionTo($permisoGerope);
+
+         $roleAuxcontratos->givePermissionTo($permisoAuxcontratos);
+         
+         $roleDirope->givePermissionTo($permisoDirope);
+
+         //FIN PERMISOS COMPRAS ESTRUCTURADO CON ORGANIGRAMA
 
 
          // Asignar el rol a un usuario específico
@@ -133,68 +195,67 @@ class RoleSeeder extends Seeder
 
 
           //COMPRAS
-         $user = User::find(11); // Cambia el ID de usuario según sea necesario
+       
+
+         $user = User::find(22); // Cambia el ID de usuario según sea necesario
          if ($user) {
-             $user->assignRole('Compras'); // PERFIL DE JESSI
+             $user->assignRole('Auxconta');
          }
 
-         $user = User::find(13); // Cambia el ID de usuario según sea necesario
+         $user = User::find(20);
          if ($user) {
-             $user->assignRole('RespCompras');
+             $user->assignRole('Coordalm');
          }
 
-         $user = User::find(5); // Cambia el ID de usuario según sea necesario
-         if ($user) {
-             $user->assignRole('AdmCompras');
-         }
-
-         $user = User::find(9); // Cambia el ID de usuario según sea necesario
-         if ($user) {
-             $user->assignRole('OpeCompras');
-         }
-
-         $user = User::find(10); // Cambia el ID de usuario según sea necesario
-         if ($user) {
-             $user->assignRole('OpeCompras');
-         }
-
-         $user = User::find(16); // Cambia el ID de usuario según sea necesario
-         if ($user) {
-             $user->assignRole('ClientCompras');
-         }
-
-         $user = User::find(4); // Cambia el ID de usuario según sea necesario
-         if ($user) {
-             $user->assignRole('ClientCompras');
-         }
-
-         $user = User::find(17); // Cambia el ID de usuario según sea necesario
-         if ($user) {
-             $user->assignRole('ClientCompras');
-         }
-
-         $user = User::find(18); // Cambia el ID de usuario según sea necesario
-         if ($user) {
-             $user->assignRole('ClientCompras');
-         }
          
-         $user = User::find(19); // Cambia el ID de usuario según sea necesario
+         $user = User::find(17);
          if ($user) {
-             $user->assignRole('ClientCompras');
+             $user->assignRole('Auxopeventas');
          }
-
-         $user = User::find(20); // Cambia el ID de usuario según sea necesario
+         $user = User::find(16);
          if ($user) {
-             $user->assignRole('ClientCompras');
+             $user->assignRole('Respsgi');
          }
-
-         $user = User::find(21); // Cambia el ID de usuario según sea necesario
+         $user = User::find(2);
          if ($user) {
-             $user->assignRole('ClientCompras');
+             $user->assignRole('Auxti');
          }
-
-
-
+         $user = User::find(19);
+         if ($user) {
+             $user->assignRole('Coordrh');
+         }
+         $user = User::find(13);
+         if ($user) {
+             $user->assignRole('Respcomp');
+         }
+         $user = User::find(4);
+         if ($user) {
+             $user->assignRole('Coordcontratos');
+         }
+         $user = User::find(7);
+         if ($user) {
+             $user->assignRole('Coordconta');
+         }
+         $user = User::find(5);
+         if ($user) {
+             $user->assignRole('Diradmin');
+         }
+         $user = User::find(23);
+         if ($user) {
+             $user->assignRole('Subgerope');
+         }
+         $user = User::find(10);
+         if ($user) {
+             $user->assignRole('Gerope');
+         }
+         $user = User::find(13);
+         if ($user) {
+             $user->assignRole('Auxcontratos');
+         }
+         $user = User::find(9);
+         if ($user) {
+             $user->assignRole('Dirope');
+         }
 
          //FIN COMPRAS
 
