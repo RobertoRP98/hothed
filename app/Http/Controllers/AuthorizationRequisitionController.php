@@ -34,7 +34,7 @@ class AuthorizationRequisitionController extends Controller
         if (!auth()->user()->hasRole(['Developer', 'Coordconta'])) {
             abort(403, 'No tienes permiso para acceder a esta vista.');
         }
-        $requisitionadm = Requisition::where('status_requisition', 'Autorizado')
+        $requisitionconta = Requisition::where('status_requisition', 'Autorizado')
             ->where('finished', false)
             ->whereHas('user', function ($query) {
                 $query->where('subarea', 'AUXILIAR DE CONTABILIDAD');
@@ -49,7 +49,7 @@ class AuthorizationRequisitionController extends Controller
         if (!auth()->user()->hasRole(['Developer', 'Coordconta'])) {
             abort(403, 'No tienes permiso para acceder a esta vista.');
         }
-        $requisitionadm = Requisition::where('status_requisition', 'Rechazado')
+        $requisitionconta = Requisition::where('status_requisition', 'Rechazado')
             ->where('finished', false)
             ->whereHas('user', function ($query) {
                 $query->where('subarea', 'AUXILIAR DE CONTABILIDAD');
@@ -64,7 +64,7 @@ class AuthorizationRequisitionController extends Controller
         if (!auth()->user()->hasRole(['Developer', 'Coordconta'])) {
             abort(403, 'No tienes permiso para acceder a esta vista.');
         }
-        $requisitionadm = Requisition::whereIn('status_requisition', ['Pendiente', 'Autorizado', 'Rechazado'])
+        $requisitionconta = Requisition::whereIn('status_requisition', ['Pendiente', 'Autorizado', 'Rechazado'])
             ->where('finished', true)
             ->whereHas('user', function ($query) {
                 $query->where('subarea', 'AUXILIAR DE CONTABILIDAD');

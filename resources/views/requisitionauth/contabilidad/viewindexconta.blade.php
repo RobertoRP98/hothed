@@ -63,7 +63,7 @@
 
     </thead>
     <tbody>
-        @foreach($requisitioconta as $requisicion)
+        @foreach($requisitionconta as $requisicion)
         <tr>
             <td>{{ $requisicion->id }}</td>
             <td>{{ $requisicion->user->name }}</td>
