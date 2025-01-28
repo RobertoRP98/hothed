@@ -19,13 +19,28 @@
 <link rel="stylesheet" href="https://cdn.datatables.net/responsive/3.0.3/css/responsive.bootstrap5.css">
 @endpush
 
-<div class="d-flex flex-wrap mt-3">
-    <a href="{{ url('/requisiciones-ope') }}" class="btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
-        Regresar
-    </a>   
+
+<div class="col-md-12">
+    <a href="{{ url('requisiciones/create') }}" class="col-md-3 btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
+        Agregar Requisición 
+    </a>
+
+    <a href="{{ url('/requisiciones-contabilidad-autorizadas') }}" class="col-md-3 btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
+        Requisiciones Autorizadas
+    </a>
+
+    <a href="{{ url('/requisiciones-contabilidad-canceladas') }}" class="col-md-3 btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
+        Requisiciones Canceladas
+    </a>
+
+    <a href="{{ url('/requisiciones-contabilidad-finalizadas') }}" class="col-md-3 btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
+        Requisiciones Finalizadas
+    </a>
 </div>
+
+
  
-<h3 class="text-center my-4">Requisiciones de Operaciones</h3>
+<h3 class="text-center my-4">Requisiciones de Contabilidad</h3>
 
 
 <div class="card">
@@ -48,7 +63,7 @@
 
     </thead>
     <tbody>
-        @foreach($requisitionope as $requisicion)
+        @foreach($requisitioconta as $requisicion)
         <tr>
             <td>{{ $requisicion->id }}</td>
             <td>{{ $requisicion->user->name }}</td>
@@ -65,11 +80,11 @@
                 table-success
             @endif">
             @if(\Carbon\Carbon::parse($requisicion->production_date)->diffInDays(now(), false) >= -15)
-                ALTA 
+                ALTA
             @elseif(\Carbon\Carbon::parse($requisicion->production_date)->diffInDays(now(), false) >= -30)
-                ALTA 
+                ALTA
             @elseif(\Carbon\Carbon::parse($requisicion->production_date)->diffInDays(now(), false) >= -60)
-                MEDIA 
+                MEDIA
             @else
                 BAJA
             @endif

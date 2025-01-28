@@ -13,20 +13,12 @@
                   <a class="text-white" href="{{ url('/requisiciones') }}">
                       REGRESAR
                   </a>
-              @elseif (auth()->user()->hasRole('ClientCompras'))
+              @elseif (auth()->user()->hasRole('Auxconta'))
                   <a class="text-white" href="{{ url('/mis-requisiciones') }}">
                       REGRESAR
                   </a>
-              @elseif (auth()->user()->hasRole('AdmCompras'))
-                  <a class="text-white" href="{{ url('/requisiciones-adm') }}">
-                      REGRESAR
-                  </a>
-              @elseif (auth()->user()->hasRole('OpeCompras'))
-                  <a class="text-white" href="{{ url('/requisiciones-ope') }}">
-                      REGRESAR
-                  </a>
-              @else
-                  <a class="text-white" href="{{ url('/') }}">
+                  @elseif (auth()->user()->hasRole('Coordconta'))
+                  <a class="text-white" href="{{ url('requisiciones-contabilidad') }}">
                       REGRESAR
                   </a>
               @endif

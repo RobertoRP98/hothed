@@ -21,14 +21,14 @@
 
 
 <div class="d-flex flex-wrap mt-3">
-    <a href="{{ url('/requisiciones-adm') }}" class="btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
+    <a href="{{ url('/requisiciones-contabilidad') }}" class="btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
         Regresar
     </a>   
 </div>
 
 
  
-<h3 class="text-center my-4">Requisiciones Finalizadas de Administración</h3>
+<h3 class="text-center my-4">Requisiciones Finalizadas de Contabilidad</h3>
 
 
 <div class="card">
@@ -51,7 +51,7 @@
 
     </thead>
     <tbody>
-        @foreach($requisitionadm as $requisicion)
+        @foreach($requisitionconta as $requisicion)
         <tr>
             <td>{{ $requisicion->id }}</td>
             <td>{{ $requisicion->user->name }}</td>

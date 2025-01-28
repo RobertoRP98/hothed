@@ -199,7 +199,7 @@ class RoleSeeder extends Seeder
 
          $user = User::find(22); // Cambia el ID de usuario según sea necesario
          if ($user) {
-             $user->assignRole('Auxconta');
+             $user->assignRole('Auxconta'); // LISTO
          }
 
          $user = User::find(20);
@@ -234,7 +234,7 @@ class RoleSeeder extends Seeder
          }
          $user = User::find(7);
          if ($user) {
-             $user->assignRole('Coordconta');
+             $user->assignRole('Coordconta'); //VISTAS CREADAS PARA AUTORIZAR REQUIS
          }
          $user = User::find(5);
          if ($user) {

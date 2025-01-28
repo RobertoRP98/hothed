@@ -13,131 +13,69 @@ class AuthorizationRequisitionController extends Controller
 
     //INICIA INDICES DE ADMINISTRACION 
     //PENDIENTES DE AUTORIZACIÓN
-    public function indexadm()
+    public function indexcoordconta()
     {
         // Verificar explícitamente que el usuario tiene el rol correcto
-        if (!auth()->user()->hasRole(['Developer', 'AdmCompras'])) {
+        if (!auth()->user()->hasRole(['Developer', 'Coordconta'])) {
             abort(403, 'No tienes permiso para acceder a esta vista.');
         }
-        $requisitionadm = Requisition::where('status_requisition', 'Pendiente')
+        $requisitionconta = Requisition::where('status_requisition', 'Pendiente')
             ->where('finished', false)
             ->whereHas('user', function ($query) {
-                $query->where('departament', 'ADM');
+                $query->where('subarea', 'AUXILIAR DE CONTABILIDAD');
             })
             ->get();
-        return view('requisitionauth.viewadm', compact('requisitionadm'));
+        return view('requisitionauth.contabilidad.viewindexconta', compact('requisitionconta'));
     }
 
-    public function indexadmaut()
+    public function autconta()
     {
         // Verificar explícitamente que el usuario tiene el rol correcto
-        if (!auth()->user()->hasRole(['Developer', 'AdmCompras'])) {
+        if (!auth()->user()->hasRole(['Developer', 'Coordconta'])) {
             abort(403, 'No tienes permiso para acceder a esta vista.');
         }
         $requisitionadm = Requisition::where('status_requisition', 'Autorizado')
             ->where('finished', false)
             ->whereHas('user', function ($query) {
-                $query->where('departament', 'ADM');
+                $query->where('subarea', 'AUXILIAR DE CONTABILIDAD');
             })
             ->get();
-        return view('requisitionauth.viewadmaut', compact('requisitionadm'));
+        return view('requisitionauth.contabilidad.viewautconta', compact('requisitionconta'));
     }
 
-    public function indexadmcan()
+    public function canconta()
     {
         // Verificar explícitamente que el usuario tiene el rol correcto
-        if (!auth()->user()->hasRole(['Developer', 'AdmCompras'])) {
+        if (!auth()->user()->hasRole(['Developer', 'Coordconta'])) {
             abort(403, 'No tienes permiso para acceder a esta vista.');
         }
         $requisitionadm = Requisition::where('status_requisition', 'Rechazado')
             ->where('finished', false)
             ->whereHas('user', function ($query) {
-                $query->where('departament', 'ADM');
+                $query->where('subarea', 'AUXILIAR DE CONTABILIDAD');
             })
             ->get();
-        return view('requisitionauth.viewadmcan', compact('requisitionadm'));
+        return view('requisitionauth.contabilidad.viewcanconta', compact('requisitionconta'));
     }
 
-    public function indexadmfin()
+    public function finconta()
     {
         // Verificar explícitamente que el usuario tiene el rol correcto
-        if (!auth()->user()->hasRole(['Developer', 'AdmCompras'])) {
+        if (!auth()->user()->hasRole(['Developer', 'Coordconta'])) {
             abort(403, 'No tienes permiso para acceder a esta vista.');
         }
         $requisitionadm = Requisition::whereIn('status_requisition', ['Pendiente', 'Autorizado', 'Rechazado'])
             ->where('finished', true)
             ->whereHas('user', function ($query) {
-                $query->where('departament', 'ADM');
+                $query->where('subarea', 'AUXILIAR DE CONTABILIDAD');
             })
             ->get();
-        return view('requisitionauth.viewadmfin', compact('requisitionadm'));
+        return view('requisitionauth.contabilidad.viewfinconta', compact('requisitionconta'));
     }
 
 
     //FINALIZA INDICES DE ADMINISTRACIÓN
 
-    //INICIA INDICES DE OPERACIONES
-
-    public function indexope()
-    {
-        // Verificar explícitamente que el usuario tiene el rol correcto
-        if (!auth()->user()->hasRole(['Developer', 'OpeCompras'])) {
-            abort(403, 'No tienes permiso para acceder a esta vista.');
-        }
-        $requisitionope = Requisition::whereHas('user', function ($query) {
-            $query->where('departament', 'OP');
-        })->get();
-
-        return view('requisitionauth.viewope', compact('requisitionope'));
-    }
-
-    public function indexopeaut()
-    {
-        // Verificar explícitamente que el usuario tiene el rol correcto
-        if (!auth()->user()->hasRole(['Developer', 'OpeCompras'])) {
-            abort(403, 'No tienes permiso para acceder a esta vista.');
-        }
-        $requisitionope = Requisition::where('status_requisition', 'Autorizado')
-            ->where('finished', false)
-            ->whereHas('user', function ($query) {
-                $query->where('departament', 'OP');
-            })
-            ->get();
-        return view('requisitionauth.viewopeaut', compact('requisitionope'));
-    }
-
-    public function indexopecan()
-    {
-        // Verificar explícitamente que el usuario tiene el rol correcto
-        if (!auth()->user()->hasRole(['Developer', 'OpeCompras'])) {
-            abort(403, 'No tienes permiso para acceder a esta vista.');
-        }
-        $requisitionope = Requisition::where('status_requisition', 'Rechazado')
-            ->where('finished', false)
-            ->whereHas('user', function ($query) {
-                $query->where('departament', 'OP');
-            })
-            ->get();
-        return view('requisitionauth.viewopecan', compact('requisitionope'));
-    }
-
-    public function indexopefin()
-    {
-        // Verificar explícitamente que el usuario tiene el rol correcto
-        if (!auth()->user()->hasRole(['Developer', 'OpeCompras'])) {
-            abort(403, 'No tienes permiso para acceder a esta vista.');
-        }
-        $requisitionope = Requisition::whereIn('status_requisition', ['Pendiente', 'Autorizado', 'Rechazado'])
-            ->where('finished', true)
-            ->whereHas('user', function ($query) {
-                $query->where('departament', 'OP');
-            })
-            ->get();
-        return view('requisitionauth.viewopefin', compact('requisitionope'));
-    }
-
-
-    //FINALIZA INDICES DE OPERACIONES
     //INICIA INDICES DE RESPONSABLE 
 
     public function indexrespaut()

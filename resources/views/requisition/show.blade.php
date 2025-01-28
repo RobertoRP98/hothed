@@ -9,29 +9,20 @@
          <div class="row align-items-center">
           <div class="mb-3">
             <button type="button" class="btn btn-warning btn-block">
-              @if (auth()->user()->hasRole('RespCompras') || auth()->user()->hasRole('Developer'))
-                  <a class="text-white" href="{{ url('/requisiciones') }}">
-                      REGRESAR
-                  </a>
-              @elseif (auth()->user()->hasRole('ClientCompras'))
-                  <a class="text-white" href="{{ url('/mis-requisiciones') }}">
-                      REGRESAR
-                  </a>
-              @elseif (auth()->user()->hasRole('AdmCompras'))
-                  <a class="text-white" href="{{ url('/requisiciones-adm') }}">
-                      REGRESAR
-                  </a>
-              @elseif (auth()->user()->hasRole('OpeCompras'))
-                  <a class="text-white" href="{{ url('/requisiciones-ope') }}">
-                      REGRESAR
-                  </a>
-              @else
-                  <a class="text-white" href="{{ url('/') }}">
-                      REGRESAR
-                  </a>
-              @endif
-          </button>
-          
+                @if (auth()->user()->hasRole('RespCompras') || auth()->user()->hasRole('Developer'))
+                    <a class="text-white" href="{{ url('/requisiciones') }}">
+                        REGRESAR
+                    </a>
+                @elseif (auth()->user()->hasRole('Auxconta'))
+                    <a class="text-white" href="{{ url('/mis-requisiciones') }}">
+                        REGRESAR
+                    </a>
+                    @elseif (auth()->user()->hasRole('Coordconta'))
+                    <a class="text-white" href="{{ url('requisiciones-contabilidad') }}">
+                        REGRESAR
+                    </a>
+                @endif
+            </button>
           </div>
       <div class="col-md-12">
         <h1>Ver requisición con numero identificador {{$requisition->id}}</h1>

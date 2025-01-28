@@ -133,11 +133,10 @@ class RequisitionController extends Controller
 
             // Definir redirecciones por rol
             $roleRedirects = [
-                'RespCompras' => '/requisiciones',
                 'Developer' => '/requisiciones',
-                'ClientCompras' => '/mis-requisiciones',
-                'AdmCompras' => '/requisiciones-adm',
-                'OpeCompras' => '/requisiciones-ope',
+                'Auxconta' => '/mis-requisiciones',
+                'Coordconta' => '/requisiciones-contabilidad',
+                
             ];
 
             // Obtener la ruta correspondiente según el rol del usuario
@@ -176,7 +175,7 @@ class RequisitionController extends Controller
         $query = Requisition::query();
 
         // Si el usuario no es Developer, filtrar por user_id
-        if (!auth()->user()->hasRole(['Developer', 'OpeCompras', 'AdmCompras', 'RespCompras'])) {
+        if (!auth()->user()->hasRole(['Developer', 'Coordconta', 'Auxconta'])) {
             $query->where('user_id', auth()->id());
         }
 
@@ -368,11 +367,10 @@ class RequisitionController extends Controller
 
             // Definir redirecciones por rol
             $roleRedirects = [
-                'RespCompras' => '/requisiciones',
                 'Developer' => '/requisiciones',
-                'ClientCompras' => '/mis-requisiciones',
-                'AdmCompras' => '/requisiciones-adm',
-                'OpeCompras' => '/requisiciones-ope',
+                'Auxconta' => '/mis-requisiciones',
+                'Coordconta' => '/requisiciones-contabilidad',
+                
             ];
 
             // Obtener la ruta correspondiente según el rol del usuario
