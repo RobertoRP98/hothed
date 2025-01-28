@@ -24,7 +24,7 @@ class RoleSeeder extends Seeder
          $roleVerCobranza = Role::firstOrCreate(['name' => 'VerCobranza']);
          $roleCompras = Role::firstOrCreate(['name' => 'Compras']);
 
-         //ROLES COMPRAS ESTRUCTURADO CON ORGANIGRAMA
+         //ROLES COMPRAS ESTRUCTURADO CON ORGANIGRAMA - LOS ROLES SE TOMAN EN CUENTA DE LA FECHA 28-01-2025
 
          $roleAuxconta = Role::firstOrCreate(['name' => 'Auxconta']);
 
