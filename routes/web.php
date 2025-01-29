@@ -184,12 +184,27 @@ Route::group(['middleware' => ['auth', 'role:Developer|Coordconta']], function (
     Route::get('requisiciones-almacen-canceladas',[AuthorizationRequisitionController::class,'canalm'])->name('requisicionesalmcan');
     Route::get('requisiciones-almacen-finalizadas',[AuthorizationRequisitionController::class,'finalm'])->name('requisicionesalmfin');
 
+    Route::get('requisiciones-administracion',[AuthorizationRequisitionController::class,'indexadmin'])->name('requisicionesadmin');
+    Route::get('requisiciones-admin-autorizadas',[AuthorizationRequisitionController::class,'autadmin'])->name('requisicionesadminaut');
+    Route::get('requisiciones-admin-canceladas',[AuthorizationRequisitionController::class,'canadmin'])->name('requisicionesadmincan');
+    Route::get('requisiciones-admin-finalizadas',[AuthorizationRequisitionController::class,'finadmin'])->name('requisicionesadminfin');
+
     // NO ESTA NORMALIZADO
     Route::get('requisiciones-contabilidad',[AuthorizationRequisitionController::class,'indexcoordconta'])->name('requisicionescoordconta.index');
     Route::get('requisiciones-contabilidad-autorizadas',[AuthorizationRequisitionController::class,'autconta'])->name('requisicionescontaaut');
     Route::get('requisiciones-contabilidad-canceladas',[AuthorizationRequisitionController::class,'canconta'])->name('requisicionescontacan');
     Route::get('requisiciones-contabilidad-finalizadas',[AuthorizationRequisitionController::class,'finconta'])->name('requisicionescontafin');
     //
+
+    Route::get('requisiciones-contratos',[AuthorizationRequisitionController::class,'indexcontra'])->name('requisicionescontra');
+    Route::get('requisiciones-contratos-autorizadas',[AuthorizationRequisitionController::class,'autcontra'])->name('requisicionescontraaut');
+    Route::get('requisiciones-contratos-canceladas',[AuthorizationRequisitionController::class,'cancontra'])->name('requisicionescontracan');
+    Route::get('requisiciones-contratos-finalizadas',[AuthorizationRequisitionController::class,'fincontra'])->name('requisicionescontrafin');
+
+    Route::get('requisiciones-gerope',[AuthorizationRequisitionController::class,'indexgerope'])->name('requisicionesgerope');
+    Route::get('requisiciones-gerope-autorizadas',[AuthorizationRequisitionController::class,'autgerope'])->name('requisicionesgeropeaut');
+    Route::get('requisiciones-gerope-canceladas',[AuthorizationRequisitionController::class,'cangerope'])->name('requisicionesgeropecan');
+    Route::get('requisiciones-gerope-finalizadas',[AuthorizationRequisitionController::class,'fingerope'])->name('requisicionesgeropefin');
     
     Route::get('requisiciones-sgi',[AuthorizationRequisitionController::class,'indexsgi'])->name('requisicionessgi');
     Route::get('requisiciones-sgi-autorizadas',[AuthorizationRequisitionController::class,'autsgi'])->name('requisicionessgiaut');

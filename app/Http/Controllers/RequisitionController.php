@@ -134,20 +134,22 @@ class RequisitionController extends Controller
                 // Definir redirecciones por rol
                 $roleRedirects = [
                     'Developer' => '/requisiciones',
+                    'RespCompras' => '/requisiciones',
                     //Empleados solicitantes
                     'Auxconta' => '/mis-requisiciones',
                     'Auxalmacen' => '/mis-requisiciones',
                     'Auxopeventas' => '/mis-requisiciones',
+                    'Coordrh' => '/mis-requisiciones',
+                    'Auxcontratos' => '/mis-requisiciones',
                     '' => '/mis-requisiciones',
                     '' => '/mis-requisiciones',
-                    //Aprovadores
+                    //Aprovadores - que algunos tambien son solicitantes
+                    // pero en la vista index se les agrega el boton mis requisiciones para que puedan ver sus requis 
                     'Coordconta' => '/requisiciones-contabilidad',
                     'Coordalm' => '/requisiciones-almacen',
                     'Subgerope' => '/requisiciones-subope',
                     'Respsgi' => '/requisiciones-sgi',
-
-
-                    
+                    'Coordcontratos' => '/requisiciones-contratos',
                 ];
 
             // Obtener la ruta correspondiente según el rol del usuario

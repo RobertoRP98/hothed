@@ -225,7 +225,7 @@ class RoleSeeder extends Seeder
          }
          $user = User::find(13);
          if ($user) {
-             $user->assignRole('Respcomp');
+             $user->assignRole('RespCompras');
          }
          $user = User::find(4);
          if ($user) {
@@ -245,9 +245,9 @@ class RoleSeeder extends Seeder
          }
          $user = User::find(10);
          if ($user) {
-             $user->assignRole('Gerope');
+             $user->assignRole('Gerope'); // Se asigna Coordventas para el encargado de ventas
          }
-         $user = User::find(13);
+         $user = User::find();
          if ($user) {
              $user->assignRole('Auxcontratos');
          }

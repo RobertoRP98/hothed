@@ -59,7 +59,14 @@ return new class extends Migration
 
                     'RESP. MANTENIMIENTO DE INFRAESCTRUCTURA', //RESP DE MANTO INFRA
                     'RESP. DE SERVICIOS', //AUX DE SERVICIOS  - Resp de servicios
-                    'RESP. FONDO FIJO' // RESP FONDO JIJO
+                    'RESP. FONDO FIJO', // RESP FONDO JIJO
+
+                    'SUB. GER. OPE',
+                    'GER. OPE',
+                    'DIR. ADMINISTRACION',
+                    'DIR. OPERACIONES',
+
+
                 ]
             )->after('area')->default('AUXILIAR DE TI');;
         });
