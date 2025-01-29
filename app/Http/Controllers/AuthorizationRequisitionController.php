@@ -11,8 +11,7 @@ class AuthorizationRequisitionController extends Controller
      * Display a listing of the resource.
      */
 
-    //INICIA INDICES DE ADMINISTRACION 
-    //PENDIENTES DE AUTORIZACIÓN
+    //INICIA INDICES DE CONTABILIDAD POR APROBAR
     public function indexcoordconta()
     {
         // Verificar explícitamente que el usuario tiene el rol correcto
@@ -72,9 +71,215 @@ class AuthorizationRequisitionController extends Controller
             ->get();
         return view('requisitionauth.contabilidad.viewfinconta', compact('requisitionconta'));
     }
+    //FINALIZA INDICES DE CONTABILIDAD
+
+    //INICIA INDICES DE ALMACEN POR APROBAR
+    public function indexalm()
+    {
+        // Verificar explícitamente que el usuario tiene el rol correcto
+        if (!auth()->user()->hasRole(['Developer', 'Coordalm'])) {
+            abort(403, 'No tienes permiso para acceder a esta vista.');
+        }
+        $requisitionalm = Requisition::where('status_requisition', 'Pendiente')
+            ->where('finished', false)
+            ->whereHas('user', function ($query) {
+                $query->where('subarea', 'AUXILIAR DE ALMACEN');
+            })
+            ->get();
+        return view('requisitionauth.almacen.viewindexalm', compact('requisitionalm'));
+    }
+
+    public function autalm()
+    {
+        // Verificar explícitamente que el usuario tiene el rol correcto
+        if (!auth()->user()->hasRole(['Developer', 'Coordalm'])) {
+            abort(403, 'No tienes permiso para acceder a esta vista.');
+        }
+        $requisitionalm = Requisition::where('status_requisition', 'Autorizado')
+            ->where('finished', false)
+            ->whereHas('user', function ($query) {
+                $query->where('subarea', 'AUXILIAR DE ALMACEN');
+            })
+            ->get();
+        return view('requisitionauth.almacen.viewautalm', compact('requisitionalm'));
+    }
+
+    public function canalm()
+    {
+        // Verificar explícitamente que el usuario tiene el rol correcto
+        if (!auth()->user()->hasRole(['Developer', 'Coordalm'])) {
+            abort(403, 'No tienes permiso para acceder a esta vista.');
+        }
+        $requisitionalm = Requisition::where('status_requisition', 'Rechazado')
+            ->where('finished', false)
+            ->whereHas('user', function ($query) {
+                $query->where('subarea', 'AUXILIAR DE ALMACEN');
+            })
+            ->get();
+        return view('requisitionauth.almacen.viewcanalm', compact('requisitionalm'));
+    }
+
+    public function finalm()
+    {
+        // Verificar explícitamente que el usuario tiene el rol correcto
+        if (!auth()->user()->hasRole(['Developer', 'Coordalm'])) {
+            abort(403, 'No tienes permiso para acceder a esta vista.');
+        }
+        $requisitionalm = Requisition::whereIn('status_requisition', ['Pendiente', 'Autorizado', 'Rechazado'])
+            ->where('finished', true)
+            ->whereHas('user', function ($query) {
+                $query->where('subarea', 'AUXILIAR DE ALMACEN');
+            })
+            ->get();
+        return view('requisitionauth.almacen.viewfinalm', compact('requisitionalm'));
+    }
+    //FINALIZA INDICES DE ALMACEN
+
+    //INICIA INDICES DE SUBOPERACIONES
+    public function indexsubope()
+    {
+        // Verificar explícitamente que el usuario tiene el rol correcto
+        if (!auth()->user()->hasRole(['Developer', 'Subgerope'])) {
+            abort(403, 'No tienes permiso para acceder a esta vista.');
+        }
+        $requisitionsubope = Requisition::where('status_requisition', 'Pendiente')
+            ->where('finished', false)
+            ->whereHas('user', function ($query) {
+                $query->whereIn('subarea', [
+                    'AUXILIAR DE VENTAS Y OP',
+                    'COORD. DE ALMACEN', 
+                    'AUX DE LOGISTICA Y MANTO', 
+                ]);
+            })
+            ->get();
+        return view('requisitionauth.subope.viewindexsubope', compact('requisitionsubope'));
+    }
+
+    public function autsubope()
+    {
+        // Verificar explícitamente que el usuario tiene el rol correcto
+        if (!auth()->user()->hasRole(['Developer', 'Subgerope'])) {
+            abort(403, 'No tienes permiso para acceder a esta vista.');
+        }
+        $requisitionsubope = Requisition::where('status_requisition', 'Autorizado')
+            ->where('finished', false)
+            ->whereHas('user', function ($query) {
+                $query->whereIn('subarea', [
+                    'AUXILIAR DE VENTAS Y OP',
+                    'COORD. DE ALMACEN', 
+                    'AUX DE LOGISTICA Y MANTO', 
+                ]);
+            })
+            ->get();
+        return view('requisitionauth.subope.viewautsubope', compact('requisitionsubope'));
+    }
+
+    public function cansubope()
+    {
+        // Verificar explícitamente que el usuario tiene el rol correcto
+        if (!auth()->user()->hasRole(['Developer', 'Subgerope'])) {
+            abort(403, 'No tienes permiso para acceder a esta vista.');
+        }
+        $requisitionsubope = Requisition::where('status_requisition', 'Rechazado')
+            ->where('finished', false)
+            ->whereHas('user', function ($query) {
+                $query->whereIn('subarea', [
+                    'AUXILIAR DE VENTAS Y OP',
+                    'COORD. DE ALMACEN', 
+                    'AUX DE LOGISTICA Y MANTO', 
+                ]);
+            })
+            ->get();
+        return view('requisitionauth.subope.viewcansubope', compact('requisitionsubope'));
+    }
+
+    public function finsubope()
+    {
+        // Verificar explícitamente que el usuario tiene el rol correcto
+        if (!auth()->user()->hasRole(['Developer', 'Subgerope'])) {
+            abort(403, 'No tienes permiso para acceder a esta vista.');
+        }
+        $requisitionsubope = Requisition::whereIn('status_requisition', ['Pendiente', 'Autorizado', 'Rechazado'])
+            ->where('finished', true)
+            ->whereHas('user', function ($query) {
+                $query->whereIn('subarea', [
+                    'AUXILIAR DE VENTAS Y OP',
+                    'COORD. DE ALMACEN', 
+                    'AUX DE LOGISTICA Y MANTO', 
+                ]);
+            })
+            ->get();
+        return view('requisitionauth.subope.viewfinsubope', compact('requisitionsubope'));
+    }
+    //FINALIZA INDICES DE SUBOPERACIONES
+
+     //INICIA INDICES DE SGI POR APROBAR
+     public function indexsgi()
+     {
+         // Verificar explícitamente que el usuario tiene el rol correcto
+         if (!auth()->user()->hasRole(['Developer', 'Respsgi'])) {
+             abort(403, 'No tienes permiso para acceder a esta vista.');
+         }
+         $requisitionsgi = Requisition::where('status_requisition', 'Pendiente')
+             ->where('finished', false)
+             ->whereHas('user', function ($query) {
+                 $query->where('subarea', 'COORD. DE HSE');
+             })
+             ->get();
+         return view('requisitionauth.sgi.viewindexsgi', compact('requisitionsgi'));
+     }
+ 
+     public function autsgi()
+     {
+         // Verificar explícitamente que el usuario tiene el rol correcto
+         if (!auth()->user()->hasRole(['Developer', 'Respsgi'])) {
+             abort(403, 'No tienes permiso para acceder a esta vista.');
+         }
+         $requisitionsgi = Requisition::where('status_requisition', 'Autorizado')
+             ->where('finished', false)
+             ->whereHas('user', function ($query) {
+                 $query->where('subarea', 'COORD. DE HSE');
+             })
+             ->get();
+         return view('requisitionauth.sgi.viewautsgi', compact('requisitionsgi'));
+     }
+ 
+     public function cansgi()
+     {
+         // Verificar explícitamente que el usuario tiene el rol correcto
+         if (!auth()->user()->hasRole(['Developer', 'Respsgi'])) {
+             abort(403, 'No tienes permiso para acceder a esta vista.');
+         }
+         $requisitionsgi = Requisition::where('status_requisition', 'Rechazado')
+             ->where('finished', false)
+             ->whereHas('user', function ($query) {
+                 $query->where('subarea', 'COORD. DE HSE');
+             })
+             ->get();
+         return view('requisitionauth.sgi.viewcansgi', compact('requisitionsgi'));
+     }
+ 
+     public function finsgi()
+     {
+         // Verificar explícitamente que el usuario tiene el rol correcto
+         if (!auth()->user()->hasRole(['Developer', 'Respsgi'])) {
+             abort(403, 'No tienes permiso para acceder a esta vista.');
+         }
+         $requisitionsgi = Requisition::whereIn('status_requisition', ['Pendiente', 'Autorizado', 'Rechazado'])
+             ->where('finished', true)
+             ->whereHas('user', function ($query) {
+                 $query->where('subarea', 'COORD. DE HSE');
+             })
+             ->get();
+         return view('requisitionauth.sgi.viewfinsgi', compact('requisitionsgi'));
+     }
+     //FINALIZA INDICES DE SGI
 
 
-    //FINALIZA INDICES DE ADMINISTRACIÓN
+
+
+
+    // HASTA ABAJO HAY CONTROLLER DEL RESPONSABLE /////////////////////////////////////
 
     //INICIA INDICES DE RESPONSABLE 
 
@@ -87,7 +292,7 @@ class AuthorizationRequisitionController extends Controller
         $requisitionresp = Requisition::where('status_requisition', 'Autorizado')
             ->where('finished', false)
             ->whereHas('user', function ($query) {
-                $query->whereIn('departament', ['OP','ADM']);
+                $query->whereIn('departament', ['OP', 'ADM']);
             })
             ->get();
         return view('requisitionauth.viewrespaut', compact('requisitionresp'));
@@ -96,13 +301,13 @@ class AuthorizationRequisitionController extends Controller
     public function indexrespcan()
     {
         // Verificar explícitamente que el usuario tiene el rol correcto
-        if (!auth()->user()->hasRole(['Developer', 'RespCompras' ])) {
+        if (!auth()->user()->hasRole(['Developer', 'RespCompras'])) {
             abort(403, 'No tienes permiso para acceder a esta vista.');
         }
         $requisitionresp = Requisition::where('status_requisition', 'Rechazado')
             ->whereIn('finished', [false, true])
             ->whereHas('user', function ($query) {
-                $query->whereIn('departament', ['OP','ADM']);
+                $query->whereIn('departament', ['OP', 'ADM']);
             })
             ->get();
         return view('requisitionauth.viewrespcan', compact('requisitionresp'));
@@ -117,7 +322,7 @@ class AuthorizationRequisitionController extends Controller
         $requisitionresp = Requisition::whereIn('status_requisition', ['Pendiente', 'Autorizado', 'Rechazado'])
             ->where('finished', true)
             ->whereHas('user', function ($query) {
-                $query->whereIn('departament', ['OP','ADM']);
+                $query->whereIn('departament', ['OP', 'ADM']);
             })
             ->get();
         return view('requisitionauth.viewrespfin', compact('requisitionresp'));
@@ -125,7 +330,7 @@ class AuthorizationRequisitionController extends Controller
 
     //FINALIZA INDICES DE RESPONSABLE
 
-//INICIA INDICE DE CLIENTE - MIS REQUISICIONES
+    //INICIA INDICE DE CLIENTE - MIS REQUISICIONES
 
     public function indexclient()
     {
@@ -146,7 +351,12 @@ class AuthorizationRequisitionController extends Controller
     public function productclient()
     {
         $datos['products'] = Product::select(
-            'internal_id', 'description', 'brand', 'udm', 'category')->get();
+            'internal_id',
+            'description',
+            'brand',
+            'udm',
+            'category'
+        )->get();
 
         return view('product.indexclient', $datos);
     }

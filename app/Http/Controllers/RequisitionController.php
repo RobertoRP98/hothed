@@ -131,13 +131,24 @@ class RequisitionController extends Controller
 
             $message = "Requisición creada con éxito";
 
-            // Definir redirecciones por rol
-            $roleRedirects = [
-                'Developer' => '/requisiciones',
-                'Auxconta' => '/mis-requisiciones',
-                'Coordconta' => '/requisiciones-contabilidad',
-                
-            ];
+                // Definir redirecciones por rol
+                $roleRedirects = [
+                    'Developer' => '/requisiciones',
+                    //Empleados solicitantes
+                    'Auxconta' => '/mis-requisiciones',
+                    'Auxalmacen' => '/mis-requisiciones',
+                    'Auxopeventas' => '/mis-requisiciones',
+                    '' => '/mis-requisiciones',
+                    '' => '/mis-requisiciones',
+                    //Aprovadores
+                    'Coordconta' => '/requisiciones-contabilidad',
+                    'Coordalm' => '/requisiciones-almacen',
+                    'Subgerope' => '/requisiciones-subope',
+                    'Respsgi' => '/requisiciones-sgi',
+
+
+                    
+                ];
 
             // Obtener la ruta correspondiente según el rol del usuario
             foreach ($roleRedirects as $role => $redirect) {
@@ -175,7 +186,7 @@ class RequisitionController extends Controller
         $query = Requisition::query();
 
         // Si el usuario no es Developer, filtrar por user_id
-        if (!auth()->user()->hasRole(['Developer', 'Coordconta', 'Auxconta'])) {
+        if (!auth()->user()->hasRole(['Developer', 'Coordconta', 'Auxconta','Auxalmacen','Coordalm'])) {
             $query->where('user_id', auth()->id());
         }
 
@@ -369,7 +380,9 @@ class RequisitionController extends Controller
             $roleRedirects = [
                 'Developer' => '/requisiciones',
                 'Auxconta' => '/mis-requisiciones',
+                'Auxalmacen' => '/mis-requisiciones',
                 'Coordconta' => '/requisiciones-contabilidad',
+                'Coordalm' => '/requisiciones-almacen',
                 
             ];
 

@@ -204,9 +204,8 @@ class RoleSeeder extends Seeder
 
          $user = User::find(20);
          if ($user) {
-             $user->assignRole('Coordalm');
+             $user->assignRole('Coordalm'); //Se asigna Auxalmacen para su ayudante
          }
-
          
          $user = User::find(17);
          if ($user) {
@@ -214,7 +213,7 @@ class RoleSeeder extends Seeder
          }
          $user = User::find(16);
          if ($user) {
-             $user->assignRole('Respsgi');
+             $user->assignRole('Respsgi');// Se asigna Coordhse para su auxiliar 
          }
          $user = User::find(2);
          if ($user) {
@@ -242,7 +241,7 @@ class RoleSeeder extends Seeder
          }
          $user = User::find(23);
          if ($user) {
-             $user->assignRole('Subgerope');
+             $user->assignRole('Subgerope'); // Se asigna Auxlogmanto para el auxiliar de logistica y manto
          }
          $user = User::find(10);
          if ($user) {
