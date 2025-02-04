@@ -108,6 +108,13 @@
                                 {{-- <option value="RESP. MANTENIMIENTO DE INFRAESCTRUCTURA">RESP. MANTENIMIENTO DE INFRAESCTRUCTURA</option> --}}
                                 {{-- <option value="RESP. DE SERVICIOS">RESP. DE SERVICIOS</option> --}}
                                 {{-- <option value="RESP. FONDO FIJO">RESP. FONDO FIJO</option> --}}
+                                <option value="ESP. TECNICO">ESPECIALISTA TÉCNICO</option>
+                                <option value="SUB. GER. OPE">SUB. GER. OPE</option>
+                                <option value="GER. OPE">GER. OPE</option>
+                                <option value="DIR. ADMINISTRACION">DIR. ADMINISTRACIÓN</option>
+                                <option value="DIR. OPERACIONES">DIR. OPERACIONES</option>
+
+
 
 
                                 </select>

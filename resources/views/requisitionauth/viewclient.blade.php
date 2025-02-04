@@ -23,6 +23,33 @@
 
 
 <div class="d-flex flex-wrap mt-3">
+
+    @php
+    $roleRedirects = [
+        'Developer' => '/requisiciones',
+        'RespCompras' => '/requisiciones',
+        // Aprobadores
+        'Coordconta' => '/requisiciones-contabilidad',
+        'Coordalm' => '/requisiciones-almacen',
+        'Subgerope' => '/requisiciones-subope',
+        'Gerope' => '/requisiciones-gerope',
+        'Respsgi' => '/requisiciones-sgi',
+        'Diradmin' => '/requisiciones-administracion',
+        'Dirope' => '/requisiciones-dirope',
+        'Coordcontratos' => '/requisiciones-contratos',
+    ];
+    
+    // Obtener el primer rol del usuario que tenga una redirección definida
+    $userRole = auth()->user()->roles->pluck('name')->intersect(array_keys($roleRedirects))->first();
+    $redirectUrl = $userRole ? url($roleRedirects[$userRole]) : url('/');
+@endphp
+
+@if ($userRole)
+    <a  class="btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto" href="{{ $redirectUrl }}">
+        Regresar
+    </a>
+@endif
+
     <a href="{{ url('requisiciones/create') }}" class="btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
         Agregar Requisición
     </a>

@@ -131,26 +131,31 @@ class RequisitionController extends Controller
 
             $message = "Requisición creada con éxito";
 
-                // Definir redirecciones por rol
-                $roleRedirects = [
-                    'Developer' => '/requisiciones',
-                    'RespCompras' => '/requisiciones',
-                    //Empleados solicitantes
-                    'Auxconta' => '/mis-requisiciones',
-                    'Auxalmacen' => '/mis-requisiciones',
-                    'Auxopeventas' => '/mis-requisiciones',
-                    'Coordrh' => '/mis-requisiciones',
-                    'Auxcontratos' => '/mis-requisiciones',
-                    '' => '/mis-requisiciones',
-                    '' => '/mis-requisiciones',
-                    //Aprovadores - que algunos tambien son solicitantes
-                    // pero en la vista index se les agrega el boton mis requisiciones para que puedan ver sus requis 
-                    'Coordconta' => '/requisiciones-contabilidad',
-                    'Coordalm' => '/requisiciones-almacen',
-                    'Subgerope' => '/requisiciones-subope',
-                    'Respsgi' => '/requisiciones-sgi',
-                    'Coordcontratos' => '/requisiciones-contratos',
-                ];
+            // Definir redirecciones por rol
+            $roleRedirects = [
+                'Developer' => '/requisiciones',
+                'RespCompras' => '/requisiciones',
+                //Empleados solicitantes
+                'Auxconta' => '/mis-requisiciones',
+                'Mcfly' => '/mis-requisiciones',
+                'Auxalmacen' => '/mis-requisiciones',
+                'Auxopeventas' => '/mis-requisiciones',
+                'Coordrh' => '/mis-requisiciones',
+                'Auxcontratos' => '/mis-requisiciones',
+                '' => '/mis-requisiciones',
+                '' => '/mis-requisiciones',
+                //Aprovadores - que algunos tambien son solicitantes
+                // pero en la vista index se les agrega el boton mis requisiciones para que puedan ver sus requis 
+                'Coordconta' => '/requisiciones-contabilidad',
+                'Coordalm' => '/requisiciones-almacen',
+                'Subgerope' => '/requisiciones-subope',
+                'Gerope' => '/requisiciones-gerope',
+                'Respsgi' => '/requisiciones-sgi',
+                'Diradmin' => '/requisiciones-administracion',
+                'Dirope' => '/requisiciones-dirope',
+                'Coordcontratos' => '/requisiciones-contratos',
+
+            ];
 
             // Obtener la ruta correspondiente según el rol del usuario
             foreach ($roleRedirects as $role => $redirect) {
@@ -188,7 +193,7 @@ class RequisitionController extends Controller
         $query = Requisition::query();
 
         // Si el usuario no es Developer, filtrar por user_id
-        if (!auth()->user()->hasRole(['Developer', 'Coordconta', 'Auxconta','Auxalmacen','Coordalm'])) {
+        if (!auth()->user()->hasRole(['Developer', 'Coordconta', 'Auxconta', 'Auxalmacen', 'Coordalm'])) {
             $query->where('user_id', auth()->id());
         }
 
@@ -381,11 +386,27 @@ class RequisitionController extends Controller
             // Definir redirecciones por rol
             $roleRedirects = [
                 'Developer' => '/requisiciones',
+                'RespCompras' => '/requisiciones',
+                //Empleados solicitantes
                 'Auxconta' => '/mis-requisiciones',
                 'Auxalmacen' => '/mis-requisiciones',
+                'Mcfly' => '/mis-requisiciones',
+                'Auxopeventas' => '/mis-requisiciones',
+                'Coordrh' => '/mis-requisiciones',
+                'Auxcontratos' => '/mis-requisiciones',
+                '' => '/mis-requisiciones',
+                '' => '/mis-requisiciones',
+                //Aprovadores - que algunos tambien son solicitantes
+                // pero en la vista index se les agrega el boton mis requisiciones para que puedan ver sus requis 
                 'Coordconta' => '/requisiciones-contabilidad',
                 'Coordalm' => '/requisiciones-almacen',
-                
+                'Subgerope' => '/requisiciones-subope',
+                'Gerope' => '/requisiciones-gerope',
+                'Respsgi' => '/requisiciones-sgi',
+                'Diradmin' => '/requisiciones-administracion',
+                'Dirope' => '/requisiciones-dirope',
+                'Coordcontratos' => '/requisiciones-contratos',
+
             ];
 
             // Obtener la ruta correspondiente según el rol del usuario

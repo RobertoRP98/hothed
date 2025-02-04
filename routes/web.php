@@ -25,7 +25,7 @@ Route::get('/', function () {
 });
 
 
-Auth::routes(['reset'=>false, 'register'=>false]);
+Auth::routes(['reset' => false, 'register' => false]);
 
 
 // Grupo de rutas protegido con auth y roles específicos
@@ -40,13 +40,19 @@ Route::group(['middleware' => ['auth', 'role:Developer|AdministracionKarla']], f
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 //Errores 
-Route::get('/error-403',function(){return view('errors.403');})->name('error403');
+Route::get('/error-403', function () {
+    return view('errors.403');
+})->name('error403');
 
 //Errores 
-Route::get('/error-405',function(){return view('errors.405');})->name('error405');
+Route::get('/error-405', function () {
+    return view('errors.405');
+})->name('error405');
 
 //Errores 
-Route::get('/new-index',function(){return view('errors.newindex');})->name('newindex');
+Route::get('/new-index', function () {
+    return view('errors.newindex');
+})->name('newindex');
 
 // Ruta comodín para capturar todas las rutas no definidas
 //Route::fallback(function () {    return redirect('/');});
@@ -56,15 +62,15 @@ Route::get('/new-index',function(){return view('errors.newindex');})->name('newi
 Route::resource('status', StatusController::class)->middleware('auth');
 
 // EMPIEZA ALMACEN
-Route::group(['middleware'=> ['auth','role:Developer']], function(){
-Route::resource('bases', BaseController::class)->middleware('auth');
-Route::resource('familias', FamilyController::class)->middleware('auth');
-Route::resource('subgrupos', SubgroupController::class)->middleware('auth');
-Route::resource('toolstatus', ToolstatusController::class)->middleware('auth');
-Route::resource('almacenherramientas',ToolwarehouseController::class)->middleware('auth');
-Route::get('/list', [ToolwarehouseController::class, 'list'])->middleware('auth');
-Route::post('/search', [ToolwarehouseController::class, 'search'])->middleware('auth');
-Route::resource('historialalmacen',ToolHistoryController::class)->middleware('auth');
+Route::group(['middleware' => ['auth', 'role:Developer']], function () {
+    Route::resource('bases', BaseController::class)->middleware('auth');
+    Route::resource('familias', FamilyController::class)->middleware('auth');
+    Route::resource('subgrupos', SubgroupController::class)->middleware('auth');
+    Route::resource('toolstatus', ToolstatusController::class)->middleware('auth');
+    Route::resource('almacenherramientas', ToolwarehouseController::class)->middleware('auth');
+    Route::get('/list', [ToolwarehouseController::class, 'list'])->middleware('auth');
+    Route::post('/search', [ToolwarehouseController::class, 'search'])->middleware('auth');
+    Route::resource('historialalmacen', ToolHistoryController::class)->middleware('auth');
 });
 // TERMINA ALMACEN
 
@@ -74,91 +80,88 @@ Route::resource('historialalmacen',ToolHistoryController::class)->middleware('au
 
 Route::group(['middleware' => ['auth', 'role:Cobranza|Developer|AdministracionKarla|VerCobranza']], function () {
 
-Route::resource('empresas',CompanyReceivableController::class)->middleware('auth');
-Route::get('catalogo/privadas', [CompanyReceivableController::class, 'indexprivate'])->name('empresas.privadas')->middleware('auth');
-Route::get('catalogo/pemex', [CompanyReceivableController::class, 'indexPublicas'])->name('empresas.publicas')->middleware('auth');
-Route::get('/catalogo/{id}', [CompanyReceivableController::class, 'showEmpresa'])->name('empresas.show')->middleware('auth');
-// Ruta para el historial de facturación de una empresa específica
-Route::get('historial/{company}', [CompanyReceivableController::class, 'history'])->name('empresa.historial')->middleware('auth');
+    Route::resource('empresas', CompanyReceivableController::class)->middleware('auth');
+    Route::get('catalogo/privadas', [CompanyReceivableController::class, 'indexprivate'])->name('empresas.privadas')->middleware('auth');
+    Route::get('catalogo/pemex', [CompanyReceivableController::class, 'indexPublicas'])->name('empresas.publicas')->middleware('auth');
+    Route::get('/catalogo/{id}', [CompanyReceivableController::class, 'showEmpresa'])->name('empresas.show')->middleware('auth');
+    // Ruta para el historial de facturación de una empresa específica
+    Route::get('historial/{company}', [CompanyReceivableController::class, 'history'])->name('empresa.historial')->middleware('auth');
 
-// Ruta para el historial de facturas pagadas de una empresa específica
-Route::get('facturas-pagadas/{company}', [CompanyReceivableController::class, 'paid'])->name('empresa.facturas-pagadas')->middleware('auth');
+    // Ruta para el historial de facturas pagadas de una empresa específica
+    Route::get('facturas-pagadas/{company}', [CompanyReceivableController::class, 'paid'])->name('empresa.facturas-pagadas')->middleware('auth');
 
-Route::get('/facturas', [BillController::class,'index'])->name('facturas.index')->middleware('auth');
+    Route::get('/facturas', [BillController::class, 'index'])->name('facturas.index')->middleware('auth');
 
-//Index de todas las facturas privadas que estan vencidas
-Route::get('/privadas-vencidas',[BillController::class,'facturasvencidasprivadas'])->name('privadas-vencidas')->middleware('auth');
-//Index de todas las facturas privadas que NO estan vencidas
-Route::get('/privadas-no-vencidas',[BillController::class,'facturasnovencidasprivadas'])->name('privadas-no-vencidas')->middleware('auth');
-
-
-//Index de todas las facturas publicas que estan vencidas
-Route::get('/pemex-vencidas',[BillController::class,'facturasvencidaspublicas'])->name('publicas-vencidas')->middleware('auth');
-//Index de todas las facturas publicas que NO estan vencidas
-Route::get('/pemex-no-vencidas',[BillController::class,'facturasnovencidaspublicas'])->name('publicas-no-vencidas')->middleware('auth');
+    //Index de todas las facturas privadas que estan vencidas
+    Route::get('/privadas-vencidas', [BillController::class, 'facturasvencidasprivadas'])->name('privadas-vencidas')->middleware('auth');
+    //Index de todas las facturas privadas que NO estan vencidas
+    Route::get('/privadas-no-vencidas', [BillController::class, 'facturasnovencidasprivadas'])->name('privadas-no-vencidas')->middleware('auth');
 
 
-//Exportar Excel con todas las empresas
-Route::get('/export-empresas', [BillController::class, 'exportEmpresas'])->name('export.empresas');
-
-Route::get('/export-privadas-vencidas',[BillController::class,'exportPrivadasVencidas'])->name('export.privadas-vencidas');
-
-Route::get('/export-privadas-no-vencidas',[BillController::class,'exportPrivadasNoVencidas'])->name('export.privadas-no-vencidas');
-
-Route::get('/export-publicas-vencidas',[BillController::class,'exportPublicasVencidas'])->name('export.publicas-vencidas');
-
-Route::get('/export-publicas-no-vencidas',[BillController::class,'exportPublicasNoVencidas'])->name('export.publicas-no-vencidas');
-
-Route::get('/export-pendientes-cobrar-global',[BillController::class,'exportpendienteCobrarGlobal'])->name('export.pendientes-cobrar-global');
+    //Index de todas las facturas publicas que estan vencidas
+    Route::get('/pemex-vencidas', [BillController::class, 'facturasvencidaspublicas'])->name('publicas-vencidas')->middleware('auth');
+    //Index de todas las facturas publicas que NO estan vencidas
+    Route::get('/pemex-no-vencidas', [BillController::class, 'facturasnovencidaspublicas'])->name('publicas-no-vencidas')->middleware('auth');
 
 
+    //Exportar Excel con todas las empresas
+    Route::get('/export-empresas', [BillController::class, 'exportEmpresas'])->name('export.empresas');
 
-//EXCELES POR EMPRESA INDIVIDUAL
-Route::get('/catalogo/{id}/export', [CompanyReceivableController::class, 'exportEmpresaExcel'])->name('empresas.export')->middleware('auth');
+    Route::get('/export-privadas-vencidas', [BillController::class, 'exportPrivadasVencidas'])->name('export.privadas-vencidas');
 
-Route::get('/catalogo/{id}/exportpf', [CompanyReceivableController::class, 'exportEmpresaPendienteFacturar'])->name('empresas.export.pf')->middleware('auth');
+    Route::get('/export-privadas-no-vencidas', [BillController::class, 'exportPrivadasNoVencidas'])->name('export.privadas-no-vencidas');
 
-Route::get('/catalogo/{id}/exportpc', [CompanyReceivableController::class, 'exportEmpresaPendienteCobrar'])->name('empresas.export.pc')->middleware('auth');
+    Route::get('/export-publicas-vencidas', [BillController::class, 'exportPublicasVencidas'])->name('export.publicas-vencidas');
 
-Route::get('/catalogo/{id}/exportpe', [CompanyReceivableController::class, 'exportEmpresaPendienteEntrada'])->name('empresas.export.pe')->middleware('auth');
+    Route::get('/export-publicas-no-vencidas', [BillController::class, 'exportPublicasNoVencidas'])->name('export.publicas-no-vencidas');
 
-//
-Route::get('/export-resumen-semanal',[BillController::class,'exportReporteSemanal'])->name('export.resumen-semanal');
-//
-Route::get('/export-resumen-semanal-actual',[BillController::class,'exportReporteSemanaActual'])->name('export.resumen-semana-actual');
+    Route::get('/export-pendientes-cobrar-global', [BillController::class, 'exportpendienteCobrarGlobal'])->name('export.pendientes-cobrar-global');
 
-Route::get('/send-email', [BillController::class, 'sendHelloWorldEmail']);
 
+
+    //EXCELES POR EMPRESA INDIVIDUAL
+    Route::get('/catalogo/{id}/export', [CompanyReceivableController::class, 'exportEmpresaExcel'])->name('empresas.export')->middleware('auth');
+
+    Route::get('/catalogo/{id}/exportpf', [CompanyReceivableController::class, 'exportEmpresaPendienteFacturar'])->name('empresas.export.pf')->middleware('auth');
+
+    Route::get('/catalogo/{id}/exportpc', [CompanyReceivableController::class, 'exportEmpresaPendienteCobrar'])->name('empresas.export.pc')->middleware('auth');
+
+    Route::get('/catalogo/{id}/exportpe', [CompanyReceivableController::class, 'exportEmpresaPendienteEntrada'])->name('empresas.export.pe')->middleware('auth');
+
+    //
+    Route::get('/export-resumen-semanal', [BillController::class, 'exportReporteSemanal'])->name('export.resumen-semanal');
+    //
+    Route::get('/export-resumen-semanal-actual', [BillController::class, 'exportReporteSemanaActual'])->name('export.resumen-semana-actual');
+
+    Route::get('/send-email', [BillController::class, 'sendHelloWorldEmail']);
 });
 
 
 
 Route::group(['middleware' => ['auth', 'role:Cobranza']], function () {
 
-Route::resource('divisas',CurrencyController::class)->middleware('auth');
+    Route::resource('divisas', CurrencyController::class)->middleware('auth');
 
-Route::get('/prefactura/create/{companyreceivable_id}', [BillController::class, 'createFactura'])->name('prefactura.create')->middleware('auth');
-// Para crear una factura y relacionarla con la empresa
-Route::post('/facturas/{companyreceivable_id}', [BillController::class, 'store'])->name('facturas.store')->middleware('auth');
-// Para actualizar una factura relacionada con la empresa
-Route::patch('facturas/update/{companyreceivable_id}/{factura}', [BillController::class, 'update'])->name('facturas.update')->middleware('auth');
-// Para editar una factura
-Route::get('/facturas/{companyreceivable_id}/edit/{factura}', [BillController::class, 'edit'])->name('facturas.edit')->middleware('auth');
-
+    Route::get('/prefactura/create/{companyreceivable_id}', [BillController::class, 'createFactura'])->name('prefactura.create')->middleware('auth');
+    // Para crear una factura y relacionarla con la empresa
+    Route::post('/facturas/{companyreceivable_id}', [BillController::class, 'store'])->name('facturas.store')->middleware('auth');
+    // Para actualizar una factura relacionada con la empresa
+    Route::patch('facturas/update/{companyreceivable_id}/{factura}', [BillController::class, 'update'])->name('facturas.update')->middleware('auth');
+    // Para editar una factura
+    Route::get('/facturas/{companyreceivable_id}/edit/{factura}', [BillController::class, 'edit'])->name('facturas.edit')->middleware('auth');
 });
 //TERMINA MODULOS DE COBRO
 
 
 //EMPIEZAN MODULOS DE COMPRAS  
 //RUTAS PARA TODO EL PERSONAL CREAR Y GUARDAR SUS REQUISICIONES Y VER SUS PROPIAS REQUIS
-Route::group(['middleware' => ['auth', 'role:Developer|Coordconta|Auxconta']], function () {
+Route::group(['middleware' => ['auth', 'role:Developer|RespCompras|Auxalmacen|Auxopeventas|Coordrh|
+Auxcontratos|Coordconta|Coordalm|Subgerope|Gerope|Respsgi|Diradmin|Dirope|Coordcontratos|Mcfly']], function () {
     Route::get('/requisiciones/create', [RequisitionController::class, 'create'])->name('requisiciones.create');
     Route::post('/requisiciones', [RequisitionController::class, 'store'])->name('requisiciones.store');
     Route::get('/requisiciones/{requisicione}', [RequisitionController::class, 'show'])->name('requisiciones.show');
     Route::get('/mis-requisiciones', [AuthorizationRequisitionController::class, 'indexclient'])->name('requisicionesclient.index');
     Route::get('/productos-cliente', [AuthorizationRequisitionController::class, 'productclient'])->name('productclient.index');
-
-
 });
 
 //RUTAS QUE SOLO SON ACCESIBLES AL ENCARGADO DE COMPRAS
@@ -172,59 +175,64 @@ Route::group(['middleware' => ['auth', 'role:Developer|RespCompras']], function 
 });
 
 //RUTAS PARA EDITAR SOLO SON ACCESIBLES PARA GERENCIA Y RESPONSABLE DE COMPRAS
-Route::group(['middleware' => ['auth', 'role:Developer|Coordconta']], function () {
-    Route::get('/requisiciones/{requisicione}/edit', [RequisitionController::class, 'edit'])->name('requisiciones.edit');
-    Route::patch('/requisiciones/{requisicione}', [RequisitionController::class, 'update'])->name('requisiciones.update');
+Route::group(
+    ['middleware' => ['auth', 'role:Developer|RespCompras|Coordconta|Coordalm|Subgerope|Gerope|Respsgi|Diradmin|Dirope|Coordcontratos']],
+    function () {
+        Route::get('/requisiciones/{requisicione}/edit', [RequisitionController::class, 'edit'])->name('requisiciones.edit');
+        Route::patch('/requisiciones/{requisicione}', [RequisitionController::class, 'update'])->name('requisiciones.update');
 
 
-    //ACCESOS LOS INDEX DONDE LOS JEFES INMEDIATOS AUTORIZAN LAS REQUISICIONES
-    //Rutas para ver las requisiciones por departamentos ADM U OP
-    Route::get('requisiciones-almacen',[AuthorizationRequisitionController::class,'indexalm'])->name('requisicionesalm');
-    Route::get('requisiciones-almacen-autorizadas',[AuthorizationRequisitionController::class,'autalm'])->name('requisicionesalmaut');
-    Route::get('requisiciones-almacen-canceladas',[AuthorizationRequisitionController::class,'canalm'])->name('requisicionesalmcan');
-    Route::get('requisiciones-almacen-finalizadas',[AuthorizationRequisitionController::class,'finalm'])->name('requisicionesalmfin');
+        //ACCESOS LOS INDEX DONDE LOS JEFES INMEDIATOS AUTORIZAN LAS REQUISICIONES
+        //Rutas para ver las requisiciones por departamentos ADM U OP
+        Route::get('requisiciones-almacen', [AuthorizationRequisitionController::class, 'indexalm'])->name('requisicionesalm');
+        Route::get('requisiciones-almacen-autorizadas', [AuthorizationRequisitionController::class, 'autalm'])->name('requisicionesalmaut');
+        Route::get('requisiciones-almacen-canceladas', [AuthorizationRequisitionController::class, 'canalm'])->name('requisicionesalmcan');
+        Route::get('requisiciones-almacen-finalizadas', [AuthorizationRequisitionController::class, 'finalm'])->name('requisicionesalmfin');
 
-    Route::get('requisiciones-administracion',[AuthorizationRequisitionController::class,'indexadmin'])->name('requisicionesadmin');
-    Route::get('requisiciones-admin-autorizadas',[AuthorizationRequisitionController::class,'autadmin'])->name('requisicionesadminaut');
-    Route::get('requisiciones-admin-canceladas',[AuthorizationRequisitionController::class,'canadmin'])->name('requisicionesadmincan');
-    Route::get('requisiciones-admin-finalizadas',[AuthorizationRequisitionController::class,'finadmin'])->name('requisicionesadminfin');
+        Route::get('requisiciones-administracion', [AuthorizationRequisitionController::class, 'indexadmin'])->name('requisicionesadmin');
+        Route::get('requisiciones-admin-autorizadas', [AuthorizationRequisitionController::class, 'autadmin'])->name('requisicionesadminaut');
+        Route::get('requisiciones-admin-canceladas', [AuthorizationRequisitionController::class, 'canadmin'])->name('requisicionesadmincan');
+        Route::get('requisiciones-admin-finalizadas', [AuthorizationRequisitionController::class, 'finadmin'])->name('requisicionesadminfin');
 
-    // NO ESTA NORMALIZADO
-    Route::get('requisiciones-contabilidad',[AuthorizationRequisitionController::class,'indexcoordconta'])->name('requisicionescoordconta.index');
-    Route::get('requisiciones-contabilidad-autorizadas',[AuthorizationRequisitionController::class,'autconta'])->name('requisicionescontaaut');
-    Route::get('requisiciones-contabilidad-canceladas',[AuthorizationRequisitionController::class,'canconta'])->name('requisicionescontacan');
-    Route::get('requisiciones-contabilidad-finalizadas',[AuthorizationRequisitionController::class,'finconta'])->name('requisicionescontafin');
-    //
+        // NO ESTA NORMALIZADO
+        Route::get('requisiciones-contabilidad', [AuthorizationRequisitionController::class, 'indexcoordconta'])->name('requisicionescoordconta.index');
+        Route::get('requisiciones-contabilidad-autorizadas', [AuthorizationRequisitionController::class, 'autconta'])->name('requisicionescontaaut');
+        Route::get('requisiciones-contabilidad-canceladas', [AuthorizationRequisitionController::class, 'canconta'])->name('requisicionescontacan');
+        Route::get('requisiciones-contabilidad-finalizadas', [AuthorizationRequisitionController::class, 'finconta'])->name('requisicionescontafin');
+        //
 
-    Route::get('requisiciones-contratos',[AuthorizationRequisitionController::class,'indexcontra'])->name('requisicionescontra');
-    Route::get('requisiciones-contratos-autorizadas',[AuthorizationRequisitionController::class,'autcontra'])->name('requisicionescontraaut');
-    Route::get('requisiciones-contratos-canceladas',[AuthorizationRequisitionController::class,'cancontra'])->name('requisicionescontracan');
-    Route::get('requisiciones-contratos-finalizadas',[AuthorizationRequisitionController::class,'fincontra'])->name('requisicionescontrafin');
+        Route::get('requisiciones-contratos', [AuthorizationRequisitionController::class, 'indexcontra'])->name('requisicionescontra');
+        Route::get('requisiciones-contratos-autorizadas', [AuthorizationRequisitionController::class, 'autcontra'])->name('requisicionescontraaut');
+        Route::get('requisiciones-contratos-canceladas', [AuthorizationRequisitionController::class, 'cancontra'])->name('requisicionescontracan');
+        Route::get('requisiciones-contratos-finalizadas', [AuthorizationRequisitionController::class, 'fincontra'])->name('requisicionescontrafin');
 
-    Route::get('requisiciones-gerope',[AuthorizationRequisitionController::class,'indexgerope'])->name('requisicionesgerope');
-    Route::get('requisiciones-gerope-autorizadas',[AuthorizationRequisitionController::class,'autgerope'])->name('requisicionesgeropeaut');
-    Route::get('requisiciones-gerope-canceladas',[AuthorizationRequisitionController::class,'cangerope'])->name('requisicionesgeropecan');
-    Route::get('requisiciones-gerope-finalizadas',[AuthorizationRequisitionController::class,'fingerope'])->name('requisicionesgeropefin');
-    
-    Route::get('requisiciones-sgi',[AuthorizationRequisitionController::class,'indexsgi'])->name('requisicionessgi');
-    Route::get('requisiciones-sgi-autorizadas',[AuthorizationRequisitionController::class,'autsgi'])->name('requisicionessgiaut');
-    Route::get('requisiciones-sgi-canceladas',[AuthorizationRequisitionController::class,'cansgi'])->name('requisicionessgican');
-    Route::get('requisiciones-sgi-finalizadas',[AuthorizationRequisitionController::class,'finsgi'])->name('requisicionessgifin');
+        Route::get('requisiciones-dirope', [AuthorizationRequisitionController::class, 'indexgerope'])->name('requisicionesgerope');
+        Route::get('requisiciones-dirope-autorizadas', [AuthorizationRequisitionController::class, 'autgerope'])->name('requisicionesgeropeaut');
+        Route::get('requisiciones-dirope-canceladas', [AuthorizationRequisitionController::class, 'cangerope'])->name('requisicionesgeropecan');
+        Route::get('requisiciones-dirope-finalizadas', [AuthorizationRequisitionController::class, 'fingerope'])->name('requisicionesgeropefin');
 
-    Route::get('requisiciones-subope',[AuthorizationRequisitionController::class,'indexsubope'])->name('requisicionessubope');
-    Route::get('requisiciones-subope-autorizadas',[AuthorizationRequisitionController::class,'autsubope'])->name('requisicionessubopeaut');
-    Route::get('requisiciones-subope-canceladas',[AuthorizationRequisitionController::class,'cansubope'])->name('requisicionessubopecan');
-    Route::get('requisiciones-subope-finalizadas',[AuthorizationRequisitionController::class,'finsubope'])->name('requisicionessubopefin');
+        Route::get('requisiciones-gerope', [AuthorizationRequisitionController::class, 'indexgerope'])->name('requisicionesgerope');
+        Route::get('requisiciones-gerope-autorizadas', [AuthorizationRequisitionController::class, 'autgerope'])->name('requisicionesgeropeaut');
+        Route::get('requisiciones-gerope-canceladas', [AuthorizationRequisitionController::class, 'cangerope'])->name('requisicionesgeropecan');
+        Route::get('requisiciones-gerope-finalizadas', [AuthorizationRequisitionController::class, 'fingerope'])->name('requisicionesgeropefin');
 
- 
+        Route::get('requisiciones-sgi', [AuthorizationRequisitionController::class, 'indexsgi'])->name('requisicionessgi');
+        Route::get('requisiciones-sgi-autorizadas', [AuthorizationRequisitionController::class, 'autsgi'])->name('requisicionessgiaut');
+        Route::get('requisiciones-sgi-canceladas', [AuthorizationRequisitionController::class, 'cansgi'])->name('requisicionessgican');
+        Route::get('requisiciones-sgi-finalizadas', [AuthorizationRequisitionController::class, 'finsgi'])->name('requisicionessgifin');
+
+        Route::get('requisiciones-subope', [AuthorizationRequisitionController::class, 'indexsubope'])->name('requisicionessubope');
+        Route::get('requisiciones-subope-autorizadas', [AuthorizationRequisitionController::class, 'autsubope'])->name('requisicionessubopeaut');
+        Route::get('requisiciones-subope-canceladas', [AuthorizationRequisitionController::class, 'cansubope'])->name('requisicionessubopecan');
+        Route::get('requisiciones-subope-finalizadas', [AuthorizationRequisitionController::class, 'finsubope'])->name('requisicionessubopefin');
 
 
 
-    Route::get('requisiciones-resp-autorizadas',[AuthorizationRequisitionController::class,'indexrespaut'])->name('requisicionesrespaut.index');
-    Route::get('requisiciones-resp-canceladas',[AuthorizationRequisitionController::class,'indexrespcan'])->name('requisicionesrespcan.index');
-    Route::get('requisiciones-resp-finalizadas',[AuthorizationRequisitionController::class,'indexrespfin'])->name('requisicionesrespfin.index');
 
-});
+
+        Route::get('requisiciones-resp-autorizadas', [AuthorizationRequisitionController::class, 'indexrespaut'])->name('requisicionesrespaut.index');
+        Route::get('requisiciones-resp-canceladas', [AuthorizationRequisitionController::class, 'indexrespcan'])->name('requisicionesrespcan.index');
+        Route::get('requisiciones-resp-finalizadas', [AuthorizationRequisitionController::class, 'indexrespfin'])->name('requisicionesrespfin.index');
+    }
+);
 //TERMINAN MODULOS DE COMPRAS
-
-

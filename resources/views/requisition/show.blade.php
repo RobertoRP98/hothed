@@ -9,20 +9,40 @@
          <div class="row align-items-center">
           <div class="mb-3">
             <button type="button" class="btn btn-warning btn-block">
-                @if (auth()->user()->hasRole('RespCompras') || auth()->user()->hasRole('Developer'))
-                    <a class="text-white" href="{{ url('/requisiciones') }}">
-                        REGRESAR
-                    </a>
-                @elseif (auth()->user()->hasRole('Auxconta'))
-                    <a class="text-white" href="{{ url('/mis-requisiciones') }}">
-                        REGRESAR
-                    </a>
-                    @elseif (auth()->user()->hasRole('Coordconta'))
-                    <a class="text-white" href="{{ url('requisiciones-contabilidad') }}">
-                        REGRESAR
-                    </a>
-                @endif
-            </button>
+              @php
+              $roleRedirects = [
+                  'Developer' => '/requisiciones',
+                  'RespCompras' => '/requisiciones',
+                  // Empleados solicitantes
+                  'Auxconta' => '/mis-requisiciones',
+                  'Auxalmacen' => '/mis-requisiciones',
+                  'Auxopeventas' => '/mis-requisiciones',
+                  'Coordrh' => '/mis-requisiciones',
+                  'Auxcontratos' => '/mis-requisiciones',
+                  'Mcfly' => '/mis-requisiciones',
+
+                  // Aprobadores
+                  'Coordconta' => '/requisiciones-contabilidad',
+                  'Coordalm' => '/requisiciones-almacen',
+                  'Subgerope' => '/requisiciones-subope',
+                  'Gerope' => '/requisiciones-gerope',
+                  'Respsgi' => '/requisiciones-sgi',
+                  'Diradmin' => '/requisiciones-administracion',
+                  'Dirope' => '/requisiciones-dirope',
+                  'Coordcontratos' => '/requisiciones-contratos',
+              ];
+              
+              // Obtener el primer rol del usuario que tenga una redirección definida
+              $userRole = auth()->user()->roles->pluck('name')->intersect(array_keys($roleRedirects))->first();
+              $redirectUrl = $userRole ? url($roleRedirects[$userRole]) : url('/');
+          @endphp
+      
+          @if ($userRole)
+              <a class="text-white" href="{{ $redirectUrl }}">
+                  REGRESAR
+              </a>
+          @endif
+          </button>
           </div>
       <div class="col-md-12">
         <h1>Ver requisición con numero identificador {{$requisition->id}}</h1>

@@ -25,15 +25,19 @@
         Agregar Requisición 
     </a>
 
-    <a href="{{ url('/requisiciones-gerope-autorizadas') }}" class="col-md-3 btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
+    <a href="{{ url('/mis-requisiciones') }}" class="col-md-3 btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
+        Mis Requisiciones
+    </a>
+
+    <a href="{{ url('/requisiciones-dirope-autorizadas') }}" class="col-md-3 btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
         Requisiciones Autorizadas
     </a>
 
-    <a href="{{ url('/requisiciones-gerope-canceladas') }}" class="col-md-3 btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
+    <a href="{{ url('/requisiciones-dirope-canceladas') }}" class="col-md-3 btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
         Requisiciones Canceladas
     </a>
 
-    <a href="{{ url('/requisiciones-gerope-finalizadas') }}" class="col-md-3 btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
+    <a href="{{ url('/requisiciones-dirope-finalizadas') }}" class="col-md-3 btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
         Requisiciones Finalizadas
     </a>
 </div>
@@ -63,7 +67,7 @@
 
     </thead>
     <tbody>
-        @foreach($requisitiongerope as $requisicion)
+        @foreach($requisitiondirope as $requisicion)
         <tr>
             <td>{{ $requisicion->id }}</td>
             <td>{{ $requisicion->user->name }}</td>

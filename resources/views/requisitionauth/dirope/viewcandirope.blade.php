@@ -21,7 +21,7 @@
 
 
 <div class="d-flex flex-wrap mt-3">
-    <a href="{{ url('/requisiciones-gerope') }}" class="btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
+    <a href="{{ url('/requisiciones-dirope') }}" class="btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
         Regresar
     </a>   
 </div>
@@ -51,7 +51,7 @@
 
     </thead>
     <tbody>
-        @foreach($requisitiongerope as $requisicion)
+        @foreach($requisitiondirope as $requisicion)
         <tr>
             <td>{{ $requisicion->id }}</td>
             <td>{{ $requisicion->user->name }}</td>

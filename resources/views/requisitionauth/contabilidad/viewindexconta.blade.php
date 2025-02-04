@@ -25,6 +25,10 @@
         Agregar Requisición 
     </a>
 
+    <a href="{{ url('/mis-requisiciones') }}" class="col-md-3 btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
+        Mis Requisiciones
+    </a>
+
     <a href="{{ url('/requisiciones-contabilidad-autorizadas') }}" class="col-md-3 btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
         Requisiciones Autorizadas
     </a>

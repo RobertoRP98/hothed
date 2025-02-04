@@ -149,6 +149,7 @@ class AuthorizationRequisitionController extends Controller
                     'AUXILIAR DE VENTAS Y OP',
                     'COORD. DE ALMACEN',
                     'AUX DE LOGISTICA Y MANTO',
+                    'ESP. TECNICO',
                 ]);
             })
             ->get();

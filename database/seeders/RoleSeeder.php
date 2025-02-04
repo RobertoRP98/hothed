@@ -24,8 +24,8 @@ class RoleSeeder extends Seeder
          $roleVerCobranza = Role::firstOrCreate(['name' => 'VerCobranza']);
          $roleCompras = Role::firstOrCreate(['name' => 'Compras']);
 
-         //ROLES COMPRAS ESTRUCTURADO CON ORGANIGRAMA - LOS ROLES SE TOMAN EN CUENTA DE LA FECHA 28-01-2025
 
+         //ROLES COMPRAS ESTRUCTURADO CON ORGANIGRAMA - LOS ROLES SE TOMAN EN CUENTA DE LA FECHA 28-01-2025
          $roleAuxconta = Role::firstOrCreate(['name' => 'Auxconta']);
 
          $roleAuxlogmanto = Role::firstOrCreate(['name' => 'Auxlogmanto']); //NO HAY PERSONAL
@@ -42,6 +42,8 @@ class RoleSeeder extends Seeder
          $roleCoordcontratos = Role::firstOrCreate(['name' => 'Coordcontratos']);
          $roleCoordconta = Role::firstOrCreate(['name' => 'Coordconta']);
          $roleDiradmin = Role::firstOrCreate(['name' => 'Diradmin']);
+
+         $roleMcfly = Role::firstOrCreate(['name' => 'Mcfly']);
 
          $roleSubgerope = Role::firstOrCreate(['name' => 'Subgerope']);
          $roleVentas = Role::firstOrCreate(['name' => 'Ventas']); //NO HAY PERSONAL
@@ -83,6 +85,7 @@ class RoleSeeder extends Seeder
 
          $permisoSubgerope = Permission::firstOrCreate(['name' => 'Subgerope']);
          $permisoVentas = Permission::firstOrCreate(['name' => 'Ventas']);
+         $permisoMcfly = Permission::firstOrCreate(['name' => 'Mcfly']);
          $permisoGerope = Permission::firstOrCreate(['name' => 'Gerope']);
 
          $permisoAuxcontratos = Permission::firstOrCreate(['name' => 'Auxcontratos']);
@@ -118,6 +121,7 @@ class RoleSeeder extends Seeder
          $roleCoordconta->givePermissionTo($permisoCoordconta);
          $roleDiradmin->givePermissionTo($permisoDiradmin);
 
+         $roleMcfly->givePermissionTo($permisoMcfly);
          $roleSubgerope->givePermissionTo($permisoSubgerope);
          $roleVentas->givePermissionTo($permisoVentas);
          $roleGerope->givePermissionTo($permisoGerope);
@@ -247,9 +251,9 @@ class RoleSeeder extends Seeder
          if ($user) {
              $user->assignRole('Gerope'); // Se asigna Coordventas para el encargado de ventas
          }
-         $user = User::find();
+         $user = User::find(21);
          if ($user) {
-             $user->assignRole('Auxcontratos');
+             $user->assignRole('Mcfly');
          }
          $user = User::find(9);
          if ($user) {
