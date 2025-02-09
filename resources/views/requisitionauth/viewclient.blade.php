@@ -39,13 +39,12 @@
         'Coordcontratos' => '/requisiciones-contratos',
     ];
     
-    // Obtener el primer rol del usuario que tenga una redirección definida
-    $userRole = auth()->user()->roles->pluck('name')->intersect(array_keys($roleRedirects))->first();
-    $redirectUrl = $userRole ? url($roleRedirects[$userRole]) : url('/');
+   // Obtener el primer rol válido del usuario
+   $userRole = optional(auth()->user()->roles->pluck('name')->intersect(array_keys($roleRedirects)))->first();
 @endphp
 
 @if ($userRole)
-    <a  class="btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto" href="{{ $redirectUrl }}">
+    <a class="btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto" href="{{ url($roleRedirects[$userRole]) }}">
         Regresar
     </a>
 @endif
