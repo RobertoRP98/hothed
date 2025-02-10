@@ -24,7 +24,7 @@
     <table id="products" class="table table-light table-bordered table-hover text-center">
 <thead class="thead-light">
         <tr>
-            <th>DEP SOLICITANTE</th>
+            <th>ID</th>
             <th>REQUISICIÓN</th>
             <th>FECHA REQUISICIÓN</th>
             <th>PRIORIDAD</th>
@@ -37,7 +37,7 @@
     <tbody>
         @foreach($requisitionsgi as $requis)
         <tr>
-            <td>{{ $requis->dep_soli }}</td>
+            <td>{{ $requis->id }}</td>
             <td>{{ $requis->requisicion }}</td>
             <td>{{ $requis->fecha_requi }}</td>
             <td>{{ $requis->prioridad }}</td>
