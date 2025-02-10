@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\RequisBeta;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TaxController;
@@ -11,8 +12,9 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CurrencyController;
 use App\Http\Controllers\SubgroupController;
 use App\Http\Controllers\SupplierController;
-use App\Http\Controllers\ToolstatusController;
 
+use App\Http\Controllers\RequisBetaController;
+use App\Http\Controllers\ToolstatusController;
 use App\Http\Controllers\RequisitionController;
 use App\Http\Controllers\ToolHistoryController;
 use App\Http\Controllers\PurchaseOrderController;
@@ -200,3 +202,26 @@ Route::group(['middleware' => ['auth', 'role:Developer|AdmCompras|OpeCompras|Res
 //TERMINAN MODULOS DE COMPRAS
 
 
+//EMPIEZA EL MODULO DE REQUISICIONES BETA
+
+Route::group(['middleware' => ['auth', 'role:Developer|RespCompras']], function () {
+
+   Route::get('/requisiciones-beta',[RequisBetaController::class, 'index'])->name('requisiciones-beta.index');
+
+   Route::get('/requisiciones-beta/create', [RequisBetaController::class, 'create'])->name('requisiciones-beta.create');
+
+   Route::post('/requisiciones-beta', [RequisBetaController::class, 'store'])->name('requisiciones-beta.store');
+
+   Route::get('/requisiciones-beta/{requisBeta}', [RequisBetaController::class, 'edit'])->name('requisiciones-beta.edit');
+
+   Route::patch('/requisiciones-beta/{requisBeta}', [RequisBetaController::class, 'update'])->name('requisiciones-beta.update');
+});
+
+
+   Route::get('/requisiciones-beta-admin',[RequisBetaController::class, 'indexadm'])->name('requisiciones-beta.indexadm');
+   
+   Route::get('/requisiciones-beta-ope',[RequisBetaController::class, 'indexope'])->name('requisiciones-beta.indexope');
+
+   Route::get('/requisiciones-beta-sgi',[RequisBetaController::class, 'indexsgi'])->name('requisiciones-beta.indexsgi');
+
+//TERMINA EL MODULO DE REQUISICIONES BETA

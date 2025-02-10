@@ -23,7 +23,7 @@
                 @endif
             @endauth
 
-            @auth
+            {{-- @auth
             @php
                 // Determinar la ruta según el rol del usuario
                 $comprasUrl = '#'; // Enlace por defecto
@@ -38,10 +38,40 @@
                 }
             @endphp
         
-            <li class="nav-item">
+             <li class="nav-item">
                 <a class="nav-link text-white" href="{{ url($comprasUrl) }}">Compras</a>
-            </li>
-        @endauth
+            </li> 
+        @endauth --}}
+
+
+        @auth
+    @php
+        // Definir la URL por defecto
+        $requisicionesUrl = '#'; 
+        
+        // Verificar el departamento y asignar la URL correspondiente
+        if (Auth::user()->hasRole('Developer')) {
+            $requisicionesUrl = '/requisiciones-beta';
+        } elseif (Auth::user()->departament === 'ADM' && Auth::user()->area !== 'SGI') {
+            $requisicionesUrl = '/requisiciones-beta-admin';
+        } elseif (Auth::user()->departament === 'OP') {
+            $requisicionesUrl = '/requisiciones-beta-ope';
+        } elseif (Auth::user()->area === 'SGI') {
+            $requisicionesUrl = '/requisiciones-beta-sgi';
+        }
+    @endphp
+
+    {{-- Mostrar el enlace solo si el usuario tiene acceso --}}
+    @if ($requisicionesUrl !== '#')
+        <li class="nav-item">
+            <a class="nav-link text-white" href="{{ url($requisicionesUrl) }}">Requisiciones (Versión Beta)</a>
+        </li>
+    @endif
+@endauth
+
+        
+
+
 
             @auth
             @if(Auth::user()->hasRole(['Developer', 'AdministracionKarla']))
