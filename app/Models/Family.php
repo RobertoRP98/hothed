@@ -12,9 +12,10 @@ class Family extends Model
     protected $table='families';
     protected $guarded = ['id'];
 
-    public function toolwarehouse(): HasMany{
-        return $this->hasMany(Toolwarehouse::class, 'id');
+    public function toolwarehouse(): HasMany {
+        return $this->hasMany(Toolwarehouse::class, 'family_id'); // Cambiado de 'id' a 'family_id'
     }
+    
 
     }
 

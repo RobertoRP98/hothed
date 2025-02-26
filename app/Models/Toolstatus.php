@@ -12,7 +12,8 @@ class Toolstatus extends Model
     protected $table='toolstatus';
     protected $guarded = ['id'];
 
-    public function toolwarehouse(): HasMany{
-        return $this->hasMany(Toolwarehouse::class, 'id');
+    public function toolwarehouse(): HasMany {
+        return $this->hasMany(Toolwarehouse::class, 'toolstatus_id'); // Cambiado de 'id' a 'toolstatus_id'
     }
+    
 }

@@ -59,6 +59,9 @@ Route::resource('familias', FamilyController::class)->middleware('auth');
 Route::resource('subgrupos', SubgroupController::class)->middleware('auth');
 Route::resource('toolstatus', ToolstatusController::class)->middleware('auth');
 Route::resource('bases', BaseController::class)->middleware('auth');
+
+Route::get('/export-herramientas', [ToolwarehouseController::class, 'exportReporteHerramientas'])->name('export.herramientas');
+
 });
 // TERMINA ALMACEN
 

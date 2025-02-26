@@ -6,9 +6,18 @@
  {{Session::get('message')}}
  @endif   
 
-<button type="button" class="btn btn-outline-success mb-3 mt-3"> <a class="text-dark" href="{{ url('bases/create') }}">
-    Agregar Base de operaciones
-</a> </button> 
+ <div class="col-md-12">
+
+    <a href="{{ url('/almacen-herramientas') }}" class="col-md-3 btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
+        Almacen de Herramientas
+    </a>
+
+    <button type="button" class="btn btn-outline-success mb-3 mt-3"> <a class="text-dark" href="{{ url('bases/create') }}">
+        Agregar Base de operaciones
+    </a> </button>  
+
+</div>
+
 <div class="container">
 <table class="table table-light">
     <thead class="thead-light">

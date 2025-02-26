@@ -22,8 +22,8 @@
 @endpush
 
 <div class="col-md-12">
-  
-    <a class="text-dark" href="{{ url('almacen-herramientas/') }}">
+
+    <a href="{{ url('/almacen-herramientas') }}" class="col-md-3 btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
         Almacen de Herramientas
     </a>
 
@@ -49,7 +49,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach($toolwarehouse as $tool)
+        @foreach($histories as $history)
         <tr>
             <td>{{ $history->toolwarehouse->description}}</td>
             <td>{{ $history->toolwarehouse->serienum}}</td>

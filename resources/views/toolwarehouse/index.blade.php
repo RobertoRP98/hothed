@@ -30,7 +30,7 @@
         Historial de Cambios
     </a>
 
-    <a href="{{ url('/#') }}" class="col-md-3 btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
+    <a href="{{ url('/export-herramientas') }}" class="col-md-3 btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
         Exportar inventario a Excel
     </a>
 </div>
@@ -50,7 +50,7 @@
     </a>
 
     <a href="{{ url('bases') }}" class="col-md-3 btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
-        Bases
+        Bases de Operaciones
     </a>
 
 </div>
@@ -80,19 +80,18 @@
         @foreach($toolwarehouse as $tool)
         <tr>
             <td>{{ $tool->id }}</td>
-            <td>{{ $tool->families->name }}</td>
+            <td>{{ $tool->family->name }}</td>
             <td>{{ $tool->description }}</td>
             <td>{{ $tool->serienum }}</td>
-            <td>{{ $tool->bases->name }}</td>
-            <td>{{ $tool->serienum }}</td>
-            <td>{{ $tool->toolstatus->name }}</td>
+            <td>{{ $tool->base->name }}</td>
+            <td>{{ $tool->toolstatus->status }}</td>
             <td>{{ $tool->comentary }}</td>
             <td>
                 <a class="text-white" href="{{ url('almacen-herramientas/'.$tool->id) }}">
                     <button class="btn btn-primary mb-2">
                         VER
                     </button>
-                </a> 
+                </a>  &nbsp; 
                 <a class="text-white" href="{{ url('almacen-herramientas/'.$tool->id.'/edit') }}">
                     <button class="btn btn-success mb-2">
                         Editar

@@ -10,8 +10,11 @@ use App\Models\Subgroup;
 use App\Models\Toolstatus;
 use App\Models\ToolHistory;
 use App\Models\Toolwarehouse;
+use App\Exports\ToolwarehouseExport;
+use Maatwebsite\Excel\Facades\Excel;
 use App\Http\Requests\StoreToolwarehouseRequest;
 use App\Http\Requests\UpdateToolwarehouseRequest;
+
 
 
 
@@ -28,7 +31,7 @@ class ToolwarehouseController extends Controller
      */
     public function index()
     {
-        $toolwarehouse = Toolwarehouse::with(['toolstatus:id,name', 
+        $toolwarehouse = Toolwarehouse::with(['toolstatus:id,status', 
         'subgroup:id,name', 
         'family:id,name', 
         'base:id,name'])
@@ -75,7 +78,7 @@ class ToolwarehouseController extends Controller
         $datostoolwarehouse = $request->except('_token');
         Toolwarehouse::insert($datostoolwarehouse);
 
-        return redirect('almacenherramientas')->with('message', 'Herramienta agregada');
+        return redirect('almacen-herramientas')->with('message', 'Herramienta agregada');
     }
 
     /**
@@ -198,7 +201,7 @@ class ToolwarehouseController extends Controller
         $toolwarehouse->update($datostoolwarehouse);
 
         // Redirigir con un mensaje de éxito
-        return redirect('almacenherramientas')->with('message', 'Herramienta actualizada y cambios registrados');
+        return redirect('almacen-herramientas')->with('message', 'Herramienta actualizada y cambios registrados');
     }
 
 
@@ -230,5 +233,10 @@ class ToolwarehouseController extends Controller
     }
     
 
+
+    public function exportReporteHerramientas()
+    {
+        return Excel::download(new ToolwarehouseExport, 'HERRAMIENTAS HHM AL ' . Carbon::now()->format('d-m-Y') . '.xlsx');
+    }
   
 }
