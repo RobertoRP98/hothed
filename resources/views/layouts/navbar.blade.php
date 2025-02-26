@@ -23,6 +23,14 @@
                 @endif
             @endauth
 
+            @auth
+            @if(Auth::user()->hasRole(['Almacen','Developer']))
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="{{ url('/almacen-herramientas') }}">Almacen Herramientas</a>
+                </li>
+            @endif
+        @endauth
+
             {{-- @auth
             @php
                 // Determinar la ruta según el rol del usuario
@@ -43,7 +51,7 @@
             </li> 
         @endauth --}}
 
-
+{{-- 
         @auth
     @php
         // Definir la URL por defecto
@@ -62,15 +70,12 @@
     @endphp
 
     {{-- Mostrar el enlace solo si el usuario tiene acceso --}}
-    @if ($requisicionesUrl !== '#')
+    {{-- @if ($requisicionesUrl !== '#')
         <li class="nav-item">
             <a class="nav-link text-white" href="{{ url($requisicionesUrl) }}">Requisiciones (Versión Beta)</a>
         </li>
     @endif
-@endauth
-
-        
-
+@endauth --}}
 
 
             @auth
@@ -80,14 +85,6 @@
                 </li>
             @endif
         @endauth
-
-    @auth
-    @if(Auth::user()->hasRole(['Almacen','Developer']))
-        <li class="nav-item">
-            <a class="nav-link text-white" href="{{ url('/almacenherramientas') }}">Almacen Herramientas</a>
-        </li>
-    @endif
-@endauth
 
                 <li class="nav-item">
                     <a href="{{ url('/#about') }}" class="nav-link text-white {{ request()->is('#misionvision') ? 'active' : '' }}">Misión y Visión</a>

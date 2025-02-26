@@ -224,11 +224,13 @@
       </div>
   </div>
 
-   <!-- Submit button -->
-   <div class="col-md-4">
- <button type="submit" class="btn btn-primary btn-block mb-4">{{$modo}} Herramienta</button>
-
- <button type="button" class="btn btn-warning btn-block mb-4"> <a class="text-white" href="{{ url('almacenherramientas/') }}">
-    Regresar
-</a> </button> 
+  <!-- Submit button -->
+<div class="col-md-4">
+    <button type="submit" class="btn btn-primary btn-block mb-4">{{$modo}} Herramienta</button> &nbsp;
+    
+    <!-- Regresar button -->
+    <button type="button" class="btn btn-warning btn-block mb-4">
+        <a class="text-white" href="{{ url('almacen-herramientas/') }}">Regresar</a>
+    </button>
 </div>
+
