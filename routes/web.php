@@ -6,15 +6,14 @@ use App\Http\Controllers\TaxController;
 use App\Http\Controllers\BaseController;
 use App\Http\Controllers\BillController;
 use App\Http\Controllers\FamilyController;
-use App\Http\Controllers\StatusController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CurrencyController;
 use App\Http\Controllers\SubgroupController;
 use App\Http\Controllers\SupplierController;
-use App\Http\Controllers\ToolstatusController;
 
+use App\Http\Controllers\RequisBetaController;
+use App\Http\Controllers\ToolstatusController;
 use App\Http\Controllers\RequisitionController;
-use App\Http\Controllers\ToolHistoryController;
 use App\Http\Controllers\PurchaseOrderController;
 use App\Http\Controllers\ToolwarehouseController;
 use App\Http\Controllers\CompanyReceivableController;
@@ -58,19 +57,17 @@ Route::get('/new-index', function () {
 //Route::fallback(function () {    return redirect('/');});
 
 
-
-Route::resource('status', StatusController::class)->middleware('auth');
-
 // EMPIEZA ALMACEN
-Route::group(['middleware' => ['auth', 'role:Developer']], function () {
-    Route::resource('bases', BaseController::class)->middleware('auth');
-    Route::resource('familias', FamilyController::class)->middleware('auth');
-    Route::resource('subgrupos', SubgroupController::class)->middleware('auth');
-    Route::resource('toolstatus', ToolstatusController::class)->middleware('auth');
-    Route::resource('almacenherramientas', ToolwarehouseController::class)->middleware('auth');
-    Route::get('/list', [ToolwarehouseController::class, 'list'])->middleware('auth');
-    Route::post('/search', [ToolwarehouseController::class, 'search'])->middleware('auth');
-    Route::resource('historialalmacen', ToolHistoryController::class)->middleware('auth');
+Route::group(['middleware'=> ['auth','role:Developer']], function(){
+Route::resource('almacen-herramientas',ToolwarehouseController::class)->middleware('auth');
+Route::get('historial-almacen', [ToolwarehouseController::class, 'history'])->middleware('auth')->name('toolwarehouse.history');
+Route::resource('familias', FamilyController::class)->middleware('auth');
+Route::resource('subgrupos', SubgroupController::class)->middleware('auth');
+Route::resource('toolstatus', ToolstatusController::class)->middleware('auth');
+Route::resource('bases', BaseController::class)->middleware('auth');
+
+Route::get('/export-herramientas', [ToolwarehouseController::class, 'exportReporteHerramientas'])->name('export.herramientas');
+
 });
 // TERMINA ALMACEN
 
@@ -236,3 +233,28 @@ Route::group(
     }
 );
 //TERMINAN MODULOS DE COMPRAS
+
+
+//EMPIEZA EL MODULO DE REQUISICIONES BETA
+
+Route::group(['middleware' => ['auth', 'role:Developer|RespCompras']], function () {
+
+   Route::get('/requisiciones-beta',[RequisBetaController::class, 'index'])->name('requisiciones-beta.index');
+
+   Route::get('/requisiciones-beta/create', [RequisBetaController::class, 'create'])->name('requisiciones-beta.create');
+
+   Route::post('/requisiciones-beta', [RequisBetaController::class, 'store'])->name('requisiciones-beta.store');
+
+   Route::get('/requisiciones-beta/{requisBeta}', [RequisBetaController::class, 'edit'])->name('requisiciones-beta.edit');
+
+   Route::patch('/requisiciones-beta/{requisBeta}', [RequisBetaController::class, 'update'])->name('requisiciones-beta.update');
+});
+
+
+   Route::get('/requisiciones-beta-admin',[RequisBetaController::class, 'indexadm'])->name('requisiciones-beta.indexadm');
+   
+   Route::get('/requisiciones-beta-ope',[RequisBetaController::class, 'indexope'])->name('requisiciones-beta.indexope');
+
+   Route::get('/requisiciones-beta-sgi',[RequisBetaController::class, 'indexsgi'])->name('requisiciones-beta.indexsgi');
+
+//TERMINA EL MODULO DE REQUISICIONES BETA

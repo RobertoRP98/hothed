@@ -3,7 +3,7 @@
 
 <div class="container">
     <br>
-    <form action="{{ url('/almacenherramientas/' . $toolwarehouse->id) }}" method="get" enctype="multipart/form-data">
+    <form action="{{ url('/almacen-herramientas/' . $toolwarehouse->id) }}" method="get" enctype="multipart/form-data">
         @csrf
  <H1>Informacion de Herramienta</H1>
   <!-- Primera fila -->

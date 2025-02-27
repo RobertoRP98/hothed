@@ -12,8 +12,9 @@ class Subgroup extends Model
     protected $table='subgroups';
     protected $guarded = ['id'];
 
-    public function toolwarehouse(): HasMany{
-        return $this->hasMany(Toolwarehouse::class,'id');
+    public function toolwarehouse(): HasMany {
+        return $this->hasMany(Toolwarehouse::class, 'subgroup_id'); // Cambiado de 'id' a 'subgroup_id'
     }
+    
 
 }

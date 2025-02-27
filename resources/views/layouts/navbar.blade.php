@@ -24,45 +24,59 @@
             @endauth
 
             @auth
-            @php
-                    $roleRedirects = [
-                        'Developer' => '/requisiciones',
-                        'RespCompras' => '/requisiciones',
-                        // Empleados solicitantes
-                        'Auxconta' => '/mis-requisiciones',
-                        'Auxalmacen' => '/mis-requisiciones',
-                        'Auxopeventas' => '/mis-requisiciones',
-                        'Coordrh' => '/mis-requisiciones',
-                        'Auxcontratos' => '/mis-requisiciones',
-                        'Mcfly' => '/mis-requisiciones',
-
-                        // Aprobadores
-                        'Coordconta' => '/requisiciones-contabilidad',
-                        'Coordalm' => '/requisiciones-almacen',
-                        'Subgerope' => '/requisiciones-subope',
-                        'Gerope' => '/requisiciones-gerope',
-                        'Respsgi' => '/requisiciones-sgi',
-                        'Diradmin' => '/requisiciones-administracion',
-                        'Dirope' => '/requisiciones-dirope',
-                        'Coordcontratos' => '/requisiciones-contratos',
-                    ];
-
-                    // Obtener todos los roles del usuario autenticado
-                    $userRoles = auth()->user()->roles->pluck('name')->toArray();
-                    
-                    // Filtrar solo los roles que tengan una redirección definida
-                    $availableLinks = collect($roleRedirects)->filter(function ($url, $role) use ($userRoles) {
-                        return in_array($role, $userRoles);
-                    });
-                @endphp
-
-                @foreach ($availableLinks as $role => $url)
-                    <li class="nav-item">
-                        <a class="nav-link text-white" href="{{ url($url) }}">Requisiciones y Compras</a>
-
-                    </li>
-                @endforeach
+            @if(Auth::user()->hasRole(['Almacen','Developer']))
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="{{ url('/almacen-herramientas') }}">Almacen Herramientas</a>
+                </li>
+            @endif
         @endauth
+
+            {{-- @auth
+            @php
+                // Determinar la ruta según el rol del usuario
+                $comprasUrl = '#'; // Enlace por defecto
+                if (Auth::user()->hasRole(['Developer', 'RespCompras'])) {
+                    $comprasUrl = '/requisiciones';
+                } elseif (Auth::user()->hasRole('AdmCompras')) {
+                    $comprasUrl = '/requisiciones-adm';
+                } elseif (Auth::user()->hasRole('OpeCompras')) {
+                    $comprasUrl = '/requisiciones-ope';
+                } elseif (Auth::user()->hasRole('ClientCompras')) {
+                    $comprasUrl = '/mis-requisiciones';
+                }
+            @endphp
+        
+             <li class="nav-item">
+                <a class="nav-link text-white" href="{{ url($comprasUrl) }}">Compras</a>
+            </li> 
+        @endauth --}}
+
+{{-- 
+        @auth
+    @php
+        // Definir la URL por defecto
+        $requisicionesUrl = '#'; 
+        
+        // Verificar el departamento y asignar la URL correspondiente
+        if (Auth::user()->hasRole('Developer')) {
+            $requisicionesUrl = '/requisiciones-beta';
+        } elseif (Auth::user()->departament === 'ADM' && Auth::user()->area !== 'SGI') {
+            $requisicionesUrl = '/requisiciones-beta-admin';
+        } elseif (Auth::user()->departament === 'OP') {
+            $requisicionesUrl = '/requisiciones-beta-ope';
+        } elseif (Auth::user()->area === 'SGI') {
+            $requisicionesUrl = '/requisiciones-beta-sgi';
+        }
+    @endphp
+
+    {{-- Mostrar el enlace solo si el usuario tiene acceso --}}
+    {{-- @if ($requisicionesUrl !== '#')
+        <li class="nav-item">
+            <a class="nav-link text-white" href="{{ url($requisicionesUrl) }}">Requisiciones (Versión Beta)</a>
+        </li>
+    @endif
+@endauth --}}
+
 
             @auth
             @if(Auth::user()->hasRole(['Developer', 'AdministracionKarla']))
@@ -71,14 +85,6 @@
                 </li>
             @endif
         @endauth
-
-    @auth
-    @if(Auth::user()->hasRole(['Almacen','Developer']))
-        <li class="nav-item">
-            <a class="nav-link text-white" href="{{ url('/almacenherramientas') }}">Almacen Herramientas</a>
-        </li>
-    @endif
-@endauth
 
                 <li class="nav-item">
                     <a href="{{ url('/#about') }}" class="nav-link text-white {{ request()->is('#misionvision') ? 'active' : '' }}">Misión y Visión</a>

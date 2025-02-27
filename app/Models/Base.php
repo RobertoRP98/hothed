@@ -12,7 +12,8 @@ class Base extends Model
     protected $table ='bases';
     protected $guarded = ['id'];
 
-   public function toolwarehouse(): HasMany{
-        return $this->hasMany(Toolwarehouse::class, 'id');
-   }
+    public function toolwarehouse(): HasMany {
+     return $this->hasMany(Toolwarehouse::class, 'base_id'); // Cambiado de 'id' a 'base_id'
+ }
+ 
 }

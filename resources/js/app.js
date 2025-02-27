@@ -1,5 +1,4 @@
 import './bootstrap';
-import searchComponent from './components/searchComponent.vue';
 import CreateRequisition from './components/Requisition/CreateRequisition.vue';
 import EditRequisition from './components/Requisition/EditRequisition.vue';
 import ViewRequisition from './components/Requisition/ViewRequisition.vue';
@@ -11,7 +10,6 @@ import * as bootstrap from 'bootstrap';
 import { createApp } from 'vue';
 
 const app = createApp({});
-app.component('search-component', searchComponent);
 // Registrar el componente global
 app.component('create-requisition', CreateRequisition);
 app.component('edit-requisition', EditRequisition);
