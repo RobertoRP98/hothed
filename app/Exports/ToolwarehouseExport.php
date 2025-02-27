@@ -53,8 +53,35 @@ class ToolwarehouseExport implements
                 'intloca',
                 'QR',
                 'base_id',
-              
-            ])->get()->toArray();
+            ])->get()
+            ->map(function ($toolwarehouse) {
+                return [
+                    'id' => $toolwarehouse->id,
+                    'family' => $toolwarehouse->family ? $toolwarehouse->family->name : 'FAMILIA NO ENCONTRADA',
+                    'subgroup' => $toolwarehouse->subgroup ? $toolwarehouse->subgroup->name : 'SUBGRUPO NO ENCONTRADO',
+                    'description' => $toolwarehouse->description,
+                    'serienum' => $toolwarehouse->serienum,
+                    'extdia' => $toolwarehouse->extdia,
+                    'guidia' => $toolwarehouse->guidia,
+                    'insdia' => $toolwarehouse->insdia,
+                    'fishingneck' => $toolwarehouse->fishingneck,
+                    'conpin' => $toolwarehouse->conpin,
+                    'conbox' => $toolwarehouse->conbox,
+                    'opera' => $toolwarehouse->opera,
+                    'length' => $toolwarehouse->length,
+                    'necklength' => $toolwarehouse->necklength,
+                    'lastinsp' => $toolwarehouse->lastinsp,
+                    'datelastinsp' => $toolwarehouse->datelastinsp,
+                    'outfolio' => $toolwarehouse->outfolio,
+                    'departuredate' => $toolwarehouse->departuredate,
+                    'toolstatus' => $toolwarehouse->toolstatus ? $toolwarehouse->toolstatus->status : 'STATUS NO DEFINIDO',
+                    'comentary' => $toolwarehouse->comentary,
+                    'intloca' => $toolwarehouse->intloca,
+                    'QR' => $toolwarehouse->QR,
+                    'base'=> $toolwarehouse->toolstatus ? $toolwarehouse->base->name : 'EMPRESA NO ENCONTRADA',
+                ];
+            })
+            ->toArray();
     }
 
     public function headings(): array
@@ -83,7 +110,7 @@ class ToolwarehouseExport implements
             'Localización Interna',
             'QR',
             'EMPRESA',
-            
+
         ];
     }
 
@@ -111,7 +138,7 @@ class ToolwarehouseExport implements
                 $sheet->getColumnDimension('D')->setAutoSize(false);
                 $sheet->getColumnDimension('D')->setWidth(30); // Ancho específico para la columna G
 
-             
+
 
                 // Aplicar los encabezados en la fila 6 y los datos desde la fila 7
                 $sheet->fromArray($this->headings(), null, 'A1');
@@ -140,7 +167,7 @@ class ToolwarehouseExport implements
                 $highestRow = $sheet->getHighestRow();
                 for ($row = 2; $row <= $highestRow; $row++) { // Comienza en la fila 7 para los datos
                     $color = ($row % 2 === 0) ? 'FFE0EAF1' : 'FFFFFFFF'; // Azul claro y blanco
-                    $sheet->getStyle("A{$row}:K{$row}")->applyFromArray([
+                    $sheet->getStyle("A{$row}:W{$row}")->applyFromArray([
                         'fill' => [
                             'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
                             'color' => ['argb' => $color],
