@@ -12,7 +12,6 @@
                         <option value="Pendiente">
                             PENDIENTE DE AUTORIZACIÓN
                         </option>
-                
                     </select>
                     <label class="form-label">STATUS DE LA REQUISICIÓN</label>
                 </div>
@@ -222,6 +221,8 @@ export default {
                 notes_client: "",
                 notes_resp: null,
             },
+            errors: {},
+
             productData: [
                 {
                     product_id: "",
@@ -254,6 +255,12 @@ export default {
         },
         searchProducts(index) {
             const query = this.productData[index].description;
+            // 🔹 Si el usuario borra el texto, también limpiamos el ID
+            if (!query) {
+                this.productData[index].product_id = "";
+                this.productData[index].suggestions = [];
+                return;
+            }
             if (query.length < 2) {
                 this.productData[index].suggestions = [];
                 return;
@@ -269,18 +276,98 @@ export default {
             this.productData[index].description = product.description; // Mostrar descripción
             this.productData[index].suggestions = []; // Limpiar sugerencias
         },
+        /** 🔹 Validación antes de enviar el formulario */
+        validateForm() {
+            this.errors = {}; // Reiniciar errores
+
+            // Validar user_id
+            if (!this.formData.user_id) {
+                this.errors.user_id = "El usuario es obligatorio.";
+            }
+
+            // Validar fechas obligatorias
+            if (!this.formData.request_date) {
+                this.errors.request_date =
+                    "La fecha de solicitud es obligatoria.";
+
+                this.errors = {}; // Reinicia errores antes de validar
+                console.log(
+                    "Valor de required_date:",
+                    this.formData.required_date
+                ); // 👀 Ver qué tiene el campo
+
+                if (!this.formData.required_date) {
+                    this.errors.required_date =
+                        "La fecha requerida es obligatoria.";
+                }
+            }
+
+            // Validar días restantes como número
+            if (
+                this.formData.days_remaining === "" ||
+                isNaN(this.formData.days_remaining)
+            ) {
+                this.errors.days_remaining =
+                    "Los días restantes deben ser un número.";
+            }
+
+            // Validar caja chica como booleano (0 o 1)
+            if (!["0", "1"].includes(this.formData.petty_cash)) {
+                this.errors.petty_cash = "Caja chica debe ser 'Sí' o 'No'.";
+            }
+
+            // Validar productos
+            if (this.productData.length < 1) {
+                this.errors.items_requisition =
+                    "Debes agregar al menos un producto.";
+            } else {
+                this.productData.forEach((item, index) => {
+                    if (!item.product_id) {
+                        {
+                            this.errors[
+                                `product_id_${index}`
+                            ] = `El producto en la fila ${
+                                index + 1
+                            } es obligatorio.`;
+                        }
+                    }
+                    if (!item.quantity || item.quantity < 1) {
+                        this.errors[
+                            `quantity_${index}`
+                        ] = `La cantidad en la fila ${
+                            index + 1
+                        } debe ser mayor a 0.`;
+                    }
+                });
+            }
+
+            return Object.keys(this.errors).length === 0; // Retorna true si no hay errores
+        },
+
+        /** 🔹 Enviar formulario solo si pasa la validación */
         submitForm() {
-            // Validar que todos los productos tengan un ID válido
+            // 🔹 Validar que todos los productos tengan un ID válido
             const invalidItems = this.productData.filter(
                 (item) => !item.product_id
             );
 
             if (invalidItems.length > 0) {
                 alert(
-                    "Por favor, selecciona únicamente productos válidos de las sugerencias. Si no aparece el producto que buscas consulta al área de compras"
+                    "Por favor, selecciona únicamente productos válidos de las sugerencias. " +
+                        "Si no aparece el producto que buscas, consulta al área de compras."
                 );
-                return;
+                return; // ⛔ Evita que continúe el envío del formulario
             }
+
+            if (!this.validateForm()) {
+                alert("Corrige los errores antes de enviar.");
+                console.error("Errores de validación:", this.errors);
+                return; // 💡 Esto debería detener la ejecución
+            }
+
+            console.log("Formulario válido, enviando...");
+            // Aquí sigue el envío del request si no hay errores
+
             const payload = {
                 ...this.formData,
                 items_requisition: this.productData.map((item) => ({
@@ -288,19 +375,12 @@ export default {
                     quantity: item.quantity,
                 })),
             };
-            console.log(
-                "Valor enviado para 'importance':",
-                this.formData.importance
-            );
-            console.log("Payload completo:", payload);
+
             axios
                 .post("/requisiciones", payload)
                 .then((response) => {
                     console.log("Mensaje:", response.data.message);
-
-                    // Redirigir a la URL proporcionada por el backend
                     if (response.data.redirect) {
-                        console.log("Redirigiendo a:", response.data.redirect);
                         window.location.href = response.data.redirect;
                     }
                 })

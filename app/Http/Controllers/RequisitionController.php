@@ -43,10 +43,10 @@ class RequisitionController extends Controller
                 'importance' => 'Baja',
                 'petty_cash' => '0',
                 'finished' => '0',
-
-                'request_date' => $today,
-                'required_date' => '',
-                'production_date' => '',
+                
+                'request_date' => $today, //fecha de solicitud
+                'required_date' => '', //fecha requerida
+                'production_date' => '', // fecha de entrega
 
                 'days_remaining' => 0,
 

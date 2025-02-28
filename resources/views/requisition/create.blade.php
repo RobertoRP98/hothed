@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('createsupplier')
 <div class="container">
-<form action="{{url(('/requisiciones'))}}" method="post" enctype="multipart/form-data">
+<form @submit.prevent>
     @csrf
     <div class="row align-items-center">
       <div class="mb-3">
