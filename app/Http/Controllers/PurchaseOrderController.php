@@ -13,9 +13,8 @@ class PurchaseOrderController extends Controller
      */
     public function index()
     {
-        $datos ['compras'] = PurchaseOrder::all();
-        return view('compras.index',$datos);
-
+        $datosoc ['compras'] = PurchaseOrder::all();
+        return view('compras.index', $datosoc);
     }
 
     /**

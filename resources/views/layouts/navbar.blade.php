@@ -47,9 +47,23 @@
             @endphp
         
              <li class="nav-item">
-                <a class="nav-link text-white" href="{{ url($comprasUrl) }}">Compras</a>
+                <a class="nav-link text-white" href="{{ url($comprasUrl) }}">Requisiciones</a>
             </li> 
         @endauth 
+
+        @auth
+        @php
+            // Determinar la ruta según el rol del usuario
+            $comprasUrl = '#'; // Enlace por defecto
+            if (Auth::user()->hasRole(['Developer', 'RespCompras'])) {
+                $comprasUrl = '/ordenes-compra';
+            } 
+        @endphp
+    
+         <li class="nav-item">
+            <a class="nav-link text-white" href="{{ url($comprasUrl) }}">OC</a>
+        </li> 
+    @endauth 
 
 
 

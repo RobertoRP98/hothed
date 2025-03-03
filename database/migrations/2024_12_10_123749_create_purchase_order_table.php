@@ -19,23 +19,16 @@ return new class extends Migration
 
             $table->unsignedBigInteger('supplier_id'); 
             $table->enum('type_op', ['Local', 'Extranjera'])->default('Local');
-            $table->enum('payment_type', ['Credito', 'Debito', 'Efectivo', 'Transferencia'])->default('Credito');
+            $table->enum('payment_type', ['Credito', 'Debito', 'Efectivo', 'Transferencia', 'AMEX'])->default('Credito');
             $table->boolean('unique_payment')->default(true); //PAGO EN UNA EXI
             $table->string('quotation')->nullable();
             $table->enum('currency', ['MXN', 'USD', 'EUR'])->default('MXN');
-
-
-
-
 
             $table->date('date_start');
             $table->boolean('finished')->default(false);
             $table->date('date_end')->nullable();
             $table->date('payment_day')->nullable();
 
-
-
-           // $table->enum('status_time', ['Bajo', 'Medio', 'Alto', 'Critico'])->default('Bajo'); //NO APLICA PERO LLAMARLO DAYS_PAYMENT Y ES EL CALCULO QUE YA SE TIENE EN LAS REQUIS
 
           
 
@@ -51,15 +44,15 @@ return new class extends Migration
             $table->enum('bill', ['Facturado', 'Pendiente Facturar'])->default('Pendiente Facturar');
 
 
-            $table->unsignedBigInteger('tax_id')->nullable();
+
             $table->decimal('subtotal', 10, 2)->default(0.00);
+            $table->decimal('total_descuento', 10, 2)->default(0.00);
             $table->decimal('tax', 10, 2)->default(0.00);
             $table->decimal('total', 10, 2)->default(0.00);
             $table->timestamps();
 
             $table->foreign('supplier_id')->references('id')->on('suppliers')->onDelete('cascade');
             $table->foreign('requisition_id')->references('id')->on('requisitions')->onDelete('set null');
-            $table->foreign('tax_id')->references('id')->on('taxes')->onDelete('set null');
         });
     }
 

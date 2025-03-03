@@ -15,7 +15,8 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('purchase_order_id');
             $table->unsignedBigInteger('product_id');
-            $table->decimal('price', 10, 2)->default(0.00)->nullable();
+            $table->decimal('price', 10, 2)->default(0.00);
+            $table->decimal('discount', 5, 2)->default(0.00);
             $table->integer('quantity');
             $table->decimal('subtotal', 10, 2);
             $table->timestamps();

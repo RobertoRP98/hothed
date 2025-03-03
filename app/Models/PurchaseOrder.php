@@ -23,13 +23,9 @@ class PurchaseOrder extends Model
         return $this->belongsTo(Requisition::class);
     }
 
-    public function tax()
-    {
-        return $this->belongsTo(Tax::class);
-    }
-
     public function itemsOrderPurchase()
     {
         return $this->hasMany(ItemOrderPurchase::class);
     }
+
 }

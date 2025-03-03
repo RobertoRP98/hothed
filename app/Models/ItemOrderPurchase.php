@@ -12,13 +12,13 @@ class ItemOrderPurchase extends Model
 
     protected $guarded = ['id'];
 
-    public function purchaseOrder()
-    {
-        return $this->belongsTo(PurchaseOrder::class);
-    }
-
     public function product()
     {
         return $this->belongsTo(Product::class);
+    }
+
+    public function purchaseOrder()
+    {
+        return $this->belongsTo(PurchaseOrder::class, 'purchase_order_id');
     }
 }

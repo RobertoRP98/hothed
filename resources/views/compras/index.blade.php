@@ -33,7 +33,7 @@
     <div class="card-body">
             
     <div class="table-responsive">
-    <table id="compras" class="table table-light table-bordered table-hover text-center">
+    <table id="ordenes-compra" class="table table-light table-bordered table-hover text-center">
 <thead class="thead-light">
         <tr>
             <th>ID</th>
@@ -74,7 +74,7 @@
 
 <script>
     $(document).ready(function() {
-        $('#compras').DataTable({
+        $('#ordenes-compra').DataTable({
             resposive:true,
             autoWidth: false,
 
