@@ -69,7 +69,8 @@
             <th class="col-md-1">FAMILIAS</th>
             <th class="col-md-1">DESCRIPCIÓN</th>
             <th class="col-md-1">N.SERIE</th>
-            <th class="col-md-1">BASE OPE</th>
+            <th class="col-md-1">EMPRESA</th>
+            <th class="col-md-1">EMPRESA</th>
             <th class="col-md-1">STATUS</th>
             <th class="col-md-1">COMENTARIO</th>
             <th class="col-md-1">OPCIONES</th>

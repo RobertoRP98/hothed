@@ -4,7 +4,15 @@
 <div class="container">
  @if(Session::has('message'))
  {{Session::get('message')}}
- @endif   
+ @endif
+ 
+ 
+ @if(request()->has('message'))
+    <div class="alert alert-success">
+        {{ request('message') }}
+    </div>
+@endif
+
 
  @push('css')
  <!-- CSS -->
@@ -13,51 +21,108 @@
 <link rel="stylesheet" href="https://cdn.datatables.net/responsive/3.0.3/css/responsive.bootstrap5.css">
 @endpush
 
-
-<div class="d-flex flex-wrap mt-3">
-    <a href="{{ url('compras/') }}" class="btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
-        Regresar
+<div class="col-md-12">
+    <a href="{{ url('requisitiones/create') }}" class="col-md-3 btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
+        Agregar Requisición
     </a>
 
-    <a href="{{ url('compras/create') }}" class="btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
-        Agregar Orden de Compra
+    <a href="{{ url('/requisiciones') }}" class="col-md-3 btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
+        requisiciones
     </a>
 </div>
-
-
-
-<h3 class="text-center my-4">Ordenes de Compra</h3>
+ 
+<h3 class="text-center my-1">Ordenes de Compra</h3>
 
 
 <div class="card">
     <div class="card-body">
             
     <div class="table-responsive">
-    <table id="ordenes-compra" class="table table-light table-bordered table-hover text-center">
+    <table id="compras" class="table table-light table-bordered table-hover text-center">
 <thead class="thead-light">
         <tr>
-            <th>ID</th>
-            <th>PROVEEDOR</th>
-            <th>TOTAL</th>
+            <th class="col-md-1">ID REQUI</th>
+            <th class="col-md-1">ID ORDEN CC</th>
+            <th class="col-md-1">DEP</th>
+            <th class="col-md-1">PROVEEDOR</th>
+            <th class="col-md-1">TOTAL</th>
+            <th class="col-md-1">STATUS</th>
+            <th class="col-md-1">PRIORIDAD</th>
+            <th class="col-md-1">DIAS RESTANTES</th>
+            <th class="col-md-1">OPCIONES</th>
+
         </tr>
     </thead>
     <tbody>
-        @foreach($compras as $compra)
+        @foreach($datosoc as $oc)
         <tr>
-            <td>{{ $compra->id }}</td>
-            <td>{{ $compra->supplier_id }}</td>
-            <td>{{ $compra->total }}</td>
-          
+            <td>{{ $oc->requisition->user->area ."-" . $oc->requisition->id }}</td>
+            <td>{{ "VH-".$oc->id ."-". $oc->created_at->format('y')}}</td>
+            <td>{{ $oc->requisition->user->area }}</td>
+            <td>{{ $oc->supplier->name}}</td>
+            <td>{{ $oc->total }}</td>
+            <td>{{ $oc->requisition->status_requisition }}</td>
+            <td class="
+    @if(\Carbon\Carbon::parse($oc->requisition->production_date)->diffInDays(now(), false) >= -15)
+        table-danger text-danger fw-bold
+    @elseif(\Carbon\Carbon::parse($oc->requisition->production_date)->diffInDays(now(), false) >= -30)
+        table-danger
+    @elseif(\Carbon\Carbon::parse($oc->requisition->production_date)->diffInDays(now(), false) >= -60)
+        table-warning
+    @else
+        table-success
+    @endif">
+    @if(\Carbon\Carbon::parse($oc->requisition->production_date)->diffInDays(now(), false) >= -15)
+        ALTA
+    @elseif(\Carbon\Carbon::parse($oc->requisition->production_date)->diffInDays(now(), false) >= -30)
+        ALTA
+    @elseif(\Carbon\Carbon::parse($oc->requisition->production_date)->diffInDays(now(), false) >= -60)
+        MEDIA
+    @else
+        BAJA
+    @endif
+</td>
+        
+      
+            <td class="
+            @if(\Carbon\Carbon::parse($oc->requisition->production_date)->diffInDays(now(), false) >= -15)
+                table-danger text-danger fw-bold
+            @elseif(\Carbon\Carbon::parse($oc->requisition->production_date)->diffInDays(now(), false) >= -30)
+                table-danger
+            @elseif(\Carbon\Carbon::parse($oc->requisition->production_date)->diffInDays(now(), false) >= -60)
+                table-warning
+            @else
+                table-success
+            @endif">
+            {{ floor(\Carbon\Carbon::parse($oc->requisition->production_date)->diffInDays(now(), false)) }}
+        </td>
+        
 
             <td>
-               <button class="btn btn-warning mb-2"> <a class="text-white" href="{{ url('compras/'.$compra->id.'/edit') }}">
-                    Editar
-                </a> </button> 
-            </td>
+                {{-- <a class="text-white" href="{{ url('requisitiones/'.$requisition->id) }}"> --}}
+                    <button class="btn btn-primary mb-2">
+                        VER
+                    </button>
+                </a> 
+                {{-- <a class="text-white" href="{{ url('requisitiones/'.$requisition->id.'/edit') }}"> --}}
+                    <button class="btn btn-success mb-2">
+                        Editar
+                    </button>
+                </a>
+
+                <a class="text-white" href="{{ url('/error-405') }}">
+                    <button class="btn btn-danger mb-2">
+                        Crear OC
+                    </button>
+                </a>
+            </td> 
+            
         </tr>
         @endforeach
     </tbody>
 </table>
+</div>
+</div>
 </div>
 </div>
 
@@ -74,7 +139,7 @@
 
 <script>
     $(document).ready(function() {
-        $('#ordenes-compra').DataTable({
+        $('#compras').DataTable({
             resposive:true,
             autoWidth: false,
 

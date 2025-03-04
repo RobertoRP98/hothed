@@ -74,7 +74,7 @@
             </option>
             @endforeach
            </select>
-           <label class="form-label"  for="base_id">Base Operativa</label>
+           <label class="form-label"  for="base_id">Empresa Operativa</label>
         </div>
     </div>
 

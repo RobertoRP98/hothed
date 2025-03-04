@@ -45,7 +45,7 @@
       <div class="col-md-3">
         <div class="form-outline">
             <input class="form-control" type="text" value="{{$toolwarehouse->base->name}}" readonly>
-           <label class="form-label"  for="base_id">Base Operativa</label>
+           <label class="form-label"  for="base_id">Empresa Operativa</label>
         </div>
     </div>
 

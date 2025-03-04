@@ -13,8 +13,8 @@ class PurchaseOrderController extends Controller
      */
     public function index()
     {
-        $datosoc ['compras'] = PurchaseOrder::all();
-        return view('compras.index', $datosoc);
+        $datosoc = PurchaseOrder::all();
+        return view('compras.index', compact('datosoc'));
     }
 
     /**
@@ -22,7 +22,6 @@ class PurchaseOrderController extends Controller
      */
     public function create()
     {
-        return view('compras.create');
     }
 
     /**
