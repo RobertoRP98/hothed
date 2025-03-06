@@ -46,9 +46,10 @@
             <th class="col-md-1">DEP</th>
             <th class="col-md-1">PROVEEDOR</th>
             <th class="col-md-1">TOTAL</th>
-            <th class="col-md-1">STATUS</th>
+            <th class="col-md-1">AUTORIZADO</th>
             <th class="col-md-1">PRIORIDAD</th>
             <th class="col-md-1">DIAS RESTANTES</th>
+            <th class="col-md-1">STATUS OC</th>
             <th class="col-md-1">OPCIONES</th>
 
         </tr>
@@ -61,7 +62,7 @@
             <td>{{ $oc->requisition->user->area }}</td>
             <td>{{ $oc->supplier->name}}</td>
             <td>{{ $oc->total }}</td>
-            <td>{{ $oc->requisition->status_requisition }}</td>
+            <td>{{ $oc->authorization_4 }}</td> 
             <td class="
     @if(\Carbon\Carbon::parse($oc->requisition->production_date)->diffInDays(now(), false) >= -15)
         table-danger text-danger fw-bold
@@ -96,6 +97,9 @@
             @endif">
             {{ floor(\Carbon\Carbon::parse($oc->requisition->production_date)->diffInDays(now(), false)) }}
         </td>
+
+        <td>{{ $oc->po_status }}</td> 
+
         
 
             <td>
@@ -112,6 +116,8 @@
 
                
             </td> 
+
+
             
         </tr>
         @endforeach

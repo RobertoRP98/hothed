@@ -222,7 +222,7 @@
                         <option value="En Transito">EN TRANSITO</option>
                         <option value="En Proceso">EN PROCESO</option>
                     </select>
-                    <label class="form-label">CONDICIÓN DE ENTREGA</label>
+                    <label class="form-label">STATUS DE LA ORDEN</label>
                 </div>
             </div>
 
