@@ -207,7 +207,6 @@ export default {
         return {
             formData: {
                 user_id: "",
-
                 status_requisition: "Pendiente",
                 importance: "Baja",
                 finished: "0",

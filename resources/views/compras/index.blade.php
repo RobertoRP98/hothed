@@ -22,7 +22,7 @@
 @endpush
 
 <div class="col-md-12">
-    <a href="{{ url('requisitiones/create') }}" class="col-md-3 btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
+    <a href="{{ url('requisiciones/create') }}" class="col-md-3 btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
         Agregar Requisición
     </a>
 
@@ -110,11 +110,7 @@
                     </button>
                 </a>
 
-                <a class="text-white" href="{{ url('/error-405') }}">
-                    <button class="btn btn-danger mb-2">
-                        Crear OC
-                    </button>
-                </a>
+               
             </td> 
             
         </tr>

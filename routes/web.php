@@ -171,6 +171,8 @@ Route::group(['middleware' => ['auth', 'role:Developer|RespCompras']], function 
     //INICIA ORDENES DE COMPRAS
     Route::get('/ordenes-compra',[PurchaseOrderController::class,'index'])->name('ordencompra.index');
 
+    Route::get('/requisiciones/{requisicione}/ordenes-compra/create',[PurchaseOrderController::class,'create'])->name('ordencompra.create');
+
 });
 
 //RUTAS PARA EDITAR SOLO SON ACCESIBLES PARA GERENCIA Y RESPONSABLE DE COMPRAS

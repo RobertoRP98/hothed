@@ -34,7 +34,7 @@ return new class extends Migration
 
             //$table->enum('status_1', ['Pendiente', 'Autorizado', 'Rechazado'])->default('Pendiente'); //JEFES INMEDIATOS QUE VIENE DE LA REQUISICION
             $table->enum('authorization_2', ['Pendiente', 'Autorizado', 'Rechazado'])->default('Pendiente'); // FLORES Y KARLA
-            $table->enum('authorization_3', ['Pendiente', 'Autorizado', 'Rechazado'])->default('Pendiente'); // SANTOS ANTES DE IVA - TOMAR SUBTOTAL
+           // $table->enum('authorization_3', ['Pendiente', 'Autorizado', 'Rechazado'])->default('Autorizado'); // SANTOS ANTES DE IVA - TOMAR SUBTOTAL
             $table->enum('authorization_4', ['Pendiente', 'Autorizado', 'Rechazado'])->default('Pendiente'); // LIC KARLA
 
             

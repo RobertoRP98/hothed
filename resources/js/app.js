@@ -1,7 +1,14 @@
 import './bootstrap';
+//Inicia requisiciones
 import CreateRequisition from './components/Requisition/CreateRequisition.vue';
 import EditRequisition from './components/Requisition/EditRequisition.vue';
 import ViewRequisition from './components/Requisition/ViewRequisition.vue';
+// Finaliza requisiciones
+
+//Inicia ordenes de compra
+import CreateCompra from './components/Compra/CreateCompra.vue';
+//Finaliza ordenes de compra
+
 
 
 
@@ -11,9 +18,15 @@ import { createApp } from 'vue';
 
 const app = createApp({});
 // Registrar el componente global
+//REGISTROS DE REQUISICIONES
 app.component('create-requisition', CreateRequisition);
 app.component('edit-requisition', EditRequisition);
 app.component('view-requisition', ViewRequisition);
+//FIN DE REQUISICIONES
+
+//REGISTRO DE COMPRAS
+app.component('create-compra',CreateCompra);
+
 
 
 

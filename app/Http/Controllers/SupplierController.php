@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Supplier;
 use App\Http\Requests\StoreSupplierRequest;
 use App\Http\Requests\UpdateSupplierRequest;
+use Illuminate\Http\Request;
+
 
 class SupplierController extends Controller
 {
@@ -80,4 +82,24 @@ class SupplierController extends Controller
     {
         //
     }
+
+    public function search(Request $request){
+
+        // Recuperamos el término de búsqueda enviado por el frontend
+     $query = $request->input('query'); // Aquí usamos 'query' para que coincida con el frontend
+ 
+     // Si no hay término de búsqueda, devolver un array vacío
+     if (!$query) {
+         return response()->json([]);
+     }
+ 
+     // Realizamos la búsqueda en la base de datos
+     $supplier = Supplier::where('name', 'like', '%' . $query . '%')
+         ->orderBy('name', 'asc') // Opcional, ordena alfabéticamente
+         ->get();
+ 
+     // Devolvemos los resultados como respuesta JSON
+     return response()->json($supplier);
+ 
+     }
 }
