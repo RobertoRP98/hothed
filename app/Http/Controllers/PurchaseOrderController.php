@@ -36,10 +36,13 @@ class PurchaseOrderController extends Controller
         $producto = Product::all();
         $item = ItemOrderPurchase::all();
 
+        // Calcular días restantes
+        $days_remaining_now = floor(\Carbon\Carbon::parse($requisicion->production_date)->diffInDays(now(), false));
+
         //inicializacion de datos
         $initialData = [
-            'formData'=>[
-                'requisition_id' => $requisicion,
+            'formData' => [
+                'requisition_id' => $requisicion->id,
                 'supplier_id' => 1,
                 'type_op' => 'Local',
                 'payment_type' => 'Transferencia',
@@ -50,7 +53,8 @@ class PurchaseOrderController extends Controller
                 'finished' => 0,
                 'date_end' => '',
                 'payment_day' => '',
-                'status_requisition' => 'Autorizado',
+                'days_remaining_now' => $days_remaining_now,
+                'status_requisition' => $requisicion->status_requisition,
                 'authorization_2' => 'Pendiente',
                 'authorization_3' => 'Pendiente',
                 'authorization_4' => 'Pendiente',
@@ -58,7 +62,7 @@ class PurchaseOrderController extends Controller
                 'po_status' => 'Pendiente de Pago',
                 'bill' => 'Pendiente Facturar',
                 'subtotal' => 0,
-                'total_descuento'=> 0,
+                'total_descuento' => 0,
                 'tax' => 0,
                 'total' => 0,
             ],
@@ -66,9 +70,10 @@ class PurchaseOrderController extends Controller
             'supplierData' => [],
         ];
 
- 
 
-        return view('compras.create', compact('requisicion','proveedor','producto','item','initialData','today'));
+       // dd($initialData);
+
+        return view('compras.create', compact('requisicion', 'proveedor', 'producto', 'item', 'initialData', 'today'));
     }
 
     /**

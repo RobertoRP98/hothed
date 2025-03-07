@@ -1,6 +1,7 @@
 @extends('layouts.app')
 @section('createsupplier')
 <div class="container">
+  
 <form @submit.prevent>
     @csrf
     <div class="row align-items-center">
@@ -49,9 +50,9 @@
 
 <!-- Tercera fila -->
 <div id="app">
-  <create-compra :initial-data="{{ json_encode($initialData) }}"  :default-request-date="'{{ $today }}'"></create-compra>
-
+    <create-compra :initial-data="{{ json_encode($initialData) }}"></create-compra>
 </div>
+
 
   </form>
 </div>

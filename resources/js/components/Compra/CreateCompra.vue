@@ -139,7 +139,7 @@
                     class="form-control"
                     readonly
                 />
-                <label class="form-label">DIAS FALTANTES</label>
+                <label class="form-label">DÍAS POR VENCER / VENCIDOS</label>
             </div>
         </div>
     </div>
@@ -150,12 +150,11 @@
             <div class="form-outline">
                 <input
                     type="text"
-                    :value="statusText"
+                    v-model="formData.status_requisition"
                     class="form-control"
-                    placeholder="$oc->requisition->status"
                     readonly
                 />
-                <label class="form-label">JEFE INMEDIATO</label>
+                <label class="form-label">STATUS DE LA REQUISICIÓN</label>
             </div>
         </div>
 
@@ -239,6 +238,119 @@
             </div>
         </div>
     </div>
+
+    <h2>PRODUCTOS DE LA ORDEN DE COMPRA</h2>
+    <!-- Productos de Requisición -->
+    <div class="bg-body">
+        <div class="card-header">
+            Pulse "Agregar" para añadir productos a la requisición
+            <button
+                class="btn btn-primary float-right"
+                @click.prevent="addFields"
+            >
+                Agregar
+            </button>
+        </div>
+        <div class="card-body">
+            <div v-for="(value, index) in productData" :key="index" class="row">
+                <!-- Input de descripción -->
+                <div class="col-md-2 mt-2">
+                    <input
+                        type="text"
+                        v-model="value.description"
+                        @input="searchProducts(index)"
+                        class="form-control"
+                        placeholder="Busque un producto"
+                    />
+                    <ul v-if="value.suggestions.length > 0" class="list-group">
+                        <li
+                            v-for="(
+                                product, suggestionIndex
+                            ) in value.suggestions"
+                            :key="suggestionIndex"
+                            @click="selectProduct(index, product)"
+                            class="list-group-item"
+                        >
+                            {{ product.description }}
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Input de codigo interno -->
+                <div class="col-md-1 mt-2">
+                    <input
+                        type="text"
+                        v-model="value.internal_id"
+                        class="form-control"
+                        placeholder="CODIGO INTERNO"
+                        readonly
+                    />
+                </div>
+
+                <!-- Input de unidad de medida -->
+                <div class="col-md-1 mt-2">
+                    <input
+                        type="text"
+                        v-model="value.udm"
+                        class="form-control"
+                        placeholder="UDM"
+                        readonly
+                    />
+                </div>
+
+                <!-- Input de cantidad -->
+                <div class="col-md-2 mt-2">
+                    <input
+                        type="number"
+                        v-model="value.quantity"
+                        class="form-control"
+                        placeholder="Cantidad"
+                    />
+                </div>
+
+                <!-- Input de precio -->
+                <div class="col-md-2 mt-2">
+                    <input
+                        type="number"
+                        v-model="value.price"
+                        class="form-control"
+                        placeholder="Precio unitario"
+                    />
+                </div>
+
+                <!-- Input de descuento -->
+                <div class="col-md-1 mt-2">
+                    <input
+                        type="number"
+                        v-model="value.discount"
+                        class="form-control"
+                        placeholder="Descuento"
+                    />
+                </div>
+
+                <!-- Input de importe -->
+                <div class="col-md-2 mt-2">
+                    <input
+                        type="number"
+                        v-model="value.subtotal"
+                        class="form-control"
+                        placeholder="importe"
+                        readonly
+                    />
+                </div>
+
+                <!-- Botón para eliminar producto -->
+                <div class="col-md-1 mt-2">
+                    <button
+                        class="btn btn-danger"
+                        @click.prevent="removeField(index)"
+                    >
+                        Remover
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 </template>
 
 <script>
@@ -248,7 +360,16 @@ export default {
     name: "OrderComponent",
     props: {
         initialData: Object,
+        defaultRequestDate: String,
         required: true,
+    },
+    mounted() {
+        if (this.initialData) {
+            this.formData = { ...this.initialData.formData }; // Carga todo lo que venga de PHP
+            console.log("Datos iniciales recibidos:", this.formData);
+        }
+        console.log("Datos iniciales:", this.formData);
+        console.log("Datos iniciales recibidos:", this.initialData);
     },
     data() {
         return {
@@ -264,7 +385,8 @@ export default {
                 finished: 0,
                 date_end: "",
                 payment_day: "",
-                status_requisition: "Autorizado",
+                days_remaining_now: "",
+                status_requisition: "",
                 authorization_2: "Pendiente",
                 authorization_3: "Pendiente",
                 authorization_4: "Pendiente",
@@ -284,9 +406,19 @@ export default {
                     suggestions: [],
                 },
             ],
+
+            productData: [
+                {
+                    product_id: "",
+                    internal_id: "",
+                    udm: "",
+                    suggestions: [],
+                },
+            ],
         };
     },
     methods: {
+        //METODOS DE PROVEEDOR
         searchSupplier(index) {
             if (!this.supplierData[index]) return; // Evita errores si no existe
 
@@ -322,6 +454,47 @@ export default {
 
             console.log("Proveedor seleccionado:", supplier.id, supplier.name);
         },
+        //FIN DE METODOS PARA PROVEEDORES
+
+        //INICIAN METODOS PARA PRODUCTOS
+        addFields() {
+            this.productData.push({
+                product_id: "",
+                description: "",
+                quantity: "",
+                suggestions: [],
+            });
+        },
+        removeField(index) {
+            this.productData.splice(index, 1);
+        },
+        searchProducts(index) {
+            const query = this.productData[index].description;
+            // 🔹 Si el usuario borra el texto, también limpiamos el ID
+            if (!query) {
+                this.productData[index].product_id = "";
+                this.productData[index].suggestions = [];
+                return;
+            }
+            if (query.length < 2) {
+                this.productData[index].suggestions = [];
+                return;
+            }
+            axios
+                .get("/api/product-requisition", { params: { query } })
+                .then((response) => {
+                    this.productData[index].suggestions = response.data;
+                });
+        },
+        selectProduct(index, product) {
+            this.productData[index].product_id = product.id; // Guardar ID
+            this.productData[index].description = product.description; // Mostrar descripción
+            this.productData[index].internal_id = product.internal_id; // Autocompletar código interno
+            this.productData[index].udm = product.udm; // Autocompletar unidad de medida
+            this.productData[index].suggestions = []; // Limpiar sugerencias
+        },
+
+        //FINALIZA METODOS PARA PRODUCTOS
     },
 };
 </script>
