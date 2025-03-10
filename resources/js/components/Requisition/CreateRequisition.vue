@@ -293,7 +293,7 @@ export default {
                 console.log(
                     "Valor de required_date:",
                     this.formData.required_date
-                ); // 👀 Ver qué tiene el campo
+                ); //  Ver qué tiene el campo
 
                 if (!this.formData.required_date) {
                     this.errors.required_date =
@@ -355,7 +355,7 @@ export default {
                     "Por favor, selecciona únicamente productos válidos de las sugerencias. " +
                         "Si no aparece el producto que buscas, consulta al área de compras."
                 );
-                return; // ⛔ Evita que continúe el envío del formulario
+                return; // Evita que continúe el envío del formulario
             }
 
             if (!this.validateForm()) {

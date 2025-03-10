@@ -588,6 +588,49 @@ export default {
         },
 
         //FINALIZA METODOS PARA PRODUCTOS
+        validateForm() {
+            this.errors = {}; // Reiniciar errores
+
+            // Validar supplier_id
+            if (!this.supplierData.supplier_id) {
+                this.errors.supplier_id = "El proveedor es obligatorio.";
+            }
+
+            // Validar productos
+            if (this.productData.length < 1) {
+                this.errors.items_requisition =
+                    "Debes agregar al menos un producto.";
+            } else {
+                this.productData.forEach((item, index) => {
+                    if (!item.product_id) {
+                        {
+                            this.errors[
+                                `product_id_${index}`
+                            ] = `El producto en la fila ${
+                                index + 1
+                            } es obligatorio.`;
+                        }
+                    }
+                    if (!item.quantity || item.quantity < 1) {
+                        this.errors[
+                            `quantity_${index}`
+                        ] = `La cantidad en la fila ${
+                            index + 1
+                        } debe ser mayor a 0.`;
+                    }
+
+                    if (!item.price || item.price < 1) {
+                        this.errors[
+                            `price_${index}`
+                        ] = `El precio en la fila ${
+                            index + 1
+                        } debe ser mayor a 0.`;
+                    }
+                });
+            }
+
+            return Object.keys(this.errors).length === 0; // Retorna true si no hay errores
+        },
     },
 
     watch: {
@@ -640,7 +683,11 @@ export default {
         },
 
         total() {
-            return (this.subtotal || 0) + (this.total_impuestos || 0) - (this.total_descuento || 0);
+            return (
+                (this.subtotal || 0) +
+                (this.total_impuestos || 0) -
+                (this.total_descuento || 0)
+            );
         },
     },
 };
