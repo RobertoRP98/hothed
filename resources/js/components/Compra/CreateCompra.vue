@@ -381,7 +381,7 @@
                         <td></td>
                         <td></td>
                         <td></td>
-                        <td>TOTAL IVA</td>
+                        <td>IVA</td>
                         <td>
                             {{
                                 "$" + total_impuestos + " " + formData.currency
@@ -396,11 +396,24 @@
                         <td></td>
                         <td></td>
                         <td></td>
-                        <td>TOTAL DESCUENTO</td>
+                        <td>DESCUENTO</td>
                         <td>
                             {{
                                 "$" + total_descuento + " " + formData.currency
                             }}
+                        </td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td>TOTAL</td>
+                        <td>
+                            {{ "$" + total + " " + formData.currency }}
                         </td>
                         <td></td>
                     </tr>
@@ -623,8 +636,10 @@ export default {
                   }, 0) // <== Aquí cerramos correctamente el reduce con `0`
                 : 0;
         },
-    },
 
-    
+        total() {
+            return (this.subtotal || 0) + (this.total_impuestos || 0) - (this.total_descuento || 0);
+        },
+    },
 };
 </script>
