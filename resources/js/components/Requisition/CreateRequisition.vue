@@ -30,7 +30,7 @@
                 </div>
             </div>
 
-            <div class="col-md-3">
+            <!-- <div class="col-md-3">
                 <div class="form-outline">
                     <select v-model="formData.petty_cash" class="form-select">
                         <option value="0">NO</option>
@@ -38,7 +38,7 @@
                     </select>
                     <label class="form-label">¿CAJA CHICA?</label>
                 </div>
-            </div>
+            </div> -->
 
             <div class="col-md-3">
                 <div class="form-outline">
@@ -216,7 +216,7 @@ export default {
                 finished_date: "",
 
                 required_date: "",
-                petty_cash: "0",
+                //petty_cash: "0",
                 notes_client: "",
                 notes_resp: null,
             },
@@ -310,10 +310,10 @@ export default {
                     "Los días restantes deben ser un número.";
             }
 
-            // Validar caja chica como booleano (0 o 1)
-            if (!["0", "1"].includes(this.formData.petty_cash)) {
-                this.errors.petty_cash = "Caja chica debe ser 'Sí' o 'No'.";
-            }
+            // // Validar caja chica como booleano (0 o 1)
+            // if (!["0", "1"].includes(this.formData.petty_cash)) {
+            //     this.errors.petty_cash = "Caja chica debe ser 'Sí' o 'No'.";
+            // }
 
             // Validar productos
             if (this.productData.length < 1) {

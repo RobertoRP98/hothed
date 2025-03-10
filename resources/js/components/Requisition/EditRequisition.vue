@@ -41,7 +41,7 @@
                 </div>
             </div>
 
-            <div class="col-md-3">
+            <!-- <div class="col-md-3">
                 <div class="form-outline">
                     <select v-model="formData.petty_cash" class="form-select">
                         <option value="0">NO</option>
@@ -49,7 +49,8 @@
                     </select>
                     <label class="form-label">¿CAJA CHICA?</label>
                 </div>
-            </div>
+            </div> -->
+
         </div>
 
         <!-- Segunda fila -->
@@ -251,7 +252,7 @@ export default {
                 finished_date: "",
 
                 required_date: "",
-                petty_cash: "0",
+               // petty_cash: "0",
                 notes_client: "",
                 notes_resp: "",
 

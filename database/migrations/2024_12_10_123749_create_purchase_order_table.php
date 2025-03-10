@@ -15,11 +15,11 @@ return new class extends Migration
         //SECCIONAdo SEGUN LA VISTA
         Schema::create('purchase_orders', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('requisition_id')->nullable();
+            $table->unsignedBigInteger('requisition_id');
 
             $table->unsignedBigInteger('supplier_id'); 
             $table->enum('type_op', ['Local', 'Extranjera'])->default('Local');
-            $table->enum('payment_type', ['Credito', 'Debito', 'Efectivo', 'Transferencia', 'AMEX'])->default('Credito');
+            $table->enum('payment_type', ['CREDITO', 'DEBITO', 'CAJA CHICA', 'TRANSFERENCIA', 'AMEX'])->default('Credito');
             $table->boolean('unique_payment')->default(true); //PAGO EN UNA EXI
             $table->string('quotation')->nullable();
             $table->enum('currency', ['MXN', 'USD', 'EUR'])->default('MXN');
@@ -33,17 +33,15 @@ return new class extends Migration
           
 
             //$table->enum('status_1', ['Pendiente', 'Autorizado', 'Rechazado'])->default('Pendiente'); //JEFES INMEDIATOS QUE VIENE DE LA REQUISICION
-            $table->enum('authorization_2', ['Pendiente', 'Autorizado', 'Rechazado'])->default('Pendiente'); // FLORES Y KARLA
+            $table->enum('authorization_2', ['Pendiente', 'Autorizado', 'Rechazado'])->default('Pendiente'); // FLORES Y BIANCA
            // $table->enum('authorization_3', ['Pendiente', 'Autorizado', 'Rechazado'])->default('Autorizado'); // SANTOS ANTES DE IVA - TOMAR SUBTOTAL
             $table->enum('authorization_4', ['Pendiente', 'Autorizado', 'Rechazado'])->default('Pendiente'); // LIC KARLA
 
             
             
             $table->enum('delivery_condition', ['50-50', '100% Antes Entrega', '100% Post Entrega'])->default('100% Antes Entrega');
-            $table->enum('po_status', ['En Proceso', 'Pendiente de Pago', 'Cancelado', 'En Transito'])->default('En Proceso');
+            $table->enum('po_status', ['PENDIENTE DE PAGO', 'PENDIENTE DE PAGO (SERVICIO CONCLUIDO)', 'PAGADA', 'CANCELADA','EN PAUSA', 'EN PROCESO'])->default('En Proceso');
             $table->enum('bill', ['Facturado', 'Pendiente Facturar'])->default('Pendiente Facturar');
-
-
 
             $table->decimal('subtotal', 10, 2)->default(0.00);
             $table->decimal('total_descuento', 10, 2)->default(0.00);

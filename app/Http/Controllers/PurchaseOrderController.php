@@ -45,7 +45,7 @@ class PurchaseOrderController extends Controller
                 'requisition_id' => $requisicion->id,
                 'supplier_id' => 1,
                 'type_op' => 'Local',
-                'payment_type' => 'Transferencia',
+                'payment_type' => 'TRANSFERENCIA',
                 'unique_payment' => 0,
                 'quotation' => '',
                 'currency' => 'MXN',

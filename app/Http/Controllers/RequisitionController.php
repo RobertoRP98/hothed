@@ -41,7 +41,7 @@ class RequisitionController extends Controller
 
                 'status_requisition' => 'Pendiente',
                 'importance' => 'Baja',
-                'petty_cash' => '0',
+                //'petty_cash' => '0',
                 'finished' => '0',
                 
                 'request_date' => $today, //fecha de solicitud
@@ -105,7 +105,7 @@ class RequisitionController extends Controller
                         'finished_date',
 
                         'required_date',
-                        'petty_cash',
+                        //'petty_cash',
                         'notes_client',
                         'notes_resp'
                     ]),
@@ -231,7 +231,7 @@ class RequisitionController extends Controller
                 'finished_date' => $requisition->finished_date,
 
                 'required_date' => $requisition->required_date,
-                'petty_cash' => $requisition->petty_cash,
+               // 'petty_cash' => $requisition->petty_cash,
                 'notes_client' => $requisition->notes_client,
                 'notes_resp' => $requisition->notes_resp,
 
@@ -293,7 +293,7 @@ class RequisitionController extends Controller
                 'days_remaining_now' => $days_remaining_now, // Agregar días restantes calculados
 
                 'required_date' => $requisition->required_date,
-                'petty_cash' => $requisition->petty_cash,
+                //'petty_cash' => $requisition->petty_cash,
                 'notes_client' => $requisition->notes_client,
                 'notes_resp' => $requisition->notes_resp,
 
@@ -355,7 +355,7 @@ class RequisitionController extends Controller
                     $request->only([
                         'status_requisition',
                         'finished',
-                        'petty_cash',
+                       // 'petty_cash',
                         'notes_client',
                         'notes_resp'
                     ]),

@@ -32,7 +32,7 @@ class UpdateRequisitionRequest extends FormRequest
             'days_remaining' => 'required|integer',
             'finished_date' => 'nullable',
 
-            'petty_cash' => 'required|boolean',
+            //'petty_cash' => 'required|boolean',
             'required_date' => 'required|date',
             'notes_client' => 'nullable',
             'notes_resp' => 'nullable',

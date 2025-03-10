@@ -22,7 +22,7 @@ return new class extends Migration
             $table->date('request_date');
             $table->integer('days_remaining');
             $table->date('finished_date')->nullable();
-            $table->boolean('petty_cash')->default(false);
+            //$table->boolean('petty_cash')->default(false);
             $table->text('notes_client')->nullable();
             $table->text('notes_resp')->nullable();
             $table->timestamps();

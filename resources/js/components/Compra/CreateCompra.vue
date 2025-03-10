@@ -43,10 +43,11 @@
         <div class="col-md-2">
             <div class="form-outline">
                 <select v-model="formData.payment_type" class="form-select">
-                    <option value="Credito">CREDITO</option>
-                    <option value="Efectivo">EFECTIVO</option>
-                    <option value="Transferencia">TRANSFERENCIA</option>
+                    <option value="CREDITO">CREDITO</option>
+                    <option value="CAJA CHICA">CAJA CHICA</option>
+                    <option value="TRANSFERENCIA">TRANSFERENCIA</option>
                     <option value="AMEX">AMEX</option>
+                    <option value="CREDITO">DEBITO</option>
                 </select>
                 <label class="form-label">METODO DE PAGO</label>
             </div>
@@ -94,6 +95,7 @@
                     type="date"
                     v-model="formData.date_start"
                     class="form-control"
+                    readonly
                 />
                 <label class="form-label">INICIO DE ORDEN</label>
             </div>
@@ -447,7 +449,7 @@ export default {
             formData: {
                 requisition_id: "",
                 type_op: "Local", //
-                payment_type: "Transferencia",
+                payment_type: "TRANSFERENCIA",
                 unique_payment: 1,
                 quotation: "",
                 currency: "MXN",

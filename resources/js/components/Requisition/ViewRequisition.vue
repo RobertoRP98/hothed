@@ -26,7 +26,7 @@
                 </div>
             </div>
 
-            <div class="col-md-3">
+            <!-- <div class="col-md-3">
                 <div class="form-outline">
                     <input
                         type="text"
@@ -36,7 +36,7 @@
                     />
                     <label class="form-label">¿CAJA CHICA?</label>
                 </div>
-            </div>
+            </div> -->
 
             <div class="col-md-3">
                 <div class="form-outline">
@@ -196,7 +196,7 @@ export default {
 
 
                 required_date: "",
-                petty_cash: "0",
+                //petty_cash: "0",
                 notes_client: "",
                 notes_resp: "",
             },
@@ -233,9 +233,9 @@ export default {
                 return this.formData.finished === 1 ? "SI" : "NO";
         },
         
-        pettycashText(){
-                return this.formData.petty_cash === 1 ? "SI" : "NO";
-        },
+        // pettycashText(){
+        //         return this.formData.petty_cash === 1 ? "SI" : "NO";
+        // },
 
 
 
