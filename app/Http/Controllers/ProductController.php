@@ -101,6 +101,7 @@ class ProductController extends Controller
     // Realizamos la búsqueda en la base de datos
     $products = Product::where('description', 'like', '%' . $query . '%')
         ->orderBy('description', 'asc') // Opcional, ordena alfabéticamente
+        ->with('tax')
         ->get();
 
     // Devolvemos los resultados como respuesta JSON

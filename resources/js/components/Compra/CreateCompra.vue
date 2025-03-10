@@ -252,103 +252,160 @@
             </button>
         </div>
         <div class="card-body">
-            <div v-for="(value, index) in productData" :key="index" class="row">
-                <!-- Input de descripción -->
-                <div class="col-md-2 mt-2">
-                    <input
-                        type="text"
-                        v-model="value.description"
-                        @input="searchProducts(index)"
-                        class="form-control"
-                        placeholder="Busque un producto"
-                    />
-                    <ul v-if="value.suggestions.length > 0" class="list-group">
-                        <li
-                            v-for="(
-                                product, suggestionIndex
-                            ) in value.suggestions"
-                            :key="suggestionIndex"
-                            @click="selectProduct(index, product)"
-                            class="list-group-item"
-                        >
-                            {{ product.description }}
-                        </li>
-                    </ul>
-                </div>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Descripción</th>
+                        <th>Código Interno</th>
+                        <th>UDM</th>
+                        <th>Cantidad</th>
+                        <th>Precio Unitario</th>
+                        <th>Impuesto</th>
+                        <th>Descuento</th>
+                        <th>Importe</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="(value, index) in productData" :key="index">
+                        <td>
+                            <input
+                                type="text"
+                                v-model="value.description"
+                                @input="searchProducts(index)"
+                                class="form-control"
+                                placeholder="Busque un producto"
+                            />
+                            <ul
+                                v-if="value.suggestions.length > 0"
+                                class="list-group"
+                            >
+                                <li
+                                    v-for="(
+                                        product, suggestionIndex
+                                    ) in value.suggestions"
+                                    :key="suggestionIndex"
+                                    @click="selectProduct(index, product)"
+                                    class="list-group-item"
+                                >
+                                    {{ product.description }}
+                                </li>
+                            </ul>
+                        </td>
+                        <td>
+                            <input
+                                type="text"
+                                v-model="value.internal_id"
+                                class="form-control"
+                                placeholder="C-I"
+                                readonly
+                            />
+                        </td>
+                        <td>
+                            <input
+                                type="text"
+                                v-model="value.udm"
+                                class="form-control"
+                                placeholder="UDM"
+                                readonly
+                            />
+                        </td>
+                        <td>
+                            <input
+                                type="number"
+                                v-model="value.quantity"
+                                class="form-control"
+                                placeholder="Cantidad"
+                            />
+                        </td>
+                        <td>
+                            <input
+                                type="number"
+                                v-model="value.price"
+                                class="form-control"
+                                placeholder="Precio unitario"
+                            />
+                        </td>
 
-                <!-- Input de codigo interno -->
-                <div class="col-md-1 mt-2">
-                    <input
-                        type="text"
-                        v-model="value.internal_id"
-                        class="form-control"
-                        placeholder="CODIGO INTERNO"
-                        readonly
-                    />
-                </div>
+                        <td>
+                            <input
+                                type="text"
+                                :value="value.tax ? value.tax.concept : 'N/A'"
+                                class="form-control"
+                                placeholder="Impuesto"
+                                readonly
+                            />
+                        </td>
 
-                <!-- Input de unidad de medida -->
-                <div class="col-md-1 mt-2">
-                    <input
-                        type="text"
-                        v-model="value.udm"
-                        class="form-control"
-                        placeholder="UDM"
-                        readonly
-                    />
-                </div>
-
-                <!-- Input de cantidad -->
-                <div class="col-md-2 mt-2">
-                    <input
-                        type="number"
-                        v-model="value.quantity"
-                        class="form-control"
-                        placeholder="Cantidad"
-                    />
-                </div>
-
-                <!-- Input de precio -->
-                <div class="col-md-2 mt-2">
-                    <input
-                        type="number"
-                        v-model="value.price"
-                        class="form-control"
-                        placeholder="Precio unitario"
-                    />
-                </div>
-
-                <!-- Input de descuento -->
-                <div class="col-md-1 mt-2">
-                    <input
-                        type="number"
-                        v-model="value.discount"
-                        class="form-control"
-                        placeholder="Descuento"
-                    />
-                </div>
-
-                <!-- Input de importe -->
-                <div class="col-md-2 mt-2">
-                    <input
-                        type="number"
-                        v-model="value.subtotal"
-                        class="form-control"
-                        placeholder="importe"
-                        readonly
-                    />
-                </div>
-
-                <!-- Botón para eliminar producto -->
-                <div class="col-md-1 mt-2">
-                    <button
-                        class="btn btn-danger"
-                        @click.prevent="removeField(index)"
-                    >
-                        Remover
-                    </button>
-                </div>
-            </div>
+                        <td>
+                            <input
+                                type="number"
+                                v-model="value.discount"
+                                class="form-control"
+                                placeholder="Descuento"
+                            />
+                        </td>
+                        <td>
+                            <input
+                                type="number"
+                                v-model="value.subtotalproducto"
+                                class="form-control"
+                                placeholder="Importe"
+                                readonly
+                            />
+                        </td>
+                        <td>
+                            <button
+                                class="btn btn-danger"
+                                @click.prevent="removeField(index)"
+                            >
+                                Remover
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td>SUB-TOTAL</td>
+                        <td>{{ "$" + subtotal + " " + formData.currency }}</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td>TOTAL IVA</td>
+                        <td>
+                            {{
+                                "$" + total_impuestos + " " + formData.currency
+                            }}
+                        </td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td>TOTAL DESCUENTO</td>
+                        <td>
+                            {{
+                                "$" + total_descuento + " " + formData.currency
+                            }}
+                        </td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 </template>
@@ -393,9 +450,9 @@ export default {
                 delivery_condition: "100% Antes Entrega",
                 po_status: "Pendiente de Pago",
                 bill: "Pendiente Facturar",
-                subtotal: 0,
+                subtotal: 0, //guarda el subtotal de todos los subtotalproducto
                 total_descuento: 0,
-                tax: 0,
+                total_impuestos: 0,
                 total: 0,
             },
             //DATOS DEL PROVEEDOR - PARA SELECCIONAR EN EL INPUT
@@ -406,12 +463,17 @@ export default {
                     suggestions: [],
                 },
             ],
-
+            //DATOS DEL PRODUCTO
             productData: [
                 {
-                    product_id: "",
-                    internal_id: "",
-                    udm: "",
+                    product_id: "", //descripcion
+                    internal_id: "", //codigo interno
+                    udm: "", //unindad de medida
+                    quantity: "", //cantidad
+                    price: "", //precio
+                    tax_id: null, //impuesto
+                    discount: 0, //descuento
+                    subtotalproducto: "", //subtotal
                     suggestions: [],
                 },
             ],
@@ -427,6 +489,9 @@ export default {
             //  Si el usuario borra el texto, también limpiamos el ID
             if (!query) {
                 this.supplierData[index].supplier_id = ""; // Limpia el ID
+                this.supplierData[index].udm = ""; // Limpia el campo udm
+                this.supplierData[index].internal_id = ""; // limpia el codigo interno
+
                 this.supplierData[index].suggestions = [];
                 return;
             }
@@ -462,10 +527,18 @@ export default {
                 product_id: "",
                 description: "",
                 quantity: "",
+                discount: 0,
+                tax_id: "",
                 suggestions: [],
             });
         },
         removeField(index) {
+            // Aseguramos que todos los valores del producto se limpien antes de eliminarlo
+            this.productData[index].description = "";
+            this.productData[index].internal_id = "";
+            this.productData[index].udm = "";
+            this.productData[index].tax_id = "";
+
             this.productData.splice(index, 1);
         },
         searchProducts(index) {
@@ -491,10 +564,67 @@ export default {
             this.productData[index].description = product.description; // Mostrar descripción
             this.productData[index].internal_id = product.internal_id; // Autocompletar código interno
             this.productData[index].udm = product.udm; // Autocompletar unidad de medida
+            this.productData[index].tax_id = product.tax
+                ? product.tax.id
+                : null; // 🔹 Asigna el ID del impuesto
+            this.productData[index].tax = product.tax ? product.tax : null; // 🔹 Guarda el objeto completo
             this.productData[index].suggestions = []; // Limpiar sugerencias
+            console.log("Producto seleccionado:", this.productData[index]);
         },
 
         //FINALIZA METODOS PARA PRODUCTOS
     },
+
+    watch: {
+        productData: {
+            handler(newVal) {
+                newVal.forEach((product) => {
+                    product.subtotalproducto =
+                        parseFloat(product.quantity || 0) *
+                        parseFloat(product.price || 0);
+                });
+            },
+            deep: true,
+        },
+    },
+
+    computed: {
+        subtotal() {
+            return this.productData?.length
+                ? this.productData.reduce(
+                      (acc, product) => acc + (product.subtotalproducto || 0),
+                      0
+                  )
+                : 0;
+        },
+
+        total_impuestos() {
+            return this.productData?.length
+                ? this.productData.reduce((acc, product) => {
+                      const tasaImpuesto = product.tax
+                          ? product.tax.percentage / 100
+                          : 0;
+                      return (
+                          acc + (product.subtotalproducto || 0) * tasaImpuesto
+                      );
+                  }, 0)
+                : 0;
+        },
+
+        total_descuento() {
+            return this.productData?.length
+                ? this.productData.reduce((acc, product) => {
+                      const tasaDescuento = product.discount
+                          ? product.discount / 100
+                          : 0;
+                      return (
+                          acc + product.quantity * product.price * tasaDescuento
+                      );
+                  }, 0) // <== Aquí cerramos correctamente el reduce con `0`
+                : 0;
+        },
+    },
+
+    
 };
 </script>

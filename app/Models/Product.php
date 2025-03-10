@@ -13,9 +13,10 @@ class Product extends Model
 
     protected $guarded = ['id'];
 
+
     public function tax()
     {
-        return $this->belongsTo(Tax::class);
+        return $this->belongsTo(Tax::class, 'tax_id');
     }
 
     public function itemsRequisition()
