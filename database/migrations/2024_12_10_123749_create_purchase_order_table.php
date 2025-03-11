@@ -50,7 +50,7 @@ return new class extends Migration
             $table->timestamps();
 
             $table->foreign('supplier_id')->references('id')->on('suppliers')->onDelete('cascade');
-            $table->foreign('requisition_id')->references('id')->on('requisitions')->onDelete('set null');
+            $table->foreign('requisition_id')->references('id')->on('requisitions')->onDelete('cascade');
         });
     }
 

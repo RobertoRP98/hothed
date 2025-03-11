@@ -8,6 +8,9 @@ use App\Models\Supplier;
 use App\Models\Requisition;
 use App\Models\PurchaseOrder;
 use App\Models\ItemOrderPurchase;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Validation\ValidationException;
 use App\Http\Requests\StorePurchaseOrderRequest;
 use App\Http\Requests\UpdatePurchaseOrderRequest;
 
@@ -71,7 +74,7 @@ class PurchaseOrderController extends Controller
         ];
 
 
-       // dd($initialData);
+        // dd($initialData);
 
         return view('compras.create', compact('requisicion', 'proveedor', 'producto', 'item', 'initialData', 'today'));
     }
@@ -81,7 +84,86 @@ class PurchaseOrderController extends Controller
      */
     public function store(StorePurchaseOrderRequest $request)
     {
-        //
+
+        try {
+            Log::info('Datos recibidos:', $request->all());
+            Log::info('Items recibidos:', $request->input('items_order'));
+
+            // Validar que todos los IDs sean válidos
+            $productIds = array_column($request->input('items_requisition', []), 'product_id');
+            $validProductIds = Product::whereIn('id', $productIds)->pluck('id')->toArray();
+
+            foreach ($productIds as $id) {
+                if (!in_array($id, $validProductIds)) {
+                    throw ValidationException::withMessages([
+                        'items_requisition' => 'Uno o más productos seleccionados no son válidos.',
+                    ]);
+                }
+            }
+
+            DB::transaction(function () use ($request) {
+
+                $today = Carbon::now()->format('Y-m-d');
+
+                //asignar valores del front al back
+
+                $order = PurchaseOrder::create(array_merge(
+                    $request->only([
+                        'requisition_id',
+                        'supplier_id',
+                        'type_op',
+                        'payment_type',
+                        'unique_payment',
+                        'quotation',
+                        'currency',
+                        'finished',
+                        'date_end',
+                        'payment_day',
+                        'authorization_2',
+                        'authorization_4' => $request->input('authorization_4'),
+                        'delivery_condition',
+                        'po_status',
+                        'bill',
+
+                    ]),
+                    [
+                        'subtotal' => $request->input('subtotal'),
+                        'tax' => $request->input('total_impuestos'),
+                        'total_descuento' => $request->input('total_descuento'),
+                        'total' => $request->input('total'),
+                        'date_start' => $request->input('date_start', $today)
+                    ]
+                ));
+
+                //gaurdar los items de la orden
+                Log::info('Datos de la orden antes de crear:', $order->toArray()); // Depuración
+
+
+                foreach ($request->input('items_order') as $item) {
+                    ItemOrderPurchase::create([
+                        'purchase_order_id' => $order->id,
+                        'product_id' => $item['product_id'],
+                        'quantity' => $item['quantity'],
+                        'price' => $item['price'],
+                        'discount' => $item['discount'],
+                        'subtotal' => $item['subtotalproducto']
+                    ]);
+                }
+            });
+
+            return response()->json([
+                'message' => 'Orden de compra creada con éxito.',
+                'redirect' => route('ordencompra.index')
+            ]);
+        } catch (\Exception $e) {
+            Log::error('Error al crear orden de compra:', ['error' => $e->getMessage()]);
+            return response()->json([
+                'error' => 'Ocurrió un error inesperado al guardar la orden de compra. Por favor, inténtalo nuevamente.'
+            ], 500);
+        }
+
+        Log::info('Valores recibidos en Laravel:', $request->all());
+
     }
 
     /**

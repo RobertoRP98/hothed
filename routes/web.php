@@ -172,6 +172,9 @@ Route::group(['middleware' => ['auth', 'role:Developer|RespCompras']], function 
     Route::get('/ordenes-compra',[PurchaseOrderController::class,'index'])->name('ordencompra.index');
 
     Route::get('/requisiciones/{requisicione}/ordenes-compra/create',[PurchaseOrderController::class,'create'])->name('ordencompra.create');
+   
+    Route::post('/requisiciones/{requisicione}/ordenes-compra', [PurchaseOrderController::class, 'store'])->name('ordencompra.store');
+
 
 });
 

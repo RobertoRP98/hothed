@@ -373,7 +373,18 @@
                         <td></td>
                         <td></td>
                         <td>SUB-TOTAL</td>
-                        <td>{{ "$" + subtotal + " " + formData.currency }}</td>
+                        <td>
+                            <span
+                                >${{ subtotal.toFixed(2) }}
+                                {{ formData.currency }}</span
+                            >
+                            <input
+                                type="hidden"
+                                v-model="subtotal"
+                                name="subtotal"
+                                ref="subtotalInput"
+                            />
+                        </td>
                         <td></td>
                     </tr>
                     <tr>
@@ -385,9 +396,16 @@
                         <td></td>
                         <td>IVA</td>
                         <td>
-                            {{
-                                "$" + total_impuestos + " " + formData.currency
-                            }}
+                            <span
+                                >${{ total_impuestos.toFixed(2) }}
+                                {{ formData.currency }}</span
+                            >
+                            <input
+                                type="hidden"
+                                v-model="total_impuestos"
+                                name="total_impuestos"
+                                ref="totalImpuestosInput"
+                            />
                         </td>
                         <td></td>
                     </tr>
@@ -400,9 +418,16 @@
                         <td></td>
                         <td>DESCUENTO</td>
                         <td>
-                            {{
-                                "$" + total_descuento + " " + formData.currency
-                            }}
+                            <span
+                                >${{ total_descuento.toFixed(2) }}
+                                {{ formData.currency }}</span
+                            >
+                            <input
+                                type="hidden"
+                                v-model="total_descuento"
+                                name="total_descuento"
+                                ref="totalDescuentoInput"
+                            />
                         </td>
                         <td></td>
                     </tr>
@@ -415,12 +440,28 @@
                         <td></td>
                         <td>TOTAL</td>
                         <td>
-                            {{ "$" + total + " " + formData.currency }}
+                            <span
+                                >${{ total.toFixed(2) }}
+                                {{ formData.currency }}</span
+                            >
+                            <input
+                                type="hidden"
+                                v-model="total"
+                                name="total"
+                                ref="totalInput"
+                            />
                         </td>
                         <td></td>
                     </tr>
                 </tbody>
             </table>
+        </div>
+
+        <!-- Botones -->
+        <div class="mt-3">
+            <button @click="submitForm" class="btn btn-primary">
+                Enviar Orden de Compra
+            </button>
         </div>
     </div>
 </template>
@@ -526,13 +567,14 @@ export default {
                 });
         },
         selectSupplier(index, supplier) {
-            if (!this.supplierData[index]) return;
-
-            this.supplierData[index].supplier_id = supplier.id;
+            if (!this.supplierData[index]) {
+                this.$set(this.supplierData, index, {}); // ✅ Forza la creación del índice
+            }
             this.supplierData[index].name = supplier.name;
             this.supplierData[index].suggestions = [];
+            this.supplierData[index].supplier_id = supplier.id;
 
-            console.log("Proveedor seleccionado:", supplier.id, supplier.name);
+            console.log("Proveedor seleccionado:", this.supplierData[index]);
         },
         //FIN DE METODOS PARA PROVEEDORES
 
@@ -588,11 +630,12 @@ export default {
         },
 
         //FINALIZA METODOS PARA PRODUCTOS
+
+        //VALIDACIÓN DE FORMULARIO
         validateForm() {
             this.errors = {}; // Reiniciar errores
 
-            // Validar supplier_id
-            if (!this.supplierData.supplier_id) {
+            if (!this.supplierData[0]?.supplier_id) {
                 this.errors.supplier_id = "El proveedor es obligatorio.";
             }
 
@@ -620,9 +663,7 @@ export default {
                     }
 
                     if (!item.price || item.price < 1) {
-                        this.errors[
-                            `price_${index}`
-                        ] = `El precio en la fila ${
+                        this.errors[`price_${index}`] = `El precio en la fila ${
                             index + 1
                         } debe ser mayor a 0.`;
                     }
@@ -631,16 +672,112 @@ export default {
 
             return Object.keys(this.errors).length === 0; // Retorna true si no hay errores
         },
+        // FINALIZA VALIDACIÓN DE FORMULARIO
+
+        /** 🔹 Enviar formulario solo si pasa la validación */
+        submitForm() {
+            if (this.$refs.subtotalInput) {
+                this.$refs.subtotalInput.value = this.subtotal;
+            }
+            if (this.$refs.totalImpuestosInput) {
+                this.$refs.totalImpuestosInput.value = this.total_impuestos;
+            }
+            if (this.$refs.totalDescuentoInput) {
+                this.$refs.totalDescuentoInput.value = this.total_descuento;
+            }
+            if (this.$refs.totalInput) {
+                this.$refs.totalInput.value = this.total;
+            }
+            // 🔹 Validar que todos los productos tengan un ID válido
+            const invalidItems = this.productData.filter(
+                (item) => !item.product_id
+            );
+
+            if (invalidItems.length > 0) {
+                alert(
+                    "Por favor, selecciona únicamente productos válidos de las sugerencias. " +
+                        "Si no aparece el producto que buscas, debe ser dado de alta"
+                );
+                return; // Evita que continúe el envío del formulario
+            }
+
+            if (!this.validateForm()) {
+                alert("Corrige los errores antes de enviar.");
+                console.error("Errores de validación:", this.errors);
+                return; // 💡 Esto debería detener la ejecución
+            }
+
+            console.log("Formulario válido, enviando...");
+            // Aquí sigue el envío del request si no hay errores
+
+            const payload = {
+                ...this.formData,
+                supplier_id: this.supplierData[0]?.supplier_id || null,
+                items_order: this.productData.map((item) => ({
+                    product_id: item.product_id,
+                    price: item.price,
+                    discount: item.discount,
+                    quantity: item.quantity,
+                    subtotalproducto: item.subtotalproducto,
+                })),
+            };
+
+            console.log("Revisando datos antes de enviar:");
+            console.log("Subtotal:", this.formData.subtotal);
+            console.log("Total impuestos:", this.formData.total_impuestos);
+            console.log("Total descuento:", this.formData.total_descuento);
+            console.log("Total:", this.formData.total);
+            console.log("Payload:", payload);
+
+            console.log("Datos enviados al backend:", payload); // 🛠️ Depuración
+
+            const requisitionId = this.formData.requisition_id; // Asegúrate que esté definido
+            if (!requisitionId) {
+                alert("El ID de la requisición no está definido.");
+                return;
+            }
+
+            console.log("Payload antes de enviar:", this.formData);
+
+            axios
+                .post(`/requisiciones/${requisitionId}/ordenes-compra`, payload)
+                .then((response) => {
+                    console.log("Mensaje:", response.data.message);
+                    if (response.data.redirect) {
+                        window.location.href = response.data.redirect;
+                    }
+                })
+                .catch((error) => {
+                    console.error("Error en la solicitud:", error);
+                    alert(
+                        "Error: " +
+                            (error.response?.data?.message ||
+                                "Error desconocido")
+                    );
+                });
+        },
     },
 
     watch: {
         productData: {
             handler(newVal) {
+                let subtotal = 0;
                 newVal.forEach((product) => {
                     product.subtotalproducto =
                         parseFloat(product.quantity || 0) *
                         parseFloat(product.price || 0);
+                    subtotal += product.subtotalproducto; // Acumula el subtotal total
                 });
+
+                // Actualiza formData de una sola vez
+                this.formData.subtotal = isNaN(subtotal) ? 0 : subtotal;
+                this.formData.total_descuento = isNaN(this.total_descuento)
+                    ? 0
+                    : this.total_descuento;
+                this.formData.total_impuestos = isNaN(this.total_impuestos)
+                    ? 0
+                    : this.total_impuestos;
+                this.formData.total = isNaN(this.total) ? 0 : this.total;
             },
             deep: true,
         },

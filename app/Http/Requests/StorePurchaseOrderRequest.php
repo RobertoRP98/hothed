@@ -24,24 +24,21 @@ class StorePurchaseOrderRequest extends FormRequest
         return [
             'requisition_id' => 'required|exists:requisitions,id',
             'supplier_id' => 'required|exists:suppliers,id',
-            
+
             'subtotal' => 'required',
-            'total_descuento' => 'required',
-            'total_impuestos' => 'required',
             'total' => 'required',
 
             'items_order' => 'required|array|min:1',
             'items_order.*.product_id' => 'required|exists:products,id',
-            'items_order.*.price' => 'required|integer|min:1',
-            'items_order.*.discount' => 'required|integer|min:1',
-            'items_order.*.quantity' => 'required|integer|min:1',
-            'items_order.*.subtotalproducto' => 'required|integer|min:1',
+            'items_order.*.quantity' => 'required|numeric|min:1',
+            'items_order.*.price' => 'required|numeric|min:0',
         ];
     }
 
-    public function messages(){
+    public function messages()
+    {
         return [
-        'required' => 'El campo :attribute requerido' ,
+            'required' => 'El campo :attribute requerido',
         ];
     }
 
