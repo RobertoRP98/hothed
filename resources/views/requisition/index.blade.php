@@ -124,7 +124,7 @@
                     </button>
                 </a>
 
-                <a class="text-white" href="{{ url('/error-405') }}">
+                <a class="text-white" href="{{ route('ordencompra.create', $requisicion->id)  }}">
                     <button class="btn btn-danger mb-2">
                         Crear OC
                     </button>
