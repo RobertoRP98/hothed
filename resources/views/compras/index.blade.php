@@ -108,7 +108,9 @@
                         VER
                     </button>
                 </a> 
-                {{-- <a class="text-white" href="{{ url('requisitiones/'.$requisition->id.'/edit') }}"> --}}
+                <a class="text-white" href="{{ url('requisiciones/'.$oc->requisition->id.'/'.'ordenes-compra'.'/'.$oc->id .'/edit') }}"
+
+                    >
                     <button class="btn btn-success mb-2">
                         Editar
                     </button>

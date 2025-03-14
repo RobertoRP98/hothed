@@ -334,7 +334,7 @@
                         <td>
                             <input
                                 type="text"
-                                :value="value.tax ? value.tax.concept : 'N/A'"
+                                :value="value.tax"
                                 class="form-control"
                                 placeholder="Impuesto"
                                 readonly
@@ -481,19 +481,19 @@ export default {
     mounted() {
         if (this.initialData) {
             this.formData = { ...this.initialData.formData }; // Carga todo lo que venga de PHP
-            console.log("Datos iniciales recibidos:", this.formData);
+           this.supplierData = [...this.initialData.supplierData]; // ✅ Asegura que supplierData tenga el proveedor correcto
+           this.productData = [...this.initialData.productData] // ✅ Esto sí funciona
         }
-
-        if (!this.formData.po_status) {
-        this.formData.po_status = "PENDIENTE DE PAGO";
-    }
+        console.log("Datos iniciales recibidos:", this.formData);
         console.log("Datos iniciales:", this.formData);
         console.log("Datos iniciales recibidos:", this.initialData);
+        console.log("Supplier Data:", this.supplierData);
     },
     data() {
         return {
             //DATOS GENERALES DEL FORMULARIO - OC MODEL
             formData: {
+                order: "",
                 requisition_id: "",
                 type_op: "Local", //
                 payment_type: "TRANSFERENCIA",
@@ -522,6 +522,7 @@ export default {
                 {
                     supplier_id: "",
                     name: "",
+                    rfc: "",
                     suggestions: [],
                 },
             ],
@@ -799,18 +800,27 @@ export default {
                 : 0;
         },
 
-        total_impuestos() {
-            return this.productData?.length
-                ? this.productData.reduce((acc, product) => {
-                      const tasaImpuesto = product.tax
-                          ? product.tax.percentage / 100
-                          : 0;
-                      return (
-                          acc + (product.subtotalproducto || 0) * tasaImpuesto
-                      );
-                  }, 0)
-                : 0;
-        },
+    total_impuestos() {
+    return this.productData?.length
+        ? this.productData.reduce((acc, product) => {
+              let tasaImpuesto = 0;
+
+              if (typeof product.tax === "object" && product.tax.percentage) {
+                  // Ya es un objeto con percentage
+                  tasaImpuesto = product.tax.percentage / 100;
+              } else if (typeof product.tax === "string") {
+                  // Intenta extraer el porcentaje del string, asumiendo formato "IVA 16%"
+                  const match = product.tax.match(/\d+/); // Busca números
+                  if (match) {
+                      tasaImpuesto = parseFloat(match[0]) / 100; // Convierte el número en decimal
+                  }
+              }
+
+              return acc + (product.subtotalproducto || 0) * tasaImpuesto;
+          }, 0)
+        : 0;
+},
+
 
         total_descuento() {
             return this.productData?.length

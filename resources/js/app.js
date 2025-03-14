@@ -7,6 +7,7 @@ import ViewRequisition from './components/Requisition/ViewRequisition.vue';
 
 //Inicia ordenes de compra
 import CreateCompra from './components/Compra/CreateCompra.vue';
+import EditCompra from './components/Compra/EditCompra.vue';
 //Finaliza ordenes de compra
 
 
@@ -26,8 +27,7 @@ app.component('view-requisition', ViewRequisition);
 
 //REGISTRO DE COMPRAS
 app.component('create-compra',CreateCompra);
-
-
+app.component('edit-compra',EditCompra);
 
 
 // Montar la aplicación en el contenedor principal
