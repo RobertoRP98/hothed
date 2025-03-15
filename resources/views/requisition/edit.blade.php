@@ -2,7 +2,7 @@
 @section('editsupplier')
 <div class="container">
     <br>
-    <form action="{{ url('/requisiciones/' . $requisition->id) }}" method="post" enctype="multipart/form-data">
+      <form @submit.prevent>
         @csrf
         {{method_field('PATCH')}}   
         

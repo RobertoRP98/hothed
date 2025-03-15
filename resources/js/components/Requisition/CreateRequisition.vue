@@ -112,9 +112,9 @@
                         type="text"
                         v-model="formData.notes_client"
                         class="form-control"
-                        placeholder="EJEMPLO: EL MOTIVO DE LA PRIORIDAD"
+                        placeholder="EJEMPLO: VISITA DE AUDITORIA, MANTENIMIENTO MARTILLOS, ETC"
                     />
-                    <label class="form-label">ESCRIBIR NOTA</label>
+                    <label class="form-label">DESCRIPCIÓN BREVE</label>
                 </div>
             </div>
         </div>
@@ -288,17 +288,11 @@ export default {
             if (!this.formData.request_date) {
                 this.errors.request_date =
                     "La fecha de solicitud es obligatoria.";
+            }
 
-                this.errors = {}; // Reinicia errores antes de validar
-                console.log(
-                    "Valor de required_date:",
-                    this.formData.required_date
-                ); //  Ver qué tiene el campo
-
-                if (!this.formData.required_date) {
-                    this.errors.required_date =
-                        "La fecha requerida es obligatoria.";
-                }
+            if (!this.formData.required_date) {
+                this.errors.required_date =
+                    "La fecha requerida es obligatoria.";
             }
 
             // Validar días restantes como número
@@ -308,6 +302,10 @@ export default {
             ) {
                 this.errors.days_remaining =
                     "Los días restantes deben ser un número.";
+            }
+
+            if (!this.formData.notes_client) {
+                this.errors.notes_client = "Falta descripción breve";
             }
 
             // // Validar caja chica como booleano (0 o 1)
@@ -340,6 +338,7 @@ export default {
                 });
             }
 
+            console.log("Errores encontrados: ", this.errors);
             return Object.keys(this.errors).length === 0; // Retorna true si no hay errores
         },
 
@@ -357,9 +356,11 @@ export default {
                 );
                 return; // Evita que continúe el envío del formulario
             }
-
             if (!this.validateForm()) {
-                alert("Corrige los errores antes de enviar.");
+                let errorMessages = Object.values(this.errors).join("\n");
+                alert(
+                    "Corrige los errores antes de enviar:\n\n" + errorMessages
+                );
                 console.error("Errores de validación:", this.errors);
                 return; // 💡 Esto debería detener la ejecución
             }

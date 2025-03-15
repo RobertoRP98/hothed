@@ -62,7 +62,7 @@ class PurchaseOrderController extends Controller
                 'authorization_3' => 'Pendiente',
                 'authorization_4' => 'Pendiente',
                 'delivery_condition' => '100% Antes Entrega',
-                'po_status' => 'Pendiente de Pago',
+                'po_status' => 'PENDIENTE DE PAGO',
                 'bill' => 'Pendiente Facturar',
                 'subtotal' => 0,
                 'total_descuento' => 0,
@@ -150,7 +150,7 @@ class PurchaseOrderController extends Controller
                     ]);
                 }
             });
-
+            
             return response()->json([
                 'message' => 'Orden de compra creada con éxito.',
                 'redirect' => route('ordencompra.index')
@@ -176,9 +176,15 @@ class PurchaseOrderController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit($id)
+    public function edit($id, $requisicione)
     {
-        $order = PurchaseOrder::with(['itemsOrderPurchase.product.tax', 'supplier', 'requisition'])->findOrFail($id);
+        //$order = PurchaseOrder::with(['itemsOrderPurchase.product.tax', 'supplier', 'requisition'])->findOrFail($id);
+
+        // Validar que la orden de compra pertenece a la requisición
+    $order = PurchaseOrder::with(['itemsOrderPurchase.product.tax', 'supplier', 'requisition'])
+    ->where('id', $id)
+    ->where('requisition_id', $requisicione) // Asegurar relación
+    ->firstOrFail();
 
         $today = Carbon::now()->format('Y-m-d');
         //Datos para seleccionar
@@ -193,6 +199,7 @@ class PurchaseOrderController extends Controller
         $initialData = [
             'formData' => [
                 'order' => $order->id,
+                'requisition' => $order->requisition->id,
                 'supplier_id' => $order->supplier_id,
                 'type_op' => $order->type_op,
                 'payment_type' => $order->payment_type,
@@ -238,12 +245,18 @@ class PurchaseOrderController extends Controller
                     'subtotalproducto' => $item->subtotalproducto, // ✅ De items_order_purchase
                     'udm' => optional($item->product)->udm ?? 'N/A', // ✅ Evitar errores si es null
                     'internal_id' => optional($item->product)->internal_id ?? 'N/A', // ✅ Evitar errores si es null
-                    'tax' => optional($item->product->tax)->concept ?? 'N/A', // ✅ Evitar errores si es null
+                    'tax' => [
+                        'concept' => optional($item->product->tax)->concept ?? 'N/A',
+                        'percentage' => optional($item->product->tax)->percentage ?? 0, // Si es null, envía 0
+                    ],
                     'suggestions' => [],
 
                 ];
             })->toArray(),
         ];
+
+        //dd($initialData);
+
 
 
         // dd($initialData);
@@ -255,7 +268,81 @@ class PurchaseOrderController extends Controller
      */
     public function update(UpdatePurchaseOrderRequest $request, PurchaseOrder $purchaseOrder)
     {
-        //
+        try {
+            Log::info('Datos recibidos en update:', $request->all());
+            Log::info('Items recibidos:', $request->input('items_order'));
+    
+            // Validar que los productos existan en la BD
+            $productIds = array_column($request->input('items_order', []), 'product_id');
+            $validProductIds = Product::whereIn('id', $productIds)->pluck('id')->toArray();
+    
+            foreach ($productIds as $id) {
+                if (!in_array($id, $validProductIds)) {
+                    throw ValidationException::withMessages([
+                        'items_order' => 'Uno o más productos seleccionados no son válidos.',
+                    ]);
+                }
+            }
+    
+            DB::transaction(function () use ($request, $purchaseOrder) {
+                // Actualizar los datos de la orden de compra
+                $purchaseOrder->update(array_merge(
+                    $request->only([
+                        'requisition_id',
+                        'supplier_id',
+                        'type_op',
+                        'payment_type',
+                        'unique_payment',
+                        'quotation',
+                        'currency',
+                        'finished',
+                        'date_end',
+                        'payment_day',
+                        'authorization_2',
+                        'authorization_4',
+                        'delivery_condition',
+                        'po_status',
+                        'bill',
+                    ]),
+                    [
+                        'requisition_id' => $purchaseOrder->requisition_id, // Asegurar que no se pierda
+                        'subtotal' => $request->input('subtotal'),
+                        'tax' => $request->input('total_impuestos'),
+                        'total_descuento' => $request->input('total_descuento'),
+                        'total' => $request->input('total'),
+                        'date_start' => $request->input('date_start', Carbon::now()->format('Y-m-d'))
+                    ]
+                ));
+    
+                Log::info('Orden actualizada:', $purchaseOrder->toArray());
+    
+                // Eliminar los items anteriores y agregar los nuevos
+                $purchaseOrder->itemsOrderPurchase()->delete();
+                foreach ($request->input('items_order') as $item) {
+                    ItemOrderPurchase::create([
+                        'purchase_order_id' => $purchaseOrder->id,
+                        'product_id' => $item['product_id'],
+                        'quantity' => $item['quantity'],
+                        'price' => $item['price'],
+                        'discount' => $item['discount'],
+                        'subtotal' => $item['subtotalproducto']
+                    ]);
+                }
+            });
+    
+            return response()->json([
+                'message' => 'Orden de compra actualizada con éxito.',
+                'redirect' => route('ordencompra.index')
+            ]);
+    
+        } catch (\Exception $e) {
+            Log::error('Error al actualizar orden de compra:', ['error' => $e->getMessage()]);
+            return response()->json([
+                'error' => 'Ocurrió un error al actualizar la orden de compra. Intenta nuevamente.'
+            ], 500);
+        }
+
+        dd($purchaseOrder);
     }
 
     /**

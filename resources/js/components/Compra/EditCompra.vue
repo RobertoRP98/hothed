@@ -219,7 +219,9 @@
                         <option value="PENDIENTE DE PAGO">
                             PENDIENTE DE PAGO
                         </option>
-                        <option value="PENDIENTE DE PAGO (SERVICIO CONCLUIDO)">PENDIENTE DE PAGO (SERVICIO CONCLUIDO)</option>
+                        <option value="PENDIENTE DE PAGO (SERVICIO CONCLUIDO)">
+                            PENDIENTE DE PAGO (SERVICIO CONCLUIDO)
+                        </option>
                         <option value="PAGADA">PAGADA</option>
                         <option value="CANCELADA">CANCELADA</option>
                         <option value="EN PAUSA">EN PAUSA</option>
@@ -334,7 +336,7 @@
                         <td>
                             <input
                                 type="text"
-                                :value="value.tax"
+                                :value="value.tax?.concept || 'N/A'"
                                 class="form-control"
                                 placeholder="Impuesto"
                                 readonly
@@ -481,8 +483,8 @@ export default {
     mounted() {
         if (this.initialData) {
             this.formData = { ...this.initialData.formData }; // Carga todo lo que venga de PHP
-           this.supplierData = [...this.initialData.supplierData]; // ✅ Asegura que supplierData tenga el proveedor correcto
-           this.productData = [...this.initialData.productData] // ✅ Esto sí funciona
+            this.supplierData = [...this.initialData.supplierData]; // ✅ Asegura que supplierData tenga el proveedor correcto
+            this.productData = [...this.initialData.productData]; // ✅ Esto sí funciona
         }
         console.log("Datos iniciales recibidos:", this.formData);
         console.log("Datos iniciales:", this.formData);
@@ -719,6 +721,7 @@ export default {
 
             const payload = {
                 ...this.formData,
+                requisition_id: this.formData.requisition_id || this.initialData?.formData?.requisition,
                 supplier_id: this.supplierData[0]?.supplier_id || null,
                 items_order: this.productData.map((item) => ({
                     product_id: item.product_id,
@@ -737,9 +740,17 @@ export default {
             console.log("Payload:", payload);
 
             console.log("Datos enviados al backend:", payload); // 🛠️ Depuración
-
-            const requisitionId = this.formData.requisition_id; // Asegúrate que esté definido
+            const requisitionId = this.formData.requisition_id || this.initialData?.formData?.requisition;
+            console.log("el ID DE LA REQUI ES ", requisitionId)
             if (!requisitionId) {
+                alert("El ID de la requisición no está definido.");
+                return;
+            }
+
+            const orderId = this.formData.order; // Asegúrate que esté definido
+            console.log("el ID DE LA order ES ", orderId)
+           
+            if (!orderId) {
                 alert("El ID de la requisición no está definido.");
                 return;
             }
@@ -747,7 +758,7 @@ export default {
             console.log("Payload antes de enviar:", this.formData);
 
             axios
-                .post(`/requisiciones/${requisitionId}/ordenes-compra`, payload)
+                .patch(`/ordenes-compra/${orderId}/requisiciones/${requisitionId}`, payload)
                 .then((response) => {
                     console.log("Mensaje:", response.data.message);
                     if (response.data.redirect) {
@@ -800,38 +811,37 @@ export default {
                 : 0;
         },
 
-    total_impuestos() {
-    return this.productData?.length
-        ? this.productData.reduce((acc, product) => {
-              let tasaImpuesto = 0;
+        total_impuestos() {
+            return this.productData?.length
+                ? this.productData.reduce((acc, product) => {
+                      let tasaImpuesto = 0;
 
-              if (typeof product.tax === "object" && product.tax.percentage) {
-                  // Ya es un objeto con percentage
-                  tasaImpuesto = product.tax.percentage / 100;
-              } else if (typeof product.tax === "string") {
-                  // Intenta extraer el porcentaje del string, asumiendo formato "IVA 16%"
-                  const match = product.tax.match(/\d+/); // Busca números
-                  if (match) {
-                      tasaImpuesto = parseFloat(match[0]) / 100; // Convierte el número en decimal
-                  }
-              }
+                      // Verifica que product.tax sea un objeto y tenga un percentage válido
+                      if (
+                          product.tax &&
+                          typeof product.tax === "object" &&
+                          !isNaN(product.tax.percentage)
+                      ) {
+                          tasaImpuesto = product.tax.percentage / 100;
+                      }
 
-              return acc + (product.subtotalproducto || 0) * tasaImpuesto;
-          }, 0)
-        : 0;
-},
-
+                      return (
+                          acc + (product.subtotalproducto || 0) * tasaImpuesto
+                      );
+                  }, 0)
+                : 0;
+        },
 
         total_descuento() {
             return this.productData?.length
                 ? this.productData.reduce((acc, product) => {
-                      const tasaDescuento = product.discount
-                          ? product.discount / 100
-                          : 0;
-                      return (
-                          acc + product.quantity * product.price * tasaDescuento
-                      );
-                  }, 0) // <== Aquí cerramos correctamente el reduce con `0`
+                      const quantity = parseFloat(product.quantity) || 0;
+                      const price = parseFloat(product.price) || 0;
+                      const discount = parseFloat(product.discount) || 0;
+                      const tasaDescuento = discount / 100;
+
+                      return acc + quantity * price * tasaDescuento;
+                  }, 0)
                 : 0;
         },
 

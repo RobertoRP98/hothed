@@ -22,29 +22,16 @@ class UpdatePurchaseOrderRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'requisition_id' => 'required|exists:requisitions,id',
+            'supplier_id' => 'required|exists:suppliers,id',
 
-            'supplier_id' => 'required',
-            'requisition_id' => 'required',
-            'tax_id' => 'required',
-            'importance_op' => 'required',
-            'type_op' => 'required',
-            'date_start' => 'required',
-            'date_end' => 'nullable',
-            'status_time' => 'required',
-            'payment_type' => 'required',
-            'payment_condition' => 'required',
-            'payment_display' => 'required',
-            'status_1' => 'required',
-            'status_2' => 'required',
-            'status_3' => 'required',
-            'status_4' => 'required',
-            'po_status' => 'required',
-            'bill' => 'required',
-            'finished' => 'required',
-            'currency' => 'required',
             'subtotal' => 'required',
-            'tax' => 'required',
             'total' => 'required',
+
+            'items_order' => 'required|array|min:1',
+            'items_order.*.product_id' => 'required|exists:products,id',
+            'items_order.*.quantity' => 'required|numeric|min:1',
+            'items_order.*.price' => 'required|numeric|min:0',
         ];
     }
 

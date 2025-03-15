@@ -50,7 +50,6 @@
                     <label class="form-label">¿CAJA CHICA?</label>
                 </div>
             </div> -->
-
         </div>
 
         <!-- Segunda fila -->
@@ -112,9 +111,9 @@
                         type="text"
                         v-model="formData.notes_client"
                         class="form-control"
-                        placeholder="EJEMPLO: EL MOTIVO DE LA PRIORIDAD"
+                        placeholder="EJEMPLO: VISITA DE AUDITORIA, MANTENIMIENTO MARTILLOS, ETC"
                     />
-                    <label class="form-label">NOTAS DEL SOLICITANTE</label>
+                    <label class="form-label">DESCRIPCIÓN BREVE</label>
                 </div>
             </div>
 
@@ -252,11 +251,9 @@ export default {
                 finished_date: "",
 
                 required_date: "",
-               // petty_cash: "0",
+                // petty_cash: "0",
                 notes_client: "",
                 notes_resp: "",
-
-
             },
             productData: [
                 {
@@ -303,7 +300,83 @@ export default {
             this.productData[index].description = product.description; // Mostrar descripción
             this.productData[index].suggestions = []; // Limpiar sugerencias
         },
+        validateForm() {
+            this.errors = {}; // Reiniciar errores
+
+            // Validar user_id
+            if (!this.formData.user_id) {
+                this.errors.user_id = "El usuario es obligatorio.";
+            }
+
+            // Validar fechas obligatorias
+            if (!this.formData.request_date) {
+                this.errors.request_date =
+                    "La fecha de solicitud es obligatoria.";
+            }
+
+            if (!this.formData.required_date) {
+                this.errors.required_date =
+                    "La fecha requerida es obligatoria.";
+            }
+
+            // Validar días restantes como número
+            if (
+                this.formData.days_remaining === "" ||
+                isNaN(this.formData.days_remaining)
+            ) {
+                this.errors.days_remaining =
+                    "Los días restantes deben ser un número.";
+            }
+
+            if (!this.formData.notes_client) {
+                this.errors.notes_client = "Falta descripción breve";
+            }
+
+            // // Validar caja chica como booleano (0 o 1)
+            // if (!["0", "1"].includes(this.formData.petty_cash)) {
+            //     this.errors.petty_cash = "Caja chica debe ser 'Sí' o 'No'.";
+            // }
+
+            // Validar productos
+            if (this.productData.length < 1) {
+                this.errors.items_requisition =
+                    "Debes agregar al menos un producto.";
+            } else {
+                this.productData.forEach((item, index) => {
+                    if (!item.product_id) {
+                        {
+                            this.errors[
+                                `product_id_${index}`
+                            ] = `El producto en la fila ${
+                                index + 1
+                            } es obligatorio.`;
+                        }
+                    }
+                    if (!item.quantity || item.quantity < 1) {
+                        this.errors[
+                            `quantity_${index}`
+                        ] = `La cantidad en la fila ${
+                            index + 1
+                        } debe ser mayor a 0.`;
+                    }
+                });
+            }
+
+            console.log("Errores encontrados: ", this.errors);
+            return Object.keys(this.errors).length === 0; // Retorna true si no hay errores
+        },
+
         submitForm() {
+            // Validar el formulario antes de enviar
+            if (!this.validateForm()) {
+                let errorMessages = Object.values(this.errors).join("\n");
+                alert(
+                    "Corrige los errores antes de enviar:\n\n" + errorMessages
+                );
+                console.error("Errores de validación:", this.errors);
+                return; // 💡 Esto debería detener la ejecución
+            }
+
             // Validar que todos los productos tengan un ID válido
             const invalidItems = this.productData.filter(
                 (item) => !item.product_id
@@ -328,6 +401,10 @@ export default {
             axios
                 .patch(`/requisiciones/${this.formData.id}`, payload)
                 .then((response) => {
+                    console.log(
+                        "Respuesta completa del backend:",
+                        response.data
+                    );
                     console.log("Mensaje:", response.data.message);
 
                     // Redirigir a la URL proporcionada por el backend

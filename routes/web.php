@@ -175,9 +175,13 @@ Route::group(['middleware' => ['auth', 'role:Developer|RespCompras']], function 
    
     Route::post('/requisiciones/{requisicione}/ordenes-compra', [PurchaseOrderController::class, 'store'])->name('ordencompra.store');
 
-    Route::get('/requisiciones/{requisicione}/ordenes-compra/{purchaseOrder}/edit',[PurchaseOrderController::class,'edit'])->name('ordencompra.edit');
+    Route::get('/ordenes-compra/{purchaseOrder}/requisiciones/{requisicione}/edit', [PurchaseOrderController::class, 'edit'])->name('ordencompra.edit');
+
+    Route::patch('/ordenes-compra/{purchaseOrder}/requisiciones/{requisicione}/', [PurchaseOrderController::class, 'update'])->name('ordencompra.update');
+
+
+
  
-    Route::get('/requisiciones/{requisicione}/ordenes-compra/{purchaseOrder}',[PurchaseOrderController::class,'update'])->name('ordencompra.update');
 
 
 });

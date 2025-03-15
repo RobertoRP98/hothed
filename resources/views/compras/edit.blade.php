@@ -2,7 +2,7 @@
 @section('editsupplier')
 <div class="container">
     <br>
-    <form action="{{ url('/requisiciones/' . $order->requisition->id) . '/ordenes-compra/'.$order->id  }}" method="post" enctype="multipart/form-data">
+    <form @submit.prevent>
         @csrf
         {{method_field('PATCH')}}   
         
@@ -33,7 +33,7 @@
 
 
           <div class="col-md-12">
-            <h1>Editar la orden de compra con número {{$order->id}}</h1>
+            <h1>Editar la orden de compra #{{$order->id}} que pertenece a la requsición#{{$order->requisition->id}}</h1>
           </div>
          
         </div>

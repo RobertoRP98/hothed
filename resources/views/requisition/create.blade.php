@@ -1,6 +1,7 @@
 @extends('layouts.app')
 @section('createsupplier')
 <div class="container">
+  <br>
 <form @submit.prevent>
     @csrf
     <div class="row align-items-center">

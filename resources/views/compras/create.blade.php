@@ -29,7 +29,7 @@
       
       </div>
       <div class="col-md-12">
-        <h1>Agregar Orden de Compra</h1>
+        <h1>Agregar Orden de Compra a la requisición #{{$requisicion->id}}</h1>
       </div>
      
     </div>

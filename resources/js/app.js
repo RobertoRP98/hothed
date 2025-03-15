@@ -10,12 +10,18 @@ import CreateCompra from './components/Compra/CreateCompra.vue';
 import EditCompra from './components/Compra/EditCompra.vue';
 //Finaliza ordenes de compra
 
+//AVISARLE QUE LARAVEL YA GENERO EL TOKEN
+import axios from 'axios';
+axios.defaults.headers.common['X-CSRF-TOKEN'] = document.querySelector('meta[name="csrf-token"]').content;
+//FINALIZA AVISO DE TOKEN
 
 
 
 import * as bootstrap from 'bootstrap';
 
 import { createApp } from 'vue';
+
+
 
 const app = createApp({});
 // Registrar el componente global
