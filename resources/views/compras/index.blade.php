@@ -103,7 +103,8 @@
         
 
             <td>
-                {{-- <a class="text-white" href="{{ url('requisitiones/'.$requisition->id) }}"> --}}
+                <a class="text-white" href="{{ route('ordencompra.show', ['purchaseOrder' => $oc->id, 'requisicione' => $oc->requisition->id]) }}">
+
                     <button class="btn btn-primary mb-2">
                         VER
                     </button>

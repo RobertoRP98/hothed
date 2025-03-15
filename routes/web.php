@@ -57,16 +57,15 @@ Route::get('/new-index', function () {
 
 
 // EMPIEZA ALMACEN
-Route::group(['middleware'=> ['auth','role:Developer']], function(){
-Route::resource('almacen-herramientas',ToolwarehouseController::class)->middleware('auth');
-Route::get('historial-almacen', [ToolwarehouseController::class, 'history'])->middleware('auth')->name('toolwarehouse.history');
-Route::resource('familias', FamilyController::class)->middleware('auth');
-Route::resource('subgrupos', SubgroupController::class)->middleware('auth');
-Route::resource('toolstatus', ToolstatusController::class)->middleware('auth');
-Route::resource('bases', BaseController::class)->middleware('auth');
+Route::group(['middleware' => ['auth', 'role:Developer']], function () {
+    Route::resource('almacen-herramientas', ToolwarehouseController::class)->middleware('auth');
+    Route::get('historial-almacen', [ToolwarehouseController::class, 'history'])->middleware('auth')->name('toolwarehouse.history');
+    Route::resource('familias', FamilyController::class)->middleware('auth');
+    Route::resource('subgrupos', SubgroupController::class)->middleware('auth');
+    Route::resource('toolstatus', ToolstatusController::class)->middleware('auth');
+    Route::resource('bases', BaseController::class)->middleware('auth');
 
-Route::get('/export-herramientas', [ToolwarehouseController::class, 'exportReporteHerramientas'])->name('export.herramientas');
-
+    Route::get('/export-herramientas', [ToolwarehouseController::class, 'exportReporteHerramientas'])->name('export.herramientas');
 });
 // TERMINA ALMACEN
 
@@ -169,21 +168,17 @@ Route::group(['middleware' => ['auth', 'role:Developer|RespCompras']], function 
     Route::get('/requisiciones', [RequisitionController::class, 'index'])->name('requisiciones.index');
 
     //INICIA ORDENES DE COMPRAS
-    Route::get('/ordenes-compra',[PurchaseOrderController::class,'index'])->name('ordencompra.index');
+    Route::get('/ordenes-compra', [PurchaseOrderController::class, 'index'])->name('ordencompra.index');
 
-    Route::get('/requisiciones/{requisicione}/ordenes-compra/create',[PurchaseOrderController::class,'create'])->name('ordencompra.create');
-   
+    Route::get('/requisiciones/{requisicione}/ordenes-compra/create', [PurchaseOrderController::class, 'create'])->name('ordencompra.create');
+
     Route::post('/requisiciones/{requisicione}/ordenes-compra', [PurchaseOrderController::class, 'store'])->name('ordencompra.store');
 
     Route::get('/ordenes-compra/{purchaseOrder}/requisiciones/{requisicione}/edit', [PurchaseOrderController::class, 'edit'])->name('ordencompra.edit');
 
     Route::patch('/ordenes-compra/{purchaseOrder}/requisiciones/{requisicione}/', [PurchaseOrderController::class, 'update'])->name('ordencompra.update');
 
-
-
- 
-
-
+    Route::get('/ordenes-compra/{purchaseOrder}/requisiciones/{requisicione}/show', [PurchaseOrderController::class, 'show'])->name('ordencompra.show');
 });
 
 //RUTAS PARA EDITAR SOLO SON ACCESIBLES PARA GERENCIA Y RESPONSABLE DE COMPRAS
@@ -248,5 +243,3 @@ Route::group(
     }
 );
 //TERMINAN MODULOS DE COMPRAS
-
-
