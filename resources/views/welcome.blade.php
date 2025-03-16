@@ -239,3 +239,7 @@
 
 </body>
 @endsection
+
+@push('js')
+    @vite(['resources/js/reveal.js'])
+@endpush

@@ -1,4 +1,10 @@
 import './bootstrap';
+import { createApp } from 'vue';
+
+
+//AXIOS PARA EL TOKEN DE LOS FORM
+import axios  from './services/axios';
+
 //Inicia requisiciones
 import CreateRequisition from './components/Requisition/CreateRequisition.vue';
 import EditRequisition from './components/Requisition/EditRequisition.vue';
@@ -8,58 +14,24 @@ import ViewRequisition from './components/Requisition/ViewRequisition.vue';
 //Inicia ordenes de compra
 import CreateCompra from './components/Compra/CreateCompra.vue';
 import EditCompra from './components/Compra/EditCompra.vue';
+import ShowCompra from './components/Compra/ShowCompra.vue';
 //Finaliza ordenes de compra
 
-//AVISARLE QUE LARAVEL YA GENERO EL TOKEN
-import axios from 'axios';
-axios.defaults.headers.common['X-CSRF-TOKEN'] = document.querySelector('meta[name="csrf-token"]').content;
-//FINALIZA AVISO DE TOKEN
 
+if (document.getElementById('app')) {
+    const app = createApp({});
+    //COMPONENTES DE REQUISICION
+    app.component('create-requisition', CreateRequisition);
+    app.component('edit-requisition', EditRequisition);
+    app.component('view-requisition', ViewRequisition);
+    //FINALIZA REQUISICION
 
+    //COMPONENTES DE COMPRAS
+    app.component('create-compra', CreateCompra);
+    app.component('edit-compra', EditCompra);
+    app.component('show-compra', ShowCompra);
+    //FINALIZA REQUISICION
 
-import * as bootstrap from 'bootstrap';
-
-import { createApp } from 'vue';
-
-
-
-const app = createApp({});
-// Registrar el componente global
-//REGISTROS DE REQUISICIONES
-app.component('create-requisition', CreateRequisition);
-app.component('edit-requisition', EditRequisition);
-app.component('view-requisition', ViewRequisition);
-//FIN DE REQUISICIONES
-
-//REGISTRO DE COMPRAS
-app.component('create-compra',CreateCompra);
-app.component('edit-compra',EditCompra);
-
-
-// Montar la aplicación en el contenedor principal
-app.mount('#app');// Asume que tienes un <div id="app"></div> en tu layout Blade.
-
-
-
-window.addEventListener('scroll', reveal);
-
-
-function reveal(){
-    var reveals = document.querySelectorAll('.reveal');
-
-    for(var i=0; i < reveals.length; i++){
-        var windowheight = window.innerHeight;
-        var revealtop = reveals[i].getBoundingClientRect().top;
-        var revealpoint = 150;
-
-        if(revealtop < windowheight - revealpoint){
-            reveals[i].classList.add('active');
-        }
-        else{
-            reveals[i].classList.remove('active');
-        }
-    }
+    // Montar la aplicación en el contenedor principal
+    app.mount('#app');// Asume que tienes un <div id="app"></div> en tu layout Blade.
 }
-
-
-
