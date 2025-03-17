@@ -226,7 +226,6 @@
                         <th>Impuesto</th>
                         <th>Descuento</th>
                         <th>Importe</th>
-                        <th>Acciones</th>
                     </tr>
                 </thead>
                 <tbody>

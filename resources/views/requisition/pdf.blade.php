@@ -1,4 +1,3 @@
-chat pregunta, por que mi pdf la marca de agua solo sale en la ultima hoja y desde la primera hasta la ultima ?
 <html>
 
 <head>
@@ -143,12 +142,12 @@ body {
         STATUS DE REQUISICIÓN #{{ $initialData['formData']['id'] }} :  <strong>{{ $initialData['formData']['status_requisition'] }}</strong>
     </div>
 
-<!-- ✅ Contenedor de la marca de agua en TODAS las páginas -->
+{{-- <!-- ✅ Contenedor de la marca de agua en TODAS las páginas -->
 <div class="watermark-container">
     @for ($i = 0; $i < 36; $i++) <!-- 🔥 Más iteraciones para llenar cada página -->
     <span>{{ strtoupper($initialData['formData']['status_requisition'])}}</span>
     @endfor
-</div>
+</div> --}}
 
 
 </body>

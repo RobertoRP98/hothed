@@ -182,6 +182,9 @@ Route::group(['middleware' => ['auth', 'role:Developer|RespCompras']], function 
     Route::patch('/ordenes-compra/{purchaseOrder}/requisiciones/{requisicione}/', [PurchaseOrderController::class, 'update'])->name('ordencompra.update');
 
     Route::get('/ordenes-compra/{purchaseOrder}/requisiciones/{requisicione}/show', [PurchaseOrderController::class, 'show'])->name('ordencompra.show');
+
+    Route::get('/ordenes-compra/{purchaseOrder}/requisiciones/{requisicione}/pdf', [PurchaseOrderController::class, 'pdf'])->name('ordencompra.pdf');
+
 });
 
 //RUTAS PARA EDITAR SOLO SON ACCESIBLES PARA GERENCIA Y RESPONSABLE DE COMPRAS
