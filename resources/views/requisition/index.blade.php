@@ -117,7 +117,14 @@
                     <button class="btn btn-primary mb-2">
                         VER
                     </button>
+                </a>
+
+                <a class="text-white" href="{{ url('requisiciones/'.$requisicion->id . '/pdf') }}">
+                    <button class="btn btn-secondary mb-2">
+                        PDF
+                    </button>
                 </a> 
+
                 <a class="text-white" href="{{ url('requisiciones/'.$requisicion->id.'/edit') }}">
                     <button class="btn btn-success mb-2">
                         Editar

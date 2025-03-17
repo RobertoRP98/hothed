@@ -2,10 +2,8 @@
 @section('editsupplier')
 <div class="container">
     <br>
-    <form action="{{ url('/requisiciones/' . $requisition->id) }}" method="post" enctype="multipart/form-data">
-        @csrf
-        {{method_field('GET')}}
-        
+    <form>
+   
          <div class="row align-items-center">
           <div class="mb-3">
             <button type="button" class="btn btn-warning btn-block">

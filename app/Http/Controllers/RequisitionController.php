@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use App\Models\Product;
 use App\Models\Requisition;
 use App\Models\ItemRequisition;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Http\Requests\StoreRequisitionRequest;
@@ -443,5 +444,73 @@ class RequisitionController extends Controller
     public function destroy(Requisition $requisition)
     {
         //
+    }
+
+
+    public function pdf($id)
+    {
+        $query = Requisition::query();
+
+        // Si el usuario no es Developer, filtrar por user_id
+        if (!auth()->user()->hasRole(['Developer', 'Coordconta', 'Auxconta', 'Auxalmacen', 'Coordalm'])) {
+            $query->where('user_id', auth()->id());
+        }
+
+        // Obtener la requisición o lanzar un 404 si no existe
+        $requisition = $query->where('id', $id)->firstOrFail();
+
+
+        // Calcular días restantes
+        $days_remaining_now = floor(\Carbon\Carbon::parse($requisition->production_date)->diffInDays(now(), false));
+
+
+        // Calcular importancia
+        if ($days_remaining_now >= -15) {
+            $importance_now = 'ALTA';
+        } elseif ($days_remaining_now >= -30) {
+            $importance_now = 'ALTA';
+        } elseif ($days_remaining_now >= -60) {
+            $importance_now = 'MEDIA';
+        } else {
+            $importance_now = 'BAJA';
+        }
+
+        $today = Carbon::now()->format('Y-m-d');
+
+        $initialData = [
+            'formData' => [
+                'id' => $requisition->id,
+                'user_id' => $requisition->user_id,
+                'status_requisition' => $requisition->status_requisition,
+                'importance' => $requisition->importance,
+                'finished' => $requisition->finished,
+                'request_date' => $requisition->request_date,
+                'production_date' => $requisition->production_date,
+                'days_remaining' => $requisition->days_remaining,
+                'finished_date' => $requisition->finished_date,
+
+                'required_date' => $requisition->required_date,
+                // 'petty_cash' => $requisition->petty_cash,
+                'notes_client' => $requisition->notes_client,
+                'notes_resp' => $requisition->notes_resp,
+
+                'importance_now' => $importance_now, // Agregar importancia calculada
+                'days_remaining_now' => $days_remaining_now, // Agregar días restantes calculados
+
+                'dep_user' => $requisition->user->area
+
+            ],
+            'productData' => $requisition->itemsRequisition->map(function ($item) {
+                return [
+                    'product_id' => $item->product_id,
+                    'description' => optional($item->product)->description ?? 'Producto no encontrado',
+                    'quantity' => $item->quantity,
+                    'suggestions' => [],
+                ];
+            })->toArray(),
+        ];
+
+        $pdf = Pdf::loadview('requisition.pdf', compact('requisition', 'today', 'initialData'));
+        return $pdf->download('requisicion '.$initialData['formData']['id'].'.pdf');
     }
 }

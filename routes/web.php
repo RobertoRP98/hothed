@@ -155,6 +155,9 @@ Auxcontratos|Coordconta|Coordalm|Subgerope|Gerope|Respsgi|Diradmin|Dirope|Coordc
     Route::get('/requisiciones/create', [RequisitionController::class, 'create'])->name('requisiciones.create');
     Route::post('/requisiciones', [RequisitionController::class, 'store'])->name('requisiciones.store');
     Route::get('/requisiciones/{requisicione}', [RequisitionController::class, 'show'])->name('requisiciones.show');
+    //RUTA DE PDF PARA LAS REQUISICIONES
+    Route::get('/requisiciones/{requisicione}/pdf', [RequisitionController::class, 'pdf'])->name('requisiciones.pdf');
+    
     Route::get('/mis-requisiciones', [AuthorizationRequisitionController::class, 'indexclient'])->name('requisicionesclient.index');
     Route::get('/productos-cliente', [AuthorizationRequisitionController::class, 'productclient'])->name('productclient.index');
 });
@@ -232,10 +235,6 @@ Route::group(
         Route::get('requisiciones-subope-autorizadas', [AuthorizationRequisitionController::class, 'autsubope'])->name('requisicionessubopeaut');
         Route::get('requisiciones-subope-canceladas', [AuthorizationRequisitionController::class, 'cansubope'])->name('requisicionessubopecan');
         Route::get('requisiciones-subope-finalizadas', [AuthorizationRequisitionController::class, 'finsubope'])->name('requisicionessubopefin');
-
-
-
-
 
         Route::get('requisiciones-resp-autorizadas', [AuthorizationRequisitionController::class, 'indexrespaut'])->name('requisicionesrespaut.index');
         Route::get('requisiciones-resp-canceladas', [AuthorizationRequisitionController::class, 'indexrespcan'])->name('requisicionesrespcan.index');
