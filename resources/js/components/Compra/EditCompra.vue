@@ -644,6 +644,10 @@ export default {
         validateForm() {
             this.errors = {}; // Reiniciar errores
 
+           if (!this.formData.supplier_id) {
+                this.errors.supplier_id = "El proveedor es obligatorio";
+            }
+
             if (!this.supplierData[0]?.supplier_id) {
                 this.errors.supplier_id = "El proveedor es obligatorio.";
             }
@@ -685,6 +689,13 @@ export default {
 
         /** 🔹 Enviar formulario solo si pasa la validación */
         submitForm() {
+            if (!this.validateForm()) {
+            let errorMessages = Object.values(this.errors).join("\n");
+                alert("Corrige los errores antes de enviar.\n\n" + errorMessages);
+                console.error("Errores de validacion",this.errors);
+                return; // 💡 Esto debería detener la ejecución
+            }
+            
             if (this.$refs.subtotalInput) {
                 this.$refs.subtotalInput.value = this.subtotal;
             }
@@ -710,11 +721,7 @@ export default {
                 return; // Evita que continúe el envío del formulario
             }
 
-            if (!this.validateForm()) {
-                alert("Corrige los errores antes de enviar.");
-                console.error("Errores de validación:", this.errors);
-                return; // 💡 Esto debería detener la ejecución
-            }
+           
 
             console.log("Formulario válido, enviando...");
             // Aquí sigue el envío del request si no hay errores

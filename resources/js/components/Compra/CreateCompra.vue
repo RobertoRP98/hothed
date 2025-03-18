@@ -641,6 +641,10 @@ export default {
         validateForm() {
             this.errors = {}; // Reiniciar errores
 
+            if (!this.formData.supplier_id) {
+                this.errors.supplier_id = "El proveedor es obligatorio";
+            }
+
             if (!this.supplierData[0]?.supplier_id) {
                 this.errors.supplier_id = "El proveedor es obligatorio.";
             }
@@ -652,13 +656,13 @@ export default {
             } else {
                 this.productData.forEach((item, index) => {
                     if (!item.product_id) {
-                        {
+                        
                             this.errors[
                                 `product_id_${index}`
                             ] = `El producto en la fila ${
                                 index + 1
                             } es obligatorio.`;
-                        }
+                        
                     }
                     if (!item.quantity || item.quantity < 1) {
                         this.errors[
@@ -682,6 +686,14 @@ export default {
 
         /** 🔹 Enviar formulario solo si pasa la validación */
         submitForm() {
+
+            if (!this.validateForm()) {
+            let errorMessages = Object.values(this.errors).join("\n");
+                alert("Corrige los errores antes de enviar.\n\n" + errorMessages);
+                console.error("Errores de validacion",this.errors);
+                return; // 💡 Esto debería detener la ejecución
+            }
+
             if (this.$refs.subtotalInput) {
                 this.$refs.subtotalInput.value = this.subtotal;
             }
@@ -694,25 +706,9 @@ export default {
             if (this.$refs.totalInput) {
                 this.$refs.totalInput.value = this.total;
             }
-            // 🔹 Validar que todos los productos tengan un ID válido
-            const invalidItems = this.productData.filter(
-                (item) => !item.product_id
-            );
+            
 
-            if (invalidItems.length > 0) {
-                alert(
-                    "Por favor, selecciona únicamente productos válidos de las sugerencias. " +
-                        "Si no aparece el producto que buscas, debe ser dado de alta"
-                );
-                return; // Evita que continúe el envío del formulario
-            }
-
-            if (!this.validateForm()) {
-                alert("Corrige los errores antes de enviar.");
-                console.error("Errores de validación:", this.errors);
-                return; // 💡 Esto debería detener la ejecución
-            }
-
+         
             console.log("Formulario válido, enviando...");
             // Aquí sigue el envío del request si no hay errores
 
