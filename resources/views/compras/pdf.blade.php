@@ -40,8 +40,8 @@ body {
         }
 
         .table th {
-            background-color: #2C3E50;
-            color: white;
+           /* background-color: #2C3E50; */
+            /* color: white; */
         }
 
         /* 🔹 Status Box */
@@ -160,7 +160,6 @@ body {
 
     <!-- ✅ Tabla de Productos -->
     <table class="table">
-        <thead>
             <tr>
                 <th>PROD.</th>
                 <th>CANTIDAD</th>
@@ -170,7 +169,6 @@ body {
                 <th>IMPORTE</th>
 
             </tr>
-        </thead>
         <tbody>
             @foreach($initialData['productData'] as $product)
             <tr>
@@ -248,7 +246,8 @@ body {
         <tbody>
             <tr>
                 <td class="no-decoration">
-            <img src="{{ public_path('images/firmapdf.png') }}" class="logo" alt="HOT HED">
+            <img src="{{ public_path('images/firmapdf.png') }}" alt="HOT HED" style="width: 200px; height: auto;">
+
         </td>
             </tr>
             <tr>

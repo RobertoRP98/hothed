@@ -39,8 +39,8 @@ body {
         }
 
         .table th {
-            background-color: #2C3E50;
-            color: white;
+            /* background-color: #2C3E50;
+            color: white; */
         }
 
         /* 🔹 Status Box */
