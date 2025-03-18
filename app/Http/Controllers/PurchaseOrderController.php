@@ -8,6 +8,7 @@ use App\Models\Supplier;
 use App\Models\Requisition;
 use App\Models\PurchaseOrder;
 use App\Models\ItemOrderPurchase;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
@@ -520,6 +521,8 @@ class PurchaseOrderController extends Controller
 
 
         // dd($initialData);
-        return view('compras.pdf', compact('order', 'today', 'proveedor','proveedorhh', 'producto', 'item', 'days_remaining_now', 'initialData'));
+
+        $pdf = Pdf::loadview('compras.pdf', compact('order', 'today', 'proveedor','proveedorhh', 'producto', 'item', 'days_remaining_now', 'initialData'));
+        return $pdf->download('Orden de compra - '.$initialData['formData']['order'].'.pdf');
     }
 }

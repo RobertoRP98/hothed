@@ -511,6 +511,6 @@ class RequisitionController extends Controller
         ];
 
         $pdf = Pdf::loadview('requisition.pdf', compact('requisition', 'today', 'initialData'));
-        return $pdf->download('requisicion '.$initialData['formData']['id'].'.pdf');
+        return $pdf->download('Requisicion '.$initialData['formData']['id'].'.pdf');
     }
 }

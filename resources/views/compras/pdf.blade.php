@@ -84,15 +84,34 @@ body {
     display: inline-block;
     text-align: center;
 }
+
+.no-decoration {
+    border: none !important;
+    background-color: transparent !important;
+}
+
+.text-left {
+    text-align: left;
+}
+
+.scale-container {
+    transform: scale(0.9); /* 🔹 Ajusta el tamaño sin deformar */
+    transform-origin: top center; /* 🔹 Mantiene el centrado */
+}
+
+.table {
+    table-layout: auto !important;
+}
     </style>
 </head>
 
 <body>
-
+    <div class="scale-container">
     <!-- ✅ Cabecera -->
     <table class="header-table">
         <tr>
-            <td><img src="{{ asset('images/logopdf.png') }}" class="logo" alt="HOT HED"></td>
+            <img src="{{ public_path('images/logopdf.png') }}" class="logo" alt="HOT HED">
+
             <td>
                 <h1 style="margin: 0;">ORDEN DE COMPRA</h1>
             </td>
@@ -129,7 +148,7 @@ body {
             <tr>
                 <td>ORDEN DE COMPRA #{{ $initialData['formData']['order'] }}</td>
                 <td>FECHA DE SOLICITUD: {{ date('d-m-Y', strtotime($initialData['formData']['date_start'])) }}</td>
-                <td>FEHCA LIMITE DE COMPRA: {{ date('d-m-Y', strtotime($initialData['formData']['production_date'])) }}</td>
+                <td>FECHA LIMITE DE COMPRA: {{ date('d-m-Y', strtotime($initialData['formData']['production_date'])) }}</td>
 
             </tr>
           
@@ -143,11 +162,11 @@ body {
     <table class="table">
         <thead>
             <tr>
-                <th>PRODUCTO</th>
+                <th>PROD.</th>
                 <th>CANTIDAD</th>
                 <th>PRECIO</th>
                 <th>IMPUESTO</th>
-                <th>DESCUENTO</th>
+                <th>DESCT.</th>
                 <th>IMPORTE</th>
 
             </tr>
@@ -157,28 +176,28 @@ body {
             <tr>
                 <td>{{ $product['description'] }}</td>
                 <td>{{ $product['quantity'] }}</td>
-                <td>{{ $product['price'] }}</td>
+                <td>${{ $product['price'] }}</td>
                 <td>{{ $product['tax']['concept'] }}</td> <!-- ✅ Corrección aquí -->
-                <td>{{ $product['discount'] }}</td>
-                <td>{{ $product['subtotalproducto'] }}</td>
+                <td>{{ $product['discount'] }}%</td>
+                <td>${{ $product['subtotalproducto'] }}</td>
             </tr>
             @endforeach
 
             <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
+                <td class="no-decoration"></td>
+                <td class="no-decoration"></td>
+                <td class="no-decoration"></td>
+                <td class="no-decoration"></td>
                 <td>SUB-TOTAL</td>
-                <td>{{ $initialData['formData']['subtotal'] }}</td>
+                <td>${{ $initialData['formData']['subtotal'] }}</td>
             </tr>
             <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
+                <td class="no-decoration"></td>
+                <td class="no-decoration"></td>
+                <td class="no-decoration"></td>
+                <td class="no-decoration"></td>
                 <td>IVA</td>
-                <td>{{ $initialData['formData']['tax'] }}</td>
+                <td>${{ $initialData['formData']['tax'] }}</td>
             </tr>     
             <tr>
                 <td class="no-decoration"></td>
@@ -186,32 +205,85 @@ body {
                 <td class="no-decoration"></td>
                 <td class="no-decoration"></td>
                 <td>DESCUENTO</td>
-                <td>{{ $initialData['formData']['total_descuento'] }}</td>
+                <td>${{ $initialData['formData']['total_descuento'] }}</td>
             </tr>     
             <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
+                <td class="no-decoration"></td>
+                <td class="no-decoration"></td>
+                <td class="no-decoration"></td>
+                <td class="no-decoration"></td>
                 <td>TOTAL</td>
-                <td>{{ $initialData['formData']['total'] }}</td>
+                <td>${{ $initialData['formData']['total'] }}</td>
             </tr>
         </tbody>
     </table>
 
-    <!-- ✅ Status de la Requisición -->
-    <div class="status-box">
-        STATUS DE REQUISICIÓN #{{ $initialData['formData']['order'] }} :  <strong>{{ $initialData['formData']['status_requisition'] }}</strong>
-    </div>
+
+     <!-- FIRMA -->
+     @if ($initialData['formData']['authorization_4']  == 'Pendiente')
+        <table class="table">
+            <tbody>
+                <tr>
+                <td class="no-decoration"><{{ $initialData['formData']['authorization_4'] }}></td>
+                </tr>
+                <tr>
+                    <td class="no-decoration">TU SOLICITUD ESTA EN ESPERA DE AUTORIZACIÓN</td>
+                </tr>
+              
+            </tbody>
+        </table>
+     @elseif ($initialData['formData']['authorization_4']  == 'Rechazado')
+        <table class="table">
+            <tbody>
+                <tr>
+                <td class="no-decoration">{{ $initialData['formData']['authorization_4'] }}</td>
+                </tr>
+                <tr>
+                    <td class="no-decoration">TU SOLICITUD HA SIDO RECHAZADA</td>
+                </tr>
+            </tbody>
+        </table>
+     @elseif( $initialData['formData']['authorization_4']  == 'Autorizado')
+     <table class="table">
+        <tbody>
+            <tr>
+                <td class="no-decoration">
+            <img src="{{ public_path('images/firmapdf.png') }}" class="logo" alt="HOT HED">
+        </td>
+            </tr>
+            <tr>
+                <td class="no-decoration">AUTORIZADO POR DIR. KARLA I. SEGURA GÓMEZ</td>
+            </tr>
+          
+        </tbody>
+    </table> 
+     @endif
+
+     <table class="table">
+        <tbody>
+            <tr>
+                <td class="no-decoration"></td>
+            </tr>
+            <tr>
+                <td class="no-decoration">
+                <p style="margin: 0;">www.hothedmexico.mx</p>
+            </td>
+
+            </tr>
+        </tbody>
+    </table>
+
+    
 
 {{-- <!-- ✅ Contenedor de la marca de agua en TODAS las páginas -->
 <div class="watermark-container">
     @for ($i = 0; $i < 36; $i++) <!-- 🔥 Más iteraciones para llenar cada página -->
-    <span>{{ strtoupper($initialData['formData']['status_requisition'])}}</span>
+    <span>{{ strtoupper($initialData['formData'][''authorization_4''])}}</span>
     @endfor
 </div> --}}
 
 
+</div>
 </body>
 
 </html>
