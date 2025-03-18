@@ -61,6 +61,8 @@ return new class extends Migration
                     'RESP. DE SERVICIOS', //AUX DE SERVICIOS  - Resp de servicios
                     'RESP. FONDO FIJO', // RESP FONDO JIJO
 
+                    'MCFLY',
+
                     'ESP. TECNICO',
                     'SUB. GER. OPE',
                     'GER. OPE',

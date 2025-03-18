@@ -19,11 +19,37 @@
 <link rel="stylesheet" href="https://cdn.datatables.net/responsive/3.0.3/css/responsive.bootstrap5.css">
 @endpush
 
+<div class="col-md-12">
+    <a href="{{ url('requisiciones/create') }}" class="col-md-3 btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
+        Agregar Requisición
+    </a>
+
+    <a href="{{ url('/mis-requisiciones') }}" class="col-md-3 btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
+        Mis Requisiciones
+    </a>
+
+    <a href="{{ url('/requisiciones') }}" class="col-md-3 btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
+        Requisiciones En espera de Autorización
+    </a>
+
+    <a href="{{ url('/requisiciones-resp-canceladas') }}" class="col-md-3 btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
+        Requisiciones Canceladas
+    </a>
+
+    <a href="{{ url('/requisiciones-resp-finalizadas') }}" class="col-md-3 btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
+        Requisiciones Finalizadas
+    </a>
+
+    <a href="{{ url('/productos') }}" class="btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
+        Productos
+    </a>
+</div>
+{{-- 
 <div class="d-flex flex-wrap mt-3">
     <a href="{{ url('/requisiciones') }}" class="btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
         Regresar
     </a>   
-</div>
+</div> --}}
 
  
 <h3 class="text-center my-4">Requisiciones Autorizadas</h3>

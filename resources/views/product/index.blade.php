@@ -22,6 +22,14 @@
     <a href="{{ url('productos/create') }}" class="btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
         Agregar Producto
     </a>
+
+    <a href="{{ url('proveedores/') }}" class="btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
+        Agregar Proveedor
+    </a>
+
+    <a href="{{ url('impuestos/') }}" class="btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
+        Agregar Impuesto
+    </a>
 </div>
 
 

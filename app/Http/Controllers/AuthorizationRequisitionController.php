@@ -147,7 +147,7 @@ class AuthorizationRequisitionController extends Controller
             ->whereHas('user', function ($query) {
                 $query->whereIn('subarea', [
                     'AUXILIAR DE VENTAS Y OP',
-                    'COORD. DE ALMACEN',
+                   // 'COORD. DE ALMACEN',
                     'AUX DE LOGISTICA Y MANTO',
                     'ESP. TECNICO',
                 ]);
@@ -167,8 +167,10 @@ class AuthorizationRequisitionController extends Controller
             ->whereHas('user', function ($query) {
                 $query->whereIn('subarea', [
                     'AUXILIAR DE VENTAS Y OP',
-                    'COORD. DE ALMACEN',
+                    //'COORD. DE ALMACEN',
                     'AUX DE LOGISTICA Y MANTO',
+                    'ESP. TECNICO',
+
                 ]);
             })
             ->get();
@@ -186,8 +188,10 @@ class AuthorizationRequisitionController extends Controller
             ->whereHas('user', function ($query) {
                 $query->whereIn('subarea', [
                     'AUXILIAR DE VENTAS Y OP',
-                    'COORD. DE ALMACEN',
+                   // 'COORD. DE ALMACEN',
                     'AUX DE LOGISTICA Y MANTO',
+                    'ESP. TECNICO',
+
                 ]);
             })
             ->get();
@@ -205,8 +209,10 @@ class AuthorizationRequisitionController extends Controller
             ->whereHas('user', function ($query) {
                 $query->whereIn('subarea', [
                     'AUXILIAR DE VENTAS Y OP',
-                    'COORD. DE ALMACEN',
+                   // 'COORD. DE ALMACEN',
                     'AUX DE LOGISTICA Y MANTO',
+                    'ESP. TECNICO',
+
                 ]);
             })
             ->get();
@@ -276,7 +282,7 @@ class AuthorizationRequisitionController extends Controller
     }
     //FINALIZA INDICES DE SGI
 
-    //INICIA INDICES DE ADMINISTRACIÓN
+    //INICIA INDICES DE DIRECTORA GENERAL 
     public function indexadmin()
     {
         // Verificar explícitamente que el usuario tiene el rol correcto
@@ -287,12 +293,14 @@ class AuthorizationRequisitionController extends Controller
             ->where('finished', false)
             ->whereHas('user', function ($query) {
                 $query->whereIn('subarea', [
+                    'GER. OPE',
+                    'COORD. CONTABILIDAD',
                     'RESP. DE SGI',
-                    'AUXILIAR DE TI',
+                    'COORD. CONTRATOS',
+                    'DIR. OPERACIONES',
                     'COORD. DE RECURSOS HUMANOS',
                     'RESP. DE COMPRAS',
-                    'COORD. CONTRATOS',
-                    'COORD. CONTABILIDAD',
+                    'AUXILIAR DE TI',
                 ]);
             })
             ->get();
@@ -309,12 +317,14 @@ class AuthorizationRequisitionController extends Controller
             ->where('finished', false)
             ->whereHas('user', function ($query) {
                 $query->whereIn('subarea', [
+                    'GER. OPE',
+                    'COORD. CONTABILIDAD',
                     'RESP. DE SGI',
-                    'AUXILIAR DE TI',
+                    'COORD. CONTRATOS',
+                    'DIR. OPERACIONES',
                     'COORD. DE RECURSOS HUMANOS',
                     'RESP. DE COMPRAS',
-                    'COORD. CONTRATOS',
-                    'COORD. CONTABILIDAD',
+                    'AUXILIAR DE TI',
                 ]);
             })
             ->get();
@@ -331,12 +341,14 @@ class AuthorizationRequisitionController extends Controller
             ->where('finished', false)
             ->whereHas('user', function ($query) {
                 $query->whereIn('subarea', [
+                    'GER. OPE',
+                    'COORD. CONTABILIDAD',
                     'RESP. DE SGI',
-                    'AUXILIAR DE TI',
+                    'COORD. CONTRATOS',
+                    'DIR. OPERACIONES',
                     'COORD. DE RECURSOS HUMANOS',
                     'RESP. DE COMPRAS',
-                    'COORD. CONTRATOS',
-                    'COORD. CONTABILIDAD',
+                    'AUXILIAR DE TI',
                 ]);
             })
             ->get();
@@ -353,18 +365,20 @@ class AuthorizationRequisitionController extends Controller
             ->where('finished', true)
             ->whereHas('user', function ($query) {
                 $query->whereIn('subarea', [
+                    'GER. OPE',
+                    'COORD. CONTABILIDAD',
                     'RESP. DE SGI',
-                    'AUXILIAR DE TI',
+                    'COORD. CONTRATOS',
+                    'DIR. OPERACIONES',
                     'COORD. DE RECURSOS HUMANOS',
                     'RESP. DE COMPRAS',
-                    'COORD. CONTRATOS',
-                    'COORD. CONTABILIDAD',
+                    'AUXILIAR DE TI',
                 ]);
             })
             ->get();
         return view('requisitionauth.admin.viewfinadmin', compact('requisitionadmin'));
     }
-    //FINALIZA INDICES DE ADMINISTRACIÓN
+    //FINALIZA INDICES DE DIRECTORA GENERAL
 
      //INICIA INDICES DE GERENCIA DE OPERACIONES
      public function indexgerope()
@@ -502,7 +516,7 @@ class AuthorizationRequisitionController extends Controller
     }
     //FINALIZA INDICES DE CONTRATOS
 
-    //INICIA INDICES DE DIRECION DE OPERACIONES
+    //INICIA INDICES DE MCFLY
     public function indexdirope()
     {
         // Verificar explícitamente que el usuario tiene el rol correcto
@@ -513,7 +527,7 @@ class AuthorizationRequisitionController extends Controller
             ->where('finished', false)
             ->whereHas('user', function ($query) {
                 $query->whereIn('subarea', [
-                    'GER. OPE',
+                    'MCFLY',
                 ]);
             })
             ->get();
@@ -530,7 +544,7 @@ class AuthorizationRequisitionController extends Controller
             ->where('finished', false)
             ->whereHas('user', function ($query) {
                 $query->whereIn('subarea', [
-                   'GER. OPE',
+                   'MCFLY',
                ]);
            })
             ->get();
@@ -547,7 +561,7 @@ class AuthorizationRequisitionController extends Controller
             ->where('finished', false)
             ->whereHas('user', function ($query) {
                 $query->whereIn('subarea', [
-                   'GER. OPE',
+                   'MCFLY',
                ]);
            })
             ->get();
@@ -564,13 +578,13 @@ class AuthorizationRequisitionController extends Controller
             ->where('finished', true)
             ->whereHas('user', function ($query) {
                 $query->whereIn('subarea', [
-                   'GER. OPE',
+                   'MCFLY',
                ]);
            })
             ->get();
         return view('requisitionauth.dirope.viewfindirope', compact('requisitiondirope'));
     }
-    //FINALIZA INDICES DE DIRECION DE OPERACIONES
+    //FINALIZA INDICES DE MCFLY
 
 
 

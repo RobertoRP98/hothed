@@ -36,7 +36,7 @@
                 // Determinar la ruta según el rol del usuario
                 $comprasUrl = '#'; // Enlace por defecto
                 if (Auth::user()->hasRole(['Developer', 'RespCompras'])) {
-                    $comprasUrl = '/requisiciones';
+                    $comprasUrl = '/requisiciones-resp-autorizadas';
                 } elseif (Auth::user()->hasRole('AdmCompras')) {
                     $comprasUrl = '/requisiciones-adm';
                 } elseif (Auth::user()->hasRole('OpeCompras')) {

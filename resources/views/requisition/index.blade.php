@@ -21,7 +21,7 @@
 <link rel="stylesheet" href="https://cdn.datatables.net/responsive/3.0.3/css/responsive.bootstrap5.css">
 @endpush
 
-<div class="col-md-12">
+{{-- <div class="col-md-12">
     <a href="{{ url('requisiciones/create') }}" class="col-md-3 btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
         Agregar Requisición
     </a>
@@ -45,9 +45,13 @@
     <a href="{{ url('/productos') }}" class="btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
         Productos
     </a>
-</div>
+</div> --}}
+
+<a href="{{ url('/requisiciones-resp-autorizadas') }}" class="btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
+    Regresar
+</a>   
  
-<h3 class="text-center my-1">Requisiciones</h3>
+<h3 class="text-center my-1">Requisiciones Pendiente de Autorización</h3>
 
 
 <div class="card">

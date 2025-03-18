@@ -22,7 +22,7 @@ class RequisitionController extends Controller
     public function index()
     {
 
-        $datos['requisiciones'] = Requisition::where('status_requisition', 'Autorizado')
+        $datos['requisiciones'] = Requisition::where('status_requisition', 'Pendiente')
             ->where('finished', false)
             ->get();
 
