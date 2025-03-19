@@ -19,7 +19,7 @@
 <link rel="stylesheet" href="https://cdn.datatables.net/responsive/3.0.3/css/responsive.bootstrap5.css">
 @endpush
 
-<div class="col-md-12">
+{{-- <div class="col-md-12">
     <a href="{{ url('requisiciones/create') }}" class="col-md-3 btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
         Agregar Requisición
     </a>
@@ -43,16 +43,16 @@
     <a href="{{ url('/productos') }}" class="btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
         Productos
     </a>
-</div>
-{{-- 
+</div> --}}
+
 <div class="d-flex flex-wrap mt-3">
     <a href="{{ url('/requisiciones') }}" class="btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
         Regresar
     </a>   
-</div> --}}
+</div> 
 
  
-<h3 class="text-center my-4">Requisiciones Autorizadas</h3>
+<h3 class="text-center my-4">Requisiciones Pendientes de Autorización</h3>
 
 
 <div class="card">
@@ -125,12 +125,17 @@
                     <button class="btn btn-primary mb-2">
                         VER
                     </button>
-                </a> |
+                </a> 
                 <a class="text-white" href="{{ url('requisiciones/'.$requisicion->id.'/edit') }}">
                     <button class="btn btn-success mb-2">
                         Editar
                     </button>
                 </a>
+                <a class="text-white" href="{{ url('requisiciones/'.$requisicion->id . '/pdf') }}">
+                    <button class="btn btn-secondary mb-2">
+                        PDF
+                    </button>
+                </a> 
             </td>
             
         </tr>

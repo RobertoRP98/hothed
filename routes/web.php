@@ -239,7 +239,7 @@ Route::group(
         Route::get('requisiciones-subope-canceladas', [AuthorizationRequisitionController::class, 'cansubope'])->name('requisicionessubopecan');
         Route::get('requisiciones-subope-finalizadas', [AuthorizationRequisitionController::class, 'finsubope'])->name('requisicionessubopefin');
 
-        Route::get('requisiciones-resp-autorizadas', [AuthorizationRequisitionController::class, 'indexrespaut'])->name('requisicionesrespaut.index');
+        Route::get('requisiciones-resp-pendientes-aut', [AuthorizationRequisitionController::class, 'indexresppend'])->name('requisicionesresppend.index');
         Route::get('requisiciones-resp-canceladas', [AuthorizationRequisitionController::class, 'indexrespcan'])->name('requisicionesrespcan.index');
         Route::get('requisiciones-resp-finalizadas', [AuthorizationRequisitionController::class, 'indexrespfin'])->name('requisicionesrespfin.index');
     }

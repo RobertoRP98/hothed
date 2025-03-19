@@ -21,7 +21,7 @@
 <link rel="stylesheet" href="https://cdn.datatables.net/responsive/3.0.3/css/responsive.bootstrap5.css">
 @endpush
 
-{{-- <div class="col-md-12">
+<div class="col-md-12">
     <a href="{{ url('requisiciones/create') }}" class="col-md-3 btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
         Agregar Requisición
     </a>
@@ -30,8 +30,8 @@
         Mis Requisiciones
     </a>
 
-    <a href="{{ url('/requisiciones-resp-autorizadas') }}" class="col-md-3 btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
-        Requisiciones Autorizadas
+    <a href="{{ url('/requisiciones-resp-pendientes-aut') }}" class="col-md-3 btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
+        Pendientes de Autorización
     </a>
 
     <a href="{{ url('/requisiciones-resp-canceladas') }}" class="col-md-3 btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
@@ -45,13 +45,11 @@
     <a href="{{ url('/productos') }}" class="btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
         Productos
     </a>
-</div> --}}
+</div> 
 
-<a href="{{ url('/requisiciones-resp-autorizadas') }}" class="btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
-    Regresar
-</a>   
  
-<h3 class="text-center my-1">Requisiciones Pendiente de Autorización</h3>
+ 
+<h3 class="text-center my-1">Requisiciones Autorizadas</h3>
 
 
 <div class="card">
@@ -123,17 +121,18 @@
                     </button>
                 </a>
 
+                <a class="text-white" href="{{ url('requisiciones/'.$requisicion->id.'/edit') }}">
+                    <button class="btn btn-success mb-2">
+                        Editar
+                    </button>
+                </a>
+
                 <a class="text-white" href="{{ url('requisiciones/'.$requisicion->id . '/pdf') }}">
                     <button class="btn btn-secondary mb-2">
                         PDF
                     </button>
                 </a> 
 
-                <a class="text-white" href="{{ url('requisiciones/'.$requisicion->id.'/edit') }}">
-                    <button class="btn btn-success mb-2">
-                        Editar
-                    </button>
-                </a>
 
                 <a class="text-white" href="{{ route('ordencompra.create', $requisicion->id)  }}">
                     <button class="btn btn-danger mb-2">
@@ -167,7 +166,7 @@
         $('#compras').DataTable({
             resposive:true,
             autoWidth: false,
-
+            order: [[0, 'desc']],
             "language": {
                 "lengthMenu":     "Mostrar _MENU_ registros",
     "loadingRecords": "Cargando...",

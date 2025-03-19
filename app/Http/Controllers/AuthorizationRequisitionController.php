@@ -594,19 +594,19 @@ class AuthorizationRequisitionController extends Controller
 
     //INICIA INDICES DE RESPONSABLE 
 
-    public function indexrespaut()
+    public function indexresppend()
     {
         // Verificar explícitamente que el usuario tiene el rol correcto
         if (!auth()->user()->hasRole(['Developer', 'RespCompras'])) {
             abort(403, 'No tienes permiso para acceder a esta vista.');
         }
-        $requisitionresp = Requisition::where('status_requisition', 'Autorizado')
+        $requisitionresp = Requisition::where('status_requisition', 'Pendiente')
             ->where('finished', false)
             ->whereHas('user', function ($query) {
                 $query->whereIn('departament', ['OP', 'ADM']);
             })
             ->get();
-        return view('requisitionauth.viewrespaut', compact('requisitionresp'));
+        return view('requisitionauth.viewresppend', compact('requisitionresp'));
     }
 
     public function indexrespcan()
@@ -653,7 +653,7 @@ class AuthorizationRequisitionController extends Controller
             $query->where('user_id', auth()->id());
         }
         // Obtener las requisiciones con los filtros aplicados
-        $requisitionclient = $query->get();
+        $requisitionclient = $query->orderBy('id','desc')->get();
 
         return view('requisitionauth.viewclient', compact('requisitionclient'));
     }

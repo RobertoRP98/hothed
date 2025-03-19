@@ -7,7 +7,7 @@
  @endif   
 
 
- <button type="button" class="btn btn-outline-success mb-3 mt-3 m-2"> <a class="text-dark" href="{{ url('proveedores/') }}">
+ <button type="button" class="btn btn-outline-success mb-3 mt-3 m-2"> <a class="text-dark" href="{{ url('/productos') }}">
     Regresar
 </a> </button> 
 

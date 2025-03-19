@@ -70,7 +70,7 @@
     <table id="compras" class="table table-light table-bordered table-hover text-center">
 <thead class="thead-light">
         <tr>
-            <th class="col-md-1">NUM. REQUISICIÓN</th>
+            <th class="col-md-1">REQ.#</th>
             <th class="col-md-1">STATUS</th>
             <th class="col-md-1">PRIORIDAD</th>
             <th class="col-md-1">FINALIZADO</th>
@@ -130,6 +130,12 @@
                         VER
                     </button>
                 </a> 
+
+                <a class="text-white" href="{{ url('requisiciones/'.$requisicion->id . '/pdf') }}">
+                    <button class="btn btn-secondary mb-2">
+                        PDF
+                    </button>
+                </a> 
             </td>
             
         </tr>
@@ -155,6 +161,7 @@
         $('#compras').DataTable({
             resposive:true,
             autoWidth: false,
+            order: [[0, 'desc']],
 
             "language": {
                 "lengthMenu":     "Mostrar _MENU_ registros",
