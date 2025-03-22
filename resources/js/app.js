@@ -17,6 +17,10 @@ import EditCompra from './components/Compra/EditCompra.vue';
 import ShowCompra from './components/Compra/ShowCompra.vue';
 //Finaliza ordenes de compra
 
+//Inicia PREAUTORIZACIONES 
+import EditCompraPA from './components/PreautOC/EditCompraPA.vue';
+//Finaliza PREAUTORIZACIONES
+
 
 if (document.getElementById('app')) {
     const app = createApp({});
@@ -31,6 +35,10 @@ if (document.getElementById('app')) {
     app.component('edit-compra', EditCompra);
     app.component('show-compra', ShowCompra);
     //FINALIZA REQUISICION
+
+    //COMPONENTES DE PRE AUTORIZACION
+    app.component('edit-preautorizacion',EditCompraPA);
+    //FINALIZA PRE AUTORIZACION
 
     // Montar la aplicación en el contenedor principal
     app.mount('#app');// Asume que tienes un <div id="app"></div> en tu layout Blade.

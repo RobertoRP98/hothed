@@ -110,7 +110,7 @@
         </div>
     </div>
 
-    <div class="col-md-3">
+    <div class="col-md-2">
         <div class="form-outline">
             <select id="contract" name="contract" class="form-select">
                 <option value="0" {{ old('contract', isset($supplier) ? $supplier->contract : 0) == 0 ? 'selected' : '' }}>NO</option>
@@ -120,10 +120,24 @@
         </div>
     </div>
 
-    <div class="col-md-3">
+    <div class="col-md-2">
+        <div class="form-outline">
+            <select class="form-select" name="product_type" id="product_type">
+                <option value="CONSUMIBLES" {{ old('product_type', isset($supplier) ? $supplier->product_type : '') == 'CONSUMIBLES' ? 'selected' : '' }}>CONSUMIBLES</option>
+                <option value="EPP" {{ old('product_type', isset($supplier) ? $supplier->product_type : '') == 'EPP' ? 'selected' : '' }}>EPP</option>
+                <option value="SERVICIOS" {{ old('product_type', isset($supplier) ? $supplier->product_type : '') == 'SERVICIOS' ? 'selected' : '' }}>SERVICIOS</option>
+                <option value="MATERIALES DE IZAJE" {{ old('product_type', isset($supplier) ? $supplier->product_type : '') == 'MATERIALES DE IZAJE' ? 'selected' : '' }}>MATERIALES DE IZAJE</option>
+                <option value="HERRAMIENTAS-EQUIPOS MANUALES PARA TRABAJO" {{ old('product_type', isset($supplier) ? $supplier->product_type : '') == 'HERRAMIENTAS-EQUIPOS MANUALES PARA TRABAJO' ? 'selected' : '' }}>HERRAMIENTAS-EQUIPOS MANUALES PARA TRABAJO</option>
+                <option value="HERRAMIENTAS DE PESCA" {{ old('product_type', isset($supplier) ? $supplier->product_type : '') == 'HERRAMIENTAS DE PESCA' ? 'selected' : '' }}>HERRAMIENTAS DE PESCA</option>
+            </select>
+            <label class="form-label" for="status">LÍNEA/TIPO DE PRODUCTO</label>
+        </div>
+    </div>
+
+    <div class="col-md-2">
         <div class="form-outline">
             <select class="form-select" name="status" id="status">
-                <option value="APROVADO" {{ old('status', isset($supplier) ? $supplier->status : '') == 'APROVADO' ? 'selected' : '' }}>APROVADO</option>
+                <option value="APROBADO" {{ old('status', isset($supplier) ? $supplier->status : '') == 'APROBADO' ? 'selected' : '' }}>APROBADO</option>
                 <option value="CONDICIONADO" {{ old('status', isset($supplier) ? $supplier->status : '') == 'CONDICIONADO' ? 'selected' : '' }}>CONDICIONADO</option>
                 <option value="BAJA" {{ old('status', isset($supplier) ? $supplier->status : '') == 'BAJA' ? 'selected' : '' }}>BAJA</option>
             </select>

@@ -15,6 +15,7 @@ use App\Http\Controllers\ToolstatusController;
 use App\Http\Controllers\RequisitionController;
 use App\Http\Controllers\PurchaseOrderController;
 use App\Http\Controllers\ToolwarehouseController;
+use App\Http\Controllers\AuthPurchaseOrderController;
 use App\Http\Controllers\CompanyReceivableController;
 use App\Http\Controllers\AuthorizationRequisitionController;
 
@@ -186,6 +187,20 @@ Route::group(['middleware' => ['auth', 'role:Developer|RespCompras']], function 
     Route::get('/ordenes-compra/{purchaseOrder}/requisiciones/{requisicione}/pdf', [PurchaseOrderController::class, 'pdf'])->name('ordencompra.pdf');
 
 });
+
+//RUTAS QUE SOLO SON ACCESIBLES AL ENCARGADO DE COMPRAS Y A LA DIRECTORA PARA LA PRE AUTORIZACION DE ADMINISTRACION
+Route::group(['middleware' => ['auth', 'role:Developer|RespCompras|Diradmin']], function () {
+
+    //INICIA INDEX PRE AUTORIZACION DE ADMINISTRACION
+    Route::get('/ordenes-compra/pre-autorizacio/adm/pendientes', [AuthPurchaseOrderController::class, 'indexpendienteadm'])->name('preadmpendientes.index');
+    Route::get('/ordenes-compra/pre-autorizacio/adm/autorizadas', [AuthPurchaseOrderController::class, 'indextautorizadoadm'])->name('preadmautorizadas.index');
+    Route::get('/ordenes-compra/pre-autorizacio/adm/canceladas', [AuthPurchaseOrderController::class, 'indexrechazadoadm'])->name('preadmcanceladas.index');
+    Route::get('/ordenes-compra/{purchaseOrder}/requisiciones/{requisicione}/preaut', [AuthPurchaseOrderController::class, 'editpreaut'])->name('preaut.edit');
+
+
+});
+
+
 
 //RUTAS PARA EDITAR SOLO SON ACCESIBLES PARA GERENCIA Y RESPONSABLE DE COMPRAS
 Route::group(

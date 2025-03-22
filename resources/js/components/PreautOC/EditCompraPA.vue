@@ -8,31 +8,16 @@
                 v-model="supplierData[0].name"
                 @input="searchSupplier(0)"
                 placeholder="CAMPO OBLIGATORIO"
+                readonly
             />
 
-            <ul
-                v-if="
-                    supplierData.length > 0 &&
-                    supplierData[0].suggestions.length
-                "
-                class="list-group"
-            >
-                <li
-                    class="list-group-item"
-                    v-for="supplier in supplierData[0].suggestions"
-                    :key="supplier.id"
-                    @click="selectSupplier(0, supplier)"
-                    style="cursor: pointer"
-                >
-                    {{ supplier.name + " - " + supplier.rfc }}
-                </li>
-            </ul>
+           
             <label class="form-outline">PROVEEDOR</label>
         </div>
 
         <div class="col-md-2">
             <div class="form-outline">
-                <select v-model="formData.type_op" class="form-select">
+                <select v-model="formData.type_op" class="form-select" disabled >
                     <option value="Local">LOCAL</option>
                     <option value="Extranjera">EXTRANJERA</option>
                 </select>
@@ -42,7 +27,7 @@
 
         <div class="col-md-2">
             <div class="form-outline">
-                <select v-model="formData.payment_type" class="form-select">
+                <select v-model="formData.payment_type" class="form-select" disabled>
                     <option value="CREDITO">CREDITO</option>
                     <option value="CAJA CHICA">CAJA CHICA</option>
                     <option value="TRANSFERENCIA">TRANSFERENCIA</option>
@@ -55,7 +40,7 @@
 
         <div class="col-md-2">
             <div class="form-outline">
-                <select v-model="formData.unique_payment" class="form-select">
+                <select v-model="formData.unique_payment" class="form-select" disabled>
                     <option value="1">SI</option>
                     <option value="0">NO</option>
                 </select>
@@ -70,6 +55,7 @@
                     v-model="formData.quotation"
                     class="form-control"
                     placeholder="COTIZACIÓN"
+                    readonly
                 />
                 <label class="form-label">COTIZACIÓN</label>
             </div>
@@ -77,7 +63,7 @@
 
         <div class="col-md-2">
             <div class="form-outline">
-                <select v-model="formData.currency" class="form-select">
+                <select v-model="formData.currency" class="form-select" disabled>
                     <option value="MXN">MXN</option>
                     <option value="USD">USD</option>
                     <option value="EUR">EUR</option>
@@ -101,38 +87,6 @@
             </div>
         </div>
 
-        <div class="col-md-2">
-            <div class="form-outline">
-                <select v-model="formData.finished" class="form-select">
-                    <option value="0">NO</option>
-                    <option value="1">SI</option>
-                </select>
-                <label class="form-label">¿FINALIZADO?</label>
-            </div>
-        </div>
-
-        <div class="col-md-2">
-            <div class="form-outline">
-                <input
-                    type="date"
-                    v-model="formData.date_end"
-                    class="form-control"
-                />
-                <label class="form-label">FIN DE ORDEN</label>
-            </div>
-        </div>
-
-        <div class="col-md-2">
-            <div class="form-outline">
-                <input
-                    type="date"
-                    v-model="formData.payment_day"
-                    class="form-control"
-                />
-                <label class="form-label">DIA DE PAGO</label>
-            </div>
-        </div>
-
         <div class="col-md-3">
             <div class="form-outline">
                 <input
@@ -144,6 +98,42 @@
                 <label class="form-label">DÍAS POR VENCER / VENCIDOS</label>
             </div>
         </div>
+
+        <div class="col-md-2">
+            <div class="form-outline">
+                <select v-model="formData.finished" class="form-select" hidden>
+                    <option value="0">NO</option>
+                    <option value="1">SI</option>
+                </select>
+                <label class="form-label" hidden>¿FINALIZADO?</label>
+            </div>
+        </div>
+
+        <div class="col-md-2">
+            <div class="form-outline">
+                <input
+                    type="date"
+                    v-model="formData.date_end"
+                    class="form-control"
+                    hidden
+                />
+                <label class="form-label" hidden>FIN DE ORDEN</label>
+            </div>
+        </div>
+
+        <div class="col-md-2">
+            <div class="form-outline">
+                <input
+                    type="date"
+                    v-model="formData.payment_day"
+                    class="form-control"
+                    hidden
+                />
+                <label class="form-label" hidden>DIA DE PAGO</label>
+            </div>
+        </div>
+
+       
     </div>
 
     <h2>AUTORIZACIONES DE SEGUIMIENTO</h2>
@@ -184,12 +174,12 @@
 
         <div class="col-md-3">
             <div class="form-outline">
-                <select v-model="formData.authorization_4" class="form-select">
+                <select v-model="formData.authorization_4" class="form-select" disabled hidden>
                     <option value="Pendiente">PENDIENTE DE AUTORIZACIÓN</option>
                     <option value="Autorizado">AUTORIZADO</option>
                     <option value="Rechazado">RECHAZADO</option>
                 </select>
-                <label class="form-label">DIRECTORA GENERAL</label>
+                <label class="form-label" hidden>DIRECTORA GENERAL</label>
             </div>
         </div>
 
@@ -200,6 +190,7 @@
                     <select
                         v-model="formData.delivery_condition"
                         class="form-select"
+                        disabled
                     >
                         <option value="100% Antes Entrega">
                             100% ANTES DE ENTREGA
@@ -215,7 +206,7 @@
 
             <div class="col-md-3">
                 <div class="form-outline">
-                    <select v-model="formData.po_status" class="form-select">
+                    <select v-model="formData.po_status" class="form-select" disabled>
                         <option value="PENDIENTE DE PAGO">
                             PENDIENTE DE PAGO
                         </option>
@@ -233,7 +224,7 @@
 
             <div class="col-md-3">
                 <div class="form-outline">
-                    <select v-model="formData.bill" class="form-select">
+                    <select v-model="formData.bill" class="form-select" disabled>
                         <option value="Pendiente Facturar">
                             PENDIENTE DE FACTURAR
                         </option>
@@ -250,6 +241,7 @@
                         v-model="formData.bill_name"
                         class="form-control"
                         placeholder="NOMBRE DE LA FACTURA"
+                        readonly
                     />
                     <label class="form-label">FACTURA</label>
                 </div>
@@ -262,13 +254,14 @@
     <!-- Productos de Requisición -->
     <div class="bg-body">
         <div class="card-header">
-            Pulse "Agregar" para añadir productos a la requisición
+            <!-- Pulse "Agregar" para añadir productos a la requisición
             <button
                 class="btn btn-primary float-right"
                 @click.prevent="addFields"
+                disabled
             >
                 Agregar
-            </button>
+            </button> -->
         </div>
         <div class="card-body">
             <table class="table table-bordered">
@@ -294,6 +287,7 @@
                                 @input="searchProducts(index)"
                                 class="form-control"
                                 placeholder="Busque un producto"
+                                readonly
                             />
                             <ul
                                 v-if="value.suggestions.length > 0"
@@ -335,6 +329,7 @@
                                 v-model="value.quantity"
                                 class="form-control"
                                 placeholder="Cantidad"
+                                readonly
                             />
                         </td>
                         <td>
@@ -343,6 +338,7 @@
                                 v-model="value.price"
                                 class="form-control"
                                 placeholder="Precio unitario"
+                                readonly
                             />
                         </td>
 
@@ -362,6 +358,7 @@
                                 v-model="value.discount"
                                 class="form-control"
                                 placeholder="Descuento"
+                                readonly
                             />
                         </td>
                         <td>

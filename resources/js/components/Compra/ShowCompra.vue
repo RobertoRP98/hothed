@@ -139,7 +139,7 @@
                     }}
                 </span>
 
-                <label class="form-label">PRE AUTORIZACIÓN</label>
+                <label class="form-label">PRE-AUTORIZACIÓN</label>
             </div>
         </div>
 
@@ -158,16 +158,16 @@
             <div class="form-outline">
                 <span class="form-control-plaintext">
                     {{
-                        formData.authorization_2 === "Pendiente"
+                        formData.authorization_4 === "Pendiente"
                             ? "PENDIENTE AUTORIZACIÓN"
-                            : formData.authorization_2 === "Autorizado"
+                            : formData.authorization_4 === "Autorizado"
                             ? "AUTORIZADO"
-                            : formData.authorization_2 === "Rechazado"
+                            : formData.authorization_4 === "Rechazado"
                             ? "RECHAZADO"
                             : "N/A"
                     }}
                 </span>
-                <label class="form-label">DIRECCIÓN GENERAL</label>
+                <label class="form-label">DIRECTORA GENERAL</label>
             </div>
         </div>
 
@@ -199,6 +199,15 @@
                     <label class="form-label">¿FACTURADO?</label>
                 </div>
             </div>
+
+            <div class="col-md-3">
+            <div class="form-outline">
+                <span class="form-control-plaintext">
+                    {{ formData.bill_name}}
+                </span>
+                <label class="form-label">FACTURA</label>
+            </div>
+        </div>
         </div>
     </div>
 
@@ -446,6 +455,7 @@ export default {
                 delivery_condition: "100% Antes Entrega",
                 po_status: "PENDIENTE DE PAGO",
                 bill: "Pendiente Facturar",
+                bill_name:"",
                 subtotal: 0, //guarda el subtotal de todos los subtotalproducto
                 total_descuento: 0,
                 total_impuestos: 0,

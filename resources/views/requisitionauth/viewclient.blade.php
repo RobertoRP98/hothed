@@ -45,7 +45,7 @@
 
 @if ($userRole)
     <a class="btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto" href="{{ url($roleRedirects[$userRole]) }}">
-        Regresar
+        Mi Equipo
     </a>
 @endif
 

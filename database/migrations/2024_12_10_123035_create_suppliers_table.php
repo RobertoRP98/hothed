@@ -11,24 +11,31 @@ return new class extends Migration
      */
     public function up(): void
     {
-            Schema::create('suppliers', function (Blueprint $table) {
-                $table->id();
-                $table->string('name');
-                $table->string('rfc');
-                $table->string('number');
-                $table->string('email')->nullable();
-                $table->string('address');
-                $table->boolean('critic')->default(false);
-                $table->enum('currency', ['MXN', 'USD', 'MIXTO'])->default('MXN');
-                $table->smallInteger('credit_days')->default(0);
-                $table->boolean('unique')->default(false);
-                $table->string('account')->nullable();
-                $table->boolean('contract')->default(false);
-                $table->enum('status',['APROBADO','BAJA','CONDICIONADO'])->default('APROBADO');
-                $table->text('notes')->nullable();
-                $table->timestamps();
-            });
-        
+        Schema::create('suppliers', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->string('rfc');
+            $table->string('number');
+            $table->string('email')->nullable();
+            $table->string('address');
+            $table->boolean('critic')->default(false);
+            $table->enum('currency', ['MXN', 'USD', 'MIXTO'])->default('MXN');
+            $table->smallInteger('credit_days')->default(0);
+            $table->boolean('unique')->default(false);
+            $table->string('account')->nullable();
+            $table->boolean('contract')->default(false);
+            $table->enum('status', ['APROBADO', 'BAJA', 'CONDICIONADO'])->default('APROBADO');
+            $table->enum('product_type', [
+                'EPP',
+                'SERVICIOS',
+                'MATERIALES DE IZAJE',
+                'HERRAMIENTAS-EQUIPOS MANUALES PARA TRABAJO',
+                'HERRAMIENTAS DE PESCA',
+                'CONSUMIBLES'
+            ])->default('CONSUMIBLES');
+            $table->text('notes')->nullable();
+            $table->timestamps();
+        });
     }
 
     /**

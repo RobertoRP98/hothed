@@ -167,7 +167,7 @@
                     <option value="Autorizado">AUTORIZADO</option>
                     <option value="Rechazado">RECHAZADO</option>
                 </select>
-                <label class="form-label">FLORES </label>
+                <label class="form-label">PRE-AUTORIZACIÓN </label>
             </div>
         </div>
 
@@ -189,7 +189,7 @@
                     <option value="Autorizado">AUTORIZADO</option>
                     <option value="Rechazado">RECHAZADO</option>
                 </select>
-                <label class="form-label">DIRECCIÓN GENERAL</label>
+                <label class="form-label">DIRECTORA GENERAL</label>
             </div>
         </div>
 
@@ -219,7 +219,9 @@
                         <option value="PENDIENTE DE PAGO">
                             PENDIENTE DE PAGO
                         </option>
-                        <option value="PENDIENTE DE PAGO (SERVICIO CONCLUIDO)">PENDIENTE DE PAGO (SERVICIO CONCLUIDO)</option>
+                        <option value="PENDIENTE DE PAGO (SERVICIO CONCLUIDO)">
+                            PENDIENTE DE PAGO (SERVICIO CONCLUIDO)
+                        </option>
                         <option value="PAGADA">PAGADA</option>
                         <option value="CANCELADA">CANCELADA</option>
                         <option value="EN PAUSA">EN PAUSA</option>
@@ -238,6 +240,18 @@
                         <option value="Facturado">FACTURADO</option>
                     </select>
                     <label class="form-label">¿FACTURADO?</label>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="form-outline">
+                    <input
+                        type="text"
+                        v-model="formData.bill_name"
+                        class="form-control"
+                        placeholder="NOMBRE DE LA FACTURA"
+                    />
+                    <label class="form-label">FACTURA</label>
                 </div>
             </div>
         </div>
@@ -485,8 +499,8 @@ export default {
         }
 
         if (!this.formData.po_status) {
-        this.formData.po_status = "PENDIENTE DE PAGO";
-    }
+            this.formData.po_status = "PENDIENTE DE PAGO";
+        }
         console.log("Datos iniciales:", this.formData);
         console.log("Datos iniciales recibidos:", this.initialData);
     },
@@ -512,6 +526,7 @@ export default {
                 delivery_condition: "100% Antes Entrega",
                 po_status: "PENDIENTE DE PAGO",
                 bill: "Pendiente Facturar",
+                bill_name: "",
                 subtotal: 0, //guarda el subtotal de todos los subtotalproducto
                 total_descuento: 0,
                 total_impuestos: 0,
@@ -656,13 +671,11 @@ export default {
             } else {
                 this.productData.forEach((item, index) => {
                     if (!item.product_id) {
-                        
-                            this.errors[
-                                `product_id_${index}`
-                            ] = `El producto en la fila ${
-                                index + 1
-                            } es obligatorio.`;
-                        
+                        this.errors[
+                            `product_id_${index}`
+                        ] = `El producto en la fila ${
+                            index + 1
+                        } es obligatorio.`;
                     }
                     if (!item.quantity || item.quantity < 1) {
                         this.errors[
@@ -686,11 +699,12 @@ export default {
 
         /** 🔹 Enviar formulario solo si pasa la validación */
         submitForm() {
-
             if (!this.validateForm()) {
-            let errorMessages = Object.values(this.errors).join("\n");
-                alert("Corrige los errores antes de enviar.\n\n" + errorMessages);
-                console.error("Errores de validacion",this.errors);
+                let errorMessages = Object.values(this.errors).join("\n");
+                alert(
+                    "Corrige los errores antes de enviar.\n\n" + errorMessages
+                );
+                console.error("Errores de validacion", this.errors);
                 return; // 💡 Esto debería detener la ejecución
             }
 
@@ -706,9 +720,7 @@ export default {
             if (this.$refs.totalInput) {
                 this.$refs.totalInput.value = this.total;
             }
-            
 
-         
             console.log("Formulario válido, enviando...");
             // Aquí sigue el envío del request si no hay errores
 

@@ -42,6 +42,7 @@ return new class extends Migration
             $table->enum('delivery_condition', ['50-50', '100% Antes Entrega', '100% Post Entrega'])->default('100% Antes Entrega');
             $table->enum('po_status', ['PENDIENTE DE PAGO', 'PENDIENTE DE PAGO (SERVICIO CONCLUIDO)', 'PAGADA', 'CANCELADA','EN PAUSA', 'EN PROCESO'])->default('En Proceso');
             $table->enum('bill', ['Facturado', 'Pendiente Facturar'])->default('Pendiente Facturar');
+            $table->string('bill_name')->nullable();
 
             $table->decimal('subtotal', 10, 2)->default(0.00);
             $table->decimal('total_descuento', 10, 2)->default(0.00);

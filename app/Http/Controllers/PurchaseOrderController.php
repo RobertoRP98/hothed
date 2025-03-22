@@ -65,6 +65,7 @@ class PurchaseOrderController extends Controller
                 'delivery_condition' => '100% Antes Entrega',
                 'po_status' => 'PENDIENTE DE PAGO',
                 'bill' => 'Pendiente Facturar',
+                'bill_name' => '',
                 'subtotal' => 0,
                 'total_descuento' => 0,
                 'tax' => 0,
@@ -125,6 +126,8 @@ class PurchaseOrderController extends Controller
                         'delivery_condition',
                         'po_status',
                         'bill',
+                        'bill_name',
+
 
                     ]),
                     [
@@ -209,6 +212,7 @@ class PurchaseOrderController extends Controller
                 'delivery_condition' => $order->delivery_condition,
                 'po_status' => $order->po_status,
                 'bill' => $order->bill,
+                'bill_name' => $order->bill_name,
                 'subtotal' => $order->subtotal,
                 'total_descuento' => $order->total_descuento,
                 'tax' => $order->tax,
@@ -299,6 +303,8 @@ class PurchaseOrderController extends Controller
                 'delivery_condition' => $order->delivery_condition,
                 'po_status' => $order->po_status,
                 'bill' => $order->bill,
+                'bill_name' => $order->bill_name,
+
                 'subtotal' => $order->subtotal,
                 'total_descuento' => $order->total_descuento,
                 'tax' => $order->tax,
@@ -384,6 +390,7 @@ class PurchaseOrderController extends Controller
                         'delivery_condition',
                         'po_status',
                         'bill',
+                        'bill_name',
                     ]),
                     [
                         'requisition_id' => $purchaseOrder->requisition_id, // Asegurar que no se pierda
@@ -453,6 +460,16 @@ class PurchaseOrderController extends Controller
         // Calcular días restantes
         $days_remaining_now = floor(\Carbon\Carbon::parse($order->requisition->production_date)->diffInDays(now(), false));
 
+        // Calcular prioridad con la misma lógica de Blade
+        $priority = 'BAJA';
+        if ($days_remaining_now >= -15) {
+            $priority = 'ALTA';
+        } elseif ($days_remaining_now >= -30) {
+            $priority = 'ALTA';
+        } elseif ($days_remaining_now >= -60) {
+            $priority = 'MEDIA';
+        }
+
         //inicializacion de datos
         $initialData = [
             'formData' => [
@@ -469,6 +486,7 @@ class PurchaseOrderController extends Controller
                 'finished' => $order->finished,
                 'date_end' => $order->date_end,
                 'payment_day' => $order->payment_day,
+                'prioridad' => $priority,
                 'days_remaining_now' => $days_remaining_now,
                 'status_requisition' => $order->requisition->status_requisition,
                 'authorization_2' => $order->authorization_2,
@@ -522,7 +540,7 @@ class PurchaseOrderController extends Controller
 
         // dd($initialData);
 
-        $pdf = Pdf::loadview('compras.pdf', compact('order', 'today', 'proveedor','proveedorhh', 'producto', 'item', 'days_remaining_now', 'initialData'));
-        return $pdf->download('Orden de compra - '.$initialData['formData']['order'].'.pdf');
+        $pdf = Pdf::loadview('compras.pdf', compact('order', 'today', 'proveedor', 'proveedorhh', 'producto', 'item', 'days_remaining_now', 'initialData'));
+        return $pdf->download('Orden de compra - ' . $initialData['formData']['order'] . '.pdf');
     }
 }

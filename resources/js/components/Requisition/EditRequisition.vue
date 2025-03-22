@@ -1,56 +1,6 @@
 <template>
     <div>
-        <!-- Primera fila -->
-        <div class="row mb-4">
-            <div class="col-md-3">
-                <div class="form-outline">
-                    <select
-                        v-model="formData.status_requisition"
-                        class="form-select"
-                    >
-                        <option value="Pendiente">
-                            PENDIENTE DE AUTORIZACIÓN
-                        </option>
-                        <option value="Autorizado">AUTORIZADO</option>
-                        <option value="Rechazado">RECHAZADO</option>
-                    </select>
-                    <label class="form-label">STATUS DE LA REQUISICIÓN</label>
-                </div>
-            </div>
-
-            <div class="col-md-3">
-                <div class="form-outline">
-                    <select v-model="formData.importance" class="form-select">
-                        <option value="Baja">BAJA</option>
-                        <option value="Media">MEDIA</option>
-                        <option value="Alta">ALTA</option>
-                    </select>
-                    <label class="form-label">PRIORIDAD A EDITAR</label>
-                </div>
-            </div>
-
-            <div class="col-md-3">
-                <div class="form-outline">
-                    <input
-                        type="text"
-                        v-model="formData.importance_now"
-                        class="form-control"
-                        readonly
-                    />
-                    <label class="form-label">PRIORIDAD ACTUAL</label>
-                </div>
-            </div>
-
-            <!-- <div class="col-md-3">
-                <div class="form-outline">
-                    <select v-model="formData.petty_cash" class="form-select">
-                        <option value="0">NO</option>
-                        <option value="1">SI</option>
-                    </select>
-                    <label class="form-label">¿CAJA CHICA?</label>
-                </div>
-            </div> -->
-        </div>
+        
 
         <!-- Segunda fila -->
         <div class="row mb-4">
@@ -218,6 +168,58 @@
                     </div>
                 </div>
             </div>
+        </div>
+        <br>
+        <!-- Primera fila -->
+        <div class="row mb-4">
+            <div class="col-md-3">
+                <div class="form-outline">
+                    <select
+                        v-model="formData.status_requisition"
+                        class="form-select"
+                    >
+                        <option value="Pendiente">
+                            PENDIENTE DE AUTORIZACIÓN
+                        </option>
+                        <option value="Autorizado">AUTORIZADO</option>
+                        <option value="Rechazado">RECHAZADO</option>
+                    </select>
+                    <label class="form-label">STATUS DE LA REQUISICIÓN</label>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="form-outline">
+                    <select v-model="formData.importance" class="form-select">
+                        <option value="Baja">BAJA</option>
+                        <option value="Media">MEDIA</option>
+                        <option value="Alta">ALTA</option>
+                    </select>
+                    <label class="form-label">PRIORIDAD A EDITAR</label>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="form-outline">
+                    <input
+                        type="text"
+                        v-model="formData.importance_now"
+                        class="form-control"
+                        readonly
+                    />
+                    <label class="form-label">PRIORIDAD ACTUAL</label>
+                </div>
+            </div>
+
+            <!-- <div class="col-md-3">
+                <div class="form-outline">
+                    <select v-model="formData.petty_cash" class="form-select">
+                        <option value="0">NO</option>
+                        <option value="1">SI</option>
+                    </select>
+                    <label class="form-label">¿CAJA CHICA?</label>
+                </div>
+            </div> -->
         </div>
 
         <!-- Botones -->

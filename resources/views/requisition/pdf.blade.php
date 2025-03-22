@@ -34,13 +34,13 @@ body {
             text-align: center;
             vertical-align: middle;
             padding: 8px;
-            white-space: nowrap; /* 📌 Evita saltos de línea en fechas */
+           /* white-space: nowrap;  📌 Evita saltos de línea en fechas */
             word-wrap: break-word;
         }
 
         .table th {
-            /* background-color: #2C3E50;
-            color: white; */
+            background-color: #2C3E50;
+            color: white; 
         }
 
         /* 🔹 Status Box */
