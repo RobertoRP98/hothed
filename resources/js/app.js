@@ -1,7 +1,4 @@
 import { createApp } from 'vue';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap/dist/js/bootstrap.bundle.min.js';
-
 
 //AXIOS PARA EL TOKEN DE LOS FORM
 import axios  from './services/axios';
