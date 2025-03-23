@@ -12,9 +12,12 @@
               
               @php
           $roleRedirects = [
-              'Developer' => '/ordenes-compra',
-              'RespCompras' => '/ordenes-compra',
-              'Diradmin' => '/ordenes-compra',
+              'Developer' => '/ordenes-compra/pre-autorizacio/adm/pendientes',
+              'RespCompras' => '/ordenes-compra/pre-autorizacio/adm/pendientes',
+              'Diradmin' => '/ordenes-compra/pre-autorizacio/adm/pendientes',
+
+              'Gerope' => '/ordenes-compra/pre-autorizacio/ope/pendientes'
+
           ];
           
           // Obtener el primer rol del usuario que tenga una redirección definida

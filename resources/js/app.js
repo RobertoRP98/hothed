@@ -1,5 +1,6 @@
-import './bootstrap';
 import { createApp } from 'vue';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
 
 //AXIOS PARA EL TOKEN DE LOS FORM
@@ -21,6 +22,10 @@ import ShowCompra from './components/Compra/ShowCompra.vue';
 import EditCompraPA from './components/PreautOC/EditCompraPA.vue';
 //Finaliza PREAUTORIZACIONES
 
+//Inicia AUTORIZACIONES DE LA DIRECTORA
+import EditCompraAut from './components/AutCompra/EditCompraAut.vue';
+//FINALIZA AUTORIZACIONES DE LA DIRECTORA
+
 
 if (document.getElementById('app')) {
     const app = createApp({});
@@ -39,6 +44,10 @@ if (document.getElementById('app')) {
     //COMPONENTES DE PRE AUTORIZACION
     app.component('edit-preautorizacion',EditCompraPA);
     //FINALIZA PRE AUTORIZACION
+
+    //COMPONENTE DE AUTORIZACIÓN OC 
+    app.component('edit-autorizacion',EditCompraAut);
+    //FINALIZA AUTORIZACIÓN OC
 
     // Montar la aplicación en el contenedor principal
     app.mount('#app');// Asume que tienes un <div id="app"></div> en tu layout Blade.

@@ -184,7 +184,6 @@ Route::group(['middleware' => ['auth', 'role:Developer|RespCompras']], function 
 
     Route::get('/ordenes-compra/{purchaseOrder}/requisiciones/{requisicione}/show', [PurchaseOrderController::class, 'show'])->name('ordencompra.show');
 
-    Route::get('/ordenes-compra/{purchaseOrder}/requisiciones/{requisicione}/pdf', [PurchaseOrderController::class, 'pdf'])->name('ordencompra.pdf');
 
 });
 
@@ -197,6 +196,30 @@ Route::group(['middleware' => ['auth', 'role:Developer|RespCompras|Diradmin']], 
     Route::get('/ordenes-compra/pre-autorizacio/adm/canceladas', [AuthPurchaseOrderController::class, 'indexrechazadoadm'])->name('preadmcanceladas.index');
     Route::get('/ordenes-compra/{purchaseOrder}/requisiciones/{requisicione}/preaut', [AuthPurchaseOrderController::class, 'editpreaut'])->name('preaut.edit');
 
+});
+
+//RUTAS QUE SOLO SON ACCESIBLES AL ENCARGADO DE COMPRAS Y A LA DIRECTORA PARA LA PRE AUTORIZACION DE ADMINISTRACION
+Route::group(['middleware' => ['auth', 'role:Developer|RespCompras|Diradmin|Gerope']], function () {
+
+    //INICIA INDEX PRE AUTORIZACION DE ADMINISTRACION
+    Route::get('/ordenes-compra/pre-autorizacio/ope/pendientes', [AuthPurchaseOrderController::class, 'indexpendienteope'])->name('preopependientes.index');
+    Route::get('/ordenes-compra/pre-autorizacio/ope/autorizadas', [AuthPurchaseOrderController::class, 'indextautorizadoope'])->name('preopeautorizadas.index');
+    Route::get('/ordenes-compra/pre-autorizacio/ope/canceladas', [AuthPurchaseOrderController::class, 'indexrechazadoope'])->name('preopecanceladas.index');
+    Route::get('/ordenes-compra/{purchaseOrder}/requisiciones/{requisicione}/preaut', [AuthPurchaseOrderController::class, 'editpreaut'])->name('preaut.edit');
+
+});
+
+//RUTAS QUE SOLO SON ACCESIBLES AL ENCARGADO DE COMPRAS Y A LA DIRECTORA PARA LA AUTORIZACION DE ADMINISTRACION
+Route::group(['middleware' => ['auth', 'role:Developer|RespCompras|Diradmin']], function () {
+
+    //INICIA INDEX PRE AUTORIZACION DE ADMINISTRACION
+    Route::get('/ordenes-compra/autorizacion/pendientes', [AuthPurchaseOrderController::class, 'indexpendientedir'])->name('dirpendientes.index');
+    Route::get('/ordenes-compra/autorizacion/autorizadas', [AuthPurchaseOrderController::class, 'indextautorizadodir'])->name('dirautorizadas.index');
+    Route::get('/ordenes-compra/autorizacion/canceladas', [AuthPurchaseOrderController::class, 'indexrechazadodir'])->name('dircanceladas.index');
+
+    Route::get('/ordenes-compra/{purchaseOrder}/requisiciones/{requisicione}/aut', [AuthPurchaseOrderController::class, 'editdirectora'])->name('autdir.edit');
+
+    Route::get('/ordenes-compra/{purchaseOrder}/requisiciones/{requisicione}/pdf', [PurchaseOrderController::class, 'pdf'])->name('ordencompra.pdf');
 
 });
 
