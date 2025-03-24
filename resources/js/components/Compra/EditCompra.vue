@@ -162,7 +162,7 @@
 
         <div class="col-md-3">
             <div class="form-outline">
-                <select v-model="formData.authorization_2" class="form-select">
+                <select v-model="formData.authorization_2" class="form-select" disabled>
                     <option value="Pendiente">PENDIENTE DE AUTORIZACIÓN</option>
                     <option value="Autorizado">AUTORIZADO</option>
                     <option value="Rechazado">RECHAZADO</option>
@@ -184,7 +184,7 @@
 
         <div class="col-md-3">
             <div class="form-outline">
-                <select v-model="formData.authorization_4" class="form-select">
+                <select v-model="formData.authorization_4" class="form-select" disabled>
                     <option value="Pendiente">PENDIENTE DE AUTORIZACIÓN</option>
                     <option value="Autorizado">AUTORIZADO</option>
                     <option value="Rechazado">RECHAZADO</option>
