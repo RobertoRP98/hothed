@@ -35,7 +35,6 @@
     </div>
     
 
-<br>
 
  @if ($errors->any())
  <div class="alert alert-danger" role="alert">
@@ -56,4 +55,8 @@
 
   </form>
 </div>
+
+
+
 @endsection
+

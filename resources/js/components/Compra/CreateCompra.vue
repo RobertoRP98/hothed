@@ -1,4 +1,6 @@
 <template>
+    
+        
     <h2>DATOS GENERALES</h2>
     <div class="row mb-4">
         <div class="col-md-2">
@@ -95,7 +97,7 @@
                     type="date"
                     v-model="formData.date_start"
                     class="form-control"
-                    readonly
+                    disabled
                 />
                 <label class="form-label">INICIO DE ORDEN</label>
             </div>
@@ -139,7 +141,7 @@
                     type="text"
                     v-model="formData.days_remaining_now"
                     class="form-control"
-                    readonly
+                    disabled
                 />
                 <label class="form-label">DÍAS POR VENCER / VENCIDOS</label>
             </div>
@@ -154,7 +156,7 @@
                     type="text"
                     v-model="formData.status_requisition"
                     class="form-control"
-                    readonly
+                    disabled
                 />
                 <label class="form-label">STATUS DE LA REQUISICIÓN</label>
             </div>
@@ -162,7 +164,7 @@
 
         <div class="col-md-3">
             <div class="form-outline">
-                <select v-model="formData.authorization_2" class="form-select">
+                <select v-model="formData.authorization_2" class="form-select" disabled>
                     <option value="Pendiente">PENDIENTE DE AUTORIZACIÓN</option>
                     <option value="Autorizado">AUTORIZADO</option>
                     <option value="Rechazado">RECHAZADO</option>
@@ -184,7 +186,7 @@
 
         <div class="col-md-3">
             <div class="form-outline">
-                <select v-model="formData.authorization_4" class="form-select">
+                <select v-model="formData.authorization_4" class="form-select" disabled>
                     <option value="Pendiente">PENDIENTE DE AUTORIZACIÓN</option>
                     <option value="Autorizado">AUTORIZADO</option>
                     <option value="Rechazado">RECHAZADO</option>
@@ -480,6 +482,7 @@
             </button>
         </div>
     </div>
+
 </template>
 
 <script>
@@ -843,3 +846,5 @@ export default {
     },
 };
 </script>
+
+

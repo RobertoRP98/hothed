@@ -95,7 +95,7 @@
                     type="date"
                     v-model="formData.date_start"
                     class="form-control"
-                    readonly
+                    disabled
                 />
                 <label class="form-label">INICIO DE ORDEN</label>
             </div>
@@ -139,7 +139,7 @@
                     type="text"
                     v-model="formData.days_remaining_now"
                     class="form-control"
-                    readonly
+                    disabled
                 />
                 <label class="form-label">DÍAS POR VENCER / VENCIDOS</label>
             </div>
