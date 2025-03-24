@@ -33,7 +33,7 @@
 
 
           <div class="col-md-12">
-            <h1>Editar la orden de compra #{{$order->id}} que pertenece a la requsición#{{$order->requisition->id}}</h1>
+            <h1>Editar la orden de compra {{$order->id}} que esta vinculada a la requsición {{$order->requisition->id}}</h1>
           </div>
          
         </div>

@@ -30,7 +30,7 @@
 
 
           <div class="col-md-12">
-            <h1>Ver la orden de compra #{{$order->id}} que pertenece a la requsición#{{$order->requisition->id}}</h1>
+            <h1>Ver la orden de compra {{$order->id}} vinculada a la requsición#{{$order->requisition->id}}</h1>
           </div>
          
         </div>
