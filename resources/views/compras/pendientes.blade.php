@@ -22,16 +22,16 @@
 @endpush
 
 <div class="col-md-12">
-    <a href="{{ url('/ordenes-compra/pendientes') }}" class="col-md-3 btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
-        Ordenes Pendientes de Autorización
+    <a href="{{ url('/ordenes-compra') }}" class="col-md-3 btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
+        Ordenes Autorizadas
     </a>
 
     <a href="{{ url('/ordenes-compra/rechazadas') }}" class="col-md-3 btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
-        Ordenes Canceladas 
+        Ordenes Canceladas
     </a>
 </div>
  
-<h3 class="text-center my-1">Ordenes de Compra Autorizadas</h3>
+<h3 class="text-center my-1">Ordenes de Compra Pendientes de Autorización</h3>
 
 
 <div class="card">

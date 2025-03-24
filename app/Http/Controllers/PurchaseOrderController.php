@@ -22,9 +22,31 @@ class PurchaseOrderController extends Controller
      */
     public function index()
     {
-        $datosoc = PurchaseOrder::all();
+        $datosoc = PurchaseOrder::query()
+        ->where('authorization_4','Autorizado')
+        ->get();
+
         return view('compras.index', compact('datosoc'));
     }
+
+    public function indexpend()
+    {
+        $datosoc = PurchaseOrder::query()
+        ->where('authorization_4','Pendiente')
+        ->get();
+
+        return view('compras.pendientes', compact('datosoc'));
+    }
+
+    public function indexcanc()
+    {
+        $datosoc = PurchaseOrder::query()
+        ->where('authorization_4','Rechazado')
+        ->get();
+
+        return view('compras.rechazadas', compact('datosoc'));
+    }
+
 
     /**
      * Show the form for creating a new resource.

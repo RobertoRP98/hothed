@@ -184,6 +184,15 @@ Route::group(['middleware' => ['auth', 'role:Developer|RespCompras']], function 
     //INICIA ORDENES DE COMPRAS
     Route::get('/ordenes-compra', [PurchaseOrderController::class, 'index'])->name('ordencompra.index');
 
+    Route::get('/ordenes-compra/pendientes', [PurchaseOrderController::class, 'indexpend'])->name('ordencompra.indexpend');
+
+    Route::get('/ordenes-compra/rechazadas', [PurchaseOrderController::class, 'indexcanc'])->name('ordencompra.indexcanc');
+
+    
+
+
+
+
     Route::get('/requisiciones/{requisicione}/ordenes-compra/create', [PurchaseOrderController::class, 'create'])->name('ordencompra.create');
 
     Route::post('/requisiciones/{requisicione}/ordenes-compra', [PurchaseOrderController::class, 'store'])->name('ordencompra.store');
@@ -229,7 +238,6 @@ Route::group(['middleware' => ['auth', 'role:Developer|RespCompras|Diradmin']], 
 
     Route::get('/ordenes-compra/{purchaseOrder}/requisiciones/{requisicione}/aut', [AuthPurchaseOrderController::class, 'editdirectora'])->name('autdir.edit');
 
-    Route::get('/ordenes-compra/{purchaseOrder}/requisiciones/{requisicione}/pdf', [PurchaseOrderController::class, 'pdf'])->name('ordencompra.pdf');
 
 });
 

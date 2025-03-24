@@ -26,12 +26,12 @@
         Ordenes Pendientes de Autorización
     </a>
 
-    <a href="{{ url('/ordenes-compra/rechazadas') }}" class="col-md-3 btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
-        Ordenes Canceladas 
+    <a href="{{ url('/ordenes-compra') }}" class="col-md-3 btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
+        Ordenes Autorizadas
     </a>
 </div>
  
-<h3 class="text-center my-1">Ordenes de Compra Autorizadas</h3>
+<h3 class="text-center my-1">Ordenes de Compra Rechazadas</h3>
 
 
 <div class="card">
