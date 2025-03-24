@@ -194,9 +194,9 @@ class RequisitionController extends Controller
         $query = Requisition::query();
 
         // Si el usuario no es Developer, filtrar por user_id
-        if (!auth()->user()->hasRole(['Developer', 'Coordconta', 'Auxconta', 'Auxalmacen', 'Coordalm'])) {
-            $query->where('user_id', auth()->id());
-        }
+        // if (!auth()->user()->hasRole(['Developer'])) {
+        //     $query->where('user_id', auth()->id());
+        // }
 
         // Obtener la requisición o lanzar un 404 si no existe
         $requisition = $query->where('id', $id)->firstOrFail();
@@ -451,10 +451,7 @@ class RequisitionController extends Controller
     {
         $query = Requisition::query();
 
-        // Si el usuario no es Developer, filtrar por user_id
-        if (!auth()->user()->hasRole(['Developer', 'Coordconta', 'Auxconta', 'Auxalmacen', 'Coordalm'])) {
-            $query->where('user_id', auth()->id());
-        }
+
 
         // Obtener la requisición o lanzar un 404 si no existe
         $requisition = $query->where('id', $id)->firstOrFail();

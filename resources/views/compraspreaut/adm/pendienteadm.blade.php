@@ -116,6 +116,13 @@
                     </button>
                 </a>
 
+                <a class="text-white" href="{{ route('ordencompra.pdf', ['purchaseOrder' => $oc->id, 'requisicione' => $oc->requisition->id]) }}">
+
+                    <button class="btn btn-secondary mb-2">
+                        PDF
+                    </button>
+                </a> 
+
             </td> 
 
 

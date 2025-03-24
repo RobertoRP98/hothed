@@ -34,15 +34,27 @@
             @auth
             @php
                 // Determinar la ruta según el rol del usuario
-                $comprasUrl = '#'; // Enlace por defecto
+                $comprasUrl = '/mis-requisiciones'; // Enlace por defecto
                 if (Auth::user()->hasRole(['Developer', 'RespCompras'])) {
                     $comprasUrl = '/requisiciones';
-                } elseif (Auth::user()->hasRole('AdmCompras')) {
-                    $comprasUrl = '/requisiciones-adm';
-                } elseif (Auth::user()->hasRole('OpeCompras')) {
-                    $comprasUrl = '/requisiciones-ope';
-                } elseif (Auth::user()->hasRole('ClientCompras')) {
-                    $comprasUrl = '/mis-requisiciones';
+                } elseif (Auth::user()->hasRole('Coordconta')) {
+                    $comprasUrl = '/requisiciones-contabilidad';
+                } elseif (Auth::user()->hasRole('Coordalm')) {
+                    $comprasUrl = '/requisiciones-almacen';
+                }
+                 elseif (Auth::user()->hasRole('Subgerope')) {
+                    $comprasUrl = '/requisiciones-subope';
+                } elseif (Auth::user()->hasRole('Gerope')) {
+                    $comprasUrl = '/requisiciones-gerope';
+                } elseif (Auth::user()->hasRole('Respsgi')) {
+                    $comprasUrl = '/requisiciones-sgi';
+                } elseif (Auth::user()->hasRole('Diradmin')) {
+                    $comprasUrl = '/requisiciones-administracion';
+                } elseif (Auth::user()->hasRole('Dirope')) {
+                    $comprasUrl = '/requisiciones-dirope';
+                
+                } elseif (Auth::user()->hasRole('Coordcontratos')) {
+                    $comprasUrl = 'requisiciones-contratos';
                 }
             @endphp
         
@@ -55,15 +67,55 @@
         @php
             // Determinar la ruta según el rol del usuario
             $comprasUrl = '#'; // Enlace por defecto
-            if (Auth::user()->hasRole(['Developer', 'RespCompras'])) {
-                $comprasUrl = '/ordenes-compra';
-            } 
+            if (auth()->user()->hasRole(['Developer', 'RespCompras', 'Diradmin'])) {
+                $comprasUrl = '/ordenes-compra/pre-autorizacio/adm/pendientes';
+            }
+            if (auth()->user()->hasRole(['Developer', 'Gerope'])) {
+                $comprasUrl = '/ordenes-compra/pre-autorizacio/ope/pendientes';
+            }
         @endphp
     
-         <li class="nav-item">
-            <a class="nav-link text-white" href="{{ url($comprasUrl) }}">OC</a>
-        </li> 
-    @endauth 
+        @if($comprasUrl !== '#')
+            <li class="nav-item">
+                <a class="nav-link text-white" href="{{ url($comprasUrl) }}">Pre-OC</a>
+            </li>
+        @endif
+    @endauth
+
+    @auth
+    @php
+        // Determinar la ruta según el rol del usuario
+        $comprasUrl = '#'; // Enlace por defecto
+        if (auth()->user()->hasRole(['Developer', 'RespCompras', 'Diradmin'])) {
+            $comprasUrl = '/ordenes-compra/autorizacion/pendientes';
+        }
+       
+    @endphp
+
+    @if($comprasUrl !== '#')
+        <li class="nav-item">
+            <a class="nav-link text-white" href="{{ url($comprasUrl) }}">AUT-OC</a>
+        </li>
+    @endif
+@endauth
+
+
+        @auth
+        @php
+            // Determinar la ruta según el rol del usuario
+            $comprasUrl = '#'; // Enlace por defecto
+            if (auth()->user()->hasRole(['Developer', 'RespCompras',])) {
+                $comprasUrl = '/ordenes-compra';
+            }
+        @endphp
+    
+        @if($comprasUrl !== '#')
+            <li class="nav-item">
+                <a class="nav-link text-white" href="{{ url($comprasUrl) }}">OC</a>
+            </li>
+        @endif
+    @endauth
+    
 
 
 

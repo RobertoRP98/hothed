@@ -109,12 +109,21 @@
                         VER
                     </button>
                 </a> 
-                <a class="text-white" href="{{ route('preaut.edit', ['purchaseOrder' => $oc->id, 'requisicione' => $oc->requisition->id]) }}"
+               
+
+                <a class="text-white" href="{{ route('autdir.edit', ['purchaseOrder' => $oc->id, 'requisicione' => $oc->requisition->id]) }}"
                     >
                     <button class="btn btn-success mb-2">
                         Editar
                     </button>
                 </a>
+
+                <a class="text-white" href="{{ route('ordencompra.pdf', ['purchaseOrder' => $oc->id, 'requisicione' => $oc->requisition->id]) }}">
+
+                    <button class="btn btn-secondary mb-2">
+                        PDF
+                    </button>
+                </a> 
 
             </td> 
 

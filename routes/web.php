@@ -151,8 +151,19 @@ Route::group(['middleware' => ['auth', 'role:Cobranza']], function () {
 
 //EMPIEZAN MODULOS DE COMPRAS  
 //RUTAS PARA TODO EL PERSONAL CREAR Y GUARDAR SUS REQUISICIONES Y VER SUS PROPIAS REQUIS
-Route::group(['middleware' => ['auth', 'role:Developer|RespCompras|Auxalmacen|Auxopeventas|Coordrh|
-Auxcontratos|Coordconta|Coordalm|Subgerope|Gerope|Respsgi|Diradmin|Dirope|Coordcontratos|Mcfly']], function () {
+// Route::group(['middleware' => ['auth', 'role:Developer|RespCompras|Auxalmacen|Auxopeventas|Coordrh|
+// Auxcontratos|Coordconta|Coordalm|Subgerope|Gerope|Respsgi|Diradmin|Dirope|Coordcontratos|Mcfly']], function () {
+//     Route::get('/requisiciones/create', [RequisitionController::class, 'create'])->name('requisiciones.create');
+//     Route::post('/requisiciones', [RequisitionController::class, 'store'])->name('requisiciones.store');
+//     Route::get('/requisiciones/{requisicione}', [RequisitionController::class, 'show'])->name('requisiciones.show');
+//     //RUTA DE PDF PARA LAS REQUISICIONES
+//     Route::get('/requisiciones/{requisicione}/pdf', [RequisitionController::class, 'pdf'])->name('requisiciones.pdf');
+    
+//     Route::get('/mis-requisiciones', [AuthorizationRequisitionController::class, 'indexclient'])->name('requisicionesclient.index');
+//     Route::get('/productos-cliente', [AuthorizationRequisitionController::class, 'productclient'])->name('productclient.index');
+// });
+
+Route::group(['middleware' => ['auth']], function () {
     Route::get('/requisiciones/create', [RequisitionController::class, 'create'])->name('requisiciones.create');
     Route::post('/requisiciones', [RequisitionController::class, 'store'])->name('requisiciones.store');
     Route::get('/requisiciones/{requisicione}', [RequisitionController::class, 'show'])->name('requisiciones.show');
@@ -162,7 +173,6 @@ Auxcontratos|Coordconta|Coordalm|Subgerope|Gerope|Respsgi|Diradmin|Dirope|Coordc
     Route::get('/mis-requisiciones', [AuthorizationRequisitionController::class, 'indexclient'])->name('requisicionesclient.index');
     Route::get('/productos-cliente', [AuthorizationRequisitionController::class, 'productclient'])->name('productclient.index');
 });
-
 //RUTAS QUE SOLO SON ACCESIBLES AL ENCARGADO DE COMPRAS
 
 Route::group(['middleware' => ['auth', 'role:Developer|RespCompras']], function () {
@@ -177,7 +187,7 @@ Route::group(['middleware' => ['auth', 'role:Developer|RespCompras']], function 
     Route::get('/requisiciones/{requisicione}/ordenes-compra/create', [PurchaseOrderController::class, 'create'])->name('ordencompra.create');
 
     Route::post('/requisiciones/{requisicione}/ordenes-compra', [PurchaseOrderController::class, 'store'])->name('ordencompra.store');
-
+    
     Route::get('/ordenes-compra/{purchaseOrder}/requisiciones/{requisicione}/edit', [PurchaseOrderController::class, 'edit'])->name('ordencompra.edit');
 
     Route::patch('/ordenes-compra/{purchaseOrder}/requisiciones/{requisicione}/', [PurchaseOrderController::class, 'update'])->name('ordencompra.update');
@@ -219,6 +229,13 @@ Route::group(['middleware' => ['auth', 'role:Developer|RespCompras|Diradmin']], 
 
     Route::get('/ordenes-compra/{purchaseOrder}/requisiciones/{requisicione}/aut', [AuthPurchaseOrderController::class, 'editdirectora'])->name('autdir.edit');
 
+    Route::get('/ordenes-compra/{purchaseOrder}/requisiciones/{requisicione}/pdf', [PurchaseOrderController::class, 'pdf'])->name('ordencompra.pdf');
+
+});
+
+//RUTAS QUE SOLO SON ACCESIBLES AL ENCARGADO DE COMPRAS,DIRECTORA, GEROPE PARA VER LOS PDF DE LAS OC
+Route::group(['middleware' => ['auth', 'role:Developer|RespCompras|Diradmin|Gerope']], function () {
+   
     Route::get('/ordenes-compra/{purchaseOrder}/requisiciones/{requisicione}/pdf', [PurchaseOrderController::class, 'pdf'])->name('ordencompra.pdf');
 
 });
