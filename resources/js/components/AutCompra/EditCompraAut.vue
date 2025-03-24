@@ -1,6 +1,26 @@
 <template>
-    <h2>DATOS GENERALES</h2>
-    <div class="row mb-4">
+  
+
+<br>
+    <div class="accordion" id="accordionPanelsStayOpenExample">
+
+        <div class="accordion-item">
+  <h2 class="accordion-header" id="general">
+    <button
+      class="accordion-button collapsed"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#collapseGeneral"
+      aria-expanded="false"
+      aria-controls="collapseGeneral"
+    >
+    <h3>DATOS GENERALES</h3>
+      
+    </button>
+  </h2>
+  <div id="collapseGeneral" class="accordion-collapse collapse" aria-labelledby="general">
+    <div class="accordion-body">
+      <div class="row mb-4">
         <div class="col-md-2">
             <input
                 type="text"
@@ -8,16 +28,15 @@
                 v-model="supplierData[0].name"
                 @input="searchSupplier(0)"
                 placeholder="CAMPO OBLIGATORIO"
-                readonly
+                disabled
             />
 
-           
             <label class="form-outline">PROVEEDOR</label>
         </div>
 
         <div class="col-md-2">
             <div class="form-outline">
-                <select v-model="formData.type_op" class="form-select" disabled >
+                <select v-model="formData.type_op" class="form-select" disabled>
                     <option value="Local">LOCAL</option>
                     <option value="Extranjera">EXTRANJERA</option>
                 </select>
@@ -27,7 +46,11 @@
 
         <div class="col-md-2">
             <div class="form-outline">
-                <select v-model="formData.payment_type" class="form-select" disabled>
+                <select
+                    v-model="formData.payment_type"
+                    class="form-select"
+                    disabled
+                >
                     <option value="CREDITO">CREDITO</option>
                     <option value="CAJA CHICA">CAJA CHICA</option>
                     <option value="TRANSFERENCIA">TRANSFERENCIA</option>
@@ -40,7 +63,11 @@
 
         <div class="col-md-2">
             <div class="form-outline">
-                <select v-model="formData.unique_payment" class="form-select" disabled>
+                <select
+                    v-model="formData.unique_payment"
+                    class="form-select"
+                    disabled
+                >
                     <option value="1">SI</option>
                     <option value="0">NO</option>
                 </select>
@@ -55,7 +82,7 @@
                     v-model="formData.quotation"
                     class="form-control"
                     placeholder="COTIZACIÓN"
-                    readonly
+                    disabled
                 />
                 <label class="form-label">COTIZACIÓN</label>
             </div>
@@ -63,7 +90,11 @@
 
         <div class="col-md-2">
             <div class="form-outline">
-                <select v-model="formData.currency" class="form-select" disabled>
+                <select
+                    v-model="formData.currency"
+                    class="form-select"
+                    disabled
+                >
                     <option value="MXN">MXN</option>
                     <option value="USD">USD</option>
                     <option value="EUR">EUR</option>
@@ -72,16 +103,28 @@
             </div>
         </div>
     </div>
+    </div>
+  </div>
+</div>
 
-    <h2>FECHAS DE SEGUIMIENTO</h2>
-    <div class="row mb-4">
+
+    
+        <div class="accordion-item">
+    <h2 class="accordion-header" id="panelsStayOpen-headingTwo">
+      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="false" aria-controls="panelsStayOpen-collapseTwo">
+        <h3>FECHAS DE SEGUIMIENTO</h3> 
+      </button>
+    </h2>
+    <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-headingTwo">
+      <div class="accordion-body">
+        <div class="row mb-4">
         <div class="col-md-2">
             <div class="form-outline">
                 <input
                     type="date"
                     v-model="formData.date_start"
                     class="form-control"
-                    readonly
+                    disabled
                 />
                 <label class="form-label">INICIO DE ORDEN</label>
             </div>
@@ -93,7 +136,7 @@
                     type="text"
                     v-model="formData.days_remaining_now"
                     class="form-control"
-                    readonly
+                    disabled
                 />
                 <label class="form-label">DÍAS POR VENCER / VENCIDOS</label>
             </div>
@@ -132,86 +175,127 @@
                 <label class="form-label" hidden>DIA DE PAGO</label>
             </div>
         </div>
-
-       
     </div>
+    </div>
+    </div>
+  </div>
 
-   
-        <h2>SEGUIMIENTO DE LA COMPRA</h2>
-        <div class="row mb-3">
-            <div class="col-md-3">
-                <div class="form-outline">
-                    <select
-                        v-model="formData.delivery_condition"
-                        class="form-select"
-                        disabled
-                    >
-                        <option value="100% Antes Entrega">
-                            100% ANTES DE ENTREGA
-                        </option>
-                        <option value="100% Post Entrega">
-                            100% POST ENTREGA
-                        </option>
-                        <option value="50-50">50 ANTICIPO - 50 ENTREGA</option>
-                    </select>
-                    <label class="form-label">CONDICIÓN DE ENTREGA</label>
-                </div>
-            </div>
 
-            <div class="col-md-3">
-                <div class="form-outline">
-                    <select v-model="formData.po_status" class="form-select" disabled>
-                        <option value="PENDIENTE DE PAGO">
-                            PENDIENTE DE PAGO
-                        </option>
-                        <option value="PENDIENTE DE PAGO (SERVICIO CONCLUIDO)">
-                            PENDIENTE DE PAGO (SERVICIO CONCLUIDO)
-                        </option>
-                        <option value="PAGADA">PAGADA</option>
-                        <option value="CANCELADA">CANCELADA</option>
-                        <option value="EN PAUSA">EN PAUSA</option>
-                        <option value="EN PROCESO">EN PROCESO</option>
-                    </select>
-                    <label class="form-label">STATUS DE LA ORDEN</label>
-                </div>
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="panelsStayOpen-headingThree">
+                <button
+                    class="accordion-button collapsed"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#panelsStayOpen-collapseThree"
+                    aria-expanded="false"
+                    aria-controls="panelsStayOpen-collapseThree"
+                >
+                <h3>SEGUIMIENTO DE LA COMPRA</h3>
+                    
+                </button>
+            </h2>
+            <div
+                id="panelsStayOpen-collapseThree"
+                class="accordion-collapse collapse"
+                aria-labelledby="panelsStayOpen-headingThree"
+            >
+                <div class="accordion-body">
+                    <div class="row mb-3">
+        <div class="col-md-3">
+            <div class="form-outline">
+                <select
+                    v-model="formData.delivery_condition"
+                    class="form-select"
+                    disabled
+                >
+                    <option value="100% Antes Entrega">
+                        100% ANTES DE ENTREGA
+                    </option>
+                    <option value="100% Post Entrega">100% POST ENTREGA</option>
+                    <option value="50-50">50 ANTICIPO - 50 ENTREGA</option>
+                </select>
+                <label class="form-label">CONDICIÓN DE ENTREGA</label>
             </div>
-
-            <div class="col-md-3">
-                <div class="form-outline">
-                    <select v-model="formData.bill" class="form-select" disabled>
-                        <option value="Pendiente Facturar">
-                            PENDIENTE DE FACTURAR
-                        </option>
-                        <option value="Facturado">FACTURADO</option>
-                    </select>
-                    <label class="form-label">¿FACTURADO?</label>
-                </div>
-            </div>
-
-            <div class="col-md-3">
-                <div class="form-outline">
-                    <input
-                        type="text"
-                        v-model="formData.bill_name"
-                        class="form-control"
-                        placeholder="NOMBRE DE LA FACTURA"
-                        readonly
-                    />
-                    <label class="form-label">FACTURA</label>
-                </div>
-            </div>
-            
         </div>
 
-        <h2>AUTORIZACIONES DE SEGUIMIENTO</h2>
-    <div class="row mb-4">
+        <div class="col-md-3">
+
+            <div class="form-outline">
+                <select
+                    v-model="formData.po_status"
+                    class="form-select"
+                    disabled
+                >
+                    <option value="PENDIENTE DE PAGO">PENDIENTE DE PAGO</option>
+                    <option value="PENDIENTE DE PAGO (SERVICIO CONCLUIDO)">
+                        PENDIENTE DE PAGO (SERVICIO CONCLUIDO)
+                    </option>
+                    <option value="PAGADA">PAGADA</option>
+                    <option value="CANCELADA">CANCELADA</option>
+                    <option value="EN PAUSA">EN PAUSA</option>
+                    <option value="EN PROCESO">EN PROCESO</option>
+                </select>
+                <label class="form-label">STATUS DE LA ORDEN</label>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="form-outline">
+                <select v-model="formData.bill" class="form-select" disabled>
+                    <option value="Pendiente Facturar">
+                        PENDIENTE DE FACTURAR
+                    </option>
+                    <option value="Facturado">FACTURADO</option>
+                </select>
+                <label class="form-label">¿FACTURADO?</label>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="form-outline">
+                <input
+                    type="text"
+                    v-model="formData.bill_name"
+                    class="form-control"
+                    placeholder="NOMBRE DE LA FACTURA"
+                    disabled
+                />
+                <label class="form-label">FACTURA</label>
+            </div>
+        </div>
+    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="panelsStayOpen-headingOne">
+                <button
+                    class="accordion-button"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#panelsStayOpen-collapseOne"
+                    aria-expanded="true"
+                    aria-controls="panelsStayOpen-collapseOne"
+                >
+                    <h3>AUTORIZACIONES DE SEGUIMIENTO</h3>
+                </button>
+            </h2>
+            <div
+                id="panelsStayOpen-collapseOne"
+                class="accordion-collapse collapse show"
+                aria-labelledby="panelsStayOpen-headingOne"
+            >
+                <div class="accordion-body">
+                    <div class="row mb-4">
         <div class="col-md-3">
             <div class="form-outline">
                 <input
                     type="text"
                     v-model="formData.status_requisition"
                     class="form-control"
-                    readonly
+                    disabled
                 />
                 <label class="form-label">STATUS DE LA REQUISICIÓN</label>
             </div>
@@ -219,7 +303,11 @@
 
         <div class="col-md-3">
             <div class="form-outline">
-                <select v-model="formData.authorization_2" class="form-select" disabled>
+                <select
+                    v-model="formData.authorization_2"
+                    class="form-select"
+                    disabled
+                >
                     <option value="Pendiente">PENDIENTE DE AUTORIZACIÓN</option>
                     <option value="Autorizado">AUTORIZADO</option>
                     <option value="Rechazado">RECHAZADO</option>
@@ -240,15 +328,26 @@
         </div> -->
 
         <div class="col-md-3">
-            <div class="form-outline">
-                <select v-model="formData.authorization_4" class="form-select">
-                    <option value="Pendiente">PENDIENTE DE AUTORIZACIÓN</option>
-                    <option value="Autorizado">AUTORIZADO</option>
-                    <option value="Rechazado">RECHAZADO</option>
-                </select>
-                <label class="form-label">DIRECTORA GENERAL</label>
-            </div>
-        </div>
+  <div class="form-outline">
+    <select
+      v-model="formData.authorization_4"
+      class="form-select"
+      :class="{
+        'bg-warning text-dark': formData.authorization_4 === 'Pendiente',
+        'bg-success text-white': formData.authorization_4 === 'Autorizado',
+        'bg-danger text-white': formData.authorization_4 === 'Rechazado'
+      }"
+    >
+      <option value="Pendiente">PENDIENTE DE AUTORIZACIÓN</option>
+      <option value="Autorizado">AUTORIZADO</option>
+      <option value="Rechazado">RECHAZADO</option>
+    </select>
+    <label class="form-label">DIRECTORA GENERAL</label>
+  </div>
+</div>
+
+
+
 
         <div class="col-md-3">
             <div class="form-outline">
@@ -256,52 +355,15 @@
                     type="text"
                     v-model="formData.days_remaining_now"
                     class="form-control"
-                    readonly
+                    disabled
                 />
                 <label class="form-label">DÍAS POR VENCER / VENCIDOS</label>
             </div>
         </div>
-
-        <div class="accordion" id="accordionPanelsStayOpenExample">
-  <div class="accordion-item">
-    <h2 class="accordion-header" id="panelsStayOpen-headingOne">
-      <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne">
-        Accordion Item #1
-      </button>
-    </h2>
-    <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show" aria-labelledby="panelsStayOpen-headingOne">
-      <div class="accordion-body">
-        <strong>This is the first item's accordion body.</strong> It is shown by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
-      </div>
     </div>
-  </div>
-  <div class="accordion-item">
-    <h2 class="accordion-header" id="panelsStayOpen-headingTwo">
-      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="false" aria-controls="panelsStayOpen-collapseTwo">
-        Accordion Item #2
-      </button>
-    </h2>
-    <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-headingTwo">
-      <div class="accordion-body">
-        <strong>This is the second item's accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
-      </div>
-    </div>
-  </div>
-  <div class="accordion-item">
-    <h2 class="accordion-header" id="panelsStayOpen-headingThree">
-      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseThree" aria-expanded="false" aria-controls="panelsStayOpen-collapseThree">
-        Accordion Item #3
-      </button>
-    </h2>
-    <div id="panelsStayOpen-collapseThree" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-headingThree">
-      <div class="accordion-body">
-        <strong>This is the third item's accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
-      </div>
-    </div>
-  </div>
-</div>
-
-        
+                </div>
+            </div>
+        </div>
     </div>
 
     <h2>PRODUCTOS DE LA ORDEN DE COMPRA</h2>
@@ -329,7 +391,6 @@
                         <th>Impuesto</th>
                         <th>Descuento</th>
                         <th>Importe</th>
-                        <th>Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -341,7 +402,7 @@
                                 @input="searchProducts(index)"
                                 class="form-control"
                                 placeholder="Busque un producto"
-                                readonly
+                                disabled
                             />
                             <ul
                                 v-if="value.suggestions.length > 0"
@@ -365,7 +426,7 @@
                                 v-model="value.internal_id"
                                 class="form-control"
                                 placeholder="C-I"
-                                readonly
+                                disabled
                             />
                         </td>
                         <td>
@@ -374,7 +435,7 @@
                                 v-model="value.udm"
                                 class="form-control"
                                 placeholder="UDM"
-                                readonly
+                                disabled
                             />
                         </td>
                         <td>
@@ -383,7 +444,7 @@
                                 v-model="value.quantity"
                                 class="form-control"
                                 placeholder="Cantidad"
-                                readonly
+                                disabled
                             />
                         </td>
                         <td>
@@ -392,7 +453,7 @@
                                 v-model="value.price"
                                 class="form-control"
                                 placeholder="Precio unitario"
-                                readonly
+                                disabled
                             />
                         </td>
 
@@ -402,7 +463,7 @@
                                 :value="value.tax?.concept || 'N/A'"
                                 class="form-control"
                                 placeholder="Impuesto"
-                                readonly
+                                disabled
                             />
                         </td>
 
@@ -412,7 +473,7 @@
                                 v-model="value.discount"
                                 class="form-control"
                                 placeholder="Descuento"
-                                readonly
+                                disabled
                             />
                         </td>
                         <td>
@@ -421,16 +482,8 @@
                                 v-model="value.subtotalproducto"
                                 class="form-control"
                                 placeholder="Importe"
-                                readonly
+                                disabled
                             />
-                        </td>
-                        <td>
-                            <button
-                                class="btn btn-danger"
-                                @click.prevent="removeField(index)"
-                            >
-                                Remover
-                            </button>
                         </td>
                     </tr>
                     <tr>
@@ -578,7 +631,7 @@ export default {
                 delivery_condition: "100% Antes Entrega",
                 po_status: "PENDIENTE DE PAGO",
                 bill: "Pendiente Facturar",
-                bill_name:"",
+                bill_name: "",
                 subtotal: 0, //guarda el subtotal de todos los subtotalproducto
                 total_descuento: 0,
                 total_impuestos: 0,
@@ -709,7 +762,7 @@ export default {
         validateForm() {
             this.errors = {}; // Reiniciar errores
 
-           if (!this.formData.supplier_id) {
+            if (!this.formData.supplier_id) {
                 this.errors.supplier_id = "El proveedor es obligatorio";
             }
 
@@ -755,12 +808,14 @@ export default {
         /** 🔹 Enviar formulario solo si pasa la validación */
         submitForm() {
             if (!this.validateForm()) {
-            let errorMessages = Object.values(this.errors).join("\n");
-                alert("Corrige los errores antes de enviar.\n\n" + errorMessages);
-                console.error("Errores de validacion",this.errors);
+                let errorMessages = Object.values(this.errors).join("\n");
+                alert(
+                    "Corrige los errores antes de enviar.\n\n" + errorMessages
+                );
+                console.error("Errores de validacion", this.errors);
                 return; // 💡 Esto debería detener la ejecución
             }
-            
+
             if (this.$refs.subtotalInput) {
                 this.$refs.subtotalInput.value = this.subtotal;
             }
@@ -786,14 +841,14 @@ export default {
                 return; // Evita que continúe el envío del formulario
             }
 
-           
-
             console.log("Formulario válido, enviando...");
             // Aquí sigue el envío del request si no hay errores
 
             const payload = {
                 ...this.formData,
-                requisition_id: this.formData.requisition_id || this.initialData?.formData?.requisition,
+                requisition_id:
+                    this.formData.requisition_id ||
+                    this.initialData?.formData?.requisition,
                 supplier_id: this.supplierData[0]?.supplier_id || null,
                 items_order: this.productData.map((item) => ({
                     product_id: item.product_id,
@@ -812,16 +867,18 @@ export default {
             console.log("Payload:", payload);
 
             console.log("Datos enviados al backend:", payload); // 🛠️ Depuración
-            const requisitionId = this.formData.requisition_id || this.initialData?.formData?.requisition;
-            console.log("el ID DE LA REQUI ES ", requisitionId)
+            const requisitionId =
+                this.formData.requisition_id ||
+                this.initialData?.formData?.requisition;
+            console.log("el ID DE LA REQUI ES ", requisitionId);
             if (!requisitionId) {
                 alert("El ID de la requisición no está definido.");
                 return;
             }
 
             const orderId = this.formData.order; // Asegúrate que esté definido
-            console.log("el ID DE LA order ES ", orderId)
-           
+            console.log("el ID DE LA order ES ", orderId);
+
             if (!orderId) {
                 alert("El ID de la requisición no está definido.");
                 return;
@@ -830,7 +887,10 @@ export default {
             console.log("Payload antes de enviar:", this.formData);
 
             axios
-                .patch(`/ordenes-compra/${orderId}/requisiciones/${requisitionId}`, payload)
+                .patch(
+                    `/ordenes-compra/${orderId}/requisiciones/${requisitionId}`,
+                    payload
+                )
                 .then((response) => {
                     console.log("Mensaje:", response.data.message);
                     if (response.data.redirect) {

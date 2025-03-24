@@ -150,16 +150,26 @@
             </div>
         </div>
 
+       
+
         <div class="col-md-3">
-            <div class="form-outline">
-                <select v-model="formData.authorization_2" class="form-select">
-                    <option value="Pendiente">PENDIENTE DE AUTORIZACIÓN</option>
-                    <option value="Autorizado">AUTORIZADO</option>
-                    <option value="Rechazado">RECHAZADO</option>
-                </select>
-                <label class="form-label">PRE-AUTORIZACIÓN</label>
-            </div>
-        </div>
+  <div class="form-outline">
+    <select
+      v-model="formData.authorization_2"
+      class="form-select"
+      :class="{
+        'bg-warning text-dark': formData.authorization_2 === 'Pendiente',
+        'bg-success text-white': formData.authorization_2 === 'Autorizado',
+        'bg-danger text-white': formData.authorization_2 === 'Rechazado'
+      }"
+    >
+      <option value="Pendiente">PENDIENTE DE AUTORIZACIÓN</option>
+      <option value="Autorizado">AUTORIZADO</option>
+      <option value="Rechazado">RECHAZADO</option>
+    </select>
+    <label class="form-label">PRE-AUTORIZACIÓN</label>
+  </div>
+</div>
 
         <!-- <div class="col-md-3">
             <div class="form-outline">
@@ -182,6 +192,8 @@
                 <label class="form-label" hidden>DIRECTORA GENERAL</label>
             </div>
         </div>
+
+        
 
         <h2>SEGUIMIENTO DE LA COMPRA</h2>
         <div class="row mb-3">
@@ -275,7 +287,6 @@
                         <th>Impuesto</th>
                         <th>Descuento</th>
                         <th>Importe</th>
-                        <th>Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -370,14 +381,7 @@
                                 readonly
                             />
                         </td>
-                        <td>
-                            <button
-                                class="btn btn-danger"
-                                @click.prevent="removeField(index)"
-                            >
-                                Remover
-                            </button>
-                        </td>
+                      
                     </tr>
                     <tr>
                         <td></td>

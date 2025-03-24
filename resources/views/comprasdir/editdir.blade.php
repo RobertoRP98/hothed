@@ -38,7 +38,7 @@
 
 
           <div class="col-md-12">
-            <h1>AUTORIZAR LA ORDEN  {{$order->id}} VINCULADA A LA REQUISICIÓN{{$order->requisition->id}}</h1>
+            <h1>AUTORIZAR LA ORDEN  {{$order->id}} VINCULADA A LA REQUISICIÓN {{$order->requisition->id}}</h1>
           </div>
          
         </div>
