@@ -393,6 +393,7 @@ class AuthorizationRequisitionController extends Controller
                  $query->whereIn('subarea', [
                      'COORD. DE VENTAS',
                      'SUB. GER. OPE',
+                     'COORD. DE ALMACEN',
                  ]);
              })
              ->get();
@@ -411,6 +412,8 @@ class AuthorizationRequisitionController extends Controller
                  $query->whereIn('subarea', [
                     'COORD. DE VENTAS',
                     'SUB. GER. OPE',
+                    'COORD. DE ALMACEN',
+
                 ]);
             })
              ->get();
@@ -429,6 +432,8 @@ class AuthorizationRequisitionController extends Controller
                  $query->whereIn('subarea', [
                     'COORD. DE VENTAS',
                     'SUB. GER. OPE',
+                    'COORD. DE ALMACEN',
+
                 ]);
             })
              ->get();
@@ -447,6 +452,8 @@ class AuthorizationRequisitionController extends Controller
                  $query->whereIn('subarea', [
                     'COORD. DE VENTAS',
                     'SUB. GER. OPE',
+                    'COORD. DE ALMACEN',
+
                 ]);
             })
              ->get();

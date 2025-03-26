@@ -8,10 +8,11 @@
             <button type="button" class="btn btn-warning btn-block">
               
               @php
-          $roleRedirects = [
+        $roleRedirects = [
               'Developer' => '/ordenes-compra',
               'RespCompras' => '/ordenes-compra',
-              'Diradmin' => '/ordenes-compra',
+              'Diradmin' => '/ordenes-compra/autorizacion/pendientes',
+              'Gerope' => '/ordenes-compra/pre-autorizacio/ope/pendientes',
           ];
           
           // Obtener el primer rol del usuario que tenga una redirección definida
