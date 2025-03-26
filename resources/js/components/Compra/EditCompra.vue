@@ -249,7 +249,7 @@
                         type="text"
                         v-model="formData.bill_name"
                         class="form-control"
-                        placeholder="NOMBRE DE LA FACTURA"
+                        placeholder="FOLIO DE LA FACTURA"
                     />
                     <label class="form-label">FACTURA</label>
                 </div>

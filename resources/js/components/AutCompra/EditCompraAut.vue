@@ -14,7 +14,7 @@
       aria-expanded="false"
       aria-controls="collapseGeneral"
     >
-    <h3>DATOS GENERALES</h3>
+    <h6>DATOS GENERALES</h6>
       
     </button>
   </h2>
@@ -112,7 +112,7 @@
         <div class="accordion-item">
     <h2 class="accordion-header" id="panelsStayOpen-headingTwo">
       <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="false" aria-controls="panelsStayOpen-collapseTwo">
-        <h3>FECHAS DE SEGUIMIENTO</h3> 
+        <h6>FECHAS DE SEGUIMIENTO</h6> 
       </button>
     </h2>
     <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-headingTwo">
@@ -191,7 +191,7 @@
                     aria-expanded="false"
                     aria-controls="panelsStayOpen-collapseThree"
                 >
-                <h3>SEGUIMIENTO DE LA COMPRA</h3>
+                <h6>SEGUIMIENTO DE LA COMPRA</h6>
                     
                 </button>
             </h2>
@@ -279,7 +279,7 @@
                     aria-expanded="true"
                     aria-controls="panelsStayOpen-collapseOne"
                 >
-                    <h3>AUTORIZACIONES DE SEGUIMIENTO</h3>
+                    <h6>AUTORIZACIONES DE SEGUIMIENTO</h6>
                 </button>
             </h2>
             <div

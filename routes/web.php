@@ -188,15 +188,18 @@ Route::group(['middleware' => ['auth', 'role:Developer|RespCompras']], function 
 
     Route::get('/ordenes-compra/rechazadas', [PurchaseOrderController::class, 'indexcanc'])->name('ordencompra.indexcanc');
 
-    
-
-
-
-
     Route::get('/requisiciones/{requisicione}/ordenes-compra/create', [PurchaseOrderController::class, 'create'])->name('ordencompra.create');
 
     Route::post('/requisiciones/{requisicione}/ordenes-compra', [PurchaseOrderController::class, 'store'])->name('ordencompra.store');
     
+  
+
+
+});
+
+//RUTAS QUE SOLO SON ACCESIBLES AL ENCARGADO DE COMPRAS, DIRECTORA GENERAL Y GER DE OPERACIONES PARA AUTORIZAR Y VER OCS
+ Route::group(['middleware' => ['auth', 'role:Developer|RespCompras|Diradmin|Gerope']], function () {
+
     Route::get('/ordenes-compra/{purchaseOrder}/requisiciones/{requisicione}/edit', [PurchaseOrderController::class, 'edit'])->name('ordencompra.edit');
 
     Route::patch('/ordenes-compra/{purchaseOrder}/requisiciones/{requisicione}/', [PurchaseOrderController::class, 'update'])->name('ordencompra.update');

@@ -10,7 +10,7 @@
                         type="date"
                         v-model="formData.request_date"
                         class="form-control"
-                        readonly
+                        disabled
                     />
                     <label class="form-label">FECHA DE SOLICITUD</label>
                 </div>
@@ -22,7 +22,7 @@
                         type="date"
                         v-model="formData.required_date"
                         class="form-control"
-                        readonly
+                        disabled
                     />
                     <label class="form-label">FECHA REQUERIDA</label>
                 </div>
@@ -34,7 +34,7 @@
                         type="date"
                         v-model="formData.production_date"
                         class="form-control"
-                        readonly
+                        disabled
                     />
                     <label class="form-label">FECHA MAX DE ENTREGA</label>
                 </div>
@@ -46,7 +46,7 @@
                         type="text"
                         v-model="formData.days_remaining_now"
                         class="form-control"
-                        readonly
+                        disabled
                     />
                     <label class="form-label">DIAS FALTANTES</label>
                 </div>
@@ -205,7 +205,7 @@
                         type="text"
                         v-model="formData.importance_now"
                         class="form-control"
-                        readonly
+                        disabled
                     />
                     <label class="form-label">PRIORIDAD ACTUAL</label>
                 </div>
@@ -390,6 +390,8 @@ export default {
                 );
                 return;
             }
+
+            
             const payload = {
                 id: this.formData.id,
                 ...this.formData,
@@ -399,6 +401,8 @@ export default {
                 })),
             };
             console.log(`URL: /requisiciones/${this.formData.id}`, payload);
+
+
 
             axios
                 .patch(`/requisiciones/${this.formData.id}`, payload)

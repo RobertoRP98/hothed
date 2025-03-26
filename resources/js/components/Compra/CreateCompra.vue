@@ -1,6 +1,4 @@
 <template>
-    
-        
     <h2>DATOS GENERALES</h2>
     <div class="row mb-4">
         <div class="col-md-2">
@@ -164,7 +162,11 @@
 
         <div class="col-md-3">
             <div class="form-outline">
-                <select v-model="formData.authorization_2" class="form-select" disabled>
+                <select
+                    v-model="formData.authorization_2"
+                    class="form-select"
+                    disabled
+                >
                     <option value="Pendiente">PENDIENTE DE AUTORIZACIÓN</option>
                     <option value="Autorizado">AUTORIZADO</option>
                     <option value="Rechazado">RECHAZADO</option>
@@ -186,7 +188,11 @@
 
         <div class="col-md-3">
             <div class="form-outline">
-                <select v-model="formData.authorization_4" class="form-select" disabled>
+                <select
+                    v-model="formData.authorization_4"
+                    class="form-select"
+                    disabled
+                >
                     <option value="Pendiente">PENDIENTE DE AUTORIZACIÓN</option>
                     <option value="Autorizado">AUTORIZADO</option>
                     <option value="Rechazado">RECHAZADO</option>
@@ -251,7 +257,7 @@
                         type="text"
                         v-model="formData.bill_name"
                         class="form-control"
-                        placeholder="NOMBRE DE LA FACTURA"
+                        placeholder="FOLIO DE LA FACTURA"
                     />
                     <label class="form-label">FACTURA</label>
                 </div>
@@ -312,6 +318,7 @@
                                 </li>
                             </ul>
                         </td>
+
                         <td>
                             <input
                                 type="text"
@@ -482,7 +489,6 @@
             </button>
         </div>
     </div>
-
 </template>
 
 <script>
@@ -498,6 +504,8 @@ export default {
     mounted() {
         if (this.initialData) {
             this.formData = { ...this.initialData.formData }; // Carga todo lo que venga de PHP
+            this.productData = [...this.initialData.productData]; // 🔥 Cargar productos de la requisición
+
             console.log("Datos iniciales recibidos:", this.formData);
         }
 
@@ -846,5 +854,3 @@ export default {
     },
 };
 </script>
-
-

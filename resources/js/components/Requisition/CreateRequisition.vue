@@ -62,7 +62,7 @@
                         type="date"
                         v-model="formData.request_date"
                         class="form-control"
-                        readonly
+                        disabled
                     />
                     <label class="form-label">FECHA DE SOLICITUD</label>
                 </div>
@@ -85,7 +85,7 @@
                         type="date"
                         v-model="formData.production_date"
                         class="form-control"
-                        readonly
+                        disabled
                     />
                     <label class="form-label">FECHA MAX DE ENTREGA</label>
                 </div>
@@ -97,7 +97,7 @@
                         type="number"
                         v-model="formData.days_remaining"
                         class="form-control"
-                        readonly
+                        disabled
                     />
                     <label class="form-label">DÍAS FALTANTES</label>
                 </div>
@@ -364,6 +364,11 @@ export default {
                 console.error("Errores de validación:", this.errors);
                 return; // 💡 Esto debería detener la ejecución
             }
+
+            // 🔥 Preguntar al usuario si está seguro
+    if (!confirm("¿Estás seguro de que deseas enviar la requisición?")) {
+        return; // 🚫 Detiene el proceso si el usuario cancela
+    }
 
             console.log("Formulario válido, enviando...");
             // Aquí sigue el envío del request si no hay errores
