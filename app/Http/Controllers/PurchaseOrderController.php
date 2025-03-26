@@ -23,8 +23,8 @@ class PurchaseOrderController extends Controller
     public function index()
     {
         $datosoc = PurchaseOrder::query()
-        ->where('authorization_4','Autorizado')
-        ->get();
+            ->where('authorization_4', 'Autorizado')
+            ->get();
 
         return view('compras.index', compact('datosoc'));
     }
@@ -32,8 +32,8 @@ class PurchaseOrderController extends Controller
     public function indexpend()
     {
         $datosoc = PurchaseOrder::query()
-        ->where('authorization_4','Pendiente')
-        ->get();
+            ->where('authorization_4', 'Pendiente')
+            ->get();
 
         return view('compras.pendientes', compact('datosoc'));
     }
@@ -41,8 +41,8 @@ class PurchaseOrderController extends Controller
     public function indexcanc()
     {
         $datosoc = PurchaseOrder::query()
-        ->where('authorization_4','Rechazado')
-        ->get();
+            ->where('authorization_4', 'Rechazado')
+            ->get();
 
         return view('compras.rechazadas', compact('datosoc'));
     }
@@ -56,11 +56,33 @@ class PurchaseOrderController extends Controller
         $today = Carbon::now()->format('Y-m-d');
 
         //Buscar la requisicion
-        $requisicion = Requisition::findOrFail($requisicionId);
+       // $requisicion = Requisition::findOrFail($requisicionId);
+        $requisicion = Requisition::with('itemsRequisition.product.tax')->findOrFail($requisicionId);
+
         //Datos para seleccionar
         $proveedor = Supplier::all();
         $producto = Product::all();
         $item = ItemOrderPurchase::all();
+
+        // Obtener productos de la requisición
+        $productosRequisicion = $requisicion->itemsRequisition->map(function ($item) {
+            return [
+                'product_id' => $item->product_id ?? '', // Ahora toma el ID correcto del producto
+                'internal_id' => $item->product->internal_id ?? '', // Código interno del producto
+                'udm' => $item->product->udm ?? '', // Unidad de medida
+                'quantity' => $item->quantity, // Cantidad del producto en la requisición
+                'price' => '', // Lo completará el comprador
+                'description' => $item->product->description ?? '', // 👈 Agrega esto
+                'discount' => 0, // Se llenará después
+                'subtotalproducto' => '', // Se calculará después
+                'suggestions' => [], // Espacio para autocompletado si se requiere
+                'tax' => [
+                    'concept' => optional($item->product->tax)->concept ?? 'N/A',
+                    'percentage' => optional($item->product->tax)->percentage ?? 0, // Si es null, envía 0
+                ],
+            ];
+        });
+
 
         // Calcular días restantes
         $days_remaining_now = floor(\Carbon\Carbon::parse($requisicion->production_date)->diffInDays(now(), false));
@@ -93,7 +115,7 @@ class PurchaseOrderController extends Controller
                 'tax' => 0,
                 'total' => 0,
             ],
-
+            'productData' => $productosRequisicion, // 🔥 Aquí pasamos los productos
             'supplierData' => [],
         ];
 
@@ -440,6 +462,27 @@ class PurchaseOrderController extends Controller
                 }
             });
 
+            $message = "Requisición creada con éxito";
+
+            // Definir redirecciones por rol
+            $roleRedirects = [
+                'Developer' => '/ordenes-compra',
+                'RespCompras' => '/ordenes-compra',
+                'Gerope' => '/ordenes-compra/pre-autorizacio/ope/autorizadas',
+                'Diradmin' => '/ordenes-compra/autorizacion/autorizadas',
+            ];
+
+            // Obtener la ruta correspondiente según el rol del usuario
+            foreach ($roleRedirects as $role => $redirect) {
+                if (auth()->user()->hasRole($role)) {
+                    return response()->json([
+                        'message' => $message,
+                        'redirect' => $redirect,
+                    ]);
+                }
+            }
+
+
             return response()->json([
                 'message' => 'Orden de compra actualizada con éxito.',
                 'redirect' => route('ordencompra.index')
@@ -451,7 +494,7 @@ class PurchaseOrderController extends Controller
             ], 500);
         }
 
-        dd($purchaseOrder);
+        // dd($purchaseOrder);
     }
 
     /**
