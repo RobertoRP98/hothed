@@ -122,7 +122,7 @@
                     class="row"
                 >
                     <!-- Input de descripción -->
-                    <div class="col-md-4 mt-2">
+                    <div class="col-md-8 mt-2">
                         <input
                             type="text"
                             v-model="value.description"
@@ -148,7 +148,7 @@
                     </div>
 
                     <!-- Input de cantidad -->
-                    <div class="col-md-4 mt-2">
+                    <div class="col-md-2 mt-2">
                         <input
                             type="number"
                             v-model="value.quantity"
@@ -158,7 +158,7 @@
                     </div>
 
                     <!-- Botón para eliminar producto -->
-                    <div class="col-md-4 mt-2">
+                    <div class="col-md-2 mt-2">
                         <button
                             class="btn btn-danger"
                             @click.prevent="removeField(index)"
