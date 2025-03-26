@@ -137,7 +137,7 @@
                     class="row"
                 >
                     <!-- Input de descripción -->
-                    <div class="col-md-4 mt-2">
+                    <div class="col-md-8 mt-2">
                         <input
                             type="text"
                             v-model="value.description"
@@ -163,7 +163,7 @@
                     </div>
 
                     <!-- Input de cantidad -->
-                    <div class="col-md-4 mt-2">
+                    <div class="col-md-2 mt-2">
                         <input
                             type="number"
                             v-model="value.quantity"
@@ -173,7 +173,7 @@
                     </div>
 
                     <!-- Botón para eliminar producto -->
-                    <div class="col-md-4 mt-2">
+                    <div class="col-md-2 mt-2">
                         <button
                             class="btn btn-danger"
                             @click.prevent="removeField(index)"
@@ -186,16 +186,97 @@
         </div>
 
         <!-- Botones -->
-        <div class="mt-3">
+        <div class="row">
+
+        <div class="mt-3 col text-end">
+            <button @click="generatePDF" class="btn btn-secondary">
+                Vista Previa PDF
+            </button>
+            &nbsp;
             <button @click="submitForm" class="btn btn-primary">
                 Enviar Requisición
             </button>
         </div>
     </div>
+
+
+    
+
+        <div ref="pdfContent" class="pdf-container hidden">
+            <!-- ✅ Cabecera -->
+            <table class="header-table">
+                <tr>
+                    <td>
+                        <img
+                            src="/images/logopdf.png"
+                            class="logo"
+                            alt="HOT HED"
+                        />
+                    </td>
+                    <td>
+                        <h1>REQUISICIÓN</h1>
+                    </td>
+                    <td>
+                        <p>ADM-7-FOR-02 | Versión: x</p>
+                    </td>
+                </tr>
+            </table>
+
+            <!-- ✅ Datos Generales -->
+            <table class="table">
+                <tbody>
+                    <tr>
+                        <th>PROYECTO</th>
+                        <td>
+                            {{ formData.notes_client || "No especificado" }}
+                        </td>
+                        <th>REQUISICIÓN</th>
+                        <td>NO APLICA EN VISTA PREVIA</td>
+                    </tr>
+
+                    <tr>
+                        <th>FECHA DE SOLICITUD</th>
+                        <td>{{ formData.request_date }}</td>
+                        <th>FECHA REQUERIDA</th>
+                        <td>NO APLICA EN VISTA PREVIA</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <!-- ✅ Tabla de Productos -->
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>PRODUCTO</th>
+                        <th>CANTIDAD</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="(item, index) in productData" :key="index">
+                        <td>
+                            {{ item.description || "Producto sin descripción" }}
+                        </td>
+                        <td>{{ item.quantity }}</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <!-- ✅ Status de la Requisición -->
+            <div class="status-box">
+                STATUS DE REQUISICIÓN:
+                <strong>{{
+                    formData.status_requisition || "Pendiente"
+                }}</strong>
+            </div>
+        </div>
+
+    </div>
 </template>
 
 <script>
 import axios from "axios";
+import jsPDF from "jspdf";
+import html2canvas from "html2canvas";
 
 export default {
     name: "ComprasComponent",
@@ -365,11 +446,6 @@ export default {
                 return; // 💡 Esto debería detener la ejecución
             }
 
-            // 🔥 Preguntar al usuario si está seguro
-    if (!confirm("¿Estás seguro de que deseas enviar la requisición?")) {
-        return; // 🚫 Detiene el proceso si el usuario cancela
-    }
-
             console.log("Formulario válido, enviando...");
             // Aquí sigue el envío del request si no hay errores
 
@@ -398,6 +474,101 @@ export default {
                     );
                 });
         },
+
+        async generatePDF() {
+    const element = this.$refs.pdfContent;
+
+    // Hacer visible el div sin afectarlo en el DOM
+    element.style.visibility = "visible";
+    element.style.position = "static"; // Lo devuelve a su posición normal
+
+    try {
+        await new Promise((resolve) => setTimeout(resolve, 300));
+
+        const canvas = await html2canvas(element, {
+            scale: 2,
+            useCORS: true,
+        });
+
+        const imgData = canvas.toDataURL("image/png");
+        const pdf = new jsPDF("p", "mm", "a4");
+        const imgWidth = 210;
+        const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+        pdf.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight);
+        pdf.save("VistaPrevia_Requisicion.pdf");
+    } catch (error) {
+        console.error("Error al generar el PDF:", error);
+    } finally {
+        // Volver a ocultarlo sin modificar el DOM
+        element.style.visibility = "hidden";
+        element.style.position = "absolute";
+    }
+}
+
     },
 };
 </script>
+
+<style scoped>
+@page {
+    size: A4;
+    margin: 20px;
+}
+
+.pdf-container {
+    width: 100%;
+    padding: 20px;
+    background: white;
+}
+
+.hidden {
+    visibility: hidden;
+    position: absolute;
+    left: -9999px; /* Lo mueve fuera de la pantalla */
+}
+
+
+.header-table {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.logo {
+    width: 100px;
+    height: auto;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 10px;
+    table-layout: fixed;
+}
+
+.table th,
+.table td {
+    border: 1px solid #000;
+    text-align: center;
+    vertical-align: middle;
+    padding: 8px;
+    word-wrap: break-word;
+}
+
+.table th {
+    background-color: #2c3e50;
+    color: white;
+}
+
+.status-box {
+    background-color: #f8f9fa;
+    padding: 15px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 18px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    margin-top: 10px;
+}
+</style>
