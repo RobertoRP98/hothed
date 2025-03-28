@@ -448,13 +448,6 @@ export default {
                 return; // 💡 Esto debería detener la ejecución
             }
 
-            // 🔥 Preguntar al usuario si está seguro
-            if (
-                !confirm("¿Estás seguro de que deseas enviar la requisición?")
-            ) {
-                return; // 🚫 Detiene el proceso si el usuario cancela
-            }
-
             console.log("Formulario válido, enviando...");
             // Aquí sigue el envío del request si no hay errores
 
