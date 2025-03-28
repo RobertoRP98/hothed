@@ -372,4 +372,27 @@ class AuthPurchaseOrderController extends Controller
     }
 
     //FIN EDIT DE LA DIRECTORA GENERAL
+
+
+    //MIS OC - VISTA PARA LOS CLIENTES EN GENERAL Y PUEDAN VER SUS RESPECTIVAS OC 
+
+    public function misordenes(){
+
+
+        // Si el usuario no tiene ciertos roles, filtrar por user_id
+        if (!auth()->user()->hasRole([''])) {
+        $orderclient = PurchaseOrder::query()
+        ->WhereHas('requisition.user', function ($query){
+            $query->where('id', auth()->id());
+        })
+        ->orderBy('id','desc')
+        ->get();
+
+        // Obtener las requisiciones con los filtros aplicados
+
+        return view('compras.misordenes', compact('orderclient'));
+    }
+}
+
+
 }

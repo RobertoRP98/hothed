@@ -112,7 +112,7 @@
                         class="form-control"
                         readonly
                     />
-                    <label class="form-label">NOTAS DEL SOLICITANTE</label>
+                    <label class="form-label">MOTIVO DE COMPRA</label>
                 </div>
             </div>
 

@@ -53,6 +53,10 @@
         Agregar Requisición
     </a>
 
+    <a href="{{ url('/mis-ordenes') }}" class="btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
+        Mis Ordenes de Compra
+    </a>
+
     <a href="{{ url('/productos-cliente') }}" class="btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
         Ver Productos Autorizados
     </a>

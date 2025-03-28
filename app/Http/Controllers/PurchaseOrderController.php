@@ -564,6 +564,7 @@ class PurchaseOrderController extends Controller
                 'total_descuento' => $order->total_descuento,
                 'tax' => $order->tax,
                 'total' => $order->total,
+                'proyecto' => $order->requisition->notes_client,
             ],
 
             'supplierData' => [

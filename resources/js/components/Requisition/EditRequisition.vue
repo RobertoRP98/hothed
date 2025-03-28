@@ -63,7 +63,7 @@
                         class="form-control"
                         placeholder="EJEMPLO: VISITA DE AUDITORIA, MANTENIMIENTO MARTILLOS, ETC"
                     />
-                    <label class="form-label">DESCRIPCIÓN BREVE</label>
+                    <label class="form-label">MOTIVO DE COMPRA</label>
                 </div>
             </div>
 

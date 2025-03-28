@@ -114,7 +114,7 @@
                         class="form-control"
                         placeholder="EJEMPLO: VISITA DE AUDITORIA, MANTENIMIENTO MARTILLOS, ETC"
                     />
-                    <label class="form-label">DESCRIPCIÓN BREVE</label>
+                    <label class="form-label">MOTIVO DE COMPRA</label>
                 </div>
             </div>
         </div>
@@ -205,6 +205,7 @@
         <div ref="pdfContent" class="pdf-container hidden">
             <!-- ✅ Cabecera -->
             <table class="header-table">
+            <thead>
                 <tr>
                     <td>
                         <img
@@ -220,6 +221,7 @@
                         <p>ADM-7-FOR-02 | Versión: x</p>
                     </td>
                 </tr>
+            </thead>
             </table>
 
             <!-- ✅ Datos Generales -->

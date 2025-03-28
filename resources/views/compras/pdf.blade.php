@@ -121,6 +121,22 @@ body {
         </tr>
     </table>
 
+
+     <!-- FECHAS -->
+     <table class="table">
+        <tbody>
+            <tr>
+                <td>ORDEN DE COMPRA #{{ $initialData['formData']['order'] }}</td> 
+                <td>FECHA DE SOLICITUD: {{ date('d-m-Y', strtotime($initialData['formData']['date_start'])) }}</td>
+                <td>PRIORIDAD DE SOLICITUD: {{ $initialData['formData']['prioridad'] }}</td>
+                <td>FECHA LIMITE DE COMPRA: {{ date('d-m-Y', strtotime($initialData['formData']['production_date'])) }}</td>
+                <td>MOTIVO DE COMPRA: {{ $initialData['formData']['proyecto'] }}</td>
+
+            </tr>
+          
+        </tbody>
+    </table>
+
     <!-- ✅ Datos Generales -->
     <table class="table">
         <tbody>
@@ -142,19 +158,7 @@ body {
         </tbody>
     </table>
 
-       <!-- FECHAS -->
-       <table class="table">
-        <tbody>
-            <tr>
-                <td>ORDEN DE COMPRA #{{ $initialData['formData']['order'] }}</td>
-                <td>FECHA DE SOLICITUD: {{ date('d-m-Y', strtotime($initialData['formData']['date_start'])) }}</td>
-                <td>PRIORIDAD DE SOLICITUD: {{ $initialData['formData']['prioridad'] }}</td>
-                <td>FECHA LIMITE DE COMPRA: {{ date('d-m-Y', strtotime($initialData['formData']['production_date'])) }}</td>
-
-            </tr>
-          
-        </tbody>
-    </table>
+      
 
 
     
