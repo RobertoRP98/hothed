@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use Carbon\Carbon;
+use App\Mail\OcPreaut;
 use App\Models\Product;
+use App\Mail\OcAuthMail;
 use App\Models\Supplier;
+use App\Mail\TrackingMail;
 use App\Models\Requisition;
 use App\Models\PurchaseOrder;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -15,7 +18,6 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\ValidationException;
 use App\Http\Requests\StorePurchaseOrderRequest;
 use App\Http\Requests\UpdatePurchaseOrderRequest;
-use App\Mail\OcPreaut;
 
 class PurchaseOrderController extends Controller
 {
@@ -58,7 +60,7 @@ class PurchaseOrderController extends Controller
         $today = Carbon::now()->format('Y-m-d');
 
         //Buscar la requisicion
-       // $requisicion = Requisition::findOrFail($requisicionId);
+        // $requisicion = Requisition::findOrFail($requisicionId);
         $requisicion = Requisition::with('itemsRequisition.product.tax')->findOrFail($requisicionId);
 
         //Datos para seleccionar
@@ -150,7 +152,7 @@ class PurchaseOrderController extends Controller
             }
 
 
-            DB::transaction(function () use ($request , &$orden) {
+            DB::transaction(function () use ($request, &$orden) {
 
                 $today = Carbon::now()->format('Y-m-d');
 
@@ -204,36 +206,36 @@ class PurchaseOrderController extends Controller
                 }
             });
 
-            
-            
+
+
             Log::info('Estado de la orden después de la transacción:', [
                 'order' => $orden,
                 'status' => $orden->authorization_2
             ]);
 
-           // Definir correos
-        $emails = [
-            'ADM' => 'roberto.romero@hothedmex.mx',
-            'OP' => 'roberto.romero@hothedmex.mx'
-        ];
+            // Definir correos
+            $emails = [
+                'ADM' => 'bianca.fernanda.rebolledo@hothedmex.mx',
+                'OP' => 'alejandro.flores@hothedmex.mx'
+            ];
 
-        //ENVIAR EL CORREO SI APLICA
+            //ENVIAR EL CORREO SI APLICA
 
-        if ($orden && $orden->authorization_2 == 'Pendiente') {
-            $departamento = $orden->requisition->user->departament;
-            $correoDestino = $emails[$departamento] ?? null;
-        
-            if ($correoDestino) {
-                Log::info('Enviando correo a:', ['email' => $correoDestino]);
-                Mail::to($correoDestino)->send(new OcPreaut($orden));
+            if ($orden && $orden->authorization_2 == 'Pendiente') {
+                $departamento = $orden->requisition->user->departament;
+                $correoDestino = $emails[$departamento] ?? null;
+
+                if ($correoDestino) {
+                    Log::info('Enviando correo a:', ['email' => $correoDestino]);
+                    Mail::to($correoDestino)->send(new OcPreaut($orden));
+                } else {
+                    Log::warning('No se encontró un correo para el departamento:', ['departamento' => $departamento]);
+                }
             } else {
-                Log::warning('No se encontró un correo para el departamento:', ['departamento' => $departamento]);
+                Log::warning('No se envió el correo porque la orden no está pendiente o no existe.', [
+                    'orden' => $orden,
+                ]);
             }
-        } else {
-            Log::warning('No se envió el correo porque la orden no está pendiente o no existe.', [
-                'orden' => $orden,
-            ]);
-        }
 
             return response()->json([
                 'message' => 'Orden de compra creada con éxito.',
@@ -451,7 +453,10 @@ class PurchaseOrderController extends Controller
                 }
             }
 
-            DB::transaction(function () use ($request, $purchaseOrder) {
+            //  Inicializar fuera del transaction para poder usarla después
+            $orden = null;
+
+            DB::transaction(function () use ($request, $purchaseOrder, &$orden) {
                 // Actualizar los datos de la orden de compra
                 $purchaseOrder->update(array_merge(
                     $request->only([
@@ -482,6 +487,8 @@ class PurchaseOrderController extends Controller
                     ]
                 ));
 
+                // Recargar orden actualizada
+                $orden = $purchaseOrder->fresh();
                 Log::info('Orden actualizada:', $purchaseOrder->toArray());
 
                 // Eliminar los items anteriores y agregar los nuevos
@@ -497,6 +504,67 @@ class PurchaseOrderController extends Controller
                     ]);
                 }
             });
+
+            // Verifica si $orden es null
+            if (!$orden) {
+                Log::error('La orden de compra es NULL después de la transacción.');
+                return;
+            }
+
+            // Verificar estado de la orden después de la transacción
+            Log::info('Estado de la orden después de la transacción:', [
+                'order_id' => $orden->id ?? 'NULL',
+                'status' => $orden->authorization_2 ?? 'NULL'
+            ]);
+
+            // Definir correos - De momento es solo la directora pero si requiere ayuda se deja abierto al departamento
+            $emails = [
+                'ADM' => 'karla.ibeth.segura@hothedmex.mx',
+                'OP' => 'karla.ibeth.segura@hothedmex.mx'
+            ];
+
+            // ENVIAR EL CORREO SI APLICA
+            if ($orden->authorization_2 && ($orden->authorization_2) == 'Autorizado') {
+                // Verifica si la requisición existe antes de acceder a user->departament
+                if (!$orden->requisition || !$orden->requisition->user) {
+                    Log::error('La orden no tiene una requisición válida o no tiene usuario asignado.', [
+                        'order_id' => $orden->id
+                    ]);
+                    return;
+                }
+
+                $departamento = $orden->requisition->user->departament ?? 'NULL';
+                $correoDestino = $emails[$departamento] ?? null;
+
+                if ($correoDestino) {
+                    Log::info('Enviando correo a:', ['email' => $correoDestino]);
+                    Mail::to($correoDestino)->send(new OcAuthMail($orden));
+                } else {
+                    Log::warning('No se encontró un correo para el departamento:', ['departamento' => $departamento]);
+                }
+            } else {
+                Log::warning('No se envió el correo porque la orden no está en estado "Pendiente".', [
+                    'order_id' => $orden->id,
+                    'authorization_2' => $orden->authorization_2
+                ]);
+            }
+
+            
+            //  Si la Orden ya fue autorizada por direccion
+            if ($orden && $orden->authorization_4 == 'Autorizado') {
+
+
+                $emails = [
+                    'bianca.fernanda.rebolledo@hothedmex.mx',
+                    //agrega mas correos si hay mas responsables de compras
+                ];
+
+                Log::info('Enviando correo a:', ['emails' => $emails]);
+                Mail::to($emails)->send(new TrackingMail($orden));
+            }
+
+
+
 
             $message = "Requisición creada con éxito";
 

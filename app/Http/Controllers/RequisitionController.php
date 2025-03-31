@@ -135,27 +135,25 @@ class RequisitionController extends Controller
             if ($requisition) {
                 $subarea = $requisition->user->subarea;
                 $emails = [
-                    'AUXILIAR DE CONTABILIDAD', //NOEMI
+                    'AUXILIAR DE CONTABILIDAD' => 'noemi.hernandez@hothedmex.mx', //NOEMI
                     'AUXILIAR DE ALMACEN', //RESP DE ALMACEN
-                    'AUXILIAR DE VENTAS Y OP', //DAVID
-                    'AUX DE LOGISTICA Y MANTO',
-                    'ESP. TECNICO', // FIN DAVID
-                    'COORD. DE HSE', //LAURA
-                    'GER. OPE', //DIR KARLA
-                    'COORD. CONTABILIDAD',
-                    'RESP. DE SGI',
-                    'COORD. CONTRATOS',
-                    'DIR. OPERACIONES',
-                    'COORD. DE RECURSOS HUMANOS',
-                    'RESP. DE COMPRAS', //FIN DIR KARLA
-                    'COORD. DE VENTAS', //FLORES
-                    'SUB. GER. OPE',
-                    'COORD. DE ALMACEN', //FIN FLORES
-                    'AUX. CONTRATOS',// MIRIAM
-                    'MCFLY',//SANTOS
-                    
-
-                    'AUXILIAR DE TI' => 'roberto.romero@hothedmex.mx',
+                    'AUXILIAR DE VENTAS Y OP' => 'david.hernandez@hothedmex.mx', //DAVID
+                    'AUX DE LOGISTICA Y MANTO'=> 'david.hernandez@hothedmex.mx',
+                    'ESP. TECNICO' => 'david.hernandez@hothedmex.mx', // FIN DAVID
+                    'COORD. DE HSE' => 'laura.delariva@hothedmex.mx', //LAURA
+                    'GER. OPE' => 'karla.ibeth.segura@hothedmex.mx', //DIR KARLA
+                    'COORD. CONTABILIDAD' => 'karla.ibeth.segura@hothedmex.mx',
+                    'RESP. DE SGI'=> 'karla.ibeth.segura@hothedmex.mx',
+                    'COORD. CONTRATOS' => 'karla.ibeth.segura@hothedmex.mx',
+                    'DIR. OPERACIONES'=> 'karla.ibeth.segura@hothedmex.mx',
+                    'COORD. DE RECURSOS HUMANOS' => 'karla.ibeth.segura@hothedmex.mx',
+                    'RESP. DE COMPRAS' => 'karla.ibeth.segura@hothedmex.mx', //FIN DIR KARLA
+                    'COORD. DE VENTAS' => 'alejandro.flores@hothedmex.mx', //FLORES
+                    'SUB. GER. OPE' => 'alejandro.flores@hothedmex.mx',
+                    'COORD. DE ALMACEN' => 'alejandro.flores@hothedmex.mx', //FIN FLORES
+                    'AUX. CONTRATOS' => 'miriam.hernandez@hothedmex.mx',// MIRIAM
+                    'MCFLY' => 'ale.santos@hothedmex.mx',//SANTOS
+                    'AUXILIAR DE TI' => 'karla.ibeth.segura@hothedmex.mx',
                 ];
 
                 if (isset($emails[$subarea])) {
@@ -428,7 +426,7 @@ class RequisitionController extends Controller
 
 
                 $emails = [
-                    'roberto.romero@hothedmex.mx',
+                    'bianca.fernanda.rebolledo@hothedmex.mx',
                     //agrega mas correos si hay mas responsables de compras
                 ];
 
