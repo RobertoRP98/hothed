@@ -8,7 +8,10 @@ use App\Models\Requisition;
 use App\Models\ItemRequisition;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\DB;
+use App\Mail\RequisitionAuthorized;
 use Illuminate\Support\Facades\Log;
+use App\Mail\RequisitionCreatedMail;
+use Illuminate\Support\Facades\Mail;
 use App\Http\Requests\StoreRequisitionRequest;
 use Illuminate\Validation\ValidationException;
 use App\Http\Requests\UpdateRequisitionRequest;
@@ -93,7 +96,10 @@ class RequisitionController extends Controller
                 }
             }
 
-            DB::transaction(function () use ($request, $calculatedDate, $daysToAdd) {
+            //  Inicializar fuera del transaction para poder usarla después
+            $requisition = null;
+
+            DB::transaction(function () use ($request, $calculatedDate, $daysToAdd, &$requisition) {
                 $today_production = Carbon::now()->format('Y-m-d');
 
                 // Asignar valores calculados al almacenar la requisición
@@ -104,16 +110,13 @@ class RequisitionController extends Controller
                         'importance',
                         'finished',
                         'finished_date',
-
                         'required_date',
-                        //'petty_cash',
                         'notes_client',
                         'notes_resp'
                     ]),
                     [
-                        // Asignar fechas calculadas
-                        'request_date' => $today_production, //DIA DONDE SE REALIZA LA REQUI 
-                        'production_date' => $calculatedDate->format('Y-m-d'), //DIA MAXIMO DE DESPACHO
+                        'request_date' => $today_production, // Día en que se hace la requisición
+                        'production_date' => $calculatedDate->format('Y-m-d'), // Día máximo de despacho
                         'days_remaining' => $daysToAdd,
                     ]
                 ));
@@ -128,7 +131,39 @@ class RequisitionController extends Controller
                 }
             });
 
+            //  Si la requisición se creó con éxito, enviar el correo
+            if ($requisition) {
+                $subarea = $requisition->user->subarea;
+                $emails = [
+                    'AUXILIAR DE CONTABILIDAD', //NOEMI
+                    'AUXILIAR DE ALMACEN', //RESP DE ALMACEN
+                    'AUXILIAR DE VENTAS Y OP', //DAVID
+                    'AUX DE LOGISTICA Y MANTO',
+                    'ESP. TECNICO', // FIN DAVID
+                    'COORD. DE HSE', //LAURA
+                    'GER. OPE', //DIR KARLA
+                    'COORD. CONTABILIDAD',
+                    'RESP. DE SGI',
+                    'COORD. CONTRATOS',
+                    'DIR. OPERACIONES',
+                    'COORD. DE RECURSOS HUMANOS',
+                    'RESP. DE COMPRAS', //FIN DIR KARLA
+                    'COORD. DE VENTAS', //FLORES
+                    'SUB. GER. OPE',
+                    'COORD. DE ALMACEN', //FIN FLORES
+                    'AUX. CONTRATOS',// MIRIAM
+                    'MCFLY',//SANTOS
+                    
 
+                    'AUXILIAR DE TI' => 'roberto.romero@hothedmex.mx',
+                ];
+
+                if (isset($emails[$subarea])) {
+                    Mail::to($emails[$subarea])->send(new RequisitionCreatedMail($requisition));
+                } else {
+                    Log::warning("No se encontró correo para la subárea: " . $subarea);
+                }
+            }
 
             $message = "Requisición creada con éxito";
 
@@ -136,17 +171,14 @@ class RequisitionController extends Controller
             $roleRedirects = [
                 'Developer' => '/requisiciones',
                 'RespCompras' => '/requisiciones',
-                //Empleados solicitantes
+                // Empleados solicitantes
                 'Auxconta' => '/mis-requisiciones',
                 'Mcfly' => '/mis-requisiciones',
                 'Auxalmacen' => '/mis-requisiciones',
                 'Auxopeventas' => '/mis-requisiciones',
                 'Coordrh' => '/mis-requisiciones',
                 'Auxcontratos' => '/mis-requisiciones',
-                '' => '/mis-requisiciones',
-                '' => '/mis-requisiciones',
-                //Aprovadores - que algunos tambien son solicitantes
-                // pero en la vista index se les agrega el boton mis requisiciones para que puedan ver sus requis 
+                // Aprobadores - que algunos también son solicitantes
                 'Coordconta' => '/requisiciones-contabilidad',
                 'Coordalm' => '/requisiciones-almacen',
                 'Subgerope' => '/requisiciones-subope',
@@ -155,7 +187,6 @@ class RequisitionController extends Controller
                 'Diradmin' => '/requisiciones-administracion',
                 'Dirope' => '/requisiciones-dirope',
                 'Coordcontratos' => '/requisiciones-contratos',
-
             ];
 
             // Obtener la ruta correspondiente según el rol del usuario
@@ -174,16 +205,16 @@ class RequisitionController extends Controller
                 'redirect' => '/',
             ]);
         } catch (ValidationException $e) {
-            // Capturar errores de validación específicos
             return response()->json(['errors' => $e->errors()], 422);
         } catch (\Exception $e) {
             Log::error('Error al guardar la requisición: ' . $e->getMessage());
-            return response()->json(['message' => 'Error al guardar la requisición'], 500);
-
             Log::info('Valor de importance:', ['importance' => $request->input('importance')]);
             Log::info('Datos recibidos:', $request->all());
+
+            return response()->json(['message' => 'Error al guardar la requisición'], 500);
         }
     }
+
 
 
     /**
@@ -350,7 +381,10 @@ class RequisitionController extends Controller
                 }
             }
 
-            DB::transaction(function () use ($request, $requisicione, $calculatedDate, $daysToAdd) {
+            //  Inicializar fuera del transaction para poder usarla después
+            $requisition = $requisicione;
+
+            DB::transaction(function () use ($request, $requisicione, $calculatedDate, $daysToAdd, &$requisition) {
                 // Actualizar los datos generales de la requisición
                 $requisicione->update(array_merge(
                     $request->only([
@@ -379,6 +413,28 @@ class RequisitionController extends Controller
                     ]);
                 }
             });
+
+            // Recargar requisición actualizada
+            $requisition->refresh();
+
+            Log::info('Estado de requisición después del update:', [
+                'requisition' => $requisition,
+                'status' => $requisition ? $requisition->status_requisition : 'NULL'
+            ]);
+
+
+            //  Si la requisición se creó con éxito, enviar el correo
+            if ($requisition && $requisition->status_requisition == 'Autorizado') {
+
+
+                $emails = [
+                    'roberto.romero@hothedmex.mx',
+                    //agrega mas correos si hay mas responsables de compras
+                ];
+
+                Log::info('Enviando correo a:', ['emails' => $emails]);
+                Mail::to($emails)->send(new RequisitionAuthorized($requisition));
+            }
 
 
 
@@ -508,6 +564,6 @@ class RequisitionController extends Controller
         ];
 
         $pdf = Pdf::loadview('requisition.pdf', compact('requisition', 'today', 'initialData'));
-        return $pdf->download('Requisicion '.$initialData['formData']['id'].'.pdf');
+        return $pdf->download('Requisicion ' . $initialData['formData']['id'] . '.pdf');
     }
 }

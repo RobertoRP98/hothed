@@ -7,13 +7,15 @@ use App\Models\Product;
 use App\Models\Supplier;
 use App\Models\Requisition;
 use App\Models\PurchaseOrder;
-use App\Models\ItemOrderPurchase;
 use Barryvdh\DomPDF\Facade\Pdf;
+use App\Models\ItemOrderPurchase;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\ValidationException;
 use App\Http\Requests\StorePurchaseOrderRequest;
 use App\Http\Requests\UpdatePurchaseOrderRequest;
+use App\Mail\OcPreaut;
 
 class PurchaseOrderController extends Controller
 {
@@ -147,7 +149,8 @@ class PurchaseOrderController extends Controller
                 }
             }
 
-            DB::transaction(function () use ($request) {
+
+            DB::transaction(function () use ($request , &$orden) {
 
                 $today = Carbon::now()->format('Y-m-d');
 
@@ -183,6 +186,8 @@ class PurchaseOrderController extends Controller
                     ]
                 ));
 
+                $orden = $order; // Aquí se asigna correctamente
+
                 //gaurdar los items de la orden
                 Log::info('Datos de la orden antes de crear:', $order->toArray()); // Depuración
 
@@ -198,6 +203,37 @@ class PurchaseOrderController extends Controller
                     ]);
                 }
             });
+
+            
+            
+            Log::info('Estado de la orden después de la transacción:', [
+                'order' => $orden,
+                'status' => $orden->authorization_2
+            ]);
+
+           // Definir correos
+        $emails = [
+            'ADM' => 'roberto.romero@hothedmex.mx',
+            'OP' => 'roberto.romero@hothedmex.mx'
+        ];
+
+        //ENVIAR EL CORREO SI APLICA
+
+        if ($orden && $orden->authorization_2 == 'Pendiente') {
+            $departamento = $orden->requisition->user->departament;
+            $correoDestino = $emails[$departamento] ?? null;
+        
+            if ($correoDestino) {
+                Log::info('Enviando correo a:', ['email' => $correoDestino]);
+                Mail::to($correoDestino)->send(new OcPreaut($orden));
+            } else {
+                Log::warning('No se encontró un correo para el departamento:', ['departamento' => $departamento]);
+            }
+        } else {
+            Log::warning('No se envió el correo porque la orden no está pendiente o no existe.', [
+                'orden' => $orden,
+            ]);
+        }
 
             return response()->json([
                 'message' => 'Orden de compra creada con éxito.',

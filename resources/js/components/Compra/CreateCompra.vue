@@ -295,13 +295,13 @@
                 <tbody>
                     <tr v-for="(value, index) in productData" :key="index">
                         <td>
-                            <input
-                                type="text"
-                                v-model="value.description"
-                                @input="searchProducts(index)"
-                                class="form-control"
-                                placeholder="Busque un producto"
-                            />
+                            <textarea
+        v-model="value.description"
+        @input="searchProducts(index); autoResize($event)"
+        class="form-control description-textarea"
+        placeholder="Busque un producto"
+        ref="descriptionTextarea"
+    ></textarea>
                             <ul
                                 v-if="value.suggestions.length > 0"
                                 class="list-group"
@@ -568,6 +568,12 @@ export default {
         };
     },
     methods: {
+
+        autoResize(event) {
+        const textarea = event.target;
+        textarea.style.height = "auto"; // Restablece la altura para recalcular
+        textarea.style.height = textarea.scrollHeight + "px"; // Ajusta la altura según el contenido
+    },
         //METODOS DE PROVEEDOR
         searchSupplier(index) {
             if (!this.supplierData[index]) return; // Evita errores si no existe
@@ -854,3 +860,36 @@ export default {
     },
 };
 </script>
+
+<style scoped>
+.description-textarea {
+    width: 100%;
+    min-height: 38px; /* Altura mínima como un input */
+    height: auto;
+    resize: none; /* Evita que el usuario lo redimensione manualmente */
+    overflow: hidden;
+    line-height: 1.2;
+}
+
+/* Ajusta la altura del textarea dinámicamente según el contenido */
+.description-textarea:focus,
+.description-textarea:active {
+    height: auto;
+}
+
+/* Estilo para que el texto de la celda se acomode */
+td {
+    vertical-align: top;
+    white-space: normal;
+}
+
+.description-textarea {
+    width: 100%;
+    min-height: 38px; /* Altura mínima similar a un input */
+    height: auto;
+    resize: none; /* Evita que el usuario lo redimensione manualmente */
+    overflow-y: hidden; /* Oculta el scrollbar vertical */
+    line-height: 1.2;
+    padding: 5px;
+}
+</style>
