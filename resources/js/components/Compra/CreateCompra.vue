@@ -282,7 +282,7 @@
                 <thead>
                     <tr>
                         <th>Descripción</th>
-                        <th>Código Interno</th>
+                        <th>Categoria</th>
                         <th>UDM</th>
                         <th>Cantidad</th>
                         <th>Precio Unitario</th>
@@ -325,9 +325,9 @@
                         <td>
                             <input
                                 type="text"
-                                v-model="value.internal_id"
+                                v-model="value.category"
                                 class="form-control"
-                                placeholder="C-I"
+                                placeholder="Categoria"
                                 readonly
                             />
                         </td>
@@ -567,7 +567,8 @@ export default {
             productData: [
                 {
                     product_id: "", //descripcion
-                    internal_id: "", //codigo interno
+                    //internal_id: "", //codigo interno
+                    category: "",
                     udm: "", //unindad de medida
                     quantity: "", //cantidad
                     price: "", //precio
@@ -600,7 +601,9 @@ export default {
             if (!query) {
                 this.supplierData[index].supplier_id = ""; // Limpia el ID
                 this.supplierData[index].udm = ""; // Limpia el campo udm
-                this.supplierData[index].internal_id = ""; // limpia el codigo interno
+                //this.supplierData[index].internal_id = ""; // limpia el codigo interno
+                this.supplierData[index].category = ""; // limpia el codigo interno
+
 
                 this.supplierData[index].suggestions = [];
                 return;
@@ -646,7 +649,8 @@ export default {
         removeField(index) {
             // Aseguramos que todos los valores del producto se limpien antes de eliminarlo
             this.productData[index].description = "";
-            this.productData[index].internal_id = "";
+            //this.productData[index].internal_id = "";
+            this.productData[index].category = "";
             this.productData[index].udm = "";
             this.productData[index].tax_id = "";
 
@@ -673,7 +677,9 @@ export default {
         selectProduct(index, product) {
             this.productData[index].product_id = product.id; // Guardar ID
             this.productData[index].description = product.description; // Mostrar descripción
-            this.productData[index].internal_id = product.internal_id; // Autocompletar código interno
+            //this.productData[index].internal_id = product.internal_id; // Autocompletar código interno
+            this.productData[index].category = product.category; // Autocompletar código interno
+
             this.productData[index].udm = product.udm; // Autocompletar unidad de medida
             this.productData[index].tax_id = product.tax
                 ? product.tax.id

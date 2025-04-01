@@ -72,7 +72,8 @@ class PurchaseOrderController extends Controller
         $productosRequisicion = $requisicion->itemsRequisition->map(function ($item) {
             return [
                 'product_id' => $item->product_id ?? '', // Ahora toma el ID correcto del producto
-                'internal_id' => $item->product->internal_id ?? '', // Código interno del producto
+                //'internal_id' => $item->product->internal_id ?? '', // Código interno del producto
+                'category' => $item->product->category ?? '',
                 'udm' => $item->product->udm ?? '', // Unidad de medida
                 'quantity' => $item->quantity, // Cantidad del producto en la requisición
                 'price' => '', // Lo completará el comprador
