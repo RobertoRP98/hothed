@@ -51,6 +51,34 @@ class PurchaseOrderController extends Controller
         return view('compras.rechazadas', compact('datosoc'));
     }
 
+    public function indexfinalizadas()
+    {
+        $datosoc = PurchaseOrder::query()
+            ->where('finished', true)
+            ->get();
+
+        return view('compras.finalizadas', compact('datosoc'));
+    }
+
+    public function indexfacturadas()
+    {
+        $datosoc = PurchaseOrder::query()
+            ->where('bill', 'Facturado')
+            ->get();
+
+        return view('compras.facturadas', compact('datosoc'));
+    }
+
+    public function indexnofacturadas()
+    {
+        $datosoc = PurchaseOrder::query()
+            ->where('bill', 'Pendiente Facturar')
+            ->get();
+
+        return view('compras.nofacturadas', compact('datosoc'));
+    }
+
+
 
     /**
      * Show the form for creating a new resource.
@@ -528,7 +556,7 @@ class PurchaseOrderController extends Controller
             ];
 
             // ENVIAR EL CORREO SI APLICA
-            if ($orden->authorization_2 && ($orden->authorization_2) == 'Autorizado') {
+            if ($orden->wasChanged('authorization_2') && ($orden->authorization_2) == 'Autorizado') {
                 // Verifica si la requisición existe antes de acceder a user->departament
                 if (!$orden->requisition || !$orden->requisition->user) {
                     Log::error('La orden no tiene una requisición válida o no tiene usuario asignado.', [
@@ -555,7 +583,7 @@ class PurchaseOrderController extends Controller
 
 
             //  Si la Orden ya fue autorizada por direccion
-            if ($orden && $orden->authorization_4 == 'Autorizado') {
+            if ($orden->wasChanged('authorization_4') && $orden->authorization_4 == 'Autorizado') {
 
 
                 $emails = [
