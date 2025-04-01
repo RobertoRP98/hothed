@@ -322,7 +322,8 @@ class PurchaseOrderController extends Controller
                     'discount' => $item->discount, // ✅ De items_order_purchase
                     'subtotalproducto' => $item->subtotal, // ✅ De items_order_purchase
                     'udm' => optional($item->product)->udm ?? 'N/A', // ✅ Evitar errores si es null
-                    'internal_id' => optional($item->product)->internal_id ?? 'N/A', // ✅ Evitar errores si es null
+                    //'internal_id' => optional($item->product)->internal_id ?? 'N/A', // ✅ Evitar errores si es null
+                    'category' => $item->product->category ?? '',
                     'tax' => [
                         'concept' => optional($item->product->tax)->concept ?? 'N/A',
                         'percentage' => optional($item->product->tax)->percentage ?? 0, // Si es null, envía 0
@@ -414,7 +415,9 @@ class PurchaseOrderController extends Controller
                     'discount' => $item->discount, // ✅ De items_order_purchase
                     'subtotalproducto' => $item->subtotalproducto, // ✅ De items_order_purchase
                     'udm' => optional($item->product)->udm ?? 'N/A', // ✅ Evitar errores si es null
-                    'internal_id' => optional($item->product)->internal_id ?? 'N/A', // ✅ Evitar errores si es null
+                    //'internal_id' => optional($item->product)->internal_id ?? 'N/A', // ✅ Evitar errores si es null
+                    'category' => $item->product->category ?? '',
+
                     'tax' => [
                         'concept' => optional($item->product->tax)->concept ?? 'N/A',
                         'percentage' => optional($item->product->tax)->percentage ?? 0, // Si es null, envía 0
@@ -550,7 +553,7 @@ class PurchaseOrderController extends Controller
                 ]);
             }
 
-            
+
             //  Si la Orden ya fue autorizada por direccion
             if ($orden && $orden->authorization_4 == 'Autorizado') {
 
@@ -695,6 +698,8 @@ class PurchaseOrderController extends Controller
                     'subtotalproducto' => $item->subtotal, // ✅ De items_order_purchase
                     'udm' => optional($item->product)->udm ?? 'N/A', // ✅ Evitar errores si es null
                     'internal_id' => optional($item->product)->internal_id ?? 'N/A', // ✅ Evitar errores si es null
+                    'category' => $item->product->category ?? '',
+
                     'tax' => [
                         'concept' => optional($item->product->tax)->concept ?? 'N/A',
                         'percentage' => optional($item->product->tax)->percentage ?? 0, // Si es null, envía 0

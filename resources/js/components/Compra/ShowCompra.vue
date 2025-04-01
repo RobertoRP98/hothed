@@ -228,7 +228,7 @@
                 <thead>
                     <tr>
                         <th>Descripción</th>
-                        <th>Código Interno</th>
+                        <th>Categoria</th>
                         <th>UDM</th>
                         <th>Cantidad</th>
                         <th>Precio Unitario</th>
@@ -240,23 +240,25 @@
                 <tbody>
                     <tr v-for="(value, index) in productData" :key="index">
                         <td>
-                            <input
-                                type="text"
+                            <textarea
                                 v-model="value.description"
-                                @input="searchProducts(index)"
+                                @input="
+                                    searchProducts(index);
+                                    autoResize(index);
+                                "
                                 class="form-control"
                                 placeholder="Busque un producto"
-                                readonly
-                            />
-                            
+                                ref="descriptionTextarea"
+                                disabled
+                            ></textarea>
                         </td>
                         <td>
                             <input
                                 type="text"
-                                v-model="value.internal_id"
+                                v-model="value.category"
                                 class="form-control"
                                 placeholder="C-I"
-                                readonly
+                                disabled
                             />
                         </td>
                         <td>
@@ -265,7 +267,8 @@
                                 v-model="value.udm"
                                 class="form-control"
                                 placeholder="UDM"
-                                readonly
+                                disabled
+
                             />
                         </td>
                         <td>
@@ -274,7 +277,8 @@
                                 v-model="value.quantity"
                                 class="form-control"
                                 placeholder="Cantidad"
-                                readonly
+                                disabled
+
                             />
                         </td>
                         <td>
@@ -283,7 +287,8 @@
                                 v-model="value.price"
                                 class="form-control"
                                 placeholder="Precio unitario"
-                                readonly
+                                disabled
+
                             />
                         </td>
 
@@ -293,7 +298,8 @@
                                 :value="value.tax?.concept || 'N/A'"
                                 class="form-control"
                                 placeholder="Impuesto"
-                                readonly
+                                disabled
+
                             />
                         </td>
 
@@ -303,7 +309,8 @@
                                 v-model="value.discount"
                                 class="form-control"
                                 placeholder="Descuento"
-                                readonly
+                                disabled
+
                             />
                         </td>
                         <td>
@@ -312,7 +319,8 @@
                                 v-model="value.subtotalproducto"
                                 class="form-control"
                                 placeholder="Importe"
-                                readonly
+                                disabled
+
                             />
                         </td>
                        
@@ -335,6 +343,8 @@
                                 v-model="subtotal"
                                 name="subtotal"
                                 ref="subtotalInput"
+                                disabled
+
                             />
                         </td>
                         <td></td>
@@ -357,6 +367,8 @@
                                 v-model="total_impuestos"
                                 name="total_impuestos"
                                 ref="totalImpuestosInput"
+                                disabled
+
                             />
                         </td>
                         <td></td>
@@ -379,6 +391,8 @@
                                 v-model="total_descuento"
                                 name="total_descuento"
                                 ref="totalDescuentoInput"
+                                disabled
+
                             />
                         </td>
                         <td></td>
@@ -401,6 +415,8 @@
                                 v-model="total"
                                 name="total"
                                 ref="totalInput"
+                                disabled
+
                             />
                         </td>
                         <td></td>
@@ -434,6 +450,7 @@ export default {
     },
     data() {
         return {
+            descriptionTextarea: [],
             //DATOS GENERALES DEL FORMULARIO - OC MODEL
             formData: {
                 order: "",
@@ -474,7 +491,8 @@ export default {
             productData: [
                 {
                     product_id: "", //descripcion
-                    internal_id: "", //codigo interno
+                    //internal_id: "", //codigo interno
+                    category: "",
                     udm: "", //unindad de medida
                     quantity: "", //cantidad
                     price: "", //precio

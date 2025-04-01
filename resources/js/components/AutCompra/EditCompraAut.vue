@@ -258,7 +258,7 @@
                     type="text"
                     v-model="formData.bill_name"
                     class="form-control"
-                    placeholder="NOMBRE DE LA FACTURA"
+                    placeholder="FOLIO DE LA FACTURA"
                     disabled
                 />
                 <label class="form-label">FACTURA</label>
@@ -384,7 +384,7 @@
                 <thead>
                     <tr>
                         <th>Descripción</th>
-                        <th>Código Interno</th>
+                        <th>Categoria</th>
                         <th>UDM</th>
                         <th>Cantidad</th>
                         <th>Precio Unitario</th>
@@ -396,34 +396,23 @@
                 <tbody>
                     <tr v-for="(value, index) in productData" :key="index">
                         <td>
-                            <input
-                                type="text"
+                            <textarea
                                 v-model="value.description"
-                                @input="searchProducts(index)"
+                                @input="
+                                    searchProducts(index);
+                                    autoResize(index);
+                                "
                                 class="form-control"
                                 placeholder="Busque un producto"
+                                ref="descriptionTextarea"
                                 disabled
-                            />
-                            <ul
-                                v-if="value.suggestions.length > 0"
-                                class="list-group"
-                            >
-                                <li
-                                    v-for="(
-                                        product, suggestionIndex
-                                    ) in value.suggestions"
-                                    :key="suggestionIndex"
-                                    @click="selectProduct(index, product)"
-                                    class="list-group-item"
-                                >
-                                    {{ product.description }}
-                                </li>
-                            </ul>
+                            ></textarea>
+                          
                         </td>
                         <td>
                             <input
                                 type="text"
-                                v-model="value.internal_id"
+                                v-model="value.category"
                                 class="form-control"
                                 placeholder="C-I"
                                 disabled
@@ -581,7 +570,7 @@
         <!-- Botones -->
         <div class="mt-3">
             <button @click="submitForm" class="btn btn-primary">
-                Enviar Orden de Compra
+                Autorizar Compra
             </button>
         </div>
     </div>
@@ -602,6 +591,15 @@ export default {
             this.formData = { ...this.initialData.formData }; // Carga todo lo que venga de PHP
             this.supplierData = [...this.initialData.supplierData]; // ✅ Asegura que supplierData tenga el proveedor correcto
             this.productData = [...this.initialData.productData]; // ✅ Esto sí funciona
+
+                // Esperar a que Vue renderice los elementos antes de ajustar los textarea
+                this.$nextTick(() => {
+                if (this.$refs.descriptionTextarea) {
+                    this.$refs.descriptionTextarea.forEach((_, index) => {
+                        this.autoResize(index);
+                    });
+                }
+            });
         }
         console.log("Datos iniciales recibidos:", this.formData);
         console.log("Datos iniciales:", this.formData);
@@ -610,6 +608,8 @@ export default {
     },
     data() {
         return {
+            descriptionTextarea: [],
+
             //DATOS GENERALES DEL FORMULARIO - OC MODEL
             formData: {
                 order: "",
@@ -650,7 +650,8 @@ export default {
             productData: [
                 {
                     product_id: "", //descripcion
-                    internal_id: "", //codigo interno
+                    //internal_id: "", //codigo interno
+                    category: "", //codigo interno
                     udm: "", //unindad de medida
                     quantity: "", //cantidad
                     price: "", //precio
@@ -663,6 +664,16 @@ export default {
         };
     },
     methods: {
+        autoResize(index) {
+            this.$nextTick(() => {
+                const textareas = this.$refs.descriptionTextarea;
+                if (textareas && textareas[index]) {
+                    const textarea = textareas[index];
+                    textarea.style.height = "auto"; // Restablecer altura
+                    textarea.style.height = textarea.scrollHeight + "px"; // Ajustar al contenido
+                }
+            });
+        },
         //METODOS DE PROVEEDOR
         searchSupplier(index) {
             if (!this.supplierData[index]) return; // Evita errores si no existe
@@ -673,8 +684,8 @@ export default {
             if (!query) {
                 this.supplierData[index].supplier_id = ""; // Limpia el ID
                 this.supplierData[index].udm = ""; // Limpia el campo udm
-                this.supplierData[index].internal_id = ""; // limpia el codigo interno
-
+                //this.supplierData[index].internal_id = ""; // limpia el codigo interno
+                this.supplierData[index].category = ""; // limpia el codigo interno
                 this.supplierData[index].suggestions = [];
                 return;
             }
@@ -719,7 +730,8 @@ export default {
         removeField(index) {
             // Aseguramos que todos los valores del producto se limpien antes de eliminarlo
             this.productData[index].description = "";
-            this.productData[index].internal_id = "";
+            //this.productData[index].internal_id = "";
+            this.productData[index].category = "";
             this.productData[index].udm = "";
             this.productData[index].tax_id = "";
 
@@ -746,7 +758,8 @@ export default {
         selectProduct(index, product) {
             this.productData[index].product_id = product.id; // Guardar ID
             this.productData[index].description = product.description; // Mostrar descripción
-            this.productData[index].internal_id = product.internal_id; // Autocompletar código interno
+            //this.productData[index].internal_id = product.internal_id; // Autocompletar código interno
+            this.productData[index].category = product.category; // Autocompletar código interno
             this.productData[index].udm = product.udm; // Autocompletar unidad de medida
             this.productData[index].tax_id = product.tax
                 ? product.tax.id
@@ -987,3 +1000,9 @@ export default {
     },
 };
 </script>
+<style scoped>
+textarea {
+    overflow: hidden;
+    resize: none; /* Evita que el usuario pueda redimensionarlo */
+}
+</style>

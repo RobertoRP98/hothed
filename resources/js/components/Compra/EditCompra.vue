@@ -162,7 +162,11 @@
 
         <div class="col-md-3">
             <div class="form-outline">
-                <select v-model="formData.authorization_2" class="form-select" disabled>
+                <select
+                    v-model="formData.authorization_2"
+                    class="form-select"
+                    disabled
+                >
                     <option value="Pendiente">PENDIENTE DE AUTORIZACIÓN</option>
                     <option value="Autorizado">AUTORIZADO</option>
                     <option value="Rechazado">RECHAZADO</option>
@@ -184,7 +188,11 @@
 
         <div class="col-md-3">
             <div class="form-outline">
-                <select v-model="formData.authorization_4" class="form-select" disabled>
+                <select
+                    v-model="formData.authorization_4"
+                    class="form-select"
+                    disabled
+                >
                     <option value="Pendiente">PENDIENTE DE AUTORIZACIÓN</option>
                     <option value="Autorizado">AUTORIZADO</option>
                     <option value="Rechazado">RECHAZADO</option>
@@ -254,7 +262,6 @@
                     <label class="form-label">FACTURA</label>
                 </div>
             </div>
-            
         </div>
     </div>
 
@@ -275,7 +282,7 @@
                 <thead>
                     <tr>
                         <th>Descripción</th>
-                        <th>Código Interno</th>
+                        <th>Categoria</th>
                         <th>UDM</th>
                         <th>Cantidad</th>
                         <th>Precio Unitario</th>
@@ -317,7 +324,7 @@
                         <td>
                             <input
                                 type="text"
-                                v-model="value.internal_id"
+                                v-model="value.category"
                                 class="form-control"
                                 placeholder="C-I"
                                 readonly
@@ -541,7 +548,7 @@ export default {
                 delivery_condition: "100% Antes Entrega",
                 po_status: "PENDIENTE DE PAGO",
                 bill: "Pendiente Facturar",
-                bill_name:"",
+                bill_name: "",
                 subtotal: 0, //guarda el subtotal de todos los subtotalproducto
                 total_descuento: 0,
                 total_impuestos: 0,
@@ -560,7 +567,8 @@ export default {
             productData: [
                 {
                     product_id: "", //descripcion
-                    internal_id: "", //codigo interno
+                    //  internal_id: "", //codigo interno
+                    category: "",
                     udm: "", //unindad de medida
                     quantity: "", //cantidad
                     price: "", //precio
@@ -593,8 +601,8 @@ export default {
             if (!query) {
                 this.supplierData[index].supplier_id = ""; // Limpia el ID
                 this.supplierData[index].udm = ""; // Limpia el campo udm
-                this.supplierData[index].internal_id = ""; // limpia el codigo interno
-
+                //  this.supplierData[index].internal_id = ""; // limpia el codigo interno
+                this.supplierData[index].category = ""; // limpia el codigo interno
                 this.supplierData[index].suggestions = [];
                 return;
             }
@@ -639,7 +647,8 @@ export default {
         removeField(index) {
             // Aseguramos que todos los valores del producto se limpien antes de eliminarlo
             this.productData[index].description = "";
-            this.productData[index].internal_id = "";
+            //this.productData[index].internal_id = "";
+            this.productData[index].category = "";
             this.productData[index].udm = "";
             this.productData[index].tax_id = "";
 
@@ -666,7 +675,8 @@ export default {
         selectProduct(index, product) {
             this.productData[index].product_id = product.id; // Guardar ID
             this.productData[index].description = product.description; // Mostrar descripción
-            this.productData[index].internal_id = product.internal_id; // Autocompletar código interno
+            // this.productData[index].internal_id = product.internal_id; // Autocompletar código interno
+            this.productData[index].category = product.category; // Autocompletar código interno
             this.productData[index].udm = product.udm; // Autocompletar unidad de medida
             this.productData[index].tax_id = product.tax
                 ? product.tax.id
@@ -682,7 +692,7 @@ export default {
         validateForm() {
             this.errors = {}; // Reiniciar errores
 
-           if (!this.formData.supplier_id) {
+            if (!this.formData.supplier_id) {
                 this.errors.supplier_id = "El proveedor es obligatorio";
             }
 
@@ -728,12 +738,14 @@ export default {
         /** 🔹 Enviar formulario solo si pasa la validación */
         submitForm() {
             if (!this.validateForm()) {
-            let errorMessages = Object.values(this.errors).join("\n");
-                alert("Corrige los errores antes de enviar.\n\n" + errorMessages);
-                console.error("Errores de validacion",this.errors);
+                let errorMessages = Object.values(this.errors).join("\n");
+                alert(
+                    "Corrige los errores antes de enviar.\n\n" + errorMessages
+                );
+                console.error("Errores de validacion", this.errors);
                 return; // 💡 Esto debería detener la ejecución
             }
-            
+
             if (this.$refs.subtotalInput) {
                 this.$refs.subtotalInput.value = this.subtotal;
             }
@@ -759,14 +771,14 @@ export default {
                 return; // Evita que continúe el envío del formulario
             }
 
-           
-
             console.log("Formulario válido, enviando...");
             // Aquí sigue el envío del request si no hay errores
 
             const payload = {
                 ...this.formData,
-                requisition_id: this.formData.requisition_id || this.initialData?.formData?.requisition,
+                requisition_id:
+                    this.formData.requisition_id ||
+                    this.initialData?.formData?.requisition,
                 supplier_id: this.supplierData[0]?.supplier_id || null,
                 items_order: this.productData.map((item) => ({
                     product_id: item.product_id,
@@ -785,16 +797,18 @@ export default {
             console.log("Payload:", payload);
 
             console.log("Datos enviados al backend:", payload); // 🛠️ Depuración
-            const requisitionId = this.formData.requisition_id || this.initialData?.formData?.requisition;
-            console.log("el ID DE LA REQUI ES ", requisitionId)
+            const requisitionId =
+                this.formData.requisition_id ||
+                this.initialData?.formData?.requisition;
+            console.log("el ID DE LA REQUI ES ", requisitionId);
             if (!requisitionId) {
                 alert("El ID de la requisición no está definido.");
                 return;
             }
 
             const orderId = this.formData.order; // Asegúrate que esté definido
-            console.log("el ID DE LA order ES ", orderId)
-           
+            console.log("el ID DE LA order ES ", orderId);
+
             if (!orderId) {
                 alert("El ID de la requisición no está definido.");
                 return;
@@ -803,7 +817,10 @@ export default {
             console.log("Payload antes de enviar:", this.formData);
 
             axios
-                .patch(`/ordenes-compra/${orderId}/requisiciones/${requisitionId}`, payload)
+                .patch(
+                    `/ordenes-compra/${orderId}/requisiciones/${requisitionId}`,
+                    payload
+                )
                 .then((response) => {
                     console.log("Mensaje:", response.data.message);
                     if (response.data.redirect) {
@@ -826,9 +843,9 @@ export default {
             handler(newVal) {
                 // 🔥 Ajustar tamaño de los textareas cuando cambie la data
                 this.$nextTick(() => {
-                newVal.forEach((_, i) => this.autoResize(i));
-            });
-            
+                    newVal.forEach((_, i) => this.autoResize(i));
+                });
+
                 let subtotal = 0;
                 newVal.forEach((product) => {
                     product.subtotalproducto =

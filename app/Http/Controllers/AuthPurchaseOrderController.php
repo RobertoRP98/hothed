@@ -200,7 +200,9 @@ class AuthPurchaseOrderController extends Controller
                     'discount' => $item->discount, // ✅ De items_order_purchase
                     'subtotalproducto' => $item->subtotalproducto, // ✅ De items_order_purchase
                     'udm' => optional($item->product)->udm ?? 'N/A', // ✅ Evitar errores si es null
-                    'internal_id' => optional($item->product)->internal_id ?? 'N/A', // ✅ Evitar errores si es null
+                    //'internal_id' => optional($item->product)->internal_id ?? 'N/A', // ✅ Evitar errores si es null
+                    'category' => $item->product->category ?? '',
+
                     'tax' => [
                         'concept' => optional($item->product->tax)->concept ?? 'N/A',
                         'percentage' => optional($item->product->tax)->percentage ?? 0, // Si es null, envía 0
@@ -352,7 +354,9 @@ class AuthPurchaseOrderController extends Controller
                     'discount' => $item->discount, // ✅ De items_order_purchase
                     'subtotalproducto' => $item->subtotalproducto, // ✅ De items_order_purchase
                     'udm' => optional($item->product)->udm ?? 'N/A', // ✅ Evitar errores si es null
-                    'internal_id' => optional($item->product)->internal_id ?? 'N/A', // ✅ Evitar errores si es null
+                    //'internal_id' => optional($item->product)->internal_id ?? 'N/A', // ✅ Evitar errores si es null
+                    'category' => $item->product->category ?? '',
+
                     'tax' => [
                         'concept' => optional($item->product->tax)->concept ?? 'N/A',
                         'percentage' => optional($item->product->tax)->percentage ?? 0, // Si es null, envía 0
@@ -376,23 +380,22 @@ class AuthPurchaseOrderController extends Controller
 
     //MIS OC - VISTA PARA LOS CLIENTES EN GENERAL Y PUEDAN VER SUS RESPECTIVAS OC 
 
-    public function misordenes(){
+    public function misordenes()
+    {
 
 
         // Si el usuario no tiene ciertos roles, filtrar por user_id
         if (!auth()->user()->hasRole([''])) {
-        $orderclient = PurchaseOrder::query()
-        ->WhereHas('requisition.user', function ($query){
-            $query->where('id', auth()->id());
-        })
-        ->orderBy('id','desc')
-        ->get();
+            $orderclient = PurchaseOrder::query()
+                ->WhereHas('requisition.user', function ($query) {
+                    $query->where('id', auth()->id());
+                })
+                ->orderBy('id', 'desc')
+                ->get();
 
-        // Obtener las requisiciones con los filtros aplicados
+            // Obtener las requisiciones con los filtros aplicados
 
-        return view('compras.misordenes', compact('orderclient'));
+            return view('compras.misordenes', compact('orderclient'));
+        }
     }
-}
-
-
 }

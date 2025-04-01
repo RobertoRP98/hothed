@@ -603,8 +603,6 @@ export default {
                 this.supplierData[index].udm = ""; // Limpia el campo udm
                 //this.supplierData[index].internal_id = ""; // limpia el codigo interno
                 this.supplierData[index].category = ""; // limpia el codigo interno
-
-
                 this.supplierData[index].suggestions = [];
                 return;
             }
@@ -679,7 +677,6 @@ export default {
             this.productData[index].description = product.description; // Mostrar descripción
             //this.productData[index].internal_id = product.internal_id; // Autocompletar código interno
             this.productData[index].category = product.category; // Autocompletar código interno
-
             this.productData[index].udm = product.udm; // Autocompletar unidad de medida
             this.productData[index].tax_id = product.tax
                 ? product.tax.id
