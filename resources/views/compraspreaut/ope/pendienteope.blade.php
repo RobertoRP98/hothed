@@ -42,7 +42,7 @@
 <thead class="thead-light">
         <tr>
             <th class="col-md-1">ID REQUI</th>
-            <th class="col-md-1">ID ORDEN CC</th>
+            <th class="col-md-1">ID ORDEN</th>
             <th class="col-md-1">DEP</th>
             <th class="col-md-1">PROVEEDOR</th>
             <th class="col-md-1">TOTAL</th>
@@ -151,7 +151,7 @@
         $('#compras').DataTable({
             resposive:true,
             autoWidth: false,
-
+            order: [[1, 'desc']],
 
             "language": {
                 "lengthMenu":     "Mostrar _MENU_ registros",

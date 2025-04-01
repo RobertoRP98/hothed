@@ -296,12 +296,15 @@
                     <tr v-for="(value, index) in productData" :key="index">
                         <td>
                             <textarea
-        v-model="value.description"
-        @input="searchProducts(index); autoResize($event)"
-        class="form-control description-textarea"
-        placeholder="Busque un producto"
-        ref="descriptionTextarea"
-    ></textarea>
+                                v-model="value.description"
+                                @input="
+                                    searchProducts(index);
+                                    autoResize(index);
+                                "
+                                class="form-control"
+                                placeholder="Busque un producto"
+                                ref="descriptionTextarea"
+                            ></textarea>
                             <ul
                                 v-if="value.suggestions.length > 0"
                                 class="list-group"
@@ -507,6 +510,14 @@ export default {
             this.productData = [...this.initialData.productData]; // 🔥 Cargar productos de la requisición
 
             console.log("Datos iniciales recibidos:", this.formData);
+            // Esperar a que Vue renderice los elementos antes de ajustar los textarea
+            this.$nextTick(() => {
+                if (this.$refs.descriptionTextarea) {
+                    this.$refs.descriptionTextarea.forEach((_, index) => {
+                        this.autoResize(index);
+                    });
+                }
+            });
         }
 
         if (!this.formData.po_status) {
@@ -517,6 +528,7 @@ export default {
     },
     data() {
         return {
+            descriptionTextarea: [],
             //DATOS GENERALES DEL FORMULARIO - OC MODEL
             formData: {
                 requisition_id: "",
@@ -568,12 +580,16 @@ export default {
         };
     },
     methods: {
-
-        autoResize(event) {
-        const textarea = event.target;
-        textarea.style.height = "auto"; // Restablece la altura para recalcular
-        textarea.style.height = textarea.scrollHeight + "px"; // Ajusta la altura según el contenido
-    },
+        autoResize(index) {
+            this.$nextTick(() => {
+                const textareas = this.$refs.descriptionTextarea;
+                if (textareas && textareas[index]) {
+                    const textarea = textareas[index];
+                    textarea.style.height = "auto"; // Restablecer altura
+                    textarea.style.height = textarea.scrollHeight + "px"; // Ajustar al contenido
+                }
+            });
+        },
         //METODOS DE PROVEEDOR
         searchSupplier(index) {
             if (!this.supplierData[index]) return; // Evita errores si no existe
@@ -792,6 +808,11 @@ export default {
     watch: {
         productData: {
             handler(newVal) {
+                 // 🔥 Ajustar tamaño de los textareas cuando cambie la data
+            this.$nextTick(() => {
+                newVal.forEach((_, i) => this.autoResize(i));
+            });
+
                 let subtotal = 0;
                 newVal.forEach((product) => {
                     product.subtotalproducto =
@@ -862,34 +883,8 @@ export default {
 </script>
 
 <style scoped>
-.description-textarea {
-    width: 100%;
-    min-height: 38px; /* Altura mínima como un input */
-    height: auto;
-    resize: none; /* Evita que el usuario lo redimensione manualmente */
+textarea {
     overflow: hidden;
-    line-height: 1.2;
-}
-
-/* Ajusta la altura del textarea dinámicamente según el contenido */
-.description-textarea:focus,
-.description-textarea:active {
-    height: auto;
-}
-
-/* Estilo para que el texto de la celda se acomode */
-td {
-    vertical-align: top;
-    white-space: normal;
-}
-
-.description-textarea {
-    width: 100%;
-    min-height: 38px; /* Altura mínima similar a un input */
-    height: auto;
-    resize: none; /* Evita que el usuario lo redimensione manualmente */
-    overflow-y: hidden; /* Oculta el scrollbar vertical */
-    line-height: 1.2;
-    padding: 5px;
+    resize: none; /* Evita que el usuario pueda redimensionarlo */
 }
 </style>

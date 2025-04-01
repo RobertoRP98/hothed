@@ -288,13 +288,16 @@
                 <tbody>
                     <tr v-for="(value, index) in productData" :key="index">
                         <td>
-                            <input
-                                type="text"
+                            <textarea
                                 v-model="value.description"
-                                @input="searchProducts(index)"
+                                @input="
+                                    searchProducts(index);
+                                    autoResize(index);
+                                "
                                 class="form-control"
                                 placeholder="Busque un producto"
-                            />
+                                ref="descriptionTextarea"
+                            ></textarea>
                             <ul
                                 v-if="value.suggestions.length > 0"
                                 class="list-group"
@@ -498,6 +501,15 @@ export default {
             this.formData = { ...this.initialData.formData }; // Carga todo lo que venga de PHP
             this.supplierData = [...this.initialData.supplierData]; // ✅ Asegura que supplierData tenga el proveedor correcto
             this.productData = [...this.initialData.productData]; // ✅ Esto sí funciona
+
+            // Esperar a que Vue renderice los elementos antes de ajustar los textarea
+            this.$nextTick(() => {
+                if (this.$refs.descriptionTextarea) {
+                    this.$refs.descriptionTextarea.forEach((_, index) => {
+                        this.autoResize(index);
+                    });
+                }
+            });
         }
         console.log("Datos iniciales recibidos:", this.formData);
         console.log("Datos iniciales:", this.formData);
@@ -506,6 +518,8 @@ export default {
     },
     data() {
         return {
+            descriptionTextarea: [],
+
             //DATOS GENERALES DEL FORMULARIO - OC MODEL
             formData: {
                 order: "",
@@ -559,6 +573,16 @@ export default {
         };
     },
     methods: {
+        autoResize(index) {
+            this.$nextTick(() => {
+                const textareas = this.$refs.descriptionTextarea;
+                if (textareas && textareas[index]) {
+                    const textarea = textareas[index];
+                    textarea.style.height = "auto"; // Restablecer altura
+                    textarea.style.height = textarea.scrollHeight + "px"; // Ajustar al contenido
+                }
+            });
+        },
         //METODOS DE PROVEEDOR
         searchSupplier(index) {
             if (!this.supplierData[index]) return; // Evita errores si no existe
@@ -800,6 +824,11 @@ export default {
     watch: {
         productData: {
             handler(newVal) {
+                // 🔥 Ajustar tamaño de los textareas cuando cambie la data
+                this.$nextTick(() => {
+                newVal.forEach((_, i) => this.autoResize(i));
+            });
+            
                 let subtotal = 0;
                 newVal.forEach((product) => {
                     product.subtotalproducto =
@@ -876,3 +905,10 @@ export default {
     },
 };
 </script>
+
+<style scoped>
+textarea {
+    overflow: hidden;
+    resize: none; /* Evita que el usuario pueda redimensionarlo */
+}
+</style>
