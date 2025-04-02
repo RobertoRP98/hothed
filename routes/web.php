@@ -202,7 +202,11 @@ Route::group(['middleware' => ['auth', 'role:Developer|RespCompras']], function 
 
     Route::post('/requisiciones/{requisicione}/ordenes-compra', [PurchaseOrderController::class, 'store'])->name('ordencompra.store');
     
-  
+    Route::get('/export-resumen-semanal-compras', [PurchaseOrderController::class, 'exportReporteSemanal'])->name('export.resumen-semanal-compras');
+
+    Route::get('/export-compras-locales', [PurchaseOrderController::class, 'exportReporteLocales'])->name('export.compras-locales');
+
+    
 
 
 });

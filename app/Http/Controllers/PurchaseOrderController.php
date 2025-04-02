@@ -15,6 +15,9 @@ use App\Models\ItemOrderPurchase;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\OrdenesSemanalExport;
+use App\Exports\ReporteLocalesExport;
 use Illuminate\Validation\ValidationException;
 use App\Http\Requests\StorePurchaseOrderRequest;
 use App\Http\Requests\UpdatePurchaseOrderRequest;
@@ -755,5 +758,16 @@ class PurchaseOrderController extends Controller
 
         $pdf = Pdf::loadview('compras.pdf', compact('order', 'today', 'proveedor', 'proveedorhh', 'producto', 'item', 'days_remaining_now', 'initialData'));
         return $pdf->download('Orden de compra - ' . $initialData['formData']['order'] . '.pdf');
+    }
+
+
+    public function exportReporteSemanal()
+    {
+        return Excel::download(new OrdenesSemanalExport, 'Resumen Semanal Compras ' . Carbon::now()->format('d-m-Y') . '.xlsx');
+    }
+
+    public function exportReporteLocales()
+    {
+        return Excel::download(new ReporteLocalesExport, 'Compras Locales al ' . Carbon::now()->format('d-m-Y') . '.xlsx');
     }
 }
