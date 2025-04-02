@@ -22,32 +22,13 @@
 @endpush
 
 <div class="col-md-12">
-    <a href="{{ url('/ordenes-compra/pendientes') }}" class="col-md-3 btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
-        Ordenes Pendientes de Autorización
+    <a href="{{ url('/ordenes-compra') }}" class="col-md-3 btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
+        Ordenes de Compra
     </a>
 
-    <a href="{{ url('/ordenes-compra/rechazadas') }}" class="col-md-3 btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
-        Ordenes Canceladas 
-    </a>
-
-    <a href="{{ url('/ordenes-compra/finalizadas') }}" class="col-md-3 btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
-        Ordenes Finalizadas 
-    </a>
-
-    <a href="{{ url('/ordenes-compra/facturadas') }}" class="col-md-3 btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
-        Ordenes Facturadas
-    </a>
-
-    <a href="{{ url('/ordenes-compra/no-facturadas') }}" class="col-md-3 btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
-        Ordenes No Facturadas
-    </a>
-
-    <a href="{{ url('/ordenes-compra/pagadas') }}" class="col-md-3 btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
-        Ordenes Pagadas
-    </a>
 </div>
  
-<h3 class="text-center my-1">Ordenes de Compra Autorizadas</h3>
+<h3 class="text-center my-1">Ordenes de Compra Pagadas</h3>
 
 
 <div class="card">

@@ -191,6 +191,8 @@ Route::group(['middleware' => ['auth', 'role:Developer|RespCompras']], function 
     Route::get('/ordenes-compra/rechazadas', [PurchaseOrderController::class, 'indexcanc'])->name('ordencompra.indexcanc');
 
     Route::get('/ordenes-compra/finalizadas', [PurchaseOrderController::class, 'indexfinalizadas'])->name('ordencompra.indexfinalizadas');
+
+    Route::get('/ordenes-compra/pagadas', [PurchaseOrderController::class, 'indexpagadas'])->name('ordencompra.indexpagadas');
     
     Route::get('/ordenes-compra/facturadas', [PurchaseOrderController::class, 'indexfacturadas'])->name('ordencompra.indexfacturadas');
 

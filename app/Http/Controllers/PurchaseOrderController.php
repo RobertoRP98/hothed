@@ -26,8 +26,8 @@ class PurchaseOrderController extends Controller
      */
     public function index()
     {
-        $datosoc = PurchaseOrder::query()
-            ->where('authorization_4', 'Autorizado')
+        $datosoc = PurchaseOrder::where('authorization_4', 'Autorizado')
+            ->where('finished', false)
             ->get();
 
         return view('compras.index', compact('datosoc'));
@@ -76,6 +76,15 @@ class PurchaseOrderController extends Controller
             ->get();
 
         return view('compras.nofacturadas', compact('datosoc'));
+    }
+
+    public function indexpagadas()
+    {
+        $datosoc = PurchaseOrder::query()
+            ->where('po_status', 'PAGADA')
+            ->get();
+
+        return view('compras.pagadas', compact('datosoc'));
     }
 
 

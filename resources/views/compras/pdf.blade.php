@@ -251,7 +251,7 @@ body {
         <tbody>
             <tr>
                 <td class="no-decoration">
-            <img src="{{ public_path('images/firmapdf.png') }}" alt="HOT HED" style="width: 200px; height: auto;">
+            <img src="{{ public_path('images/firmaaut.png') }}" alt="HOT HED" style="width: 250px; height: auto;">
 
         </td>
             </tr>
