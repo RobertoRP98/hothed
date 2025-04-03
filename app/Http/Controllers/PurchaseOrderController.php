@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Mail;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\OrdenesSemanalExport;
 use App\Exports\ReporteLocalesExport;
+use App\Exports\ReporteExtranjerasExport;
 use Illuminate\Validation\ValidationException;
 use App\Http\Requests\StorePurchaseOrderRequest;
 use App\Http\Requests\UpdatePurchaseOrderRequest;
@@ -769,5 +770,10 @@ class PurchaseOrderController extends Controller
     public function exportReporteLocales()
     {
         return Excel::download(new ReporteLocalesExport, 'Compras Locales al ' . Carbon::now()->format('d-m-Y') . '.xlsx');
+    }
+
+    public function exportReporteExtranjeras()
+    {
+        return Excel::download(new ReporteExtranjerasExport, 'Compras Extranjeras al ' . Carbon::now()->format('d-m-Y') . '.xlsx');
     }
 }

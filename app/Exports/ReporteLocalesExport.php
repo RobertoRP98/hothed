@@ -16,6 +16,9 @@ class ReporteLocalesExport implements WithMultipleSheets
 
         $sheets []= new ReporteLocalDebitoExport();
 
+        $sheets []= new ReporteLocalCreditoExport();
+
+
         return $sheets;
     }
 }

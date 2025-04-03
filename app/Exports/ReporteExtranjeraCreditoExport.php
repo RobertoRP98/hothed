@@ -11,28 +11,29 @@ use Maatwebsite\Excel\Concerns\WithHeadings;
 use PhpOffice\PhpSpreadsheet\Style\Alignment;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
+use Maatwebsite\Excel\Concerns\WithColumnLimit;
 use Maatwebsite\Excel\Concerns\WithColumnFormatting;
 
-class ReporteLocalDebitoExport implements
-    FromCollection,
-    WithHeadings,
-    WithTitle,
-    WithColumnFormatting,
-    ShouldAutoSize,
-    WithEvents
+
+
+class ReporteExtranjeraCreditoExport implements 
+FromCollection,
+WithHeadings,
+WithTitle,
+WithColumnFormatting,
+ShouldAutoSize,
+WithEvents
 {
     /**
-     * @return \Illuminate\Support\Collection
-     */
+    * @return \Illuminate\Support\Collection
+    */
     public function collection()
     {
-        //$startDate = Carbon::now()->subWeek()->startOfWeek()->format('Y-m-d'); // Lunes pasado
-        //$endDate = Carbon::now()->subWeek()->endOfWeek()->format('Y-m-d'); // Domingo pasado
-
+        
         $orders = PurchaseOrder::with('requisition', 'supplier')
             //->whereBetween('date_start', [$startDate, $endDate])
-            ->where('type_op', 'Local')
-            ->whereIn('payment_type',['DEBITO','CAJA CHICA','TRANSFERENCIA'])
+            ->where('type_op', 'Extranjera')
+            ->whereIn('payment_type', ['CREDITO'])
             ->get()
             ->map(function ($order) {
                 // Calcular días restantes
@@ -69,23 +70,25 @@ class ReporteLocalDebitoExport implements
         return $orders; // <-- Asegúrate de retornar la colección
     }
 
+
     public function headings(): array
     {
-        return ['REQUISICION', 
-                'ORDEN',
-                'PROVEEDOR',
-                'FECHA REQUERIDA',
-                'COTIZACIÓN',
-                'FECHA CREACIÓN OC',
-                'TOTAL',
-                'DEPARTAMENTO',
-                'AUTORIZACIÓN',
-                'STATUS',
-                'FACTURA',
-                'PRIORIDAD',
-                'DIAS RESTANTES',
-                'COMENTARIOS',            
-    ];
+        return [
+            'REQUISICION',
+            'ORDEN',
+            'PROVEEDOR',
+            'FECHA REQUERIDA',
+            'COTIZACIÓN',
+            'FECHA CREACIÓN OC',
+            'TOTAL',
+            'DEPARTAMENTO',
+            'AUTORIZACIÓN',
+            'STATUS',
+            'FACTURA',
+            'PRIORIDAD',
+            'DIAS RESTANTES',
+            'COMENTARIOS',
+        ];
     }
 
     // public function map($row): array
@@ -97,7 +100,7 @@ class ReporteLocalDebitoExport implements
 
     public function title(): string
     {
-        return 'CONTADO';
+        return 'CREDITO';
     }
 
     public function columnFormats(): array
@@ -161,4 +164,6 @@ class ReporteLocalDebitoExport implements
             }
         ];
     }
+
+    
 }

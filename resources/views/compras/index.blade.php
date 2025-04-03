@@ -22,6 +22,8 @@
 @endpush
 
 <div class="col-md-12">
+<h3>Datos Generales</h3>
+
     <a href="{{ url('/ordenes-compra/pendientes') }}" class="col-md-3 btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
         Ordenes Pendientes de Autorización
     </a>
@@ -45,6 +47,25 @@
     <a href="{{ url('/ordenes-compra/pagadas') }}" class="col-md-3 btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
         Ordenes Pagadas
     </a>
+</div>
+
+<h3>Descargar Excel</h3>
+
+<!-- Botones de Excel -->
+<div class="d-flex flex-wrap">
+
+    <a href="{{ url('/export-compras-locales') }}" class="col-md-3 btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
+        REPORTE COMPRAS LOCALES
+    </a>
+
+    <a href="{{ url('/export-compras-extranjeras') }}" class="col-md-3 btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
+        REPORTE COMPRAS EXTRANJERAS
+    </a>
+
+    <a href="{{ url('/export-resumen-semanal-compras') }}" class="col-md-3 btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
+        ORDENES CREADAS EN LA SEMANA
+    </a>
+ 
 </div>
  
 <h3 class="text-center my-1">Ordenes de Compra Autorizadas</h3>

@@ -206,6 +206,9 @@ Route::group(['middleware' => ['auth', 'role:Developer|RespCompras']], function 
 
     Route::get('/export-compras-locales', [PurchaseOrderController::class, 'exportReporteLocales'])->name('export.compras-locales');
 
+    Route::get('/export-compras-extranjeras', [PurchaseOrderController::class, 'exportReporteExtranjeras'])->name('export.compras-extranjeras');
+
+
     
 
 
