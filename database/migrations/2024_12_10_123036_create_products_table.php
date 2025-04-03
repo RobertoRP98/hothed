@@ -23,7 +23,7 @@ return new class extends Migration
 
 
             $table->enum('udm', ['PIEZAS', 'KG', 'LITROS', 'SERVICIO','KILOMETROS','METROS CUBICOS','METROS CUADRADOS', 
-            'METROS', 'LIBRAS', 'GALONES', 'CUBETAS', 'TAMBORES', 'JUEGOS', 'HORAS', 'DIAS'])->default('PIEZAS');
+            'METROS', 'LIBRAS', 'GALONES', 'CUBETAS', 'TAMBORES', 'JUEGOS', 'HORAS', 'DIAS','PAR','PAQUETES'])->default('PIEZAS');
 
 
             $table->enum('category', ['ACCESORIO', 'CONSUMIBLE', 'EMPAQUES', 'EPP',
