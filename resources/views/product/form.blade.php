@@ -72,7 +72,25 @@
 
   <div class="col-md-3">
     <div class="form-outline">
-      <select class="form-select" name="udm" id="udm"> <option value="PIEZAS" {{ old('udm', isset($product) && $product->udm == 'PIEZAS' ? 'selected' : '') }}>PIEZAS</option> <option value="KG" {{ old('udm', isset($product) && $product->udm == 'KG' ? 'selected' : '') }}>KGS</option> <option value="LITROS" {{ old('udm', isset($product) && $product->udm == 'LITROS' ? 'selected' : '') }}>LITROS</option> <option value="SERVICIO" {{ old('udm', isset($product) && $product->udm == 'SERVICIO' ? 'selected' : '') }}>SERVICIO</option> <option value="KILOMETROS" {{ old('udm', isset($product) && $product->udm == 'KILOMETROS' ? 'selected' : '') }}>KILOMETROS</option> <option value="METROS" {{ old('udm', isset($product) && $product->udm == 'METROS' ? 'selected' : '') }}>METROS</option> <option value="METROS CUBICOS" {{ old('udm', isset($product) && $product->udm == 'METROS CUBICOS' ? 'selected' : '') }}>METROS CUBICOS</option> <option value="METROS CUADRADOS" {{ old('udm', isset($product) && $product->udm == 'METROS CUADRADOS' ? 'selected' : '') }}>METROS CUADRADOS</option> <option value="LIBRAS" {{ old('udm', isset($product) && $product->udm == 'LIBRAS' ? 'selected' : '') }}>LIBRAS</option> <option value="GALONES" {{ old('udm', isset($product) && $product->udm == 'GALONES' ? 'selected' : '') }}>GALONES</option> <option value="CUBETAS" {{ old('udm', isset($product) && $product->udm == 'CUBETAS' ? 'selected' : '') }}>CUBETAS</option> <option value="TAMBORES" {{ old('udm', isset($product) && $product->udm == 'TAMBORES' ? 'selected' : '') }}>TAMBORES</option> <option value="JUEGOS" {{ old('udm', isset($product) && $product->udm == 'JUEGOS' ? 'selected' : '') }}>JUEGOS</option> <option value="HORAS" {{ old('udm', isset($product) && $product->udm == 'HORAS' ? 'selected' : '') }}>HORAS</option> <option value="DIAS" {{ old('udm', isset($product) && $product->udm == 'DIAS' ? 'selected' : '') }}>DIAS</option>
+      <select class="form-select" name="udm" id="udm"> 
+        <option value="PIEZAS" {{ old('udm', isset($product) && $product->udm == 'PIEZAS' ? 'selected' : '') }}>PIEZAS</option> 
+        <option value="KG" {{ old('udm', isset($product) && $product->udm == 'KG' ? 'selected' : '') }}>KGS</option> 
+        <option value="LITROS" {{ old('udm', isset($product) && $product->udm == 'LITROS' ? 'selected' : '') }}>LITROS</option> 
+        <option value="SERVICIO" {{ old('udm', isset($product) && $product->udm == 'SERVICIO' ? 'selected' : '') }}>SERVICIO</option>
+         <option value="KILOMETROS" {{ old('udm', isset($product) && $product->udm == 'KILOMETROS' ? 'selected' : '') }}>KILOMETROS</option>
+          <option value="METROS" {{ old('udm', isset($product) && $product->udm == 'METROS' ? 'selected' : '') }}>METROS</option> 
+          <option value="METROS CUBICOS" {{ old('udm', isset($product) && $product->udm == 'METROS CUBICOS' ? 'selected' : '') }}>METROS CUBICOS</option> 
+          <option value="METROS CUADRADOS" {{ old('udm', isset($product) && $product->udm == 'METROS CUADRADOS' ? 'selected' : '') }}>METROS CUADRADOS</option> 
+          <option value="LIBRAS" {{ old('udm', isset($product) && $product->udm == 'LIBRAS' ? 'selected' : '') }}>LIBRAS</option> 
+          <option value="GALONES" {{ old('udm', isset($product) && $product->udm == 'GALONES' ? 'selected' : '') }}>GALONES</option>
+           <option value="CUBETAS" {{ old('udm', isset($product) && $product->udm == 'CUBETAS' ? 'selected' : '') }}>CUBETAS</option>
+            <option value="TAMBORES" {{ old('udm', isset($product) && $product->udm == 'TAMBORES' ? 'selected' : '') }}>TAMBORES</option> 
+            <option value="JUEGOS" {{ old('udm', isset($product) && $product->udm == 'JUEGOS' ? 'selected' : '') }}>JUEGOS</option> 
+            <option value="HORAS" {{ old('udm', isset($product) && $product->udm == 'HORAS' ? 'selected' : '') }}>HORAS</option>
+             <option value="DIAS" {{ old('udm', isset($product) && $product->udm == 'DIAS' ? 'selected' : '') }}>DIAS</option>
+             <option value="PAR" {{ old('udm', isset($product) && $product->udm == 'PAR' ? 'selected' : '') }}>PAR</option>
+             <option value="PAQUETES" {{ old('udm', isset($product) && $product->udm == 'PAQUETES' ? 'selected' : '') }}>PAQUETES</option>
+
         </select>
         <label class="form-label">UNIDAD DE MEDIDA</label>
   </div>   
