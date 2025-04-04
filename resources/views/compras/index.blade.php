@@ -65,6 +65,12 @@
     <a href="{{ url('/export-resumen-semanal-compras') }}" class="col-md-3 btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
         ORDENES CREADAS EN LA SEMANA
     </a>
+
+    <a href="{{ url('/export-proveedores') }}" class="col-md-3 btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
+        PROVEEDORES APROBADOS
+    </a>
+
+    
  
 </div>
  

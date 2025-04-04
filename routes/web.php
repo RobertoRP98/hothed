@@ -208,9 +208,7 @@ Route::group(['middleware' => ['auth', 'role:Developer|RespCompras']], function 
 
     Route::get('/export-compras-extranjeras', [PurchaseOrderController::class, 'exportReporteExtranjeras'])->name('export.compras-extranjeras');
 
-
-    
-
+    Route::get('/export-proveedores', [PurchaseOrderController::class, 'exportProveedores'])->name('export.proveedores');
 
 });
 

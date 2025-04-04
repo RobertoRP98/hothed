@@ -14,10 +14,24 @@ class Supplier extends Model
     protected $guarded = ['id'];
 
     protected $fillable = [
-        'name', 'rfc', 'number', 'address', 'critic', 'currency', 'credit_days', 'unique', 'email','account'
+        'name',
+        'rfc',
+        'number',
+        'address',
+        'critic',
+        'currency',
+        'credit_days',
+        'unique',
+        'email',
+        'account',
+        'contract',
+        'product_type',
+        'status',
+        'notes'
+
     ];
 
-    
+
 
 
     public function purchaseOrders()
@@ -39,7 +53,7 @@ class Supplier extends Model
         parent::boot();
 
         static::saving(function ($model) {
-            $model->setAttributesToUppercase(['name','rfc','address','account']);
+            $model->setAttributesToUppercase(['name', 'rfc', 'address', 'account']);
         });
     }
 }

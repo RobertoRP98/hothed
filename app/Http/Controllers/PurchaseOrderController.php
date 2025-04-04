@@ -19,6 +19,7 @@ use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\OrdenesSemanalExport;
 use App\Exports\ReporteLocalesExport;
 use App\Exports\ReporteExtranjerasExport;
+use App\Exports\ReporteLineaProductosExport;
 use Illuminate\Validation\ValidationException;
 use App\Http\Requests\StorePurchaseOrderRequest;
 use App\Http\Requests\UpdatePurchaseOrderRequest;
@@ -776,4 +777,10 @@ class PurchaseOrderController extends Controller
     {
         return Excel::download(new ReporteExtranjerasExport, 'Compras Extranjeras al ' . Carbon::now()->format('d-m-Y') . '.xlsx');
     }
+
+    public function exportProveedores()
+    {
+        return Excel::download(new ReporteLineaProductosExport, 'Resumen de Proveedores al ' . Carbon::now()->format('d-m-Y') . '.xlsx');
+    }
+
 }

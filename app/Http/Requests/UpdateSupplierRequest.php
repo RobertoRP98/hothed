@@ -24,15 +24,19 @@ class UpdateSupplierRequest extends FormRequest
         return [
 
             'name' => 'required',
-           'rfc' => 'required|string|max:13',
+            'rfc' => 'required|string|max:13',
             'number' => 'required|string|max:12',
+            'email' => 'nullable|email',
             'address' => 'required',
-            'email' => 'nullable|email',            
             'critic' => 'required',
             'currency' => 'required',
             'credit_days' => 'required',
-            'unique' => 'required',      
-            'account' => 'nullable',       
+            'unique' => 'required', 
+            'account' => 'nullable',
+            'contract' => 'required',
+            'product_type' =>'required',
+            'status' => 'required',
+            'notes' => 'nullable',    
 
         ];
     }

@@ -72,6 +72,7 @@ class SupplierController extends Controller
 
         $supplier->save();
 
+
         return redirect('proveedores')->with('message','Proveedor Actualizado');
     }
 

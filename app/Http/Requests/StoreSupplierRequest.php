@@ -25,14 +25,17 @@ class StoreSupplierRequest extends FormRequest
             'name' => 'required',
             'rfc' => 'required|string|max:13',
             'number' => 'required|string|max:12',
-            'address' => 'required',
             'email' => 'nullable|email',
+            'address' => 'required',
             'critic' => 'required',
             'currency' => 'required',
             'credit_days' => 'required',
             'unique' => 'required', 
-            'account' => 'nullable',       
-
+            'account' => 'nullable',
+            'contract' => 'required',
+            'product_type' =>'required',
+            'status' => 'required',
+            'notes' => 'nullable',
         ];
     }
 

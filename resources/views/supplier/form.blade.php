@@ -120,19 +120,24 @@
         </div>
     </div>
 
-    <div class="col-md-2">
-        <div class="form-outline">
-            <select class="form-select" name="product_type" id="product_type">
-                <option value="CONSUMIBLES" {{ old('product_type', isset($supplier) ? $supplier->product_type : '') == 'CONSUMIBLES' ? 'selected' : '' }}>CONSUMIBLES</option>
-                <option value="EPP" {{ old('product_type', isset($supplier) ? $supplier->product_type : '') == 'EPP' ? 'selected' : '' }}>EPP</option>
-                <option value="SERVICIOS" {{ old('product_type', isset($supplier) ? $supplier->product_type : '') == 'SERVICIOS' ? 'selected' : '' }}>SERVICIOS</option>
-                <option value="MATERIALES DE IZAJE" {{ old('product_type', isset($supplier) ? $supplier->product_type : '') == 'MATERIALES DE IZAJE' ? 'selected' : '' }}>MATERIALES DE IZAJE</option>
-                <option value="HERRAMIENTAS-EQUIPOS MANUALES PARA TRABAJO" {{ old('product_type', isset($supplier) ? $supplier->product_type : '') == 'HERRAMIENTAS-EQUIPOS MANUALES PARA TRABAJO' ? 'selected' : '' }}>HERRAMIENTAS-EQUIPOS MANUALES PARA TRABAJO</option>
-                <option value="HERRAMIENTAS DE PESCA" {{ old('product_type', isset($supplier) ? $supplier->product_type : '') == 'HERRAMIENTAS DE PESCA' ? 'selected' : '' }}>HERRAMIENTAS DE PESCA</option>
-            </select>
-            <label class="form-label" for="status">LÍNEA/TIPO DE PRODUCTO</label>
-        </div>
+    @php
+    $selectedType = old('product_type', $supplier->product_type ?? '');
+@endphp
+
+<div class="col-md-2">
+    <div class="form-outline">
+        <select class="form-select" name="product_type" id="product_type">
+            <option value="CONSUMIBLES" {{ $selectedType == 'CONSUMIBLES' ? 'selected' : '' }}>CONSUMIBLES</option>
+            <option value="EPP" {{ $selectedType == 'EPP' ? 'selected' : '' }}>EPP</option>
+            <option value="SERVICIOS" {{ $selectedType == 'SERVICIOS' ? 'selected' : '' }}>SERVICIOS</option>
+            <option value="MATERIALES DE IZAJE" {{ $selectedType == 'MATERIALES DE IZAJE' ? 'selected' : '' }}>MATERIALES DE IZAJE</option>
+            <option value="HERRAMIENTAS-EQUIPOS MANUALES PARA TRABAJO" {{ $selectedType == 'HERRAMIENTAS-EQUIPOS MANUALES PARA TRABAJO' ? 'selected' : '' }}>HERRAMIENTAS-EQUIPOS MANUALES PARA TRABAJO</option>
+            <option value="HERRAMIENTAS DE PESCA" {{ $selectedType == 'HERRAMIENTAS DE PESCA' ? 'selected' : '' }}>HERRAMIENTAS DE PESCA</option>
+        </select>
+        <label class="form-label" for="status">LÍNEA/TIPO DE PRODUCTO</label>
     </div>
+</div>
+
 
     <div class="col-md-2">
         <div class="form-outline">
