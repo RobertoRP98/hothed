@@ -27,14 +27,10 @@ class RoleSeeder extends Seeder
 
          //ROLES COMPRAS ESTRUCTURADO CON ORGANIGRAMA - LOS ROLES SE TOMAN EN CUENTA DE LA FECHA 28-01-2025
          $roleAuxconta = Role::firstOrCreate(['name' => 'Auxconta']);
-
          $roleAuxlogmanto = Role::firstOrCreate(['name' => 'Auxlogmanto']); //NO HAY PERSONAL
          $roleCoordalm = Role::firstOrCreate(['name' => 'Coordalm']); // ES EDUARDO
          $roleAuxopeventas = Role::firstOrCreate(['name' => 'Auxopeventas']);
-
-         
          $roleCoordhse = Role::firstOrCreate(['name' => 'Coordhse']);//NO HAY PERSONAL
-         
          $roleRespsgi = Role::firstOrCreate(['name' => 'Respsgi']);
          $roleAuxti = Role::firstOrCreate(['name' => 'Auxti']);
          $roleCoordrh = Role::firstOrCreate(['name' => 'Coordrh']);
@@ -42,21 +38,18 @@ class RoleSeeder extends Seeder
          $roleCoordcontratos = Role::firstOrCreate(['name' => 'Coordcontratos']);
          $roleCoordconta = Role::firstOrCreate(['name' => 'Coordconta']);
          $roleDiradmin = Role::firstOrCreate(['name' => 'Diradmin']);
-
          $roleMcfly = Role::firstOrCreate(['name' => 'Mcfly']);
-
          $roleSubgerope = Role::firstOrCreate(['name' => 'Subgerope']);
          $roleVentas = Role::firstOrCreate(['name' => 'Ventas']); //NO HAY PERSONAL
          $roleGerope = Role::firstOrCreate(['name' => 'Gerope']);
-
          $roleAuxcontratos = Role::firstOrCreate(['name' => 'Auxcontratos']);
-
          $roleDirope = Role::firstOrCreate(['name' => 'Dirope']);
+
 
 
          //FIN ROLES COMPRAS ESTRUCTURADO CON ORGANIGRAMA
 
-         // Crear permisos
+         // Crear permisos // ROLES DE COBRANZA - NO TOCAR
          $permisoAlmacen = Permission::firstOrCreate(['name' => 'manage_almacen']);
          $permisoCobranza = Permission::firstOrCreate(['name'=> 'manage_cobranza']);
          $permisoKarlaS = Permission::firstOrCreate(['name'=> 'manage_administracionkarla']);
@@ -64,9 +57,10 @@ class RoleSeeder extends Seeder
          $permisoDirOperaciones = Permission::firstOrCreate(['name'=> 'diroperaciones']);
          $permisoGerOperaciones = Permission::firstOrCreate(['name'=> 'geroperaciones']);
          $permisoVerCobranza = Permission::firstOrCreate(['name'=> 'vercobranza']);
-         $permisoCompras = Permission::firstOrCreate(['name'=> 'Compras']);
+        // NO TOCAR 
 
          //PERMISOS COMPRAS ESTRUCTURADO CON ORGANIGRAMA
+         $permisoCompras = Permission::firstOrCreate(['name'=> 'Compras']);
          $permisoAuxconta = Permission::firstOrCreate(['name' => 'Auxconta']);
 
          $permisoAuxlogmanto = Permission::firstOrCreate(['name' => 'Auxlogmanto']);
@@ -201,7 +195,7 @@ class RoleSeeder extends Seeder
           //COMPRAS
        
 
-         $user = User::find(22); // Cambia el ID de usuario según sea necesario
+         $user = User::find(23); // Cambia el ID de usuario según sea necesario
          if ($user) {
              $user->assignRole('Auxconta'); // LISTO
          }
@@ -243,7 +237,7 @@ class RoleSeeder extends Seeder
          if ($user) {
              $user->assignRole('Diradmin');
          }
-         $user = User::find(23);
+         $user = User::find(22);
          if ($user) {
              $user->assignRole('Subgerope'); // Se asigna Auxlogmanto para el auxiliar de logistica y manto
          }

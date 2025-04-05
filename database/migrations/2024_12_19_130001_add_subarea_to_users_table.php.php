@@ -15,6 +15,8 @@ return new class extends Migration
             $table->enum(
                 'subarea',
                 [
+                    //LO SIENTO SE HIZO EN CALIENTE Y SE EVITO UN CRUD Y NO ME PAGABAN LO SUFICIENTE
+                    
                     'AUXILIAR DE SGI', // auxiliar de SGI - Resp de SGI
                     'RESP. DE SGI', 
 
