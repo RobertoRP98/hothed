@@ -99,6 +99,23 @@
     @endif
 @endauth
 
+@auth
+@php
+    // Determinar la ruta según el rol del usuario
+    $comprasUrl = '#'; // Enlace por defecto
+    if (auth()->user()->hasRole(['Contamex'])) {
+        $comprasUrl = '/ordenes-compra/autorizacion/autorizadas';
+    }
+   
+@endphp
+
+@if($comprasUrl !== '#')
+    <li class="nav-item">
+        <a class="nav-link text-white" href="{{ url($comprasUrl) }}">Compras Autorizadas</a>
+    </li>
+@endif
+@endauth
+
 
         @auth
         @php

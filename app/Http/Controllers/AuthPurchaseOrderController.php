@@ -231,7 +231,7 @@ class AuthPurchaseOrderController extends Controller
     public function indexpendientedir()
     {
         // Verificar explícitamente que el usuario tiene el rol correcto
-        if (!auth()->user()->hasRole(['Developer', 'RespCompras', 'Diradmin',])) {
+        if (!auth()->user()->hasRole(['Developer', 'RespCompras', 'Diradmin','Contamex'])) {
             abort(403, 'No tienes permiso para acceder a esta vista.');
         }
 
@@ -246,7 +246,7 @@ class AuthPurchaseOrderController extends Controller
     {
 
         // Verificar explícitamente que el usuario tiene el rol correcto
-        if (!auth()->user()->hasRole(['Developer', 'RespCompras', 'Diradmin',])) {
+        if (!auth()->user()->hasRole(['Developer', 'RespCompras', 'Diradmin', 'Contamex'])) {
             abort(403, 'No tienes permiso para acceder a esta vista.');
         }
 
@@ -262,7 +262,7 @@ class AuthPurchaseOrderController extends Controller
     {
 
         // Verificar explícitamente que el usuario tiene el rol correcto
-        if (!auth()->user()->hasRole(['Developer', 'RespCompras', 'Diradmin',])) {
+        if (!auth()->user()->hasRole(['Developer', 'RespCompras', 'Diradmin','Contamex'])) {
             abort(403, 'No tienes permiso para acceder a esta vista.');
         }
 

@@ -247,20 +247,29 @@ Route::group(['middleware' => ['auth', 'role:Developer|RespCompras|Diradmin|Gero
 });
 
 //RUTAS QUE SOLO SON ACCESIBLES AL ENCARGADO DE COMPRAS Y A LA DIRECTORA PARA LA AUTORIZACION DE ADMINISTRACION
-Route::group(['middleware' => ['auth', 'role:Developer|RespCompras|Diradmin']], function () {
+Route::group(['middleware' => ['auth', 'role:Developer|RespCompras|Diradmin|Contamex']], function () {
 
-    //INICIA INDEX PRE AUTORIZACION DE ADMINISTRACION
+    //INICIA INDEX AUTORIZACION DE ADMINISTRACION
     Route::get('/ordenes-compra/autorizacion/pendientes', [AuthPurchaseOrderController::class, 'indexpendientedir'])->name('dirpendientes.index');
     Route::get('/ordenes-compra/autorizacion/autorizadas', [AuthPurchaseOrderController::class, 'indextautorizadodir'])->name('dirautorizadas.index');
     Route::get('/ordenes-compra/autorizacion/canceladas', [AuthPurchaseOrderController::class, 'indexrechazadodir'])->name('dircanceladas.index');
+
+
+
+});
+
+//RUTAS QUE SOLO SON ACCESIBLES AL ENCARGADO DE COMPRAS Y A LA DIRECTORA PARA LA AUTORIZACION DE ADMINISTRACION
+Route::group(['middleware' => ['auth', 'role:Developer|RespCompras|Diradmin']], function () {
 
     Route::get('/ordenes-compra/{purchaseOrder}/requisiciones/{requisicione}/aut', [AuthPurchaseOrderController::class, 'editdirectora'])->name('autdir.edit');
 
 
 });
 
+
+
 //RUTAS QUE SOLO SON ACCESIBLES AL ENCARGADO DE COMPRAS,DIRECTORA, GEROPE PARA VER LOS PDF DE LAS OC
-Route::group(['middleware' => ['auth', 'role:Developer|RespCompras|Diradmin|Gerope']], function () {
+Route::group(['middleware' => ['auth', 'role:Developer|RespCompras|Diradmin|Gerope|Contamex']], function () {
    
     Route::get('/ordenes-compra/{purchaseOrder}/requisiciones/{requisicione}/pdf', [PurchaseOrderController::class, 'pdf'])->name('ordencompra.pdf');
 

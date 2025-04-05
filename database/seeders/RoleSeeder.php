@@ -45,6 +45,9 @@ class RoleSeeder extends Seeder
          $roleAuxcontratos = Role::firstOrCreate(['name' => 'Auxcontratos']);
          $roleDirope = Role::firstOrCreate(['name' => 'Dirope']);
 
+         $roleContamex = Role::firstOrCreate(['name' => 'Contamex']);
+
+
 
 
          //FIN ROLES COMPRAS ESTRUCTURADO CON ORGANIGRAMA
@@ -60,6 +63,7 @@ class RoleSeeder extends Seeder
         // NO TOCAR 
 
          //PERMISOS COMPRAS ESTRUCTURADO CON ORGANIGRAMA
+
          $permisoCompras = Permission::firstOrCreate(['name'=> 'Compras']);
          $permisoAuxconta = Permission::firstOrCreate(['name' => 'Auxconta']);
 
@@ -86,9 +90,14 @@ class RoleSeeder extends Seeder
 
          $permisoDirope = Permission::firstOrCreate(['name' => 'Dirope']);
 
+         $permisoContamex = Permission::firstOrCreate(['name' => 'Contamex']);
+
+
          // FIN PERMISOS COMPRAS ESTRUCTURADO CON ORGANIGRAMA
 
          // Asignar permisos al rol
+         $roleContamex->givePermissionTo($permisoContamex);
+
          $roleAlmacen->givePermissionTo($permisoAlmacen);
          $roleCobranza->givePermissionTo($permisoCobranza);
          $roleKarlaS->givePermissionTo($permisoKarlaS);
@@ -252,6 +261,11 @@ class RoleSeeder extends Seeder
          $user = User::find(9);
          if ($user) {
              $user->assignRole('Dirope');
+         }
+
+         $user = User::find(6);
+         if ($user) {
+             $user->assignRole('Contamex');
          }
 
          //FIN COMPRAS
