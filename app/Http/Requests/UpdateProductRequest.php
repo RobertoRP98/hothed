@@ -24,16 +24,19 @@ class UpdateProductRequest extends FormRequest
 
 
         return [
+            'internal_id' => 'required|unique:products,internal_id,' . $this->route('producto'),
             'description' => 'required',
             'brand' => 'required',
             'quantity' => 'required',
-            'min_stock' => 'required',       
-            'max_stock' => 'nullable',  
+            'min_stock' => 'required',
+            'reorder_point'=> 'nullable',       
+            'max_stock' => 'nullable',
             'udm' => 'required',
             'category' => 'required',
             'price' => 'required',
             'discount' => 'required',
             'tax_id' => 'required',   
+            'commentary' => 'nullable'  
         ];
     }
 

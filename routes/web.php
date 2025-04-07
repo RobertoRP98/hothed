@@ -254,8 +254,6 @@ Route::group(['middleware' => ['auth', 'role:Developer|RespCompras|Diradmin|Cont
     Route::get('/ordenes-compra/autorizacion/autorizadas', [AuthPurchaseOrderController::class, 'indextautorizadodir'])->name('dirautorizadas.index');
     Route::get('/ordenes-compra/autorizacion/canceladas', [AuthPurchaseOrderController::class, 'indexrechazadodir'])->name('dircanceladas.index');
 
-
-
 });
 
 //RUTAS QUE SOLO SON ACCESIBLES AL ENCARGADO DE COMPRAS Y A LA DIRECTORA PARA LA AUTORIZACION DE ADMINISTRACION

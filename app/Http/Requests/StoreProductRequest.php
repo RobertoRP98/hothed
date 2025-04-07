@@ -26,13 +26,15 @@ class StoreProductRequest extends FormRequest
             'description' => 'required',
             'brand' => 'required',
             'quantity' => 'required',
-            'min_stock' => 'required',       
+            'min_stock' => 'required',
+            'reorder_point'=> 'nullable',       
             'max_stock' => 'nullable',
             'udm' => 'required',
             'category' => 'required',
             'price' => 'required',
             'discount' => 'required',
             'tax_id' => 'required',   
+            'commentary' => 'nullable'
         ];
     }
 
