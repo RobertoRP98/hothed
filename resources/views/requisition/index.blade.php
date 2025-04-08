@@ -44,7 +44,11 @@
     </a>
 
     <a href="{{ url('/productos') }}" class="btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
-        Productos
+        Agregar Productos
+    </a>
+
+    <a href="{{ url('proveedores') }}" class="btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
+        Agregar Proveedor
     </a>
 </div> 
 
