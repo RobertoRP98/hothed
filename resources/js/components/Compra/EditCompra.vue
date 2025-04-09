@@ -201,6 +201,18 @@
             </div>
         </div>
 
+        <div class="col-md-3">
+            <div class="form-outline">
+                <input
+                    type="text"
+                    v-model="formData.notes_client"
+                    class="form-control"
+                    disabled
+                />
+                <label class="form-label">PROYECTO</label>
+            </div>
+        </div>
+
         <h2>SEGUIMIENTO DE LA COMPRA</h2>
         <div class="row mb-3">
             <div class="col-md-3">
@@ -773,6 +785,14 @@ export default {
 
             console.log("Formulario válido, enviando...");
             // Aquí sigue el envío del request si no hay errores
+
+              // 🔹 Confirmación del usuario antes de enviar
+              const confirmSend = confirm(
+                "¿Estás seguro de que deseas modificar esta OC?"
+            );
+            if (!confirmSend) {
+                return; // Si el usuario dice que no, se cancela el envío
+            }
 
             const payload = {
                 ...this.formData,

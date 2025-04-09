@@ -755,6 +755,14 @@ export default {
             console.log("Formulario válido, enviando...");
             // Aquí sigue el envío del request si no hay errores
 
+              // 🔹 Confirmación del usuario antes de enviar
+              const confirmSend = confirm(
+                "¿Estás seguro de que deseas modificar esta OC?"
+            );
+            if (!confirmSend) {
+                return; // Si el usuario dice que no, se cancela el envío
+            }
+
             const payload = {
                 ...this.formData,
                 requisition_id: this.formData.requisition_id || this.initialData?.formData?.requisition,

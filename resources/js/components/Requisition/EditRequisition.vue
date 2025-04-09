@@ -391,6 +391,14 @@ export default {
                 return;
             }
 
+              // 🔹 Confirmación del usuario antes de enviar
+              const confirmSend = confirm(
+                "¿Estás seguro de que deseas enviar esta requisición?"
+            );
+            if (!confirmSend) {
+                return; // Si el usuario dice que no, se cancela el envío
+            }
+
             
             const payload = {
                 id: this.formData.id,

@@ -119,6 +119,7 @@
             <p><strong>Solicitante:</strong> <span class="highlight">{{ $order->requisition->user->name }}</span></p>
             <p><strong>Fecha:</strong> <span class="highlight">{{ $order->requisition->request_date }}</span></p>
             <p><strong>Importancia:</strong> <span class="highlight">{{ $order->requisition->importance }}</span></p>
+            <p><strong>ID:</strong> <span class="highlight">VH-{{ $order->requisition->id }}</span></p>
             <div class="cta-button">
                 <a href="https://adminhothedmex.mx/">Pulse Aqui Para PRE AUTORIZAR</a>
             </div>

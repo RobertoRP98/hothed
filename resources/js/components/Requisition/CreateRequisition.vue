@@ -187,41 +187,37 @@
 
         <!-- Botones -->
         <div class="row">
-
-        <div class="mt-3 col text-end">
-            <button @click="generatePDF" class="btn btn-secondary">
-                Vista Previa PDF
-            </button>
-            &nbsp;
-            <button @click="submitForm" class="btn btn-primary">
-                Enviar Requisición
-            </button>
+            <div class="mt-3 col text-end">
+                <button @click="generatePDF" class="btn btn-secondary">
+                    Vista Previa PDF
+                </button>
+                &nbsp;
+                <button @click="submitForm" class="btn btn-primary">
+                    Enviar Requisición
+                </button>
+            </div>
         </div>
-    </div>
-
-
-    
 
         <div ref="pdfContent" class="pdf-container hidden">
             <!-- ✅ Cabecera -->
             <table class="header-table">
-            <thead>
-                <tr>
-                    <td>
-                        <img
-                            src="/images/logopdf.png"
-                            class="logo"
-                            alt="HOT HED"
-                        />
-                    </td>
-                    <td>
-                        <h1>REQUISICIÓN</h1>
-                    </td>
-                    <td>
-                        <p>ADM-7-FOR-02 | Versión: x</p>
-                    </td>
-                </tr>
-            </thead>
+                <thead>
+                    <tr>
+                        <td>
+                            <img
+                                src="/images/logopdf.png"
+                                class="logo"
+                                alt="HOT HED"
+                            />
+                        </td>
+                        <td>
+                            <h1>REQUISICIÓN</h1>
+                        </td>
+                        <td>
+                            <p>ADM-7-FOR-02 | Versión: x</p>
+                        </td>
+                    </tr>
+                </thead>
             </table>
 
             <!-- ✅ Datos Generales -->
@@ -271,7 +267,6 @@
                 }}</strong>
             </div>
         </div>
-
     </div>
 </template>
 
@@ -448,6 +443,14 @@ export default {
                 return; // 💡 Esto debería detener la ejecución
             }
 
+            // 🔹 Confirmación del usuario antes de enviar
+            const confirmSend = confirm(
+                "¿Estás seguro de que deseas enviar esta requisición?"
+            );
+            if (!confirmSend) {
+                return; // Si el usuario dice que no, se cancela el envío
+            }
+
             console.log("Formulario válido, enviando...");
             // Aquí sigue el envío del request si no hay errores
 
@@ -478,36 +481,35 @@ export default {
         },
 
         async generatePDF() {
-    const element = this.$refs.pdfContent;
+            const element = this.$refs.pdfContent;
 
-    // Hacer visible el div sin afectarlo en el DOM
-    element.style.visibility = "visible";
-    element.style.position = "static"; // Lo devuelve a su posición normal
+            // Hacer visible el div sin afectarlo en el DOM
+            element.style.visibility = "visible";
+            element.style.position = "static"; // Lo devuelve a su posición normal
 
-    try {
-        await new Promise((resolve) => setTimeout(resolve, 300));
+            try {
+                await new Promise((resolve) => setTimeout(resolve, 300));
 
-        const canvas = await html2canvas(element, {
-            scale: 2,
-            useCORS: true,
-        });
+                const canvas = await html2canvas(element, {
+                    scale: 2,
+                    useCORS: true,
+                });
 
-        const imgData = canvas.toDataURL("image/png");
-        const pdf = new jsPDF("p", "mm", "a4");
-        const imgWidth = 210;
-        const imgHeight = (canvas.height * imgWidth) / canvas.width;
+                const imgData = canvas.toDataURL("image/png");
+                const pdf = new jsPDF("p", "mm", "a4");
+                const imgWidth = 210;
+                const imgHeight = (canvas.height * imgWidth) / canvas.width;
 
-        pdf.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight);
-        pdf.save("VistaPrevia_Requisicion.pdf");
-    } catch (error) {
-        console.error("Error al generar el PDF:", error);
-    } finally {
-        // Volver a ocultarlo sin modificar el DOM
-        element.style.visibility = "hidden";
-        element.style.position = "absolute";
-    }
-}
-
+                pdf.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight);
+                pdf.save("VistaPrevia_Requisicion.pdf");
+            } catch (error) {
+                console.error("Error al generar el PDF:", error);
+            } finally {
+                // Volver a ocultarlo sin modificar el DOM
+                element.style.visibility = "hidden";
+                element.style.position = "absolute";
+            }
+        },
     },
 };
 </script>
@@ -529,7 +531,6 @@ export default {
     position: absolute;
     left: -9999px; /* Lo mueve fuera de la pantalla */
 }
-
 
 .header-table {
     width: 100%;

@@ -354,23 +354,22 @@ class RequisitionController extends Controller
         try {
             Log::info('Payload recibido:', $request->all());
             Log::info('Requisition ID:', ['id' => $requisicione->id]);
-
+    
             $today = Carbon::now();
             $importanceDays = [
                 'Baja' => 90,
                 'Media' => 60,
                 'Alta' => 15,
             ];
-
-            // Calcular nueva fecha de producción basada en la importancia
+    
             $importance = $request->input('importance', 'Baja');
             $daysToAdd = $importanceDays[$importance] ?? 90;
             $calculatedDate = $today->copy()->addDays($daysToAdd);
-
-            // Validar que todos los IDs sean válidos
+    
+            // Validar productos
             $productIds = array_column($request->input('items_requisition', []), 'product_id');
             $validProductIds = Product::whereIn('id', $productIds)->pluck('id')->toArray();
-
+    
             foreach ($productIds as $id) {
                 if (!in_array($id, $validProductIds)) {
                     throw ValidationException::withMessages([
@@ -378,31 +377,33 @@ class RequisitionController extends Controller
                     ]);
                 }
             }
-
-            //  Inicializar fuera del transaction para poder usarla después
+    
+            // Inicializamos fuera de la transacción para refrescar luego
             $requisition = $requisicione;
-
-            DB::transaction(function () use ($request, $requisicione, $calculatedDate, $daysToAdd, &$requisition) {
-                // Actualizar los datos generales de la requisición
-                $requisicione->update(array_merge(
-                    $request->only([
-                        'status_requisition',
-                        'finished',
-                        // 'petty_cash',
-                        'notes_client',
-                        'notes_resp'
-                    ]),
-                    [
-                        'importance' => $request->input('importance', 'Baja'),
-                        'production_date' => $calculatedDate->format('Y-m-d'),
-                        'days_remaining' => $daysToAdd,
-                    ]
-                ));
-
-                // Depurar la lista antigua de productos para que entre la nueva
+    
+            DB::transaction(function () use ($request, $requisicione, $calculatedDate, $daysToAdd, $importance, &$requisition) {
+    
+                // Construimos el array de datos base
+                $updateData = $request->only([
+                    'status_requisition',
+                    'finished',
+                    'notes_client',
+                    'notes_resp',
+                    'finished_date'
+                ]);
+    
+                // Solo actualizamos importance y fechas si cambió la importance
+                if ($requisicione->importance !== $importance) {
+                    $updateData['importance'] = $importance;
+                    $updateData['production_date'] = $calculatedDate->format('Y-m-d');
+                    $updateData['days_remaining'] = $daysToAdd;
+                }
+    
+                $requisicione->update($updateData);
+    
+                // Reemplazar productos
                 $requisicione->itemsRequisition()->delete();
-
-                // Guardar los ítems de la requisición
+    
                 foreach ($request->input('items_requisition') as $item) {
                     Log::info('Insertando item:', ['requisition_id' => $requisicione->id, 'item' => $item]);
                     $requisicione->itemsRequisition()->create([
@@ -422,7 +423,7 @@ class RequisitionController extends Controller
 
 
             //  Si la requisición se creó con éxito, enviar el correo
-            if ($requisition && $requisition->status_requisition == 'Autorizado') {
+            if ($requisition->wasChanged('status_requisition') && $requisition->status_requisition == 'Autorizado') {
 
 
                 $emails = [

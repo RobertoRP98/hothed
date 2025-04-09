@@ -171,6 +171,18 @@
             </div>
         </div>
 
+        <div class="col-md-3">
+            <div class="form-outline">
+                <input
+                    type="text"
+                    v-model="formData.notes_client"
+                    class="form-control"
+                    readonly
+                />
+                <label class="form-label">PROYECTO</label>
+            </div>
+        </div>
+
         <h2>SEGUIMIENTO DE LA COMPRA</h2>
         <div class="row mb-3">
             <div class="col-md-3">
