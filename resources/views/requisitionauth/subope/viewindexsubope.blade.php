@@ -113,12 +113,12 @@
 
 
             <td>
-                <a class="text-white" href="{{ url('requisiciones/'.$requisicion->id) }}">
+                <a class="text-white" href="{{ url('requisiciones/'.$requisicion->id) }}" target="_blank">
                     <button class="btn btn-primary mb-2">
                         VER
                     </button>
                 </a> 
-                <a class="text-white" href="{{ url('requisiciones/'.$requisicion->id.'/edit') }}">
+                <a class="text-white" href="{{ url('requisiciones/'.$requisicion->id.'/edit') }}" target="_blank">
                     <button class="btn btn-success mb-2">
                         Editar
                     </button>

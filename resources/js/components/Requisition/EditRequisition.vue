@@ -1,7 +1,5 @@
 <template>
     <div>
-        
-
         <!-- Segunda fila -->
         <div class="row mb-4">
             <div class="col-md-3">
@@ -169,7 +167,7 @@
                 </div>
             </div>
         </div>
-        <br>
+        <br />
         <!-- Primera fila -->
         <div class="row mb-4">
             <div class="col-md-3">
@@ -177,6 +175,14 @@
                     <select
                         v-model="formData.status_requisition"
                         class="form-select"
+                        :class="{
+                            'bg-warning text-dark':
+                                formData.status_requisition === 'Pendiente',
+                            'bg-success text-white':
+                                formData.status_requisition === 'Autorizado',
+                            'bg-danger text-white':
+                                formData.status_requisition === 'Rechazado',
+                        }"
                     >
                         <option value="Pendiente">
                             PENDIENTE DE AUTORIZACIÓN
@@ -190,12 +196,20 @@
 
             <div class="col-md-3">
                 <div class="form-outline">
-                    <select v-model="formData.importance" class="form-select">
+                    <select v-model="formData.importance" class="form-select" 
+                    :class="{
+                            'bg-warning text-dark':
+                                formData.importance === 'Media',
+                            'bg-success text-white':
+                                formData.importance === 'Baja',
+                            'bg-danger text-white':
+                                formData.importance === 'Alta',
+                        }">
                         <option value="Baja">BAJA</option>
                         <option value="Media">MEDIA</option>
                         <option value="Alta">ALTA</option>
                     </select>
-                    <label class="form-label">PRIORIDAD A EDITAR</label>
+                    <label class="form-label">PRIORIDAD EDITABLE</label>
                 </div>
             </div>
 
@@ -391,15 +405,14 @@ export default {
                 return;
             }
 
-              // 🔹 Confirmación del usuario antes de enviar
-              const confirmSend = confirm(
+            // 🔹 Confirmación del usuario antes de enviar
+            const confirmSend = confirm(
                 "¿Estás seguro de que deseas enviar esta requisición?"
             );
             if (!confirmSend) {
                 return; // Si el usuario dice que no, se cancela el envío
             }
 
-            
             const payload = {
                 id: this.formData.id,
                 ...this.formData,
@@ -409,8 +422,6 @@ export default {
                 })),
             };
             console.log(`URL: /requisiciones/${this.formData.id}`, payload);
-
-
 
             axios
                 .patch(`/requisiciones/${this.formData.id}`, payload)
