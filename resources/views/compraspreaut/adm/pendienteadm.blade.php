@@ -103,16 +103,16 @@
         
 
             <td>
-                <a class="text-white" href="{{ route('ordencompra.show', ['purchaseOrder' => $oc->id, 'requisicione' => $oc->requisition->id]) }}">
+                <a class="text-white" href="{{ route('ordencompra.show', ['purchaseOrder' => $oc->id, 'requisicione' => $oc->requisition->id]) }}" target="_blank">
 
                     <button class="btn btn-primary mb-2">
-                        VER
+                        Ver
                     </button>
                 </a> 
-                <a class="text-white" href="{{ route('preaut.edit', ['purchaseOrder' => $oc->id, 'requisicione' => $oc->requisition->id]) }}"
+                <a class="text-white" href="{{ route('preaut.edit', ['purchaseOrder' => $oc->id, 'requisicione' => $oc->requisition->id]) }}" target="_blank"
                     >
                     <button class="btn btn-success mb-2">
-                        Editar
+                        Autorizar
                     </button>
                 </a>
 
