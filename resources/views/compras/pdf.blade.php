@@ -167,6 +167,7 @@ body {
     <table class="table">
             <tr>
                 <th>CANTIDAD</th>
+                <th>UDM</th>
                 <th>PROD.</th>
                 <th>PRECIO</th>
                 <th>IMPUESTO</th>
@@ -178,6 +179,7 @@ body {
             @foreach($initialData['productData'] as $product)
             <tr>
                 <td>{{ $product['quantity'] }}</td>
+                <td>{{ $product['udm'] }}</td>
                 <td>{{ $product['description'] }}</td>
                 <td>${{ $product['price'] }}</td>
                 <td>{{ $product['tax']['concept'] }}</td> <!-- ✅ Corrección aquí -->
@@ -191,10 +193,12 @@ body {
                 <td class="no-decoration"></td>
                 <td class="no-decoration"></td>
                 <td class="no-decoration"></td>
+                <td class="no-decoration"></td>
                 <td>SUB-TOTAL</td>
                 <td>${{ $initialData['formData']['subtotal'] }} {{ $initialData['formData']['currency']  }}</td>
             </tr>
             <tr>
+                <td class="no-decoration"></td>
                 <td class="no-decoration"></td>
                 <td class="no-decoration"></td>
                 <td class="no-decoration"></td>
@@ -207,10 +211,12 @@ body {
                 <td class="no-decoration"></td>
                 <td class="no-decoration"></td>
                 <td class="no-decoration"></td>
+                <td class="no-decoration"></td>
                 <td>DESCUENTO</td>
                 <td>${{ $initialData['formData']['total_descuento'] }} {{ $initialData['formData']['currency']  }}</td>
             </tr>     
             <tr>
+                <td class="no-decoration"></td>
                 <td class="no-decoration"></td>
                 <td class="no-decoration"></td>
                 <td class="no-decoration"></td>
