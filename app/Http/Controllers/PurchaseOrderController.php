@@ -622,7 +622,7 @@ class PurchaseOrderController extends Controller
                 'Developer' => '/ordenes-compra',
                 'RespCompras' => '/ordenes-compra',
                 'Gerope' => '/ordenes-compra/pre-autorizacio/ope/autorizadas',
-                'Diradmin' => '/ordenes-compra/autorizacion/autorizadas',
+                'Diradmin' => '/ordenes-compra/autorizacion/pendientes',
             ];
 
             // Obtener la ruta correspondiente según el rol del usuario
