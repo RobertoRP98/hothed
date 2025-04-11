@@ -195,7 +195,7 @@ body {
                 <td class="no-decoration"></td>
                 <td class="no-decoration"></td>
                 <td>SUB-TOTAL</td>
-                <td>${{ $initialData['formData']['subtotal'] }} {{ $initialData['formData']['currency']  }}</td>
+                <td>${{ number_format($initialData['formData']['subtotal'],2,'.',',') }} {{ $initialData['formData']['currency']  }}</td>
             </tr>
             <tr>
                 <td class="no-decoration"></td>
@@ -204,7 +204,7 @@ body {
                 <td class="no-decoration"></td>
                 <td class="no-decoration"></td>
                 <td>IVA</td>
-                <td>${{ $initialData['formData']['tax'] }} {{ $initialData['formData']['currency']  }}</td>
+                <td>${{ number_format($initialData['formData']['tax'], 2,'.',',') }} {{ $initialData['formData']['currency']  }}</td>
             </tr>     
             <tr>
                 <td class="no-decoration"></td>
@@ -213,7 +213,7 @@ body {
                 <td class="no-decoration"></td>
                 <td class="no-decoration"></td>
                 <td>DESCUENTO</td>
-                <td>${{ $initialData['formData']['total_descuento'] }} {{ $initialData['formData']['currency']  }}</td>
+                <td>${{ number_format($initialData['formData']['total_descuento'],2,'.',',' ) }} {{ $initialData['formData']['currency']  }}</td>
             </tr>     
             <tr>
                 <td class="no-decoration"></td>
@@ -222,7 +222,7 @@ body {
                 <td class="no-decoration"></td>
                 <td class="no-decoration"></td>
                 <td>TOTAL</td>
-                <td>${{ $initialData['formData']['total']  }} {{ $initialData['formData']['currency']  }} </td>
+                <td>${{ number_format($initialData['formData']['total'],2,'.',',' ) }} {{ $initialData['formData']['currency']  }} </td>
             </tr>
         </tbody>
     </table>

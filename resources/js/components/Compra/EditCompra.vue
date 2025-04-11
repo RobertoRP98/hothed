@@ -413,10 +413,15 @@
                         <td></td>
                         <td>SUB-TOTAL</td>
                         <td>
-                            <span
-                                >${{ subtotal.toFixed(2) }}
-                                {{ formData.currency }}</span
-                            >
+                            <span>
+                                ${{
+                                    new Intl.NumberFormat("es-MX", {
+                                        minimumFractionDigits: 2,
+                                        maximumFractionDigits: 2,
+                                    }).format(subtotal)
+                                }}
+                                {{ formData.currency }}
+                            </span>
                             <input
                                 type="hidden"
                                 v-model="subtotal"
@@ -435,10 +440,15 @@
                         <td></td>
                         <td>IVA</td>
                         <td>
-                            <span
-                                >${{ total_impuestos.toFixed(2) }}
-                                {{ formData.currency }}</span
-                            >
+                            <span>
+                                ${{
+                                    new Intl.NumberFormat("es-MX", {
+                                        minimumFractionDigits: 2,
+                                        maximumFractionDigits: 2,
+                                    }).format(total_impuestos)
+                                }}
+                                {{ formData.currency }}
+                            </span>
                             <input
                                 type="hidden"
                                 v-model="total_impuestos"
@@ -457,10 +467,15 @@
                         <td></td>
                         <td>DESCUENTO</td>
                         <td>
-                            <span
-                                >${{ total_descuento.toFixed(2) }}
-                                {{ formData.currency }}</span
-                            >
+                            <span>
+                                ${{
+                                    new Intl.NumberFormat("es-MX", {
+                                        minimumFractionDigits: 2,
+                                        maximumFractionDigits: 2,
+                                    }).format(total_descuento)
+                                }}
+                                {{ formData.currency }}
+                            </span>
                             <input
                                 type="hidden"
                                 v-model="total_descuento"
@@ -479,10 +494,15 @@
                         <td></td>
                         <td>TOTAL</td>
                         <td>
-                            <span
-                                >${{ total.toFixed(2) }}
-                                {{ formData.currency }}</span
-                            >
+                            <span>
+                                ${{
+                                    new Intl.NumberFormat("es-MX", {
+                                        minimumFractionDigits: 2,
+                                        maximumFractionDigits: 2,
+                                    }).format(total)
+                                }}
+                                {{ formData.currency }}
+                            </span>
                             <input
                                 type="hidden"
                                 v-model="total"
@@ -786,8 +806,8 @@ export default {
             console.log("Formulario válido, enviando...");
             // Aquí sigue el envío del request si no hay errores
 
-              // 🔹 Confirmación del usuario antes de enviar
-              const confirmSend = confirm(
+            // 🔹 Confirmación del usuario antes de enviar
+            const confirmSend = confirm(
                 "¿Estás seguro de que deseas modificar esta OC?"
             );
             if (!confirmSend) {
