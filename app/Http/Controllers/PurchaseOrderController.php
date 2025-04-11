@@ -504,6 +504,8 @@ class PurchaseOrderController extends Controller
 
             //  Inicializar fuera del transaction para poder usarla después
             $orden = null;
+            $originalAuthorization4 = $purchaseOrder->getOriginal('authorization_4');
+
 
             DB::transaction(function () use ($request, $purchaseOrder, &$orden) {
                 // Actualizar los datos de la orden de compra
@@ -599,16 +601,21 @@ class PurchaseOrderController extends Controller
             }
 
 
-            //  Si la Orden ya fue autorizada por direccion
-            if ($orden->wasChanged('authorization_4') && $orden->authorization_4 == 'Autorizado') {
+
+            // Enviar correo de seguimiento si se acaba de autorizar por dirección (authorization_4)
+            if (
+                $orden->authorization_4 === 'Autorizado' &&
+                $originalAuthorization4 !== 'Autorizado'
+            ) {
 
 
                 $emails = [
                     'bianca.fernanda.rebolledo@hothedmex.mx',
+                    'roberto.romero@hothedmex.mx'
                     //agrega mas correos si hay mas responsables de compras
                 ];
 
-                Log::info('Enviando correo a:', ['emails' => $emails]);
+                Log::info('Enviando correo de seguimiento a :', ['emails' => $emails]);
                 Mail::to($emails)->send(new TrackingMail($orden));
             }
 
@@ -785,5 +792,4 @@ class PurchaseOrderController extends Controller
     {
         return Excel::download(new ReporteLineaProductosExport, 'Resumen de Proveedores al ' . Carbon::now()->format('d-m-Y') . '.xlsx');
     }
-
 }
