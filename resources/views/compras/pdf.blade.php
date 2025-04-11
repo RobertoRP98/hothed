@@ -166,8 +166,8 @@ body {
     <!-- ✅ Tabla de Productos -->
     <table class="table">
             <tr>
-                <th>PROD.</th>
                 <th>CANTIDAD</th>
+                <th>PROD.</th>
                 <th>PRECIO</th>
                 <th>IMPUESTO</th>
                 <th>DESCT.</th>
@@ -177,8 +177,8 @@ body {
         <tbody>
             @foreach($initialData['productData'] as $product)
             <tr>
-                <td>{{ $product['description'] }}</td>
                 <td>{{ $product['quantity'] }}</td>
+                <td>{{ $product['description'] }}</td>
                 <td>${{ $product['price'] }}</td>
                 <td>{{ $product['tax']['concept'] }}</td> <!-- ✅ Corrección aquí -->
                 <td>{{ $product['discount'] }}%</td>

@@ -123,15 +123,15 @@ body {
     <table class="table">
         <thead>
             <tr>
-                <th>PRODUCTO</th>
                 <th>CANTIDAD</th>
+                <th>PRODUCTO</th>
             </tr>
         </thead>
         <tbody>
             @foreach($initialData['productData'] as $product)
             <tr>
-                <td>{{ $product['description'] }}</td>
                 <td>{{ $product['quantity'] }}</td>
+                <td>{{ $product['description'] }}</td>
             </tr>
             @endforeach
         </tbody>

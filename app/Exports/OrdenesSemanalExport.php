@@ -27,8 +27,10 @@ class OrdenesSemanalExport implements
 
     public function collection()
     {
-        $startDate = Carbon::now()->subWeek()->startOfWeek()->format('Y-m-d'); // Lunes pasado
-        $endDate = Carbon::now()->subWeek()->endOfWeek()->format('Y-m-d'); // Domingo pasado
+    // Lunes de esta semana
+    $startDate = Carbon::now()->startOfWeek(Carbon::MONDAY)->startOfDay();
+    // Hoy como fin
+    $endDate = Carbon::now()->endOfDay();
 
         $orders = PurchaseOrder::with('requisition', 'supplier')
             ->whereBetween('date_start', [$startDate, $endDate])
@@ -53,7 +55,7 @@ class OrdenesSemanalExport implements
                     'Requisition ID' => $order->requisition_id,
                     'Order ID' => $order->id,
                     'Supplier' => $order->supplier->name, // Asumiendo que hay una relación con el modelo Supplier
-                    'Total' => $order->total,
+                    'Total' => $order->total . ' ' . $order->currency,
                     'Aut 4' => $order->authorization_4, // Asegúrate del campo correcto
                     'Prioridad' => $priority,
                     'Fecha creación' => $order->date_start ? Carbon::parse($order->date_start)->format('d-m-Y') : 'SIN FECHA',

@@ -69,6 +69,8 @@
             <th class="col-md-1">DEP</th>
             <th class="col-md-1">PRIORIDAD</th>
             <th class="col-md-1">INGRESO</th>
+            <th class="col-md-1">PROYECTO</th>
+            <th class="col-md-1">NOTAS</th>
             <th class="col-md-1">FECHA MAX DE RESPUESTA</th>
             <th class="col-md-1">DIAS VENCIDOS O POR VENCER </th>
             <th class="col-md-1">OPCIONES</th>
@@ -103,7 +105,10 @@
 </td>
         
             <td>{{ \Carbon\Carbon::parse($requisicion->request_date)->format('d/m/Y') }}</td>
+            <td>{{ $requisicion->notes_client }}</td>
+            <td>{{ $requisicion->notes_resp }}</td>
             <td>{{ \Carbon\Carbon::parse($requisicion->production_date)->format('d/m/Y') }}</td>
+
       
             <td class="
             @if(\Carbon\Carbon::parse($requisicion->production_date)->diffInDays(now(), false) >= -15)
@@ -120,17 +125,22 @@
         
 
             <td>
-                <a class="text-white" href="{{ url('requisiciones/'.$requisicion->id) }}">
-                    <button class="btn btn-primary mb-2">
-                        VER
-                    </button>
-                </a>
+                <a 
+                href="{{ url('requisiciones/'.$requisicion->id) }}" 
+                target="_blank" 
+                class="btn btn-primary mb-2 text-white"
+            >
+                Ver
+            </a>
 
-                <a class="text-white" href="{{ url('requisiciones/'.$requisicion->id.'/edit') }}">
-                    <button class="btn btn-success mb-2">
-                        Editar
-                    </button>
-                </a>
+            <a 
+            href="{{ url('requisiciones/'.$requisicion->id.'/edit') }}" 
+            target="_blank" 
+            class="btn btn-success mb-2 text-white"
+        >
+            Editar
+        </a>
+              
 
                 <a class="text-white" href="{{ url('requisiciones/'.$requisicion->id . '/pdf') }}">
                     <button class="btn btn-secondary mb-2">
