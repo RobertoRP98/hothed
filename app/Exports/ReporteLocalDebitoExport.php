@@ -55,7 +55,8 @@ class ReporteLocalDebitoExport implements
                     'Required Date' => $order->requisition->required_date ? Carbon::parse($order->requisition->required_date)->format('d-m-Y') : 'SIN FECHA',
                     'Quotation' => $order->quotation,
                     'Fecha creación' => $order->date_start ? Carbon::parse($order->date_start)->format('d-m-Y') : 'SIN FECHA',
-                    'Total' => $order->total . ' ' . $order->currency,
+                    'Total' => $order->total,
+                    'Divisa'=> $order->currency,
                     'Dep' => $order->requisition->user->area,
                     'Aut 4' => $order->authorization_4, // Asegúrate del campo correcto
                     'Status' => $order->po_status,
@@ -78,6 +79,7 @@ class ReporteLocalDebitoExport implements
                 'COTIZACIÓN',
                 'FECHA CREACIÓN OC',
                 'TOTAL',
+                'DIVISA',
                 'DEPARTAMENTO',
                 'AUTORIZACIÓN',
                 'STATUS',
@@ -120,10 +122,10 @@ class ReporteLocalDebitoExport implements
                     $sheet->getColumnDimension($col)->setAutoSize(true);
                 }
                 //FILTROS
-                $sheet->setAutoFilter('A1:N1');
+                $sheet->setAutoFilter('A1:O1');
 
                 // Aplicar estilos a la fila de encabezado (fila 1)
-                $sheet->getStyle('A1:N1')->applyFromArray([
+                $sheet->getStyle('A1:O1')->applyFromArray([
                     'font' => [
                         'bold' => true,
                     ],
@@ -142,7 +144,7 @@ class ReporteLocalDebitoExport implements
                 $highestRow = $sheet->getHighestRow();
                 for ($row = 2; $row <= $highestRow; $row++) { // Comienza en la fila 7 para los datos
                     $color = ($row % 2 === 0) ? 'FFE0EAF1' : 'FFFFFFFF'; // Azul claro y blanco
-                    $sheet->getStyle("A{$row}:N{$row}")->applyFromArray([
+                    $sheet->getStyle("A{$row}:O{$row}")->applyFromArray([
                         'fill' => [
                             'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
                             'color' => ['argb' => $color],

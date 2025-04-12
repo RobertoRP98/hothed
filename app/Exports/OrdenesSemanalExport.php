@@ -55,7 +55,8 @@ class OrdenesSemanalExport implements
                     'Requisition ID' => $order->requisition_id,
                     'Order ID' => $order->id,
                     'Supplier' => $order->supplier->name, // Asumiendo que hay una relación con el modelo Supplier
-                    'Total' => $order->total . ' ' . $order->currency,
+                    'Total' => $order->total,
+                    'Divisa'=> $order->currency,
                     'Aut 4' => $order->authorization_4, // Asegúrate del campo correcto
                     'Prioridad' => $priority,
                     'Fecha creación' => $order->date_start ? Carbon::parse($order->date_start)->format('d-m-Y') : 'SIN FECHA',
@@ -68,7 +69,7 @@ class OrdenesSemanalExport implements
 
     public function headings(): array
     {
-        return ['REQUISICION', 'NUM. ORDEN', 'PROVEEDOR', 'MONTO TOTAL', 'AUTORIZACIÓN', 'PRIORIDAD', 'FECHA DE CREACIÓN', 'DIAS RESTANTES'];
+        return ['REQUISICION', 'NUM. ORDEN', 'PROVEEDOR', 'MONTO TOTAL', 'DIVISA','AUTORIZACIÓN', 'PRIORIDAD', 'FECHA DE CREACIÓN', 'DIAS RESTANTES'];
     }
 
     // public function map($row): array
@@ -103,10 +104,10 @@ class OrdenesSemanalExport implements
                     $sheet->getColumnDimension($col)->setAutoSize(true);
                 }
                 //FILTROS
-                $sheet->setAutoFilter('A1:H1');
+                $sheet->setAutoFilter('A1:I1');
 
                 // Aplicar estilos a la fila de encabezado (fila 1)
-                $sheet->getStyle('A1:H1')->applyFromArray([
+                $sheet->getStyle('A1:I1')->applyFromArray([
                     'font' => [
                         'bold' => true,
                     ],
@@ -125,7 +126,7 @@ class OrdenesSemanalExport implements
                 $highestRow = $sheet->getHighestRow();
                 for ($row = 2; $row <= $highestRow; $row++) { // Comienza en la fila 7 para los datos
                     $color = ($row % 2 === 0) ? 'FFE0EAF1' : 'FFFFFFFF'; // Azul claro y blanco
-                    $sheet->getStyle("A{$row}:H{$row}")->applyFromArray([
+                    $sheet->getStyle("A{$row}:I{$row}")->applyFromArray([
                         'fill' => [
                             'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
                             'color' => ['argb' => $color],

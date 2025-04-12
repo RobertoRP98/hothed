@@ -62,6 +62,10 @@
         REPORTE COMPRAS EXTRANJERAS
     </a>
 
+    <a href="{{ url('/export-compras-global') }}" class="col-md-3 btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
+        REPORTE GLOBAL DE COMPRAS
+    </a>
+
     <a href="{{ url('/export-resumen-semanal-compras') }}" class="col-md-3 btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
         ORDENES CREADAS EN LA SEMANA
     </a>

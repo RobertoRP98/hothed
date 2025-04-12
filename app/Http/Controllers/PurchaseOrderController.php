@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\OrdenesSemanalExport;
+use App\Exports\ReporteComprasGlobalExport;
 use App\Exports\ReporteLocalesExport;
 use App\Exports\ReporteExtranjerasExport;
 use App\Exports\ReporteLineaProductosExport;
@@ -791,5 +792,10 @@ class PurchaseOrderController extends Controller
     public function exportProveedores()
     {
         return Excel::download(new ReporteLineaProductosExport, 'Resumen de Proveedores al ' . Carbon::now()->format('d-m-Y') . '.xlsx');
+    }
+
+    public function exportReporteGlobalCompras()
+    {
+        return Excel::download(new ReporteComprasGlobalExport, 'Resumen de Global de Compras al ' . Carbon::now()->format('d-m-Y') . '.xlsx');
     }
 }

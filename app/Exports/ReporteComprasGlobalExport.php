@@ -11,27 +11,24 @@ use Maatwebsite\Excel\Concerns\WithHeadings;
 use PhpOffice\PhpSpreadsheet\Style\Alignment;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
-use Maatwebsite\Excel\Concerns\WithColumnLimit;
 use Maatwebsite\Excel\Concerns\WithColumnFormatting;
 
-class ReporteLocalCreditoExport implements
-    FromCollection,
-    WithHeadings,
-    WithTitle,
-    WithColumnFormatting,
-    ShouldAutoSize,
-    WithEvents
+class ReporteComprasGlobalExport implements FromCollection,
+WithHeadings,
+WithTitle,
+WithColumnFormatting,
+ShouldAutoSize,
+WithEvents
 {
     /**
-     * @return \Illuminate\Support\Collection
-     */
+    * @return \Illuminate\Support\Collection
+    */
     public function collection()
     {
-
         $orders = PurchaseOrder::with('requisition', 'supplier')
             //->whereBetween('date_start', [$startDate, $endDate])
-            ->where('type_op', 'Local')
-            ->whereIn('payment_type', ['CREDITO'])
+            ->whereIn('type_op', ['Extranjera','Local'])
+            ->whereIn('payment_type', ['CREDITO','DEBITO','CAJA CHICA','TRANSFERENCIA','AMEX'])
             ->get()
             ->map(function ($order) {
                 // Calcular días restantes
@@ -56,6 +53,8 @@ class ReporteLocalCreditoExport implements
                     'Fecha creación' => $order->date_start ? Carbon::parse($order->date_start)->format('d-m-Y') : 'SIN FECHA',
                     'Total' => $order->total,
                     'Divisa'=> $order->currency,
+                    'Tipo OC'=> $order->type_op,
+                    'Pago' => $order->payment_type,
                     'Dep' => $order->requisition->user->area,
                     'Aut 4' => $order->authorization_4, // Asegúrate del campo correcto
                     'Status' => $order->po_status,
@@ -81,6 +80,8 @@ class ReporteLocalCreditoExport implements
             'FECHA CREACIÓN OC',
             'TOTAL',
             'DIVISA',
+            'TIPO OC',
+            'MET. PAGO',
             'DEPARTAMENTO',
             'AUTORIZACIÓN',
             'STATUS',
@@ -100,7 +101,7 @@ class ReporteLocalCreditoExport implements
 
     public function title(): string
     {
-        return 'CREDITO';
+        return 'REPORTE GLOBAL';
     }
 
     public function columnFormats(): array
@@ -123,10 +124,10 @@ class ReporteLocalCreditoExport implements
                     $sheet->getColumnDimension($col)->setAutoSize(true);
                 }
                 //FILTROS
-                $sheet->setAutoFilter('A1:O1');
+                $sheet->setAutoFilter('A1:Q1');
 
                 // Aplicar estilos a la fila de encabezado (fila 1)
-                $sheet->getStyle('A1:O1')->applyFromArray([
+                $sheet->getStyle('A1:Q1')->applyFromArray([
                     'font' => [
                         'bold' => true,
                     ],
@@ -145,7 +146,7 @@ class ReporteLocalCreditoExport implements
                 $highestRow = $sheet->getHighestRow();
                 for ($row = 2; $row <= $highestRow; $row++) { // Comienza en la fila 7 para los datos
                     $color = ($row % 2 === 0) ? 'FFE0EAF1' : 'FFFFFFFF'; // Azul claro y blanco
-                    $sheet->getStyle("A{$row}:O{$row}")->applyFromArray([
+                    $sheet->getStyle("A{$row}:Q{$row}")->applyFromArray([
                         'fill' => [
                             'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
                             'color' => ['argb' => $color],
@@ -164,4 +165,6 @@ class ReporteLocalCreditoExport implements
             }
         ];
     }
-}
+
+        
+    }
