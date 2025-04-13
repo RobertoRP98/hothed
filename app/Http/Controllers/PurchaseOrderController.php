@@ -34,6 +34,7 @@ class PurchaseOrderController extends Controller
     {
         $datosoc = PurchaseOrder::where('authorization_4', 'Autorizado')
             ->where('finished', false)
+            ->orderBy('id', 'desc')
             ->get();
 
         return view('compras.index', compact('datosoc'));

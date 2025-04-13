@@ -105,7 +105,8 @@
         @foreach($datosoc as $oc)
         <tr>
             <td>{{ $oc->requisition->user->area ."-" . $oc->requisition->id }}</td>
-            <td>{{ "VH-".$oc->id ."-". $oc->created_at->format('y')}}</td>
+            <td data-order="{{ $oc->id }}">{{ "VH-".$oc->id ."-". $oc->created_at->format('y') }}</td>
+            {{-- <td>{{ "VH-".$oc->id ."-". $oc->created_at->format('y')}}</td> --}}
             <td>{{ $oc->requisition->user->area }}</td>
             <td>{{ $oc->supplier->name}}</td>
             <td>{{ $oc->total }}</td>
@@ -199,7 +200,7 @@
         $('#compras').DataTable({
             resposive:true,
             autoWidth: false,
-            order: [[1, 'desc']],
+           order: [[1, 'desc']],
 
             "language": {
                 "lengthMenu":     "Mostrar _MENU_ registros",

@@ -57,7 +57,8 @@
         @foreach($orderclient as $order)
         <tr>
             <td>{{ $order->requisition->id }}</td>          
-            <td>{{ "VH-".$order->id."-". $order->created_at->format('y') }}</td>
+            {{-- <td>{{ "VH-".$order->id."-". $order->created_at->format('y') }}</td> --}}
+            <td data-order="{{ $order->id }}">{{ "VH-".$order->id ."-". $order->created_at->format('y') }}</td>
             <td>{{ $order->po_status}}</td>
 
         <td class="
