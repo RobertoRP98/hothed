@@ -32,7 +32,7 @@ class ReporteLocalDebitoExport implements
         $orders = PurchaseOrder::with('requisition', 'supplier')
             //->whereBetween('date_start', [$startDate, $endDate])
             ->where('type_op', 'Local')
-            ->whereIn('payment_type',['DEBITO','CAJA CHICA','TRANSFERENCIA'])
+            ->whereIn('payment_type',['DEBITO','CAJA CHICA','TRANSFERENCIA','AMEX'])
             ->get()
             ->map(function ($order) {
                 // Calcular días restantes
@@ -50,20 +50,24 @@ class ReporteLocalDebitoExport implements
 
                 return [
                     'Requisition ID' => $order->requisition_id,
+                    'Requi Date' => $order->requisition->request_date,
                     'Order ID' => "VH-". $order->id ."-". $order->created_at->format('y'),
-                    'Supplier' => $order->supplier->name, // Asumiendo que hay una relación con el modelo Supplier
-                    'Required Date' => $order->requisition->required_date ? Carbon::parse($order->requisition->required_date)->format('d-m-Y') : 'SIN FECHA',
-                    'Quotation' => $order->quotation,
                     'Fecha creación' => $order->date_start ? Carbon::parse($order->date_start)->format('d-m-Y') : 'SIN FECHA',
+                    'Supplier' => $order->supplier->name, // Asumiendo que hay una relación con el modelo Supplier
+                    'Proyect' => $order->requisition->notes_client,
+                    'Dep' => $order->requisition->user->area,
+                    'Quotation' => $order->quotation,
                     'Total' => $order->total,
                     'Divisa'=> $order->currency,
-                    'Dep' => $order->requisition->user->area,
-                    'Aut 4' => $order->authorization_4, // Asegúrate del campo correcto
-                    'Status' => $order->po_status,
-                    'Factura' => $order->bill_name,
                     'Prioridad' => $priority,
                     'Días Restantes' => (string) (($daysRemaining === null || $daysRemaining === '') ? 0 : $daysRemaining),
+                    'Status' => $order->po_status,
+                    'Payment type' => $order->payment_type,
+                    'Factura' => $order->bill_name,
                     'Notes' => $order->requisition->notes_resp,
+
+                  //  'Required Date' => $order->requisition->required_date ? Carbon::parse($order->requisition->required_date)->format('d-m-Y') : 'SIN FECHA',
+                    //'Aut 4' => $order->authorization_4, // Asegúrate del campo correcto
                 ];
             });
 
@@ -72,21 +76,23 @@ class ReporteLocalDebitoExport implements
 
     public function headings(): array
     {
-        return ['REQUISICION', 
+        return [
+                'REQUISICION',
+                'FECHA REQUISICIÓN',
                 'ORDEN',
+                'FECHA ORDEN',
                 'PROVEEDOR',
-                'FECHA REQUERIDA',
+                'PROYECTO',
+                'DEPARTAMENTO',
                 'COTIZACIÓN',
-                'FECHA CREACIÓN OC',
                 'TOTAL',
                 'DIVISA',
-                'DEPARTAMENTO',
-                'AUTORIZACIÓN',
-                'STATUS',
-                'FACTURA',
                 'PRIORIDAD',
                 'DIAS RESTANTES',
-                'COMENTARIOS',            
+                'STATUS',
+                'TIPO DE PAGO',
+                'FACTURA',
+                'COMENTARIO'
     ];
     }
 
@@ -106,7 +112,7 @@ class ReporteLocalDebitoExport implements
     {
         return [
             //MONTOS
-            'G' => '"$"#,##0.00_-',
+            'I' => '"$"#,##0.00_-',
 
         ];
     }
@@ -122,10 +128,10 @@ class ReporteLocalDebitoExport implements
                     $sheet->getColumnDimension($col)->setAutoSize(true);
                 }
                 //FILTROS
-                $sheet->setAutoFilter('A1:O1');
+                $sheet->setAutoFilter('A1:P1');
 
                 // Aplicar estilos a la fila de encabezado (fila 1)
-                $sheet->getStyle('A1:O1')->applyFromArray([
+                $sheet->getStyle('A1:P1')->applyFromArray([
                     'font' => [
                         'bold' => true,
                     ],
@@ -144,7 +150,7 @@ class ReporteLocalDebitoExport implements
                 $highestRow = $sheet->getHighestRow();
                 for ($row = 2; $row <= $highestRow; $row++) { // Comienza en la fila 7 para los datos
                     $color = ($row % 2 === 0) ? 'FFE0EAF1' : 'FFFFFFFF'; // Azul claro y blanco
-                    $sheet->getStyle("A{$row}:O{$row}")->applyFromArray([
+                    $sheet->getStyle("A{$row}:P{$row}")->applyFromArray([
                         'fill' => [
                             'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
                             'color' => ['argb' => $color],
