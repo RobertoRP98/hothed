@@ -16,20 +16,20 @@ use Maatwebsite\Excel\Concerns\WithColumnFormatting;
 
 
 
-class ReporteExtranjeraCreditoExport implements 
-FromCollection,
-WithHeadings,
-WithTitle,
-WithColumnFormatting,
-ShouldAutoSize,
-WithEvents
+class ReporteExtranjeraCreditoExport implements
+    FromCollection,
+    WithHeadings,
+    WithTitle,
+    WithColumnFormatting,
+    ShouldAutoSize,
+    WithEvents
 {
     /**
-    * @return \Illuminate\Support\Collection
-    */
+     * @return \Illuminate\Support\Collection
+     */
     public function collection()
     {
-        
+
         $orders = PurchaseOrder::with('requisition', 'supplier')
             //->whereBetween('date_start', [$startDate, $endDate])
             ->where('type_op', 'Extranjera')
@@ -39,7 +39,7 @@ WithEvents
                 // Calcular días restantes
                 $daysRemaining = floor(Carbon::parse($order->requisition->production_date)->diffInDays(now(), false));
                 $daysRemaining = ($daysRemaining === null || $daysRemaining === '') ? 0 : $daysRemaining;
-                
+
                 // Determinar prioridad
                 if ($daysRemaining >= -15) {
                     $priority = 'ALTA';
@@ -51,20 +51,24 @@ WithEvents
 
                 return [
                     'Requisition ID' => $order->requisition_id,
-                    'Order ID' => "VH-". $order->id ."-". $order->created_at->format('y'),
-                    'Supplier' => $order->supplier->name, // Asumiendo que hay una relación con el modelo Supplier
-                    'Required Date' => $order->requisition->required_date ? Carbon::parse($order->requisition->required_date)->format('d-m-Y') : 'SIN FECHA',
-                    'Quotation' => $order->quotation,
+                    'Requi Date' => $order->requisition->request_date,
+                    'Order ID' => "VH-" . $order->id . "-" . $order->created_at->format('y'),
                     'Fecha creación' => $order->date_start ? Carbon::parse($order->date_start)->format('d-m-Y') : 'SIN FECHA',
-                    'Total' => $order->total,
-                    'Divisa'=> $order->currency,
+                    'Supplier' => $order->supplier->name, // Asumiendo que hay una relación con el modelo Supplier
+                    'Proyect' => $order->requisition->notes_client,
                     'Dep' => $order->requisition->user->area,
-                    'Aut 4' => $order->authorization_4, // Asegúrate del campo correcto
-                    'Status' => $order->po_status,
-                    'Factura' => $order->bill_name,
+                    'Quotation' => $order->quotation,
+                    'Total' => $order->total,
+                    'Divisa' => $order->currency,
                     'Prioridad' => $priority,
                     'Días Restantes' => (string) (($daysRemaining === null || $daysRemaining === '') ? 0 : $daysRemaining),
+                    'Status' => $order->po_status,
+                    'Payment type' => $order->payment_type,
+                    'Factura' => $order->bill_name,
                     'Notes' => $order->requisition->notes_resp,
+
+                    //  'Required Date' => $order->requisition->required_date ? Carbon::parse($order->requisition->required_date)->format('d-m-Y') : 'SIN FECHA',
+                    //'Aut 4' => $order->authorization_4, // Asegúrate del campo correcto
                 ];
             });
 
@@ -76,20 +80,21 @@ WithEvents
     {
         return [
             'REQUISICION',
+            'FECHA REQUISICIÓN',
             'ORDEN',
+            'FECHA ORDEN',
             'PROVEEDOR',
-            'FECHA REQUERIDA',
+            'PROYECTO',
+            'DEPARTAMENTO',
             'COTIZACIÓN',
-            'FECHA CREACIÓN OC',
             'TOTAL',
             'DIVISA',
-            'DEPARTAMENTO',
-            'AUTORIZACIÓN',
-            'STATUS',
-            'FACTURA',
             'PRIORIDAD',
             'DIAS RESTANTES',
-            'COMENTARIOS',
+            'STATUS',
+            'TIPO DE PAGO',
+            'FACTURA',
+            'COMENTARIO'
         ];
     }
 
@@ -109,7 +114,7 @@ WithEvents
     {
         return [
             //MONTOS
-            'G' => '"$"#,##0.00_-',
+            'I' => '"$"#,##0.00_-',
 
         ];
     }
@@ -125,10 +130,10 @@ WithEvents
                     $sheet->getColumnDimension($col)->setAutoSize(true);
                 }
                 //FILTROS
-                $sheet->setAutoFilter('A1:O1');
+                $sheet->setAutoFilter('A1:P1');
 
                 // Aplicar estilos a la fila de encabezado (fila 1)
-                $sheet->getStyle('A1:O1')->applyFromArray([
+                $sheet->getStyle('A1:P1')->applyFromArray([
                     'font' => [
                         'bold' => true,
                     ],
@@ -147,7 +152,7 @@ WithEvents
                 $highestRow = $sheet->getHighestRow();
                 for ($row = 2; $row <= $highestRow; $row++) { // Comienza en la fila 7 para los datos
                     $color = ($row % 2 === 0) ? 'FFE0EAF1' : 'FFFFFFFF'; // Azul claro y blanco
-                    $sheet->getStyle("A{$row}:O{$row}")->applyFromArray([
+                    $sheet->getStyle("A{$row}:P{$row}")->applyFromArray([
                         'fill' => [
                             'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
                             'color' => ['argb' => $color],
@@ -166,6 +171,4 @@ WithEvents
             }
         ];
     }
-
-    
 }
