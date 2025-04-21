@@ -94,7 +94,24 @@ class PurchaseOrderController extends Controller
         return view('compras.pagadas', compact('datosoc'));
     }
 
+    //INDEX DEL GENERAL DE OCS AUTORIZADAS PARA NORMA
+    public function indexautgeneral()
+    {
+        $datosoc = PurchaseOrder::where('authorization_4', 'Autorizado')
+           // ->where('finished', false)
+            ->orderBy('id', 'desc')
+            ->get();
 
+        return view('compras.autgeneral', compact('datosoc'));
+    }
+
+     //INDEX DEL GENERAL DE OCS AUTORIZADAS PARA NORMA
+     public function indexrepositorio()
+     {
+        $datosoc = PurchaseOrder::orderBy('id', 'desc')->get();
+         return view('compras.repositorio', compact('datosoc'));
+     }
+ 
 
     /**
      * Show the form for creating a new resource.

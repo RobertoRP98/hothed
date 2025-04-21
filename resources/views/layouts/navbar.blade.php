@@ -63,6 +63,26 @@
             </li> 
         @endauth 
 
+         {{-- //vista para norma  --}}
+        @auth
+        @php
+            // Determinar la ruta según el rol del usuario
+            $comprasUrl = '#'; // Enlace por defecto
+            if (auth()->user()->hasRole(['Developer', 'Contamex'])) {
+                $comprasUrl = '/ordenes-compra-autorizadas';
+            }
+           
+        @endphp
+    
+        @if($comprasUrl !== '#')
+            <li class="nav-item">
+                <a class="nav-link text-white" href="{{ url($comprasUrl) }}">OCS-AUTS</a>
+            </li>
+        @endif
+    @endauth
+
+     {{-- fin vista norma --}}
+
         @auth
         @php
             // Determinar la ruta según el rol del usuario
@@ -99,7 +119,7 @@
     @endif
 @endauth
 
-@auth
+{{-- @auth
 @php
     // Determinar la ruta según el rol del usuario
     $comprasUrl = '#'; // Enlace por defecto
@@ -114,7 +134,7 @@
         <a class="nav-link text-white" href="{{ url($comprasUrl) }}">Compras Autorizadas</a>
     </li>
 @endif
-@endauth
+@endauth --}}
 
 
         @auth
@@ -132,9 +152,27 @@
             </li>
         @endif
     @endauth
+
+        {{-- //vista para norma  --}}
+        @auth
+        @php
+            // Determinar la ruta según el rol del usuario
+            $comprasUrl = '#'; // Enlace por defecto
+            if (auth()->user()->hasRole(['Developer', 'Contamex','Gerope','Diradmin'])) {
+                $comprasUrl = '/repositorio-ordenes-compra';
+            }
+           
+        @endphp
     
+        @if($comprasUrl !== '#')
+            <li class="nav-item">
+                <a class="nav-link text-white" href="{{ url($comprasUrl) }}">Historial OCS</a>
+            </li>
+        @endif
+    @endauth
 
-
+     {{-- fin vista norma --}}
+    
 
 
             @auth
@@ -145,19 +183,21 @@
             @endif
         @endauth
 
-                <li class="nav-item">
-                    <a href="{{ url('/#about') }}" class="nav-link text-white {{ request()->is('#misionvision') ? 'active' : '' }}">Misión y Visión</a>
-                </li>
-                <li class="nav-item">
-                    <a href="{{ url('/#clients') }}" class="nav-link text-white {{ request()->is('#clientes') ? 'active' : '' }}">Nuestros Clientes</a>
-                </li>
-                <li class="nav-item">
-                    <a href="{{ url('/#services') }}" class="nav-link text-white {{ request()->is('#servicios') ? 'active' : '' }}">Nuestros Servicios</a>
-                </li>
-                
-                <li class="nav-item">
-                    <a href="{{ url('/#footer') }}" class="nav-link text-white {{ request()->is('#contacto') ? 'active' : '' }}">Contacto</a>
-                </li>
+        @guest
+        <li class="nav-item">
+            <a href="{{ url('/#about') }}" class="nav-link text-white">Misión y Visión</a>
+        </li>
+        <li class="nav-item">
+            <a href="{{ url('/#clients') }}" class="nav-link text-white">Nuestros Clientes</a>
+        </li>
+        <li class="nav-item">
+            <a href="{{ url('/#services') }}" class="nav-link text-white">Nuestros Servicios</a>
+        </li>
+        <li class="nav-item">
+            <a href="{{ url('/#footer') }}" class="nav-link text-white">Contacto</a>
+        </li>
+    @endguest
+    
             </ul>
 
             <ul class="navbar-nav ms-auto">

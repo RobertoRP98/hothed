@@ -21,66 +21,13 @@
 <link rel="stylesheet" href="https://cdn.datatables.net/responsive/3.0.3/css/responsive.bootstrap5.css">
 @endpush
 
-<div class="col-md-12">
-<h3>Datos Generales</h3>
 
-    <a href="{{ url('/ordenes-compra/pendientes') }}" class="col-md-3 btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
-        Ordenes Pendientes de Autorización
-    </a>
-
-    <a href="{{ url('/ordenes-compra/rechazadas') }}" class="col-md-3 btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
-        Ordenes Canceladas 
-    </a>
-
-    <a href="{{ url('/ordenes-compra/finalizadas') }}" class="col-md-3 btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
-        Ordenes Finalizadas 
-    </a>
-
-    <a href="{{ url('/ordenes-compra/facturadas') }}" class="col-md-3 btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
-        Ordenes Facturadas
-    </a>
-
-    <a href="{{ url('/ordenes-compra/no-facturadas') }}" class="col-md-3 btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
-        Ordenes No Facturadas
-    </a>
-
-    <a href="{{ url('/ordenes-compra/pagadas') }}" class="col-md-3 btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
-        Ordenes Pagadas
-    </a>
-</div>
-
-<h3>Descargar Excel</h3>
-
-<!-- Botones de Excel -->
-<div class="d-flex flex-wrap">
-
-    <a href="{{ url('/export-compras-locales') }}" class="col-md-3 btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
-        REPORTE COMPRAS LOCALES
-    </a>
-
-    <a href="{{ url('/export-compras-extranjeras') }}" class="col-md-3 btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
-        REPORTE COMPRAS EXTRANJERAS
-    </a>
-
-    <a href="{{ url('/export-compras-global') }}" class="col-md-3 btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
-        REPORTE GLOBAL DE COMPRAS
-    </a>
-
-    <a href="{{ url('/export-resumen-semanal-compras') }}" class="col-md-3 btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
-        ORDENES CREADAS EN LA SEMANA
-    </a>
-
-    <a href="{{ url('/export-proveedores') }}" class="col-md-3 btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
-        PROVEEDORES APROBADOS
-    </a>
-
-    
  
-</div>
- 
-<h3 class="text-center my-1">Ordenes de Compra Autorizadas</h3>
-
-
+<h3 class="text-center my-1">Historial de Compras</h3>
+<br>
+<i class="fa-solid fa-triangle-exclamation"></i> <span>Si el número es negativo (-), significa que la compra aún no vence; si es positivo, indica que ya ha excedido el tiempo de espera.</span>
+<br>
+<br>
 <div class="card">
     <div class="card-body">
             
@@ -151,19 +98,7 @@
         
 
             <td>
-                <a class="text-white" href="{{ route('ordencompra.show', ['purchaseOrder' => $oc->id, 'requisicione' => $oc->requisition->id]) }}" target="_blank">
 
-                    <button class="btn btn-primary mb-2">
-                        VER
-                    </button>
-                </a> 
-                <a class="text-white" href="{{ route('ordencompra.edit', ['purchaseOrder' => $oc->id, 'requisicione' => $oc->requisition->id]) }}" target="_blank"
-
-                    >
-                    <button class="btn btn-success mb-2">
-                        Editar
-                    </button>
-                </a>
                 <a class="text-white" href="{{ route('ordencompra.pdf', ['purchaseOrder' => $oc->id, 'requisicione' => $oc->requisition->id]) }}">
 
                     <button class="btn btn-secondary mb-2">

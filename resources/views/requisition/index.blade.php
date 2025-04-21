@@ -181,6 +181,7 @@
         $('#compras').DataTable({
             resposive:true,
             autoWidth: false,
+            pageLength: 25,
             order: [[0, 'desc']],
             "language": {
                 "lengthMenu":     "Mostrar _MENU_ registros",
