@@ -5,42 +5,42 @@ namespace App\Exports;
 use Carbon\Carbon;
 use App\Models\PurchaseOrder;
 use Maatwebsite\Excel\Events\AfterSheet;
-use Maatwebsite\Excel\Concerns\WithTitle;
-use Maatwebsite\Excel\Concerns\WithEvents;
-use Maatwebsite\Excel\Concerns\WithMapping;
-use Maatwebsite\Excel\Concerns\WithHeadings;
 use PhpOffice\PhpSpreadsheet\Style\Alignment;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Maatwebsite\Excel\Concerns\WithColumnFormatting;
+use Maatwebsite\Excel\Concerns\WithEvents;
+use Maatwebsite\Excel\Concerns\WithHeadings;
+use Maatwebsite\Excel\Concerns\WithTitle;
 
-class OrdenesSemanalExport implements
-    FromCollection,
-    WithHeadings,
-    //WithMapping,
-    WithTitle,
-    WithColumnFormatting,
-    ShouldAutoSize,
-    WithEvents
+class ComprasRangoExport implements 
+FromCollection,
+WithHeadings,
+WithTitle,
+WithColumnFormatting,
+ShouldAutoSize,
+WithEvents
 {
+    protected $startDate;
+    protected $endDate;
 
-
+    public function __construct($startDate, $endDate)
+    {
+        $this->startDate = Carbon::parse($startDate)->startOfDay();
+        $this->endDate = Carbon::parse($endDate)->endOfDay();
+    }
     public function collection()
     {
-    // Lunes de esta semana
-    $startDate = Carbon::now()->startOfWeek(Carbon::MONDAY)->startOfDay();
-    // Hoy como fin
-    $endDate = Carbon::now()->endOfDay();
-
-        $orders = PurchaseOrder::with('requisition', 'supplier')
-            ->whereBetween('date_start', [$startDate, $endDate])
+        return PurchaseOrder::with('requisition', 'supplier')
+            ->whereBetween('date_start', [$this->startDate, $this->endDate])
+            ->whereIn('type_op', ['Extranjera', 'Local'])
+            ->whereIn('payment_type', ['CREDITO', 'DEBITO', 'CAJA CHICA', 'TRANSFERENCIA', 'AMEX'])
             ->get()
             ->map(function ($order) {
+
                 // Calcular días restantes
-                //$daysRemaining = floor(now()->diffInDays(Carbon::parse($order->requisition->production_date), false));
-                $daysRemaining = floor(Carbon::parse($order->requisition->production_date)->diffInDays(now(), false) +1 );
-
-
+                $daysRemaining = floor(Carbon::parse($order->requisition->production_date)->diffInDays(now(), false));
+                $daysRemaining = ($daysRemaining === null || $daysRemaining === '') ? 0 : $daysRemaining;
 
                 // Determinar prioridad
                 if ($daysRemaining >= -15) {
@@ -53,14 +53,24 @@ class OrdenesSemanalExport implements
 
                 return [
                     'Requisition ID' => $order->requisition_id,
-                    'Order ID' => $order->id,
-                    'Supplier' => $order->supplier->name, // Asumiendo que hay una relación con el modelo Supplier
-                    'Total' => $order->total,
-                    'Divisa'=> $order->currency,
-                    'Aut 4' => $order->authorization_4, // Asegúrate del campo correcto
-                    'Prioridad' => $priority,
+                    'Requi Date' => $order->requisition->request_date ? Carbon::parse($order->requisition->request_date)->format('d-m-Y') : 'SIN FECHA',
+                    'Order ID' => "VH-" . $order->id . "-" . $order->created_at->format('y'),
                     'Fecha creación' => $order->date_start ? Carbon::parse($order->date_start)->format('d-m-Y') : 'SIN FECHA',
-                    'Días Restantes' => $daysRemaining,
+                    'Supplier' => $order->supplier->name, // Asumiendo que hay una relación con el modelo Supplier
+                    'Proyect' => $order->requisition->notes_client,
+                    'Dep' => $order->requisition->user->area,
+                    'Quotation' => $order->quotation,
+                    'Total' => $order->total,
+                    'Divisa' => $order->currency,
+                    'Prioridad' => $priority,
+                    'Días Restantes' => (string) (($daysRemaining === null || $daysRemaining === '') ? 0 : $daysRemaining),
+                    'Status' => $order->po_status,
+                    'Payment type' => $order->payment_type,
+                    'Factura' => $order->bill_name,
+                    'Notes' => $order->requisition->notes_resp,
+
+                    //  'Required Date' => $order->requisition->required_date ? Carbon::parse($order->requisition->required_date)->format('d-m-Y') : 'SIN FECHA',
+                    //'Aut 4' => $order->authorization_4, // Asegúrate del campo correcto
                 ];
             });
 
@@ -69,26 +79,36 @@ class OrdenesSemanalExport implements
 
     public function headings(): array
     {
-        return ['REQUISICION', 'NUM. ORDEN', 'PROVEEDOR', 'MONTO TOTAL', 'DIVISA','AUTORIZACIÓN', 'PRIORIDAD', 'FECHA DE CREACIÓN', 'DIAS RESTANTES'];
+        return [
+            'REQUISICION',
+            'FECHA REQUISICIÓN',
+            'ORDEN',
+            'FECHA ORDEN',
+            'PROVEEDOR',
+            'PROYECTO',
+            'DEPARTAMENTO',
+            'COTIZACIÓN',
+            'TOTAL',
+            'DIVISA',
+            'PRIORIDAD',
+            'DIAS RESTANTES',
+            'STATUS',
+            'TIPO DE PAGO',
+            'FACTURA',
+            'COMENTARIO'
+        ];
     }
-
-    // public function map($row): array
-    // {
-    //     return [
-    //        //Aui si no se si aplique, ojito chat
-    //     ];
-    // }
 
     public function title(): string
     {
-        return 'Ordenes semanales';
+        return 'Reporte por Fechas';
     }
 
     public function columnFormats(): array
     {
         return [
             //MONTOS
-            'D' => '"$"#,##0.00_-',
+            'I' => '"$"#,##0.00_-',
 
         ];
     }
@@ -104,10 +124,10 @@ class OrdenesSemanalExport implements
                     $sheet->getColumnDimension($col)->setAutoSize(true);
                 }
                 //FILTROS
-                $sheet->setAutoFilter('A1:I1');
+                $sheet->setAutoFilter('A1:P1');
 
                 // Aplicar estilos a la fila de encabezado (fila 1)
-                $sheet->getStyle('A1:I1')->applyFromArray([
+                $sheet->getStyle('A1:P1')->applyFromArray([
                     'font' => [
                         'bold' => true,
                     ],
@@ -126,7 +146,7 @@ class OrdenesSemanalExport implements
                 $highestRow = $sheet->getHighestRow();
                 for ($row = 2; $row <= $highestRow; $row++) { // Comienza en la fila 7 para los datos
                     $color = ($row % 2 === 0) ? 'FFE0EAF1' : 'FFFFFFFF'; // Azul claro y blanco
-                    $sheet->getStyle("A{$row}:I{$row}")->applyFromArray([
+                    $sheet->getStyle("A{$row}:P{$row}")->applyFromArray([
                         'fill' => [
                             'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
                             'color' => ['argb' => $color],
@@ -145,4 +165,5 @@ class OrdenesSemanalExport implements
             }
         ];
     }
+
 }

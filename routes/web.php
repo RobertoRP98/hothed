@@ -182,6 +182,7 @@ Route::group(['middleware' => ['auth', 'role:Developer|RespCompras']], function 
     Route::resource('/proveedores', SupplierController::class);
     Route::resource('/productos', ProductController::class);
     Route::get('/requisiciones', [RequisitionController::class, 'index'])->name('requisiciones.index');
+    Route::get('/compras-por-fechas',[PurchaseOrderController::class, 'verReporteRangos'])->name('compras.rangos.index');
 
     //INICIA ORDENES DE COMPRAS
     Route::get('/ordenes-compra', [PurchaseOrderController::class, 'index'])->name('ordencompra.index');
@@ -202,8 +203,6 @@ Route::group(['middleware' => ['auth', 'role:Developer|RespCompras']], function 
 
     Route::post('/requisiciones/{requisicione}/ordenes-compra', [PurchaseOrderController::class, 'store'])->name('ordencompra.store');
 
-    Route::get('/export-resumen-semanal-compras', [PurchaseOrderController::class, 'exportReporteSemanal'])->name('export.resumen-semanal-compras');
-
     Route::get('/export-compras-locales', [PurchaseOrderController::class, 'exportReporteLocales'])->name('export.compras-locales');
 
     Route::get('/export-compras-extranjeras', [PurchaseOrderController::class, 'exportReporteExtranjeras'])->name('export.compras-extranjeras');
@@ -211,6 +210,9 @@ Route::group(['middleware' => ['auth', 'role:Developer|RespCompras']], function 
     Route::get('/export-proveedores', [PurchaseOrderController::class, 'exportProveedores'])->name('export.proveedores');
 
     Route::get('/export-compras-global', [PurchaseOrderController::class, 'exportReporteGlobalCompras'])->name('export.compras-global');
+
+    Route::get('/export-compras-rango', [PurchaseOrderController::class, 'exportReporteRangos'])->name('export.compras-rango');
+
 });
 
 //RUTAS QUE SOLO SON ACCESIBLES AL ENCARGADO DE COMPRAS, DIRECTORA GENERAL Y GER DE OPERACIONES PARA AUTORIZAR Y VER OCS
@@ -248,6 +250,7 @@ Route::group(['middleware' => ['auth', 'role:Developer|RespCompras|Diradmin|']],
 
     //INICIA INDEX AUTORIZACION DE ADMINISTRACION
     Route::get('/ordenes-compra/autorizacion/pendientes', [AuthPurchaseOrderController::class, 'indexpendientedir'])->name('dirpendientes.index');
+    Route::get('/ordenes-compra/autorizacion/pendientes/responsable', [AuthPurchaseOrderController::class, 'indexpendienteresp'])->name('resppendientes.index');
     Route::get('/ordenes-compra/autorizacion/autorizadas', [AuthPurchaseOrderController::class, 'indextautorizadodir'])->name('dirautorizadas.index');
     Route::get('/ordenes-compra/autorizacion/canceladas', [AuthPurchaseOrderController::class, 'indexrechazadodir'])->name('dircanceladas.index');
 });

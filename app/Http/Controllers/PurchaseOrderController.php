@@ -9,17 +9,18 @@ use App\Mail\OcAuthMail;
 use App\Models\Supplier;
 use App\Mail\TrackingMail;
 use App\Models\Requisition;
+use Illuminate\Http\Request;
 use App\Models\PurchaseOrder;
 use Barryvdh\DomPDF\Facade\Pdf;
 use App\Models\ItemOrderPurchase;
 use Illuminate\Support\Facades\DB;
+use App\Exports\ComprasRangoExport;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Maatwebsite\Excel\Facades\Excel;
-use App\Exports\OrdenesSemanalExport;
-use App\Exports\ReporteComprasGlobalExport;
 use App\Exports\ReporteLocalesExport;
 use App\Exports\ReporteExtranjerasExport;
+use App\Exports\ReporteComprasGlobalExport;
 use App\Exports\ReporteLineaProductosExport;
 use Illuminate\Validation\ValidationException;
 use App\Http\Requests\StorePurchaseOrderRequest;
@@ -98,20 +99,20 @@ class PurchaseOrderController extends Controller
     public function indexautgeneral()
     {
         $datosoc = PurchaseOrder::where('authorization_4', 'Autorizado')
-           // ->where('finished', false)
+            // ->where('finished', false)
             ->orderBy('id', 'desc')
             ->get();
 
         return view('compras.autgeneral', compact('datosoc'));
     }
 
-     //INDEX DEL GENERAL DE OCS AUTORIZADAS PARA NORMA
-     public function indexrepositorio()
-     {
+    //INDEX DEL GENERAL DE OCS AUTORIZADAS PARA NORMA
+    public function indexrepositorio()
+    {
         $datosoc = PurchaseOrder::orderBy('id', 'desc')->get();
-         return view('compras.repositorio', compact('datosoc'));
-     }
- 
+        return view('compras.repositorio', compact('datosoc'));
+    }
+
 
     /**
      * Show the form for creating a new resource.
@@ -588,13 +589,19 @@ class PurchaseOrderController extends Controller
             ]);
 
             // Definir correos - De momento es solo la directora pero si requiere ayuda se deja abierto al departamento
-            $emails = [
+            $emailsdirectora = [
                 'ADM' => 'karla.ibeth.segura@hothedmex.mx',
-                'OP' => 'karla.ibeth.segura@hothedmex.mx'
+                'OP' => 'karla.ibeth.segura@hothedmex.mx',
+
+            ];
+
+            $emailsresp = [
+                'ADM' => 'bianca.fernanda.rebolledo@hothedmex.mx',
+                'OP' => 'bianca.fernanda.rebolledo@hothedmex.mx',
             ];
 
             // ENVIAR EL CORREO SI APLICA
-            if ($orden->wasChanged('authorization_2') && ($orden->authorization_2) == 'Autorizado') {
+            if ($orden->wasChanged('authorization_2') && ($orden->authorization_2) == 'Autorizado' && ($orden->total) >= 15000) {
                 // Verifica si la requisición existe antes de acceder a user->departament
                 if (!$orden->requisition || !$orden->requisition->user) {
                     Log::error('La orden no tiene una requisición válida o no tiene usuario asignado.', [
@@ -604,7 +611,25 @@ class PurchaseOrderController extends Controller
                 }
 
                 $departamento = $orden->requisition->user->departament ?? 'NULL';
-                $correoDestino = $emails[$departamento] ?? null;
+                $correoDestino = $emailsdirectora[$departamento] ?? null;
+
+                if ($correoDestino) {
+                    Log::info('Enviando correo a:', ['email' => $correoDestino]);
+                    Mail::to($correoDestino)->send(new OcAuthMail($orden));
+                } else {
+                    Log::warning('No se encontró un correo para el departamento:', ['departamento' => $departamento]);
+                }
+            } elseif ($orden->wasChanged('authorization_2') && ($orden->authorization_2) == 'Autorizado' && ($orden->total) < 15000) {
+                // Verifica si la requisición existe antes de acceder a user->departament
+                if (!$orden->requisition || !$orden->requisition->user) {
+                    Log::error('La orden no tiene una requisición válida o no tiene usuario asignado.', [
+                        'order_id' => $orden->id
+                    ]);
+                    return;
+                }
+
+                $departamento = $orden->requisition->user->departament ?? 'NULL';
+                $correoDestino = $emailsresp[$departamento] ?? null;
 
                 if ($correoDestino) {
                     Log::info('Enviando correo a:', ['email' => $correoDestino]);
@@ -792,11 +817,6 @@ class PurchaseOrderController extends Controller
     }
 
 
-    public function exportReporteSemanal()
-    {
-        return Excel::download(new OrdenesSemanalExport, 'Resumen Semanal Compras ' . Carbon::now()->format('d-m-Y') . '.xlsx');
-    }
-
     public function exportReporteLocales()
     {
         return Excel::download(new ReporteLocalesExport, 'Compras Locales al ' . Carbon::now()->format('d-m-Y') . '.xlsx');
@@ -815,5 +835,26 @@ class PurchaseOrderController extends Controller
     public function exportReporteGlobalCompras()
     {
         return Excel::download(new ReporteComprasGlobalExport, 'Resumen de Global de Compras al ' . Carbon::now()->format('d-m-Y') . '.xlsx');
+    }
+
+    public function verReporteRangos(Request $request)
+    {
+
+        $datosoc = PurchaseOrder::orderBy('id', 'desc')->get();
+
+        return view('compras.rangos', compact('datosoc'));
+    }
+
+    public function exportReporteRangos(Request $request)
+    {
+        $start = $request->input('start_date');
+        $end = $request->input('end_date');
+
+        //        dd($start, $end); // 👈 Esto para validar
+
+        return Excel::download(
+            new ComprasRangoExport($start, $end),
+            'Resumen de Compras al ' . Carbon::now()->format('d-m-Y') . '.xlsx'
+        );
     }
 }

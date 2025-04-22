@@ -50,7 +50,7 @@ class ReporteLocalDebitoExport implements
 
                 return [
                     'Requisition ID' => $order->requisition_id,
-                    'Requi Date' => $order->requisition->request_date,
+                    'Requi Date' => $order->requisition->request_date ? Carbon::parse($order->requisition->request_date)->format('d-m-Y') : 'SIN FECHA',
                     'Order ID' => "VH-". $order->id ."-". $order->created_at->format('y'),
                     'Fecha creación' => $order->date_start ? Carbon::parse($order->date_start)->format('d-m-Y') : 'SIN FECHA',
                     'Supplier' => $order->supplier->name, // Asumiendo que hay una relación con el modelo Supplier

@@ -226,7 +226,7 @@ class AuthPurchaseOrderController extends Controller
 
 
 
-    //EMPIEZAN AUTORIZACIONES DE LA DIRECTORA GENERAL - DOBLE CANDADO DE ACCESO A LAS RUTAS
+    //EMPIEZAN AUTORIZACIONES DE LA DIRECTORA GENERAL Y RESP < 15K - DOBLE CANDADO DE ACCESO A LAS RUTAS
 
     public function indexpendientedir()
     {
@@ -237,9 +237,25 @@ class AuthPurchaseOrderController extends Controller
 
         $datosoc = PurchaseOrder::query()
             ->where('authorization_4', 'Pendiente')
+            ->where('total', '>=', 15000)
             ->get();
 
         return view('comprasdir.pendientedir', compact('datosoc'));
+    }
+
+    public function indexpendienteresp()
+    {
+        // Verificar explícitamente que el usuario tiene el rol correcto
+        if (!auth()->user()->hasRole(['Developer', 'RespCompras', 'Diradmin','Contamex'])) {
+            abort(403, 'No tienes permiso para acceder a esta vista.');
+        }
+
+        $datosoc = PurchaseOrder::query()
+            ->where('authorization_4', 'Pendiente')
+            ->where('total', '<', 15000)
+            ->get();
+
+        return view('comprasdir.pendienteresp', compact('datosoc'));
     }
 
     public function indextautorizadodir()

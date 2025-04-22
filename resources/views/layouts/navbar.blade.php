@@ -63,26 +63,7 @@
             </li> 
         @endauth 
 
-         {{-- //vista para norma  --}}
-        @auth
-        @php
-            // Determinar la ruta según el rol del usuario
-            $comprasUrl = '#'; // Enlace por defecto
-            if (auth()->user()->hasRole(['Developer', 'Contamex'])) {
-                $comprasUrl = '/ordenes-compra-autorizadas';
-            }
-           
-        @endphp
     
-        @if($comprasUrl !== '#')
-            <li class="nav-item">
-                <a class="nav-link text-white" href="{{ url($comprasUrl) }}">OCS-AUTS</a>
-            </li>
-        @endif
-    @endauth
-
-     {{-- fin vista norma --}}
-
         @auth
         @php
             // Determinar la ruta según el rol del usuario
@@ -135,7 +116,21 @@
     </li>
 @endif
 @endauth --}}
+@auth
+@php
+    // Determinar la ruta según el rol del usuario
+    $comprasUrl = '#'; // Enlace por defecto
+    if (auth()->user()->hasRole(['Developer', 'RespCompras',])) {
+        $comprasUrl = '/ordenes-compra/autorizacion/pendientes/responsable';
+    }
+@endphp
 
+@if($comprasUrl !== '#')
+    <li class="nav-item">
+        <a class="nav-link text-white" href="{{ url($comprasUrl) }}">AUT-OC-RESP</a>
+    </li>
+@endif
+@endauth
 
         @auth
         @php
@@ -148,17 +143,38 @@
     
         @if($comprasUrl !== '#')
             <li class="nav-item">
-                <a class="nav-link text-white" href="{{ url($comprasUrl) }}">OC</a>
+                <a class="nav-link text-white" href="{{ url($comprasUrl) }}">Ordenes de Compra</a>
             </li>
         @endif
     @endauth
+
+         {{-- //vista para norma  --}}
+         @auth
+         @php
+             // Determinar la ruta según el rol del usuario
+             $comprasUrl = '#'; // Enlace por defecto
+             if (auth()->user()->hasRole(['Contamex'])) {
+                 $comprasUrl = '/ordenes-compra-autorizadas';
+             }
+            
+         @endphp
+     
+         @if($comprasUrl !== '#')
+             <li class="nav-item">
+                 <a class="nav-link text-white" href="{{ url($comprasUrl) }}">OCS-AUTS</a>
+             </li>
+         @endif
+     @endauth
+ 
+      {{-- fin vista norma --}}
+ 
 
         {{-- //vista para norma  --}}
         @auth
         @php
             // Determinar la ruta según el rol del usuario
             $comprasUrl = '#'; // Enlace por defecto
-            if (auth()->user()->hasRole(['Developer', 'Contamex','Gerope','Diradmin'])) {
+            if (auth()->user()->hasRole(['Contamex','Gerope','Diradmin'])) {
                 $comprasUrl = '/repositorio-ordenes-compra';
             }
            

@@ -21,66 +21,45 @@
 <link rel="stylesheet" href="https://cdn.datatables.net/responsive/3.0.3/css/responsive.bootstrap5.css">
 @endpush
 
+<div class="d-flex flex-wrap mt-3">
 
-
-<div class="col-md-12">
-<h3>Datos Generales</h3>
-
-    <a href="{{ url('/ordenes-compra/pendientes') }}" class="col-md-3 btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
-        Ordenes Pendientes de Autorización
-    </a>
-
-    <a href="{{ url('/ordenes-compra/rechazadas') }}" class="col-md-3 btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
-        Ordenes Canceladas 
-    </a>
-
-    <a href="{{ url('/ordenes-compra/finalizadas') }}" class="col-md-3 btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
-        Ordenes Finalizadas 
-    </a>
-
-    <a href="{{ url('/ordenes-compra/facturadas') }}" class="col-md-3 btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
-        Ordenes Facturadas
-    </a>
-
-    <a href="{{ url('/ordenes-compra/no-facturadas') }}" class="col-md-3 btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
-        Ordenes No Facturadas
-    </a>
-
-    <a href="{{ url('/ordenes-compra/pagadas') }}" class="col-md-3 btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
-        Ordenes Pagadas
-    </a>
-</div>
-
-<h3>Descargar Excel</h3>
-
-<!-- Botones de Excel -->
-<div class="d-flex flex-wrap">
-
-    <a href="{{ url('/export-compras-locales') }}" class="col-md-3 btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
-        REPORTE COMPRAS LOCALES
-    </a>
-
-    <a href="{{ url('/export-compras-extranjeras') }}" class="col-md-3 btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
-        REPORTE COMPRAS EXTRANJERAS
-    </a>
-
-    <a href="{{ url('/compras-por-fechas') }}" class="col-md-3 btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
-        REPORTE POR RANGOS
-    </a>
-
-    <a href="{{ url('/export-compras-global') }}" class="col-md-3 btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
-        REPORTE GLOBAL DE COMPRAS
-    </a>
-
-    <a href="{{ url('/export-proveedores') }}" class="col-md-3 btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
-        PROVEEDORES APROBADOS
-    </a>
-
-</div>
  
-<h3 class="text-center my-1">Ordenes de Compra Autorizadas</h3>
+
+    <a href="{{ url('/ordenes-compra') }}" class="btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
+        Regresar
+    </a>
+
+    
+</div>
+
+ 
+<h3 class="text-center my-1">Compras por Fecha</h3>
+<br>
+
+<h3>Generar Excel</h3>
+
+<i class="fa-solid fa-triangle-exclamation"></i> <span>Ingresa la fecha de inicio y la fecha final para generar un archivo Excel con las compras dentro de ese rango.
+
+</span>
+<br>
+<br>
 
 
+<div class="row mb-3">
+    <div class="col-auto">
+      <input type="date" name="start_date" id="export_start" class="form-control">
+    </div>
+    <div class="col-auto">
+      <input type="date" name="end_date" id="export_end" class="form-control">
+    </div>
+    <div class="col-auto">
+      <button type="submit" onclick="setExportDates()" class="btn btn-primary">Exportar Excel</button>
+    </div>
+  </div>
+
+<i class="fa-solid fa-triangle-exclamation"></i> <span>Si el número es negativo (-), significa que la compra aún no vence; si es positivo, indica que ya ha excedido el tiempo de espera.</span>
+<br>
+<br>
 <div class="card">
     <div class="card-body">
             
@@ -90,7 +69,7 @@
         <tr>
             <th class="col-md-1">ID REQUI</th>
             <th class="col-md-1">ID ORDEN</th>
-            <th class="col-md-1">DEP</th>
+            <th class="col-md-1">FECHA CREACIÓN</th>
             <th class="col-md-1">PROVEEDOR</th>
             <th class="col-md-1">TOTAL</th>
             <th class="col-md-1">AUTORIZADO</th>
@@ -107,7 +86,7 @@
             <td>{{ $oc->requisition->user->area ."-" . $oc->requisition->id }}</td>
             <td data-order="{{ $oc->id }}">{{ "VH-".$oc->id ."-". $oc->created_at->format('y') }}</td>
             {{-- <td>{{ "VH-".$oc->id ."-". $oc->created_at->format('y')}}</td> --}}
-            <td>{{ $oc->requisition->user->area }}</td>
+            <td>{{ \Carbon\Carbon::parse($oc->date_start)->format('d/m/Y') }}</td>
             <td>{{ $oc->supplier->name}}</td>
             <td>{{ $oc->total }}</td>
             <td>{{ $oc->authorization_4 }}</td> 
@@ -151,19 +130,7 @@
         
 
             <td>
-                <a class="text-white" href="{{ route('ordencompra.show', ['purchaseOrder' => $oc->id, 'requisicione' => $oc->requisition->id]) }}" target="_blank">
 
-                    <button class="btn btn-primary mb-2">
-                        VER
-                    </button>
-                </a> 
-                <a class="text-white" href="{{ route('ordencompra.edit', ['purchaseOrder' => $oc->id, 'requisicione' => $oc->requisition->id]) }}" target="_blank"
-
-                    >
-                    <button class="btn btn-success mb-2">
-                        Editar
-                    </button>
-                </a>
                 <a class="text-white" href="{{ route('ordencompra.pdf', ['purchaseOrder' => $oc->id, 'requisicione' => $oc->requisition->id]) }}">
 
                     <button class="btn btn-secondary mb-2">
@@ -222,6 +189,7 @@
     }
             }
         }); // Asegúrate de que el ID coincida con tu tabla
+        
     });
 </script>
 @endpush

@@ -21,64 +21,17 @@
 <link rel="stylesheet" href="https://cdn.datatables.net/responsive/3.0.3/css/responsive.bootstrap5.css">
 @endpush
 
-
-
 <div class="col-md-12">
-<h3>Datos Generales</h3>
-
-    <a href="{{ url('/ordenes-compra/pendientes') }}" class="col-md-3 btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
-        Ordenes Pendientes de Autorización
+    <a href="{{ url('/ordenes-compra/autorizacion/autorizadas') }}" class="col-md-3 btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
+        COMPRAS AUTORIZADAS
     </a>
 
-    <a href="{{ url('/ordenes-compra/rechazadas') }}" class="col-md-3 btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
-        Ordenes Canceladas 
+    <a href="{{ url('/ordenes-compra/autorizacion/canceladas') }}" class="col-md-3 btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
+        COMPRAS RECHAZADAS
     </a>
-
-    <a href="{{ url('/ordenes-compra/finalizadas') }}" class="col-md-3 btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
-        Ordenes Finalizadas 
-    </a>
-
-    <a href="{{ url('/ordenes-compra/facturadas') }}" class="col-md-3 btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
-        Ordenes Facturadas
-    </a>
-
-    <a href="{{ url('/ordenes-compra/no-facturadas') }}" class="col-md-3 btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
-        Ordenes No Facturadas
-    </a>
-
-    <a href="{{ url('/ordenes-compra/pagadas') }}" class="col-md-3 btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
-        Ordenes Pagadas
-    </a>
-</div>
-
-<h3>Descargar Excel</h3>
-
-<!-- Botones de Excel -->
-<div class="d-flex flex-wrap">
-
-    <a href="{{ url('/export-compras-locales') }}" class="col-md-3 btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
-        REPORTE COMPRAS LOCALES
-    </a>
-
-    <a href="{{ url('/export-compras-extranjeras') }}" class="col-md-3 btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
-        REPORTE COMPRAS EXTRANJERAS
-    </a>
-
-    <a href="{{ url('/compras-por-fechas') }}" class="col-md-3 btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
-        REPORTE POR RANGOS
-    </a>
-
-    <a href="{{ url('/export-compras-global') }}" class="col-md-3 btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
-        REPORTE GLOBAL DE COMPRAS
-    </a>
-
-    <a href="{{ url('/export-proveedores') }}" class="col-md-3 btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
-        PROVEEDORES APROBADOS
-    </a>
-
 </div>
  
-<h3 class="text-center my-1">Ordenes de Compra Autorizadas</h3>
+<h3 class="text-center my-1">COMPRAS PENDIENTES DE AUTORIZACIÓN</h3>
 
 
 <div class="card">
@@ -93,7 +46,7 @@
             <th class="col-md-1">DEP</th>
             <th class="col-md-1">PROVEEDOR</th>
             <th class="col-md-1">TOTAL</th>
-            <th class="col-md-1">AUTORIZADO</th>
+            <th class="col-md-1">AUTORIZACIÓN</th>
             <th class="col-md-1">PRIORIDAD</th>
             <th class="col-md-1">DIAS RESTANTES</th>
             <th class="col-md-1">STATUS OC</th>
@@ -105,8 +58,8 @@
         @foreach($datosoc as $oc)
         <tr>
             <td>{{ $oc->requisition->user->area ."-" . $oc->requisition->id }}</td>
-            <td data-order="{{ $oc->id }}">{{ "VH-".$oc->id ."-". $oc->created_at->format('y') }}</td>
             {{-- <td>{{ "VH-".$oc->id ."-". $oc->created_at->format('y')}}</td> --}}
+            <td data-order="{{ $oc->id }}">{{ "VH-".$oc->id ."-". $oc->created_at->format('y') }}</td>
             <td>{{ $oc->requisition->user->area }}</td>
             <td>{{ $oc->supplier->name}}</td>
             <td>{{ $oc->total }}</td>
@@ -154,16 +107,17 @@
                 <a class="text-white" href="{{ route('ordencompra.show', ['purchaseOrder' => $oc->id, 'requisicione' => $oc->requisition->id]) }}" target="_blank">
 
                     <button class="btn btn-primary mb-2">
-                        VER
+                        Ver
                     </button>
                 </a> 
-                <a class="text-white" href="{{ route('ordencompra.edit', ['purchaseOrder' => $oc->id, 'requisicione' => $oc->requisition->id]) }}" target="_blank"
-
+               
+                <a class="text-white" href="{{ route('autdir.edit', ['purchaseOrder' => $oc->id, 'requisicione' => $oc->requisition->id]) }}" target="_blank"
                     >
                     <button class="btn btn-success mb-2">
-                        Editar
+                        Autorizar
                     </button>
                 </a>
+
                 <a class="text-white" href="{{ route('ordencompra.pdf', ['purchaseOrder' => $oc->id, 'requisicione' => $oc->requisition->id]) }}">
 
                     <button class="btn btn-secondary mb-2">
@@ -200,8 +154,7 @@
         $('#compras').DataTable({
             resposive:true,
             autoWidth: false,
-            pageLength: 25,
-           order: [[1, 'desc']],
+            order: [[1, 'desc']],
 
             "language": {
                 "lengthMenu":     "Mostrar _MENU_ registros",
