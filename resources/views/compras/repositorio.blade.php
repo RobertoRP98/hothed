@@ -37,7 +37,7 @@
         <tr>
             <th class="col-md-1">ID REQUI</th>
             <th class="col-md-1">ID ORDEN</th>
-            <th class="col-md-1">DEP</th>
+            <th class="col-md-1">FECHA CREACIÓN</th>
             <th class="col-md-1">PROVEEDOR</th>
             <th class="col-md-1">TOTAL</th>
             <th class="col-md-1">AUTORIZADO</th>
@@ -54,7 +54,8 @@
             <td>{{ $oc->requisition->user->area ."-" . $oc->requisition->id }}</td>
             <td data-order="{{ $oc->id }}">{{ "VH-".$oc->id ."-". $oc->created_at->format('y') }}</td>
             {{-- <td>{{ "VH-".$oc->id ."-". $oc->created_at->format('y')}}</td> --}}
-            <td>{{ $oc->requisition->user->area }}</td>
+            <td>{{ \Carbon\Carbon::parse($oc->date_start)->format('d/m/Y') }}</td>
+
             <td>{{ $oc->supplier->name}}</td>
             <td>{{ $oc->total }}</td>
             <td>{{ $oc->authorization_4 }}</td> 

@@ -23,7 +23,7 @@
 
 
  
-<h3 class="text-center my-1">Ordenes de Compra Autorizadas</h3>
+<h3 class="text-center my-1">Ordenes de Compra Autorizadas - PENDIENTES DE PAGO</h3>
 <br>
 <i class="fa-solid fa-triangle-exclamation"></i> <span>Si el número es negativo (-), significa que la compra aún no vence; si es positivo, indica que ya ha excedido el tiempo de espera.</span>
 <br>

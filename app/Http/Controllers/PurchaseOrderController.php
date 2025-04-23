@@ -100,6 +100,7 @@ class PurchaseOrderController extends Controller
     {
         $datosoc = PurchaseOrder::where('authorization_4', 'Autorizado')
             // ->where('finished', false)
+            ->whereIn('po_status',['PENDIENTE DE PAGO','PENDIENTE DE PAGO (SERVICIO CONCLUIDO)'])
             ->orderBy('id', 'desc')
             ->get();
 
@@ -524,8 +525,9 @@ class PurchaseOrderController extends Controller
 
             //  Inicializar fuera del transaction para poder usarla después
             $orden = null;
-            $originalAuthorization4 = $purchaseOrder->getOriginal('authorization_4');
+            $originalAuthorization2 = $purchaseOrder->getOriginal('authorization_2');
 
+            $originalAuthorization4 = $purchaseOrder->getOriginal('authorization_4');
 
             DB::transaction(function () use ($request, $purchaseOrder, &$orden) {
                 // Actualizar los datos de la orden de compra
@@ -601,7 +603,7 @@ class PurchaseOrderController extends Controller
             ];
 
             // ENVIAR EL CORREO SI APLICA
-            if ($orden->wasChanged('authorization_2') && ($orden->authorization_2) == 'Autorizado' && ($orden->total) >= 15000) {
+            if ($originalAuthorization2 !== 'Autorizado' && ($orden->authorization_2) == 'Autorizado' && ($orden->total) >= 15000) {
                 // Verifica si la requisición existe antes de acceder a user->departament
                 if (!$orden->requisition || !$orden->requisition->user) {
                     Log::error('La orden no tiene una requisición válida o no tiene usuario asignado.', [
@@ -614,12 +616,20 @@ class PurchaseOrderController extends Controller
                 $correoDestino = $emailsdirectora[$departamento] ?? null;
 
                 if ($correoDestino) {
-                    Log::info('Enviando correo a:', ['email' => $correoDestino]);
-                    Mail::to($correoDestino)->send(new OcAuthMail($orden));
+                    Log::info('Enviando correo a directora:', ['email' => $correoDestino]);
+
+                    try {
+                        Mail::to($correoDestino)->send(new OcAuthMail($orden));
+                        Log::info('Correo enviado correctamente a la directora');
+                    } catch (\Exception $e) {
+                        Log::error('Error al enviar correo a la directora: ', ['mensaje' => $e->getMessage()]);
+                    }
                 } else {
                     Log::warning('No se encontró un correo para el departamento:', ['departamento' => $departamento]);
                 }
-            } elseif ($orden->wasChanged('authorization_2') && ($orden->authorization_2) == 'Autorizado' && ($orden->total) < 15000) {
+                //Finaliza ordenes para la Directora y empiezan para el responsable de compras
+
+            } elseif ($originalAuthorization2 !== 'Autorizado' && ($orden->authorization_2) == 'Autorizado' && ($orden->total) < 15000) {
                 // Verifica si la requisición existe antes de acceder a user->departament
                 if (!$orden->requisition || !$orden->requisition->user) {
                     Log::error('La orden no tiene una requisición válida o no tiene usuario asignado.', [
@@ -632,8 +642,15 @@ class PurchaseOrderController extends Controller
                 $correoDestino = $emailsresp[$departamento] ?? null;
 
                 if ($correoDestino) {
-                    Log::info('Enviando correo a:', ['email' => $correoDestino]);
-                    Mail::to($correoDestino)->send(new OcAuthMail($orden));
+                    Log::info('Enviando correo a responsable de compras:', ['email' => $correoDestino]);
+
+                    try {
+
+                        Mail::to($correoDestino)->send(new OcAuthMail($orden));
+                        Log::info('Correo enviado a responsable de compras');
+                    } catch (\Exception $e) {
+                        Log::error('Error al enviar correo al responsable', ['mensaje' => $e->getMessage()]);
+                    }
                 } else {
                     Log::warning('No se encontró un correo para el departamento:', ['departamento' => $departamento]);
                 }
