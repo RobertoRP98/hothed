@@ -2,11 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\Tax;
 use App\Models\Product;
+use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\ProductosComprasExport;
+
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
-use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
@@ -109,6 +113,10 @@ class ProductController extends Controller
 
     }
 
+    public function exportProductosCompra(){
+                
+        return Excel::download(new ProductosComprasExport, 'Productos de Compras al ' . Carbon::now()->format('d-m-Y'). '.xlsx');
+    }
 
   
 }

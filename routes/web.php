@@ -174,6 +174,9 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/mis-ordenes', [AuthPurchaseOrderController::class, 'misordenes'])->name('ordenesclient.index');
 
     Route::get('/productos-cliente', [AuthorizationRequisitionController::class, 'productclient'])->name('productclient.index');
+
+    Route::get('/export-productos-compras', [ProductController::class, 'exportProductosCompra'])->name('export-productos-compras');
+    
 });
 //RUTAS QUE SOLO SON ACCESIBLES AL ENCARGADO DE COMPRAS
 

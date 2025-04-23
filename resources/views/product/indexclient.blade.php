@@ -18,7 +18,12 @@
     <a href="{{ url('/mis-requisiciones') }}" class="btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
        Mis Requisiciones
     </a>
+
+    <a href="{{ url('/export-productos-compras') }}" class="btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
+       Descargar Excel de Productos
+     </a>
 </div>
+
 
 
 
