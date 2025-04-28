@@ -33,7 +33,7 @@ class AreaSgiController extends Controller
     {
         $datosarea = $request->validated();
 
-        AreaSgi::create($datosarea);
+       AreaSgi::create($datosarea);
 
         return redirect ('areas-sgi')->with('message','Area de trabajo creada');
     }
@@ -51,9 +51,9 @@ class AreaSgiController extends Controller
      */
     public function edit($id)
     {
-        $areas = AreaSgi::FindOrFail($id);
+        $area = AreaSgi::FindOrFail($id);
 
-        return view('areas-sgi.edit', compact('areas'));
+        return view('areas-sgi.edit', compact('area'));
     }
 
     /**

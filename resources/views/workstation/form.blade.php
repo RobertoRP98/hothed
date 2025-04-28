@@ -14,7 +14,7 @@
  <div class="row mb-4 col-md-3">
    <div class="col">
      <div data-mdb-input-init class="form-outline">
-      <input type="text" id="name" name="name" value="{{ isset($workstation) ? $workstation->name : '' }}" class="form-control text-uppercase"  placeholder="AUXILIAR DE ALMACEN" />
+      <input type="text" id="name" name="name" value="{{ isset($workstation) ? $workstation->name : '' }}" class="form-control "  placeholder="AUXILIAR DE ALMACEN" />
       <label class="form-label" for="concept">PUESTO DE TRABAJO</label>
      </div>
    </div>
@@ -22,8 +22,8 @@
 
 
  <!-- Submit button -->
- <button type="submit" class="btn btn-primary btn-block mb-4 m-2">{{$modo}} Concepto</button>
+ <button type="submit" class="btn btn-primary btn-block mb-4 m-2">{{$modo}} Puesto de Trabajo</button>
 
- <button type="button" class="btn btn-warning btn-block mb-3"> <a class="text-white" href="{{ url('impuestos/') }}">
+ <button type="button" class="btn btn-warning btn-block mb-3"> <a class="text-white" href="{{ url('/puestos-trabajo') }}">
     Regresar
 </a> </button> 

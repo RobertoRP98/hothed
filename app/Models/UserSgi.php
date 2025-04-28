@@ -11,6 +11,8 @@ class UserSgi extends Model
 
     protected $table = 'users_sgi';
 
+    protected $fillable = ['name','email','employee_number','workstation_id','immediate_boss_id','area_id','active'];
+
     public function workstation(){
         return $this->belongsTo(Workstation::class);
     }
@@ -19,8 +21,9 @@ class UserSgi extends Model
         return $this->belongsTo(AreaSgi::class);
     }
 
-    public function jefeInmediato(){
-        return $this->belongsTo(UserSgi::class);
+    public function jefeInmediato()
+    {
+        return $this->belongsTo(UserSgi::class, 'immediate_boss_id');
     }
 
     public function subordinados(){

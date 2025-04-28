@@ -6,13 +6,16 @@ use App\Http\Controllers\TaxController;
 use App\Http\Controllers\BaseController;
 use App\Http\Controllers\BillController;
 use App\Http\Controllers\FamilyController;
+use App\Http\Controllers\AreaSgiController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\UserSgiController;
 use App\Http\Controllers\CurrencyController;
+
 use App\Http\Controllers\SubgroupController;
 use App\Http\Controllers\SupplierController;
-
 use App\Http\Controllers\ToolstatusController;
 use App\Http\Controllers\RequisitionController;
+use App\Http\Controllers\WorkstationController;
 use App\Http\Controllers\PurchaseOrderController;
 use App\Http\Controllers\ToolwarehouseController;
 use App\Http\Controllers\AuthPurchaseOrderController;
@@ -338,3 +341,11 @@ Route::group(
     }
 );
 //TERMINAN MODULOS DE COMPRAS
+
+
+//INICIA MODULO DE DOCUMENTOS
+Route::resource('puestos-trabajo', WorkstationController::class);
+Route::resource('areas-sgi', AreaSgiController::class);
+Route::resource('users-sgi', UserSgiController::class);
+
+//FINALIZA MODULO DE DOCUMENTOS

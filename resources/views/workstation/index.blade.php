@@ -7,7 +7,7 @@
  @endif   
 
 
- <button type="button" class="btn btn-outline-success mb-3 mt-3 m-2"> <a class="text-dark" href="{{ url('/usuarios-sgi') }}">
+ <button type="button" class="btn btn-outline-success mb-3 mt-3 m-2"> <a class="text-dark" href="{{ url('/users-sgi') }}">
     Regresar
 </a> </button> 
 

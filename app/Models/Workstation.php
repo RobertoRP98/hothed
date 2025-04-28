@@ -11,6 +11,7 @@ class Workstation extends Model
 
     protected $table = 'workstations';
 
+    protected $fillable = ['name'];
 
     public function users(){
         return $this->hasMany(UserSgi::class);

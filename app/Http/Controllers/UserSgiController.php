@@ -15,10 +15,10 @@ class UserSgiController extends Controller
      */
     public function index()
     {
-        $datos['users'] = UserSgi::all();
+        $users = UserSgi::all();
 
-        return view('user-sgi.index',compact($datos));
-     }
+        return view('users-sgi.index', compact('users'));
+    }
 
     /**
      * Show the form for creating a new resource.
@@ -27,8 +27,9 @@ class UserSgiController extends Controller
     {
         $areas = AreaSgi::all();
         $workstations = Workstation::all();
+        $users = UserSgi::all();
 
-        return view('users-sgi.create', compact(['areas','workstations']));
+        return view('users-sgi.create', compact(['areas', 'workstations', 'users']));
     }
 
     /**
@@ -38,9 +39,16 @@ class UserSgiController extends Controller
     {
         $datosuser = $request->validated();
 
+        // Forzar los campos vacíos a null
+        foreach (['workstation_id', 'immediate_boss_id', 'area_id'] as $campo) {
+            if (empty($datos[$campo])) {
+                $datos[$campo] = null;
+            }
+        }
+
         UserSgi::create($datosuser);
 
-        return redirect('users-sgi')->with('message','Usuario Creado');
+        return redirect('users-sgi')->with('message', 'Usuario Creado');
     }
 
     /**
@@ -56,13 +64,15 @@ class UserSgiController extends Controller
      */
     public function edit($id)
     {
-        $datosuser = UserSgi::findOrFail($id);
+        $user = UserSgi::findOrFail($id);
+
+        $users = UserSgi::all();
 
         $areas = AreaSgi::all();
 
         $workstations = Workstation::all();
 
-        return view ('users-sgi.edit',compact('datosuser','areas','workstations'));
+        return view('users-sgi.edit', compact('users', 'areas', 'workstations', 'user'));
     }
 
     /**
@@ -72,9 +82,16 @@ class UserSgiController extends Controller
     {
         $datosuser = $request->validated();
 
-        UserSgi::where('id',$id)->update($datosuser);
+         // Forzar los campos vacíos a null
+         foreach (['workstation_id', 'immediate_boss_id', 'area_id'] as $campo) {
+            if (empty($datos[$campo])) {
+                $datos[$campo] = null;
+            }
+        }
 
-        return redirect('users-sgi')->with('message','Usuario Actualizado');
+        UserSgi::where('id', $id)->update($datosuser);
+
+        return redirect('users-sgi')->with('message', 'Usuario Actualizado');
     }
 
     /**

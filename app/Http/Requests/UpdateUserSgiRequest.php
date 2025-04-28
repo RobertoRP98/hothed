@@ -23,7 +23,7 @@ class UpdateUserSgiRequest extends FormRequest
     {
         return [
             'name' => 'required',
-            'emai' => 'required',
+            'email' => 'required',
             'employee_number'=> 'required',
             'workstation_id' => 'nullable',
             'immediate_boss_id' => 'nullable',
