@@ -11,7 +11,7 @@ class StoreAreaSgiRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,22 @@ class StoreAreaSgiRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name' => 'required',
+            
         ];
+    }
+
+    public function messages(){
+        return [
+        'required' => 'El :attribute es requerido' ,
+        
+        ];
+    }
+
+    protected function prepareForValidation()
+    {
+        $this->merge(
+            $this->except(['_token'])
+        );
     }
 }

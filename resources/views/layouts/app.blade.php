@@ -68,8 +68,7 @@
             @yield('indexsupplier')
             @yield('editsupplier')
             @yield('createsupplier')
-
-
+            @yield('documents')
          @include('layouts.footer')   
         </main>
     </div>
