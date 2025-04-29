@@ -28,7 +28,19 @@
 
 
 <h3 class="text-center my-4">Productos</h3>
+<i class="fa-solid fa-triangle-exclamation"></i> <span>Se ha determinado la siguiente nomenclatura: </span> <br>
 
+<i class="fa-solid fa-triangle-exclamation"></i> <span>HHM-AC-X = ACCESORIOS </span>
+<i class="fa-solid fa-triangle-exclamation"></i> <span>HHM-HS-X = HSE </span>
+<i class="fa-solid fa-triangle-exclamation"></i> <span>HHM-HT-X = HERRAMIENTAS </span>
+<i class="fa-solid fa-triangle-exclamation"></i> <span>HHM-IN-X = INDIRECTOS </span>
+<i class="fa-solid fa-triangle-exclamation"></i> <span>HHM-MQ-X = MAQUINADOS </span>
+<br>
+<i class="fa-solid fa-triangle-exclamation"></i> <span>HHM-RH-X = RECURSOS HUMANOS </span>
+<i class="fa-solid fa-triangle-exclamation"></i> <span>HHM-SV-X = SERVICIOS (GENERALES)</span>
+<i class="fa-solid fa-triangle-exclamation"></i> <span>HHM-TI-X = TI</span>
+<br>
+<br>
 
 <div class="card">
     <div class="card-body">

@@ -100,7 +100,7 @@ class PurchaseOrderController extends Controller
     {
         $datosoc = PurchaseOrder::where('authorization_4', 'Autorizado')
             // ->where('finished', false)
-            ->whereIn('po_status',['PENDIENTE DE PAGO','PENDIENTE DE PAGO (SERVICIO CONCLUIDO)'])
+            ->whereIn('po_status', ['PENDIENTE DE PAGO', 'PENDIENTE DE PAGO (SERVICIO CONCLUIDO)'])
             ->orderBy('id', 'desc')
             ->get();
 
@@ -864,10 +864,16 @@ class PurchaseOrderController extends Controller
 
     public function exportReporteRangos(Request $request)
     {
+        //        dd($start, $end); //  Esto para validar
+
         $start = $request->input('start_date');
         $end = $request->input('end_date');
 
-        //        dd($start, $end); // 👈 Esto para validar
+
+        // Validación: asegurarse de que ambas fechas existan y tengan orden correcto
+        if (!$start || !$end || $start > $end) {
+            return redirect()->back()->with('error', 'Rango de fechas inválido. Asegúrate de que la fecha de inicio sea menor o igual a la fecha final.');
+        }
 
         return Excel::download(
             new ComprasRangoExport($start, $end),
