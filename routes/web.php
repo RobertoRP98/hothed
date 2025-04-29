@@ -216,6 +216,9 @@ Route::group(['middleware' => ['auth', 'role:Developer|RespCompras']], function 
 
     Route::get('/export-compras-rango', [PurchaseOrderController::class, 'exportReporteRangos'])->name('export.compras-rango');
 
+    Route::get('/export-proveedores-locales', [PurchaseOrderController::class, 'exportProveedoresPagadas'])->name('export.proveedores-pagadas');
+
+
 });
 
 //RUTAS QUE SOLO SON ACCESIBLES AL ENCARGADO DE COMPRAS, DIRECTORA GENERAL Y GER DE OPERACIONES PARA AUTORIZAR Y VER OCS
