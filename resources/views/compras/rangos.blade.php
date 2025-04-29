@@ -13,6 +13,12 @@
     </div>
 @endif
 
+@if(session('error'))
+  <div class="alert alert-danger">
+    {{ session('error') }}
+  </div>
+@endif
+
 
  @push('css')
  <!-- CSS -->
@@ -45,17 +51,19 @@
 <br>
 
 
-<div class="row mb-3">
-    <div class="col-auto">
-      <input type="date" name="start_date" id="export_start" class="form-control">
+<form method="GET" action="{{ route('export.compras-rango') }}">
+    <div class="row mb-3">
+      <div class="col-auto">
+        <input type="date" name="start_date" id="export_start" class="form-control" required>
+      </div>
+      <div class="col-auto">
+        <input type="date" name="end_date" id="export_end" class="form-control" required>
+      </div>
+      <div class="col-auto">
+        <button type="submit" class="btn btn-primary">Exportar Excel</button>
+      </div>
     </div>
-    <div class="col-auto">
-      <input type="date" name="end_date" id="export_end" class="form-control">
-    </div>
-    <div class="col-auto">
-      <button type="submit" onclick="setExportDates()" class="btn btn-primary">Exportar Excel</button>
-    </div>
-  </div>
+  </form>
 
 <i class="fa-solid fa-triangle-exclamation"></i> <span>Si el número es negativo (-), significa que la compra aún no vence; si es positivo, indica que ya ha excedido el tiempo de espera.</span>
 <br>
