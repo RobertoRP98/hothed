@@ -174,7 +174,7 @@
         @php
             // Determinar la ruta según el rol del usuario
             $comprasUrl = '#'; // Enlace por defecto
-            if (auth()->user()->hasRole(['Contamex','Gerope','Diradmin'])) {
+            if (auth()->user()->hasRole(['Contamex','Gerope','Diradmin','RespCompras','Auxconta','Coordconta'])) {
                 $comprasUrl = '/repositorio-ordenes-compra';
             }
            

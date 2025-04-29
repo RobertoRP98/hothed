@@ -275,7 +275,7 @@ Route::group(['middleware' => ['auth', 'role:Developer|Contamex']], function () 
 });
 
 //RUTAS PARA EL REPOSITORIO DE COMPRAS
-Route::group(['middleware' => ['auth', 'role:Developer|Diradmin|Gerope|Contamex']], function () {
+Route::group(['middleware' => ['auth', 'role:Developer|Diradmin|Gerope|Contamex|RespCompras|Auxconta|Coordconta']], function () {
     Route::get('/repositorio-ordenes-compra', [PurchaseOrderController::class, 'indexrepositorio'])->name('ordencompra.repositorio');
 });
 
