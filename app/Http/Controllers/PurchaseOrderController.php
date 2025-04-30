@@ -82,6 +82,7 @@ class PurchaseOrderController extends Controller
     {
         $datosoc = PurchaseOrder::query()
             ->where('bill', 'Pendiente Facturar')
+            ->where('po_status', 'PAGADA')
             ->get();
 
         return view('compras.nofacturadas', compact('datosoc'));

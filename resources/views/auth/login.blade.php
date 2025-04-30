@@ -8,6 +8,10 @@
                     <div class="card-header">{{ __('Login') }}</div>
 
                     <div class="card-body">
+                        <div class="col-md-12 d-flex justify-content-center">
+                                <img src="{{ asset('images/Logo-Azul-Gris.png') }}" alt="" width="400" height="100" class="col-md-4 col-form-label text-md-end">
+                        </div>
+                        
                         <form method="POST" action="{{ route('login') }}">
                             @csrf
 

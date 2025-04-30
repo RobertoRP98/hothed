@@ -31,7 +31,7 @@
                     </div>
                 </div>
 
-                <div class="col-lg-4">
+                <div class="col-lg-2">
                     <div class="">
                         <h6 class="footer-heading text-uppercase text-white">Contacto</h6>
                         {{-- <p class="contact-info mt-4">roberto.romero@hothedmex.mx</p> --}}
@@ -39,6 +39,17 @@
                     </div>
                 </div>
 
+                <div class="col-lg-2">
+                    <div class="">
+                        <h6 class="footer-heading text-uppercase text-white">Inicio</h6>
+                        {{-- <p class="contact-info mt-4">roberto.romero@hothedmex.mx</p> --}}
+                        <a href="{{ url('/') }}" class="logo d-flex align-items-center me-auto">
+                            <img src="{{ asset('images/Logo-blanco.png') }}" alt="" width="200" height="75" class="d-inline-block align-text-center">
+                        </a>
+                    </div>
+                </div>
+
+             
             </div>
         </div>
 
