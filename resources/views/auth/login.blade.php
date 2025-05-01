@@ -9,7 +9,7 @@
 
                     <div class="card-body">
                         <div class="col-md-12 d-flex justify-content-center">
-                                <img src="{{ asset('images/Logo-Azul-Gris.png') }}" alt=""  class="col-md-4 col-form-label text-md-end">
+                            <img src="{{ asset('images/Logo-Azul-Gris.png') }}" alt="" class="img-fluid" style="max-width: 300px;">
                         </div>
                         
                         <form method="POST" action="{{ route('login') }}">
