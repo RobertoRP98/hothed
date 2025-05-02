@@ -98,9 +98,17 @@
             @endif">
             {{ floor(\Carbon\Carbon::parse($oc->requisition->production_date)->diffInDays(now(), false)) }}
         </td>
-
-        <td>{{ $oc->po_status }}</td> 
-
+        
+        <td>
+            @if($oc->po_status === 'PENDIENTE DE PAGO')
+                PENDIENTE DE COMPRA/SERVICIO
+            @elseif($oc->po_status === 'PENDIENTE DE PAGO (SERVICIO CONCLUIDO)')
+                COMPRA/SERVICIO CONCLUIDO SIN PAGO
+            @else
+                {{ $oc->po_status }}
+            @endif
+        </td>
+        
         
 
             <td>
