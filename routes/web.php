@@ -21,6 +21,7 @@ use App\Http\Controllers\ToolwarehouseController;
 use App\Http\Controllers\AuthPurchaseOrderController;
 use App\Http\Controllers\CompanyReceivableController;
 use App\Http\Controllers\AuthorizationRequisitionController;
+use App\Http\Controllers\DocumentsCategoriesController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -347,5 +348,7 @@ Route::group(
 Route::resource('puestos-trabajo', WorkstationController::class);
 Route::resource('areas-sgi', AreaSgiController::class);
 Route::resource('users-sgi', UserSgiController::class);
+Route::resource('categorias-documentos', DocumentsCategoriesController::class);
+
 
 //FINALIZA MODULO DE DOCUMENTOS
