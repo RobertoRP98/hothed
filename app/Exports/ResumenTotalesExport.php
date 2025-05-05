@@ -84,7 +84,7 @@ class ResumenTotalesExport implements
 
     // SECCIÓN DERECHA: Totales por Empresa
     $totalesPorEmpresa = [
-        ['Empresa', 'Pendiente de Cobrar', 'Pendiente de Facturar', ]
+        ['Empresa', 'Pendiente de Cobrar','Pendiente de Entrada', 'Pendiente de Facturar', ]
     ];
 
     $empresas = CompanyReceivable::with('bills')->get();
@@ -93,12 +93,15 @@ class ResumenTotalesExport implements
         //$totalGlobal = $empresa->bills->where('status', '!=', 'cancelado')->sum('total_payment');
         $totalPendienteCobrar = $empresa->bills->where('status', 'pendiente_cobrar')->sum('total_payment');
         $totalPendienteFacturar = $empresa->bills->where('status', 'pendiente_facturar')->sum('total_payment');
+        $totalPendienteEntrada = $empresa->bills->where('status', 'pendiente_entrada')->sum('total_payment');
+
         //$totalPagado = $empresa->bills->where('status', 'pagado')->sum('total_payment');
 
         $totalesPorEmpresa[] = [
             $empresa->name,
             //$totalGlobal,
             $totalPendienteCobrar,
+            $totalPendienteEntrada,
             $totalPendienteFacturar,
             //$totalPagado
         ];
@@ -127,6 +130,8 @@ class ResumenTotalesExport implements
             'C' => '"$"#,##0.00_-',
             'F' => '"$"#,##0.00_-',
             'G' => '"$"#,##0.00_-',
+            'H' => '"$"#,##0.00_-',
+
             //'H' => '"$"#,##0.00_-',
             //'I' => '"$"#,##0.00_-',
         ];
@@ -140,7 +145,7 @@ class ResumenTotalesExport implements
     }
 
     // Formato de la primera fila (cabecera)
-    $event->sheet->getStyle('A1:G1')->applyFromArray([
+    $event->sheet->getStyle('A1:H1')->applyFromArray([
         'font' => [
             'name' => 'Arial',
             'bold' => true,
@@ -164,7 +169,7 @@ class ResumenTotalesExport implements
     $highestRow = $event->sheet->getDelegate()->getHighestRow();
     for ($row = 2; $row <= $highestRow; $row++) { // Comienza en la segunda fila para no aplicar en la cabecera
         $color = ($row % 2 === 0) ? 'FFE0EAF1' : 'FFFFFFFF'; // Azul claro y blanco
-        $event->sheet->getStyle("A{$row}:G{$row}")->applyFromArray([
+        $event->sheet->getStyle("A{$row}:H{$row}")->applyFromArray([
             'fill' => [
                 'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
                 'color' => ['argb' => $color],

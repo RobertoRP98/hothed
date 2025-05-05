@@ -25,6 +25,17 @@
  
 <h3 class="text-center my-1">Historial de Compras</h3>
 <br>
+<h3>Descargar Excel</h3>
+
+<!-- Botones de Excel -->
+<div class="d-flex flex-wrap">
+
+    <a href="{{ url('/export-proveedores-locales') }}" class="col-md-3 btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
+        REPORTE PROVEEDORES LOCALES
+    </a>
+
+</div>
+ 
 <i class="fa-solid fa-triangle-exclamation"></i> <span>Si el número es negativo (-), significa que la compra aún no vence; si es positivo, indica que ya ha excedido el tiempo de espera.</span>
 <br>
 <br>
@@ -35,7 +46,6 @@
     <table id="compras" class="table table-light table-bordered table-hover text-center">
 <thead class="thead-light">
         <tr>
-            <th class="col-md-1">ID REQUI</th>
             <th class="col-md-1">ID ORDEN</th>
             <th class="col-md-1">FECHA CREACIÓN</th>
             <th class="col-md-1">PROVEEDOR</th>
@@ -44,14 +54,15 @@
             <th class="col-md-1">PRIORIDAD</th>
             <th class="col-md-1">DIAS RESTANTES</th>
             <th class="col-md-1">STATUS OC</th>
-            <th class="col-md-1">OPCIONES</th>
+            <th class="col-md-1">VER</th>
+            <th class="col-md-1">FACTURA</th>
+
 
         </tr>
     </thead>
     <tbody>
         @foreach($datosoc as $oc)
         <tr>
-            <td>{{ $oc->requisition->user->area ."-" . $oc->requisition->id }}</td>
             <td data-order="{{ $oc->id }}">{{ "VH-".$oc->id ."-". $oc->created_at->format('y') }}</td>
             {{-- <td>{{ "VH-".$oc->id ."-". $oc->created_at->format('y')}}</td> --}}
             <td>{{ \Carbon\Carbon::parse($oc->date_start)->format('d/m/Y') }}</td>
@@ -99,15 +110,31 @@
         
 
             <td>
-
                 <a class="text-white" href="{{ route('ordencompra.pdf', ['purchaseOrder' => $oc->id, 'requisicione' => $oc->requisition->id]) }}">
 
                     <button class="btn btn-secondary mb-2">
                         PDF
                     </button>
                 </a> 
-
             </td> 
+
+            {{-- <td>
+                <a class="text-white" href="{{$oc->bill_name}}" target="_blank">
+
+                    <button class="btn btn-info mb-2">
+                        ABRIR
+                    </button>
+                </a> 
+            </td>  --}}
+
+            <td>
+                @if (!empty($oc->bill_name))
+                    <a class="text-white" href="{{ $oc->bill_name }}" target="_blank">
+                        <button class="btn btn-info mb-2">ABRIR</button>
+                    </a>
+                @endif
+            </td>
+            
 
 
             
@@ -137,7 +164,7 @@
             resposive:true,
             autoWidth: false,
             pageLength: 25,
-           order: [[1, 'desc']],
+           order: [[0, 'desc']],
 
             "language": {
                 "lengthMenu":     "Mostrar _MENU_ registros",

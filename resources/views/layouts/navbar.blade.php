@@ -2,7 +2,7 @@
 <nav class="navbar navbar-expand-md navbar-light shadow-sm color-hothed">
     <div class="container-fluid container-xl position-relative d-flex align-items-center">
         <a href="{{ url('/') }}" class="logo d-flex align-items-center me-auto">
-            <img src="{{ asset('images/logo.png') }}" alt="" width="70" height="70" class="d-inline-block align-text-center">
+            <img src="{{ asset('images/Logo-blanco.png') }}" alt="" width="150" height="70" class="d-inline-block align-text-center">
         </a>
 
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -174,7 +174,7 @@
         @php
             // Determinar la ruta según el rol del usuario
             $comprasUrl = '#'; // Enlace por defecto
-            if (auth()->user()->hasRole(['Contamex','Gerope','Diradmin'])) {
+            if (auth()->user()->hasRole(['Contamex','Gerope','Diradmin','RespCompras','Auxconta','Coordconta'])) {
                 $comprasUrl = '/repositorio-ordenes-compra';
             }
            

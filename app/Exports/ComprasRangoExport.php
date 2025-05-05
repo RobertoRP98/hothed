@@ -64,7 +64,11 @@ WithEvents
                     'Divisa' => $order->currency,
                     'Prioridad' => $priority,
                     'Días Restantes' => (string) (($daysRemaining === null || $daysRemaining === '') ? 0 : $daysRemaining),
-                    'Status' => $order->po_status,
+                    'Status' => match ($order->po_status){
+                        'PENDIENTE DE PAGO' => 'PENDIENTE DE COMPRA/SERVICIO',
+                        'PENDIENTE DE PAGO (SERVICIO CONCLUIDO)' => 'COMPRA/SERVICIO CONCLUIDO SIN PAGO',
+                        default=> $order->po_status
+                    },
                     'Payment type' => $order->payment_type,
                     'Factura' => $order->bill_name,
                     'Notes' => $order->requisition->notes_resp,

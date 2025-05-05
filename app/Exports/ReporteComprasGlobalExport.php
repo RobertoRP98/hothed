@@ -57,7 +57,11 @@ WithEvents
                     'Pago' => $order->payment_type,
                     'Dep' => $order->requisition->user->area,
                     'Aut 4' => $order->authorization_4, // Asegúrate del campo correcto
-                    'Status' => $order->po_status,
+                    'Status' => match ($order->po_status){
+                        'PENDIENTE DE PAGO' => 'PENDIENTE DE COMPRA/SERVICIO',
+                        'PENDIENTE DE PAGO (SERVICIO CONCLUIDO)' => 'COMPRA/SERVICIO CONCLUIDO SIN PAGO',
+                        default=> $order->po_status
+                    },
                     'Factura' => $order->bill_name,
                     'Prioridad' => $priority,
                     'Días Restantes' => (string) (($daysRemaining === null || $daysRemaining === '') ? 0 : $daysRemaining),

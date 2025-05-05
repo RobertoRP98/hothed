@@ -22,6 +22,7 @@ use App\Exports\ReporteLocalesExport;
 use App\Exports\ReporteExtranjerasExport;
 use App\Exports\ReporteComprasGlobalExport;
 use App\Exports\ReporteLineaProductosExport;
+use App\Exports\ReporteProveedoresLocalExport;
 use Illuminate\Validation\ValidationException;
 use App\Http\Requests\StorePurchaseOrderRequest;
 use App\Http\Requests\UpdatePurchaseOrderRequest;
@@ -81,6 +82,7 @@ class PurchaseOrderController extends Controller
     {
         $datosoc = PurchaseOrder::query()
             ->where('bill', 'Pendiente Facturar')
+            ->where('po_status', 'PAGADA')
             ->get();
 
         return view('compras.nofacturadas', compact('datosoc'));
@@ -879,5 +881,9 @@ class PurchaseOrderController extends Controller
             new ComprasRangoExport($start, $end),
             'Resumen de Compras al ' . Carbon::now()->format('d-m-Y') . '.xlsx'
         );
+    }
+
+    public function exportProveedoresPagadas(){
+        return Excel::download(new ReporteProveedoresLocalExport, 'Reporte de Proveedores Locales al '. Carbon::now()->format('d-m-Y') . '.xlsx');
     }
 }
