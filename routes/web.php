@@ -180,7 +180,6 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/productos-cliente', [AuthorizationRequisitionController::class, 'productclient'])->name('productclient.index');
 
     Route::get('/export-productos-compras', [ProductController::class, 'exportProductosCompra'])->name('export-productos-compras');
-    
 });
 //RUTAS QUE SOLO SON ACCESIBLES AL ENCARGADO DE COMPRAS
 
@@ -189,7 +188,7 @@ Route::group(['middleware' => ['auth', 'role:Developer|RespCompras']], function 
     Route::resource('/proveedores', SupplierController::class);
     Route::resource('/productos', ProductController::class);
     Route::get('/requisiciones', [RequisitionController::class, 'index'])->name('requisiciones.index');
-    Route::get('/compras-por-fechas',[PurchaseOrderController::class, 'verReporteRangos'])->name('compras.rangos.index');
+    Route::get('/compras-por-fechas', [PurchaseOrderController::class, 'verReporteRangos'])->name('compras.rangos.index');
 
     //INICIA ORDENES DE COMPRAS
     Route::get('/ordenes-compra', [PurchaseOrderController::class, 'index'])->name('ordencompra.index');
@@ -221,8 +220,6 @@ Route::group(['middleware' => ['auth', 'role:Developer|RespCompras']], function 
     Route::get('/export-compras-rango', [PurchaseOrderController::class, 'exportReporteRangos'])->name('export.compras-rango');
 
     Route::get('/export-proveedores-locales', [PurchaseOrderController::class, 'exportProveedoresPagadas'])->name('export.proveedores-pagadas');
-
-
 });
 
 //RUTAS QUE SOLO SON ACCESIBLES AL ENCARGADO DE COMPRAS, DIRECTORA GENERAL Y GER DE OPERACIONES PARA AUTORIZAR Y VER OCS
@@ -348,10 +345,15 @@ Route::group(
 
 
 //INICIA MODULO DE DOCUMENTOS
-Route::resource('puestos-trabajo', WorkstationController::class);
-Route::resource('areas-sgi', AreaSgiController::class);
-Route::resource('users-sgi', UserSgiController::class);
-Route::resource('categorias-documentos', DocumentsCategoriesController::class);
 
-
+//RUTAS PARA EDITAR SOLO SON ACCESIBLES PARA GERENCIA Y RESPONSABLE DE COMPRAS
+Route::group(
+    ['middleware' => ['auth', 'role:Developer|Respsgi']],
+    function () {
+        Route::resource('puestos-trabajo', WorkstationController::class);
+        Route::resource('areas-sgi', AreaSgiController::class);
+        Route::resource('users-sgi', UserSgiController::class);
+        Route::resource('categorias-documentos', DocumentsCategoriesController::class);
+    }
+);
 //FINALIZA MODULO DE DOCUMENTOS
