@@ -34,6 +34,10 @@
         REPORTE PROVEEDORES LOCALES
     </a>
 
+    <a href="{{ url('/export-compras-global') }}" class="col-md-3 btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
+        REPORTE GLOBAL DE COMPRAS
+    </a>
+
 </div>
  
 <i class="fa-solid fa-triangle-exclamation"></i> <span>Si el número es negativo (-), significa que la compra aún no vence; si es positivo, indica que ya ha excedido el tiempo de espera.</span>
