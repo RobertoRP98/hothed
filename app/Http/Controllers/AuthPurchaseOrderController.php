@@ -236,10 +236,17 @@ class AuthPurchaseOrderController extends Controller
         }
 
         $datosoc = PurchaseOrder::query()
-            ->where('authorization_4', 'Pendiente')
-            ->where('total', '>=', 15000)
-            ->get();
-
+        ->where('authorization_4', 'Pendiente')
+        ->where(function ($query) {
+            $query->where(function ($q) {
+                $q->where('currency', 'MXN')
+                  ->where('total', '>=', 15000);
+            })->orWhere(function ($q) {
+                $q->where('currency', 'USD')
+                  ->where('total', '>=', 750);
+            });
+        })
+        ->get();
         return view('comprasdir.pendientedir', compact('datosoc'));
     }
 
@@ -251,9 +258,17 @@ class AuthPurchaseOrderController extends Controller
         }
 
         $datosoc = PurchaseOrder::query()
-            ->where('authorization_4', 'Pendiente')
-            ->where('total', '<', 15000)
-            ->get();
+        ->where('authorization_4', 'Pendiente')
+        ->where(function ($query) {
+            $query->where(function ($q) {
+                $q->where('currency', 'MXN')
+                  ->where('total', '<', 15000);
+            })->orWhere(function ($q) {
+                $q->where('currency', 'USD')
+                  ->where('total', '<', 750);
+            });
+        })
+        ->get();
 
         return view('comprasdir.pendienteresp', compact('datosoc'));
     }

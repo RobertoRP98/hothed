@@ -212,9 +212,19 @@ Route::group(['middleware' => ['auth', 'role:Developer|RespCompras']], function 
 
     Route::get('/export-proveedores', [PurchaseOrderController::class, 'exportProveedores'])->name('export.proveedores');
 
-    Route::get('/export-compras-global', [PurchaseOrderController::class, 'exportReporteGlobalCompras'])->name('export.compras-global');
+ //   Route::get('/export-compras-global', [PurchaseOrderController::class, 'exportReporteGlobalCompras'])->name('export.compras-global');
 
     Route::get('/export-compras-rango', [PurchaseOrderController::class, 'exportReporteRangos'])->name('export.compras-rango');
+
+//    Route::get('/export-proveedores-locales', [PurchaseOrderController::class, 'exportProveedoresPagadas'])->name('export.proveedores-pagadas');
+
+
+});
+
+//RUTAS DE EXCELES PARA CONTABILIDAD Y RESP DE COMPRAS 
+Route::group(['middleware' => ['auth', 'role:Developer|RespCompras|Auxconta|Coordconta']], function () {
+
+    Route::get('/export-compras-global', [PurchaseOrderController::class, 'exportReporteGlobalCompras'])->name('export.compras-global');
 
     Route::get('/export-proveedores-locales', [PurchaseOrderController::class, 'exportProveedoresPagadas'])->name('export.proveedores-pagadas');
 
@@ -268,7 +278,7 @@ Route::group(['middleware' => ['auth', 'role:Developer|RespCompras|Diradmin']], 
 
 
 //RUTAS QUE SOLO SON ACCESIBLES AL ENCARGADO DE COMPRAS,DIRECTORA, GEROPE PARA VER LOS PDF DE LAS OC
-Route::group(['middleware' => ['auth', 'role:Developer|RespCompras|Diradmin|Gerope|Contamex']], function () {
+Route::group(['middleware' => ['auth', 'role:Developer|RespCompras|Diradmin|Gerope|Contamex|Auxconta|Coordconta']], function () {
     Route::get('/ordenes-compra/{purchaseOrder}/requisiciones/{requisicione}/pdf', [PurchaseOrderController::class, 'pdf'])->name('ordencompra.pdf');
 });
 

@@ -605,7 +605,12 @@ class PurchaseOrderController extends Controller
             ];
 
             // ENVIAR EL CORREO SI APLICA
-            if ($originalAuthorization2 !== 'Autorizado' && ($orden->authorization_2) == 'Autorizado' && ($orden->total) >= 15000) {
+            if ($originalAuthorization2 !== 'Autorizado' && ($orden->authorization_2) == 'Autorizado' && 
+            (
+                ($orden->currency === 'MXN' && $orden->total >= 15000) ||
+                ($orden->currency === 'USD' && $orden->total >= 750)
+            )
+            ) {
                 // Verifica si la requisición existe antes de acceder a user->departament
                 if (!$orden->requisition || !$orden->requisition->user) {
                     Log::error('La orden no tiene una requisición válida o no tiene usuario asignado.', [
@@ -631,7 +636,10 @@ class PurchaseOrderController extends Controller
                 }
                 //Finaliza ordenes para la Directora y empiezan para el responsable de compras
 
-            } elseif ($originalAuthorization2 !== 'Autorizado' && ($orden->authorization_2) == 'Autorizado' && ($orden->total) < 15000) {
+            } elseif ($originalAuthorization2 !== 'Autorizado' && ($orden->authorization_2) == 'Autorizado' && (
+                ($orden->currency === 'MXN' && $orden->total < 15000) ||
+                ($orden->currency === 'USD' && $orden->total < 750)
+            )) {
                 // Verifica si la requisición existe antes de acceder a user->departament
                 if (!$orden->requisition || !$orden->requisition->user) {
                     Log::error('La orden no tiene una requisición válida o no tiene usuario asignado.', [
@@ -883,7 +891,8 @@ class PurchaseOrderController extends Controller
         );
     }
 
-    public function exportProveedoresPagadas(){
-        return Excel::download(new ReporteProveedoresLocalExport, 'Reporte de Proveedores Locales al '. Carbon::now()->format('d-m-Y') . '.xlsx');
+    public function exportProveedoresPagadas()
+    {
+        return Excel::download(new ReporteProveedoresLocalExport, 'Reporte de Proveedores Locales al ' . Carbon::now()->format('d-m-Y') . '.xlsx');
     }
 }
