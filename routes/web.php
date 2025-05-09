@@ -294,7 +294,7 @@ Route::group(['middleware' => ['auth', 'role:Developer|Diradmin|Gerope|Contamex|
 });
 
 
-//RUTAS PARA EDITAR SOLO SON ACCESIBLES PARA GERENCIA Y RESPONSABLE DE COMPRAS
+//RUTAS Index de autorizaciones
 Route::group(
     ['middleware' => ['auth', 'role:Developer|RespCompras|Coordconta|Coordalm|Subgerope|Gerope|Respsgi|Diradmin|Dirope|Coordcontratos']],
     function () {
@@ -326,10 +326,10 @@ Route::group(
         Route::get('requisiciones-contratos-canceladas', [AuthorizationRequisitionController::class, 'cancontra'])->name('requisicionescontracan');
         Route::get('requisiciones-contratos-finalizadas', [AuthorizationRequisitionController::class, 'fincontra'])->name('requisicionescontrafin');
 
-        Route::get('requisiciones-dirope', [AuthorizationRequisitionController::class, 'indexgerope'])->name('requisicionesgerope');
-        Route::get('requisiciones-dirope-autorizadas', [AuthorizationRequisitionController::class, 'autgerope'])->name('requisicionesgeropeaut');
-        Route::get('requisiciones-dirope-canceladas', [AuthorizationRequisitionController::class, 'cangerope'])->name('requisicionesgeropecan');
-        Route::get('requisiciones-dirope-finalizadas', [AuthorizationRequisitionController::class, 'fingerope'])->name('requisicionesgeropefin');
+        Route::get('requisiciones-dirope', [AuthorizationRequisitionController::class, 'indexdirope'])->name('requisicionesgerope');
+        Route::get('requisiciones-dirope-autorizadas', [AuthorizationRequisitionController::class, 'autdirope'])->name('requisicionesgeropeaut');
+        Route::get('requisiciones-dirope-canceladas', [AuthorizationRequisitionController::class, 'candirope'])->name('requisicionesgeropecan');
+        Route::get('requisiciones-dirope-finalizadas', [AuthorizationRequisitionController::class, 'findirope'])->name('requisicionesgeropefin');
 
         Route::get('requisiciones-gerope', [AuthorizationRequisitionController::class, 'indexgerope'])->name('requisicionesgerope');
         Route::get('requisiciones-gerope-autorizadas', [AuthorizationRequisitionController::class, 'autgerope'])->name('requisicionesgeropeaut');
