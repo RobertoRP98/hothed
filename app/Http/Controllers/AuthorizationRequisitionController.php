@@ -526,10 +526,10 @@ class AuthorizationRequisitionController extends Controller
     //INICIA INDICES DE MCFLY
     public function indexdirope()
     {
-        // Verificar explícitamente que el usuario tiene el rol correcto
-        if (!auth()->user()->hasRole(['Developer', 'Dirope'])) {
-            abort(403, 'No tienes permiso para acceder a esta vista.');
-        }
+        // // Verificar explícitamente que el usuario tiene el rol correcto
+        // if (!auth()->user()->hasRole(['Developer', 'Dirope'])) {
+        //     abort(403, 'No tienes permiso para acceder a esta vista.');
+        // }
         $requisitiondirope = Requisition::where('status_requisition', 'Pendiente')
             ->where('finished', false)
             ->whereHas('user', function ($query) {
@@ -543,10 +543,10 @@ class AuthorizationRequisitionController extends Controller
 
     public function autdirope()
     {
-        // Verificar explícitamente que el usuario tiene el rol correcto
-        if (!auth()->user()->hasRole(['Developer', 'Dirope',])) {
-            abort(403, 'No tienes permiso para acceder a esta vista.');
-        }
+        // // Verificar explícitamente que el usuario tiene el rol correcto
+        // if (!auth()->user()->hasRole(['Developer', 'Dirope',])) {
+        //     abort(403, 'No tienes permiso para acceder a esta vista.');
+        // }
         $requisitiondirope = Requisition::where('status_requisition', 'Autorizado')
             ->where('finished', false)
             ->whereHas('user', function ($query) {
@@ -561,9 +561,9 @@ class AuthorizationRequisitionController extends Controller
     public function candirope()
     {
         // Verificar explícitamente que el usuario tiene el rol correcto
-        if (!auth()->user()->hasRole(['Developer', 'Dirope',])) {
-            abort(403, 'No tienes permiso para acceder a esta vista.');
-        }
+        // if (!auth()->user()->hasRole(['Developer', 'Dirope',])) {
+        //     abort(403, 'No tienes permiso para acceder a esta vista.');
+        // }
         $requisitiondirope = Requisition::where('status_requisition', 'Rechazado')
             ->where('finished', false)
             ->whereHas('user', function ($query) {
@@ -578,9 +578,9 @@ class AuthorizationRequisitionController extends Controller
     public function findirope()
     {
         // Verificar explícitamente que el usuario tiene el rol correcto
-        if (!auth()->user()->hasRole(['Developer','Dirope'])) {
-            abort(403, 'No tienes permiso para acceder a esta vista.');
-        }
+        // if (!auth()->user()->hasRole(['Developer','Dirope'])) {
+        //     abort(403, 'No tienes permiso para acceder a esta vista.');
+        // }
         $requisitiondirope = Requisition::whereIn('status_requisition', ['Pendiente', 'Autorizado', 'Rechazado'])
             ->where('finished', true)
             ->whereHas('user', function ($query) {
