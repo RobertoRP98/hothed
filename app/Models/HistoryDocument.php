@@ -11,4 +11,8 @@ class HistoryDocument extends Model
 
     protected $table = 'history_documents';
 
+    public function document()
+    {
+        return $this->belongsTo(Document::class, 'document_id');
+    }
 }

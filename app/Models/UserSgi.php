@@ -27,6 +27,10 @@ class UserSgi extends Model
     }
 
     public function subordinados(){
-        return $this->hasMany(UserSgi::class);
+        return $this->hasMany(UserSgi::class, 'immediate_boss_id');
+    }
+
+    public function documents(){
+        return $this->belongsToMany(Document::class,'document_user','user_id','document_id');
     }
 }

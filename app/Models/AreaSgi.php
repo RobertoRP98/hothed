@@ -17,4 +17,8 @@ class AreaSgi extends Model
         return $this->hasMany(UserSgi::class);
     }
 
+    public function documents(){
+        return $this->belongsToMany(Document::class, 'document_area','area_id','document_id');
+    }
+
 }
