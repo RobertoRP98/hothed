@@ -13,7 +13,9 @@ class DocumentController extends Controller
      */
     public function index()
     {
-        //
+        $documents = Document::with(['category','revisor','aprobador','areaResponsable'])->latest()->get();
+
+        return view('documents.index',compact('documents'));
     }
 
     /**
@@ -21,7 +23,7 @@ class DocumentController extends Controller
      */
     public function create()
     {
-        //
+        return view('documents.create');
     }
 
     /**
@@ -29,7 +31,27 @@ class DocumentController extends Controller
      */
     public function store(StoreDocumentRequest $request)
     {
-        //
+        $filePath = $request->file('file')->store('documentos-sgi');
+
+        //Crear documento
+        $document = Document::create([
+            'code'=> $request->code,
+            'name'=> $request->name,
+            'description'=> $request->description,
+            'version'=> $request->version,
+            'category_id'=> $request->category_id,
+            'download'=> $request->boolean('download'),
+            'general'=> $request->boolean('general'),
+            'file_path'=> $filePath,
+            'revisor_id'=> $request->revisor_id,
+            'aprobador_id'=> $request->aprobador_id,
+            'area_resp_id'=> $request->area_resp_id,
+            'auth_1'=> $request->auth_1,
+            'auth_2'=> $request->auth_2,
+            'active'=> $request->active,
+        ]);
+
+        return redirect()->route('documents.index')->with('success','Documento creado correctamente');
     }
 
     /**

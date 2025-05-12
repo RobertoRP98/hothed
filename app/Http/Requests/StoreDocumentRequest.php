@@ -11,7 +11,7 @@ class StoreDocumentRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,43 @@ class StoreDocumentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'code' => 'required',
+            'name'=> 'required',
+            'description' => 'nullable',
+            'version' => 'required',
+            'category_id' => 'nullable',
+            'download' => 'required',
+            'general' => 'required',
+            'file' => 'required|file|mimes:png,jpg,jpeg,pdf,docx,doc,xls,xlsx,ppt,pptx',
+            'revisor_id'=> 'nullable',
+            'aprobador_id' => 'nullable',
+            'area_resp_id' => 'nullable',
+            'auth_1' => 'required',
+            'auth_2' => 'required',
+            'active' => 'required',
         ];
+    }
+
+     public function messages()
+{
+    return [
+        'code.required' => 'El código es requerido',
+        'name.required' => 'El nombre es requerido',
+        'version.required' => 'La versión es requerida',
+        'download.required' => 'Especifica si el documento es descargable',
+        'general.required' => 'Especifica si el documento es general',
+        'file.required' => 'El archivo es obligatorio',
+        'file.mimes' => 'Formato no válido. Los formatos permitidos son: png, jpg, jpeg, pdf, docx, doc, xls, xlsx, ppt, pptx',
+        'auth_1.required' => 'El estado del revisor es obligatorio',
+        'auth_2.required' => 'El estado del aprobador es obligatorio',
+        'active.required' => 'El estado activo/inactivo es obligatorio',
+    ];
+}
+
+    protected function prepareForValidation()
+    {
+        $this->merge(
+            $this->except(['_token'])
+        );
     }
 }
