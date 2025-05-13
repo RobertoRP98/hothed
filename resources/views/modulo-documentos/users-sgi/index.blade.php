@@ -1,0 +1,133 @@
+@extends('layouts.app')
+@section('indexsupplier')
+
+<div class="container">
+ @if(Session::has('message'))
+ {{Session::get('message')}}
+ @endif
+ 
+ 
+ @if(request()->has('message'))
+    <div class="alert alert-success">
+        {{ request('message') }}
+    </div>
+@endif
+
+
+ @push('css')
+ <!-- CSS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.bootstrap5.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/responsive/3.0.3/css/responsive.bootstrap5.css">
+@endpush
+
+
+<div class="col-md-12">
+
+     <a href="{{ url('/documentacion-sgi') }}" class="col-md-3 btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
+        Documentación SGI
+    </a> 
+
+    <a href="{{ url('/users-sgi/create') }}" class="col-md-3 btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
+        Crear Usuario
+    </a>
+
+    <a href="{{ url('/puestos-trabajo') }}" class="col-md-3 btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
+        Puestos de Trabajo
+    </a>
+
+    <a href="{{ url('/areas-sgi') }}" class="col-md-3 btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
+        Areas de Trabajo
+    </a>
+
+</div> 
+
+ <br>
+
+<h3 class="text-center my-1">USUARIOS</h3>
+
+
+<div class="card">
+    <div class="card-body">
+            
+    <div class="table-responsive">
+    <table id="users-sgi" class="table table-light table-bordered table-hover text-center">
+<thead class="thead-light">
+        <tr>
+            <th class="col-md-1">USER</th>
+            <th class="col-md-1">AREA</th>    
+            <th class="col-md-1">PUESTO</th>
+            <th class="col-md-1">JEFE INMEDIATO</th>    
+            <th class="col-md-1">OPCIONES</th>
+
+        </tr>
+    </thead>
+    <tbody>
+        @foreach($users as $user)
+        <tr>
+            <td>{{ $user->name  }}</td>
+            <td>{{ $user->area->name ?? 'SIN ÁREA'}}</td>
+            <td>{{ $user->workstation->name ?? 'SIN PUESTO'}}</td>
+            <td>{{ $user->jefeInmediato?->name ?? 'SIN JEFE' }}</td>
+
+
+            <td>
+            <a 
+            href="{{ url('users-sgi/'.$user->id.'/edit') }}" 
+            {{-- target="_blank"  --}}
+            class="btn btn-success mb-2 text-white"
+        >
+            Editar
+        </a>
+              
+            </td>
+            
+        </tr>
+        @endforeach
+    </tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+
+@endsection
+
+@push('js')
+<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+<!-- JavaScript -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.datatables.net/2.1.8/js/dataTables.js"></script>
+<script src="https://cdn.datatables.net/2.1.8/js/dataTables.bootstrap5.js"></script>
+<script src="https://cdn.datatables.net/responsive/3.0.3/js/dataTables.responsive.js"></script>
+<script src="https://cdn.datatables.net/responsive/3.0.3/js/responsive.bootstrap5.js"></script>
+
+<script>
+    $(document).ready(function() {
+        $('#users-sgi').DataTable({
+            resposive:true,
+            autoWidth: false,
+            pageLength: 25,
+            order: [[0, 'desc']],
+            "language": {
+                "lengthMenu":     "Mostrar _MENU_ registros",
+    "loadingRecords": "Cargando...",
+    "processing":     "",
+    "info": "Mostrando la página _PAGE_ de _PAGES_",
+    "search":         "Buscar:",
+    "zeroRecords":    "Registro no encontrado - Verifica el texto, elimina espacios al inicio y al final",
+    "paginate": {
+        "first":      "Inicio",
+        "last":       "Ultimo",
+        "next":       "Siguiente",
+        "previous":   "Anterior"
+    },
+    "aria": {
+        "orderable":  "Ordenado por esta columna",
+        "orderableReverse": "Columna ordenada inversamente"
+    }
+            }
+        }); // Asegúrate de que el ID coincida con tu tabla
+    });
+</script>
+@endpush

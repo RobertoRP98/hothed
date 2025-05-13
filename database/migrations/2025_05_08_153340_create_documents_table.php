@@ -20,7 +20,8 @@ return new class extends Migration
             $table->foreignId('category_id')->nullable()->constrained('documents_categories')->nullOnDelete();
             $table->boolean('download')->default(false);
             $table->boolean('general')->default(false);
-            $table->string('file_path'); // antes "root"
+            $table->string('file_path_pdf'); // antes "root"
+            $table->string('file_path_doc'); // antes "root"
             $table->foreignId('revisor_id')->nullable()->constrained('users_sgi')->nullOnDelete();
             $table->foreignId('aprobador_id')->nullable()->constrained('users_sgi')->nullOnDelete();
             $table->foreignId('area_resp_id')->nullable()->constrained('areas_sgi')->nullOnDelete();

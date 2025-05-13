@@ -15,7 +15,7 @@ class DocumentsCategoriesController extends Controller
     {
         $categories = DocumentsCategories::paginate(30);
 
-        return view ('categories-sgi.index',compact('categories'));
+        return view ('modulo-documentos.categories-sgi.index',compact('categories'));
     }
 
     /**
@@ -23,7 +23,7 @@ class DocumentsCategoriesController extends Controller
      */
     public function create()
     {
-        return view('categories-sgi.create');
+        return view('modulo-documentos.categories-sgi.create');
     }
 
     /**
@@ -53,7 +53,7 @@ class DocumentsCategoriesController extends Controller
     {
         $category = DocumentsCategories::FindOrFail($id);
 
-        return view('categories-sgi.edit',compact('category'));
+        return view('modulo-documentos.categories-sgi.edit',compact('category'));
     }
 
     /**

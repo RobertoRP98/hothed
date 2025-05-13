@@ -5,7 +5,7 @@
 <form action="{{url(('/areas-sgi'))}}" method="post" enctype="multipart/form-data">
     @csrf
  <H1>Crear Area de Trabajo</H1>
-    @include('areas-sgi.form', ['modo'=>'Crear'])
+    @include('modulo-documentos.areas-sgi.form', ['modo'=>'Crear'])
   </form>
 </div>
 @endsection

@@ -6,7 +6,7 @@
         @csrf
         {{method_field('PATCH')}}    
  <H1>Editar Area de Trabajo</H1>
-    @include('areas-sgi.form',['modo'=>'Editar'])
+    @include('modulo-documentos.areas-sgi.form',['modo'=>'Editar'])
   </form>
 </div>
 @endsection

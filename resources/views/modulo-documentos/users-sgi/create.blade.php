@@ -5,7 +5,7 @@
 <form action="{{url(('/users-sgi'))}}" method="post" enctype="multipart/form-data">
     @csrf
  <H1>Crear Usuario</H1>
-    @include('users-sgi.form', ['modo'=>'Crear'])
+    @include('modulo-documentos.users-sgi.form', ['modo'=>'Crear'])
   </form>
 </div>
 @endsection

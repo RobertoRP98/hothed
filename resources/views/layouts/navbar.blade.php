@@ -199,6 +199,14 @@
             @endif
         @endauth
 
+           @auth
+            @if(Auth::user()->hasRole(['Developer', 'Respsgi']))
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="{{ url('/register') }}">Documentación SGI</a>
+                </li>
+            @endif
+        @endauth
+
         @guest
         <li class="nav-item">
             <a href="{{ url('/#about') }}" class="nav-link text-white">Misión y Visión</a>

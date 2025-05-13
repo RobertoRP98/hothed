@@ -15,7 +15,7 @@ class WorkstationController extends Controller
     {
         $workstations = Workstation::paginate(30);
 
-        return view('workstation.index', compact('workstations'));
+        return view('modulo-documentos.workstation.index', compact('workstations'));
     }
 
     /**
@@ -23,7 +23,7 @@ class WorkstationController extends Controller
      */
     public function create()
     {
-        return view('workstation.create');
+        return view('modulo-documentos.workstation.create');
     }
 
     /**
@@ -53,7 +53,7 @@ class WorkstationController extends Controller
     {
         $workstation = Workstation::FindOrFail($id);
 
-        return view('workstation.edit', compact('workstation'));
+        return view('modulo-documentos.workstation.edit', compact('workstation'));
     }
 
     /**

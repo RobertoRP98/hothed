@@ -15,7 +15,7 @@ class AreaSgiController extends Controller
     {
         $areas = AreaSgi::paginate(30);
 
-        return view('areas-sgi.index', compact('areas'));
+        return view('modulo-documentos.areas-sgi.index', compact('areas'));
     }
 
     /**
@@ -23,7 +23,7 @@ class AreaSgiController extends Controller
      */
     public function create()
     {
-        return view ('areas-sgi.create');
+        return view ('modulo-documentos.areas-sgi.create');
     }
 
     /**
@@ -53,7 +53,7 @@ class AreaSgiController extends Controller
     {
         $area = AreaSgi::FindOrFail($id);
 
-        return view('areas-sgi.edit', compact('area'));
+        return view('modulo-documentos.areas-sgi.edit', compact('area'));
     }
 
     /**

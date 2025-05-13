@@ -6,7 +6,7 @@
         @csrf
         {{method_field('PATCH')}}    
  <H1>Editar Usuario</H1>
-    @include('users-sgi.form',['modo'=>'Editar'])
+    @include('modulo-documentos.users-sgi.form',['modo'=>'Editar'])
   </form>
 </div>
 @endsection

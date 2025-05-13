@@ -21,6 +21,7 @@ use App\Http\Controllers\ToolwarehouseController;
 use App\Http\Controllers\AuthPurchaseOrderController;
 use App\Http\Controllers\CompanyReceivableController;
 use App\Http\Controllers\AuthorizationRequisitionController;
+use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\DocumentsCategoriesController;
 
 Route::get('/', function () {
@@ -364,6 +365,10 @@ Route::group(
         Route::resource('areas-sgi', AreaSgiController::class);
         Route::resource('users-sgi', UserSgiController::class);
         Route::resource('categorias-documentos', DocumentsCategoriesController::class);
+
+        Route::get('documentacion-sgi',[DocumentController::class,'index'])->name('documentacion-sgi.index');
+        Route::get('documentacion-sgi/create',[DocumentController::class,'create'])->name('documentacion-sgi.create');
+        
     }
 );
 //FINALIZA MODULO DE DOCUMENTOS

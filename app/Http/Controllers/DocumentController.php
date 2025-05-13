@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreDocumentRequest;
 use App\Http\Requests\UpdateDocumentRequest;
+use App\Models\AreaSgi;
 use App\Models\Document;
+use App\Models\DocumentsCategories;
+use App\Models\UserSgi;
 
 class DocumentController extends Controller
 {
@@ -15,7 +18,7 @@ class DocumentController extends Controller
     {
         $documents = Document::with(['category','revisor','aprobador','areaResponsable'])->latest()->get();
 
-        return view('documents.index',compact('documents'));
+        return view('modulo-documentos.documents.index',compact('documents'));
     }
 
     /**
@@ -23,7 +26,11 @@ class DocumentController extends Controller
      */
     public function create()
     {
-        return view('documents.create');
+        $areas = AreaSgi::all();
+        $categorias = DocumentsCategories::all();
+        $users = UserSgi::all();
+
+        return view('modulo-documentos.documents.create', compact('areas','categorias','users'));
     }
 
     /**
@@ -31,7 +38,9 @@ class DocumentController extends Controller
      */
     public function store(StoreDocumentRequest $request)
     {
-        $filePath = $request->file('file')->store('documentos-sgi');
+        $filePathPdf = $request->file('file_pdf')->store('documentos-sgi');
+        $filePathDoc = $request->file('file_doc')->store('pdfs-sgi');
+
 
         //Crear documento
         $document = Document::create([
@@ -42,7 +51,8 @@ class DocumentController extends Controller
             'category_id'=> $request->category_id,
             'download'=> $request->boolean('download'),
             'general'=> $request->boolean('general'),
-            'file_path'=> $filePath,
+            'file_path_pdf'=> $filePathPdf,
+            'file_path_pdf'=> $filePathDoc,
             'revisor_id'=> $request->revisor_id,
             'aprobador_id'=> $request->aprobador_id,
             'area_resp_id'=> $request->area_resp_id,
@@ -51,6 +61,8 @@ class DocumentController extends Controller
             'active'=> $request->active,
         ]);
 
+        $document->areas()->sync($request->areas);
+        
         return redirect()->route('documents.index')->with('success','Documento creado correctamente');
     }
 

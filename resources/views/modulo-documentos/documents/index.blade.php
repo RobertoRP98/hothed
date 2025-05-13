@@ -23,8 +23,12 @@
 
 
 <div class="col-md-12">
-    <a href="{{ url('/users-sgi/create') }}" class="col-md-3 btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
-        Crear Usuario
+     <a href="{{ url('/documentacion-sgi/create') }}" class="col-md-3 btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
+        Crear Documento
+    </a>
+
+    <a href="{{ url('/users-sgi') }}" class="col-md-3 btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
+        Usuarios
     </a>
 
     <a href="{{ url('/puestos-trabajo') }}" class="col-md-3 btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
@@ -39,36 +43,32 @@
 
  <br>
 
-<h3 class="text-center my-1">USUARIOS</h3>
+<h3 class="text-center my-1">Documentación</h3>
 
 
 <div class="card">
     <div class="card-body">
             
     <div class="table-responsive">
-    <table id="users-sgi" class="table table-light table-bordered table-hover text-center">
+    <table id="documentacion-sgi" class="table table-light table-bordered table-hover text-center">
 <thead class="thead-light">
         <tr>
-            <th class="col-md-1">USER</th>
-            <th class="col-md-1">AREA</th>    
-            <th class="col-md-1">PUESTO</th>
-            <th class="col-md-1">JEFE INMEDIATO</th>    
+            <th class="col-md-1">NOMBRE</th>
+            <th class="col-md-1">VER</th>
+            <th class="col-md-1">DESCARGAR</th>
             <th class="col-md-1">OPCIONES</th>
 
         </tr>
     </thead>
     <tbody>
-        @foreach($users as $user)
+        @foreach($documents as $document)
         <tr>
-            <td>{{ $user->name  }}</td>
-            <td>{{ $user->area->name ?? 'SIN ÁREA'}}</td>
-            <td>{{ $user->workstation->name ?? 'SIN PUESTO'}}</td>
-            <td>{{ $user->jefeInmediato?->name ?? 'SIN JEFE' }}</td>
+            <td>{{ $document->name  }}</td>
 
 
             <td>
             <a 
-            href="{{ url('users-sgi/'.$user->id.'/edit') }}" 
+            href="{{ url('documentacion-sgi/'.$document->id.'/edit') }}" 
             {{-- target="_blank"  --}}
             class="btn btn-success mb-2 text-white"
         >
@@ -99,7 +99,7 @@
 
 <script>
     $(document).ready(function() {
-        $('#users-sgi').DataTable({
+        $('#documentacion-sgi').DataTable({
             resposive:true,
             autoWidth: false,
             pageLength: 25,

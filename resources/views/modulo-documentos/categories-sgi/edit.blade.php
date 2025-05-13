@@ -6,7 +6,7 @@
         @csrf
         {{method_field('PATCH')}}    
  <H1>Editar Categoria para Documentos</H1>
-    @include('categories-sgi.form',['modo'=>'Editar'])
+    @include('modulo-documentos.categories-sgi.form',['modo'=>'Editar'])
   </form>
 </div>
 @endsection

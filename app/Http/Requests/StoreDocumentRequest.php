@@ -29,13 +29,18 @@ class StoreDocumentRequest extends FormRequest
             'category_id' => 'nullable',
             'download' => 'required',
             'general' => 'required',
-            'file' => 'required|file|mimes:png,jpg,jpeg,pdf,docx,doc,xls,xlsx,ppt,pptx',
+            'file_pdf' => 'required|file|mimes:pdf',
+            'file_doc' => 'required|file|mimes:png,jpg,jpeg,pdf,docx,doc,xls,xlsx,ppt,pptx',
             'revisor_id'=> 'nullable',
             'aprobador_id' => 'nullable',
             'area_resp_id' => 'nullable',
             'auth_1' => 'required',
             'auth_2' => 'required',
             'active' => 'required',
+
+            'areas' => 'required|array',
+            'areas.*' => 'exists:areas_sgi,id'
+
         ];
     }
 

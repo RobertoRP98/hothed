@@ -17,7 +17,7 @@ class UserSgiController extends Controller
     {
         $users = UserSgi::all();
 
-        return view('users-sgi.index', compact('users'));
+        return view('modulo-documentos.users-sgi.index', compact('users'));
     }
 
     /**
@@ -29,7 +29,7 @@ class UserSgiController extends Controller
         $workstations = Workstation::all();
         $users = UserSgi::all();
 
-        return view('users-sgi.create', compact(['areas', 'workstations', 'users']));
+        return view('modulo-documentos.users-sgi.create', compact(['areas', 'workstations', 'users']));
     }
 
     /**
@@ -72,7 +72,7 @@ class UserSgiController extends Controller
 
         $workstations = Workstation::all();
 
-        return view('users-sgi.edit', compact('users', 'areas', 'workstations', 'user'));
+        return view('modulo-documentos.users-sgi.edit', compact('users', 'areas', 'workstations', 'user'));
     }
 
     /**

@@ -6,7 +6,7 @@
         @csrf
         {{method_field('PATCH')}}    
  <H1>Editar Puesto de Trabajo</H1>
-    @include('workstation.form',['modo'=>'Editar'])
+    @include('modulo-documentos.workstation.form',['modo'=>'Editar'])
   </form>
 </div>
 @endsection
