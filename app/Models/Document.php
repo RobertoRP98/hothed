@@ -11,32 +11,56 @@ class Document extends Model
 
     protected $table = 'documents';
 
-    public function category(){
-        return $this->belongsTo(DocumentsCategories::class,'category_id');
+    protected $fillable = [
+        'code',
+        'name',
+        'description',
+        'version',
+        'category_id',
+        'download',
+        'general',
+        'file_path_pdf',
+        'file_path_doc',
+        'revisor_id',
+        'aprobador_id',
+        'area_resp_id',
+        'auth_1',
+        'auth_2',
+        'active'
+    ];
+
+    public function category()
+    {
+        return $this->belongsTo(DocumentsCategories::class, 'category_id');
     }
 
-    public function revisor(){
+    public function revisor()
+    {
         return $this->belongsTo(UserSgi::class, 'revisor_id');
     }
 
-    public function aprobador(){
-        return $this->belongsTo(UserSgi::class,'aprobador_id');
+    public function aprobador()
+    {
+        return $this->belongsTo(UserSgi::class, 'aprobador_id');
     }
 
-    public function areaResponsable(){
-        return $this->belongsTo(AreaSgi::class,'area_resp_id');
+    public function areaResponsable()
+    {
+        return $this->belongsTo(AreaSgi::class, 'area_resp_id');
     }
 
-    public function history(){
-        return $this->hasMany(HistoryDocument::class,'document_id');
+    public function history()
+    {
+        return $this->hasMany(HistoryDocument::class, 'document_id');
     }
 
-    public function users(){
-        return $this->belongsToMany(UserSgi::class,'document_user','document_id','user_id');
+    public function users()
+    {
+        return $this->belongsToMany(UserSgi::class, 'document_user', 'document_id', 'user_id');
     }
 
-    public function areas(){
-        return $this->belongsToMany(AreaSgi::class,'document_area','document_id','area_id');
+    public function areas()
+    {
+        return $this->belongsToMany(AreaSgi::class, 'document_area', 'document_id', 'area_id');
     }
-
 }

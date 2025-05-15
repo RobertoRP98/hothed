@@ -27,17 +27,23 @@
         Crear Documento
     </a>
 
+    <a href="{{ url('categorias-documentos') }}" class="col-md-3 btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
+        Categorias del Documento
+    </a>
+
+     <a href="{{ url('/areas-sgi') }}" class="col-md-3 btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
+        Areas de Trabajo
+    </a>
+
+     <a href="{{ url('/puestos-trabajo') }}" class="col-md-3 btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
+        Puestos de Trabajo
+    </a>
+
     <a href="{{ url('/users-sgi') }}" class="col-md-3 btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
         Usuarios
     </a>
 
-    <a href="{{ url('/puestos-trabajo') }}" class="col-md-3 btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
-        Puestos de Trabajo
-    </a>
-
-    <a href="{{ url('/areas-sgi') }}" class="col-md-3 btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
-        Areas de Trabajo
-    </a>
+   
 
 </div> 
 
@@ -64,6 +70,32 @@
         @foreach($documents as $document)
         <tr>
             <td>{{ $document->name  }}</td>
+
+            {{-- Columna PDF --}}
+        <td>
+            @if ($document->file_path_pdf)
+                <a href="{{ route('documentos.download', ['type' => 'pdf', 'id' => $document->id]) }}"
+                   class="btn btn-sm btn-outline-primary" target="_blank">
+                    Descargar PDF
+                </a>
+            @else
+                <span class="text-muted">—</span>
+
+            @endif
+        </td>
+
+        {{-- Columna Documento --}}
+        <td>
+            
+            @if ($document->file_path_doc)
+                <a href="{{ route('documentos.download', ['type' => 'doc', 'id' => $document->id]) }}"
+                   class="btn btn-sm btn-outline-success" target="_blank">
+                    Descargar Documento
+                </a>
+            @else
+                <span class="text-muted">—</span>
+            @endif
+        </td>
 
 
             <td>

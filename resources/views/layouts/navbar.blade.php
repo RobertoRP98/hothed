@@ -202,7 +202,7 @@
            @auth
             @if(Auth::user()->hasRole(['Developer', 'Respsgi']))
                 <li class="nav-item">
-                    <a class="nav-link text-white" href="{{ url('/register') }}">Documentación SGI</a>
+                    <a class="nav-link text-white" href="{{ url('/documentacion-sgi') }}">Documentación SGI</a>
                 </li>
             @endif
         @endauth

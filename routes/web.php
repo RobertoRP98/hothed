@@ -367,7 +367,16 @@ Route::group(
         Route::resource('categorias-documentos', DocumentsCategoriesController::class);
 
         Route::get('documentacion-sgi',[DocumentController::class,'index'])->name('documentacion-sgi.index');
+
         Route::get('documentacion-sgi/create',[DocumentController::class,'create'])->name('documentacion-sgi.create');
+        Route::post('documentacion-sgi',[DocumentController::class,'store'])->name('documentacion-sgi.store');
+        Route::get('/documentos/download/{type}/{id}', [DocumentController::class, 'download'])->name('documentos.download');
+
+
+
+        // Route::get('/users-sgi/{id}/jefe',[UserSgiController::class,'jefeinmediato']);
+
+
         
     }
 );

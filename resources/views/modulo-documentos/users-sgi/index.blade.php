@@ -28,16 +28,16 @@
         Documentación SGI
     </a> 
 
-    <a href="{{ url('/users-sgi/create') }}" class="col-md-3 btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
-        Crear Usuario
+    <a href="{{ url('/areas-sgi') }}" class="col-md-3 btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
+        Areas de Trabajo
     </a>
 
     <a href="{{ url('/puestos-trabajo') }}" class="col-md-3 btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
         Puestos de Trabajo
     </a>
 
-    <a href="{{ url('/areas-sgi') }}" class="col-md-3 btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
-        Areas de Trabajo
+    <a href="{{ url('/users-sgi/create') }}" class="col-md-3 btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
+        Crear Usuario
     </a>
 
 </div> 

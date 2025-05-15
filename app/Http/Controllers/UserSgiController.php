@@ -101,4 +101,14 @@ class UserSgiController extends Controller
     {
         //
     }
+
+    public function jefeinmediato($id){
+    $user = UserSgi::findOrFail($id);
+    $jefe = $user->jefeInmediato;
+
+    return response()->json([
+        'jefe_id' => $jefe?->id,
+        'jefe_nombre' => $jefe?->name,
+    ]);
+}
 }
