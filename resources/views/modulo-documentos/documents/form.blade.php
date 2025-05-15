@@ -10,64 +10,58 @@
  @endif
 
 
+
+
  <br>
- <div class="row mb-4 col-md-12">
-     <div class="col-md-2">
-         <div data-mdb-input-init class="form-outline">
-             <label class="form-label" for="code">&nbsp; CODIGO</label>
-             <input type="text" id="code" name="code" value="{{ isset($document) ? $document->code : '' }}"
-                 class="form-control " placeholder="ADM-001" />
-         </div>
-     </div>
+<div class="row mb-4 col-md-12">
+    <div class="col-md-2">
+        <div data-mdb-input-init class="form-outline">
+            <label class="form-label" for="code">&nbsp; CÓDIGO</label>
+            <input type="text" id="code" name="code" value="{{ old('code', $document->code ?? '') }}"
+                class="form-control" placeholder="ADM-001" />
+        </div>
+    </div>
 
-     <div class="col-md-3">
-         <div data-mdb-input-init class="form-outline">
-             <label class="form-label" for="name">&nbsp;NOMBRE</label>
-             <input type="text" id="name" name="name" value="{{ isset($document) ? $document->name : '' }}"
-                 class="form-control " placeholder="REQUISICIÓN" />
-         </div>
-     </div>
+    <div class="col-md-3">
+        <div data-mdb-input-init class="form-outline">
+            <label class="form-label" for="name">&nbsp;NOMBRE</label>
+            <input type="text" id="name" name="name" value="{{ old('name', $document->name ?? '') }}"
+                class="form-control" placeholder="REQUISICIÓN" />
+        </div>
+    </div>
 
-     <div class="col-md-3">
-         <div data-mdb-input-init class="form-outline">
-             <label class="form-label" for="description">&nbsp;DESCRIPCIÓN</label>
-             <input type="text" id="description" name="description"
-                 value="{{ isset($document) ? $document->description : '' }}" class="form-control "
-                 placeholder="SOLICITAR MATERIAL" />
-         </div>
-     </div>
+    <div class="col-md-3">
+        <div data-mdb-input-init class="form-outline">
+            <label class="form-label" for="description">&nbsp;DESCRIPCIÓN</label>
+            <input type="text" id="description" name="description" value="{{ old('description', $document->description ?? '') }}"
+                class="form-control" placeholder="SOLICITAR MATERIAL" />
+        </div>
+    </div>
 
+    <div class="col-md-2">
+        <div data-mdb-input-init class="form-outline">
+            <label class="form-label" for="version">&nbsp;VERSIÓN</label>
+            <input type="text" id="version" name="version" value="{{ old('version', $document->version ?? '') }}"
+                class="form-control" placeholder="V2.0" />
+        </div>
+    </div>
 
+    <div class="col-md-2">
+        <div class="form-outline">
+            <label class="form-label" for="category_id">&nbsp;CATEGORÍA</label>
+            <select id="category_id" name="category_id" class="form-control">
+                <option value="" {{ old('category_id', $document->category_id ?? '') == '' ? 'selected' : '' }}>Sin Categoría</option>
+                @foreach ($categorias as $categoria)
+                    <option value="{{ $categoria->id }}"
+                        {{ old('category_id', $document->category_id ?? '') == $categoria->id ? 'selected' : '' }}>
+                        {{ $categoria->name }}
+                    </option>
+                @endforeach
+            </select>
+        </div>
+    </div>
+</div>
 
-     <div class="col-md-2">
-         <div data-mdb-input-init class="form-outline">
-             <label class="form-label" for="version">&nbsp;VERSIÓN</label>
-             <input type="text" id="version" name="version"
-                 value="{{ isset($document) ? $document->version : '' }}" class="form-control " placeholder="V2.0" />
-         </div>
-     </div>
-
-
-     <div class="col-md-2">
-         <div class="form-outline">
-             <label class="form-label" for="category_id">&nbsp;CATEGORIA</label>
-
-             <select id="category_id" name="category_id" class="form-control">
-                 <option value="" {{ old('category_id', $document->category_id ?? '') == '' ? 'selected' : '' }}>
-                     Sin Categoria</option>
-                 @foreach ($categorias as $categoria)
-                     <option value="{{ $categoria->id }}"
-                         {{ old('category_id', $document->category_id ?? '') == $categoria->id ? 'selected' : '' }}>
-                         {{ $categoria->name }}
-                     </option>
-                 @endforeach
-             </select>
-         </div>
-     </div>
-
-
-
- </div>
 
  <div class="row mb-4 col-md-12">
 
@@ -165,7 +159,7 @@
          </div>
      </div>
 
-     <div class="col-md-2">
+<div class="col-md-2">
          <label for="areas" class="form-label">Áreas destinadas</label>
          <select name="areas[]" id="areas" multiple class="form-select" data-placeholder="Selecciona las áreas">
              @foreach ($areas as $area)
@@ -173,6 +167,7 @@
              @endforeach
          </select>
      </div>
+
 
 
      <div class="col-md-2">
