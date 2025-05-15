@@ -377,7 +377,9 @@ Route::group(
         // Route::get('/users-sgi/{id}/jefe',[UserSgiController::class,'jefeinmediato']);
 
 
-        
+        Route::get('/phpinfo', function () {
+    phpinfo();
+});
     }
 );
 //FINALIZA MODULO DE DOCUMENTOS
