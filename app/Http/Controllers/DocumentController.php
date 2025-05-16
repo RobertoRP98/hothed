@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\StoreDocumentRequest;
 use App\Http\Requests\UpdateDocumentRequest;
+use Symfony\Component\Process\Process;
 
 class DocumentController extends Controller
 {
@@ -38,46 +39,33 @@ class DocumentController extends Controller
     /**
      * Store a newly created resource in storage.
      */
+
+
     public function store(StoreDocumentRequest $request)
     {
-
-       // dd($request->allFiles());
-
-        if ($request->hasFile('file_pdf')) {
-            Log::info('PDF recibido: ' . $request->file('file_pdf')->getClientOriginalName());
-        }
-
         if ($request->hasFile('file_doc')) {
             Log::info('DOC recibido: ' . $request->file('file_doc')->getClientOriginalName());
+
+            $originalNameDoc = $request->file('file_doc')->getClientOriginalName();
+            $filenameDoc = uniqid() . '-' . $originalNameDoc;
+            $filePathDoc = $request->file('file_doc')->storeAs('documentos-sgi', $filenameDoc);
+
+            Log::info('Ruta DOC guardada: ' . $filePathDoc);
+
+            // Convertir a PDF automáticamente
+            $filePathPdf = $this->convertirADocumentoPDF($filePathDoc);
+            Log::info('Ruta PDF generada: ' . $filePathPdf);
         }
 
-        $originalNamePdf = $request->file('file_pdf')?->getClientOriginalName();
-        $originalNameDoc = $request->file('file_doc')?->getClientOriginalName();
-        // Asegura nombres únicos
-        $filenamePdf = $originalNamePdf ? uniqid() . '-' . $originalNamePdf : null;
-        $filenameDoc = $originalNameDoc ? uniqid() . '-' . $originalNameDoc : null;
-
-        $filePathPdf = $filenamePdf ? $request->file('file_pdf')->storeAs('pdfs-sgi', $filenamePdf) : null;
-        $filePathDoc = $filenameDoc ? $request->file('file_doc')->storeAs('documentos-sgi', $filenameDoc) : null;
-
-
-
-        Log::info('Ruta PDF guardada: ' . $filePathPdf);
-        Log::info('Ruta DOC guardada: ' . $filePathDoc);
-
-
-
-        //Crear documento
+        // Crear documento
         $document = Document::create([
             'code' => $request->code,
             'name' => $request->name,
             'description' => $request->description,
             'version' => $request->version,
             'category_id' => $request->category_id,
-            'download' => $request->boolean('download'),
-            'general' => $request->boolean('general'),
-            'file_path_pdf' => $filePathPdf,
-            'file_path_doc' => $filePathDoc,
+            'file_path_doc' => $filePathDoc ?? null,
+            'file_path_pdf' => $filePathPdf ?? null,
             'revisor_id' => $request->revisor_id,
             'aprobador_id' => $request->aprobador_id,
             'area_resp_id' => $request->area_resp_id,
@@ -90,6 +78,40 @@ class DocumentController extends Controller
 
         return redirect()->route('documentacion-sgi.index')->with('success', 'Documento creado correctamente');
     }
+
+    public function convertirADocumentoPDF(string $documentPath): ?string
+    {
+        $fullPath = storage_path('app/' . $documentPath);
+        $outputDir = storage_path('app/pdfs-sgi');
+
+        // Asegura que el directorio destino exista
+        if (!file_exists($outputDir)) {
+            mkdir($outputDir, 0755, true);
+        }
+
+        $process = new Process([
+            'libreoffice',
+            '--headless',
+            '-env:UserInstallation=file://' . storage_path('app/temp-libreoffice'),
+            '--convert-to',
+            'pdf',
+            '--outdir',
+            $outputDir,
+            $fullPath,
+        ]);
+
+
+        $process->run();
+
+        if (!$process->isSuccessful()) {
+            logger()->error('Error al convertir documento a PDF: ' . $process->getErrorOutput());
+            return null;
+        }
+
+        $filename = pathinfo($documentPath, PATHINFO_FILENAME) . '.pdf';
+        return 'pdfs-sgi/' . $filename;
+    }
+
 
     /**
      * Display the specified resource.

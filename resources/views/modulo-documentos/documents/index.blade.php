@@ -28,16 +28,16 @@
     </a>
 
     <a href="{{ url('categorias-documentos') }}" class="col-md-3 btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
-        Categorias del Documento
+        Clasificación del Documento
     </a>
 
-     <a href="{{ url('/areas-sgi') }}" class="col-md-3 btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
+     {{-- <a href="{{ url('/areas-sgi') }}" class="col-md-3 btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
         Areas de Trabajo
     </a>
 
      <a href="{{ url('/puestos-trabajo') }}" class="col-md-3 btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
         Puestos de Trabajo
-    </a>
+    </a> --}}
 
     <a href="{{ url('/users-sgi') }}" class="col-md-3 btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
         Usuarios

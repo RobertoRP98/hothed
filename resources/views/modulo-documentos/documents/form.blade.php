@@ -46,27 +46,14 @@
         </div>
     </div>
 
-    <div class="col-md-2">
-        <div class="form-outline">
-            <label class="form-label" for="category_id">&nbsp;CATEGORÍA</label>
-            <select id="category_id" name="category_id" class="form-control">
-                <option value="" {{ old('category_id', $document->category_id ?? '') == '' ? 'selected' : '' }}>Sin Categoría</option>
-                @foreach ($categorias as $categoria)
-                    <option value="{{ $categoria->id }}"
-                        {{ old('category_id', $document->category_id ?? '') == $categoria->id ? 'selected' : '' }}>
-                        {{ $categoria->name }}
-                    </option>
-                @endforeach
-            </select>
-        </div>
-    </div>
+    
 </div>
 
 
  <div class="row mb-4 col-md-12">
 
 
-     <div class="col-md-2">
+     {{-- <div class="col-md-2">
          <div class="form-outline">
              <label class="form-label" for="download">&nbsp;¿DESCARGAR?</label>
 
@@ -78,8 +65,8 @@
              </select>
 
          </div>
-     </div>
-
+     </div> --}}
+{{-- 
      <div class="col-md-2">
          <div class="form-outline">
              <label class="form-label" for="general">&nbsp;¿GENERAL?</label>
@@ -92,9 +79,52 @@
              </select>
 
          </div>
-     </div>
+     </div> --}}
+
+    
+
+     <div class="col-md-2">
+        <div class="form-outline">
+            <label class="form-label" for="category_id">&nbsp;CLASIFICIACIÓN</label>
+            <select id="category_id" name="category_id" class="form-control">
+                <option value="" {{ old('category_id', $document->category_id ?? '') == '' ? 'selected' : '' }}>CLASIFICIACIÓN</option>
+                @foreach ($categorias as $categoria)
+                    <option value="{{ $categoria->id }}"
+                        {{ old('category_id', $document->category_id ?? '') == $categoria->id ? 'selected' : '' }}>
+                        {{ $categoria->name }}
+                    </option>
+                @endforeach
+            </select>
+        </div>
+    </div>
+
+    {{-- <div class="col-md-2">
+        <div class="form-outline">
+            <label class="form-label" for="category_id">&nbsp;TIPO</label>
+            <select id="category_id" name="category_id" class="form-control">
+                <option value="" {{ old('category_id', $document->category_id ?? '') == '' ? 'selected' : '' }}>TIPO</option>
+                @foreach ($categorias as $categoria)
+                    <option value="{{ $categoria->id }}"
+                        {{ old('category_id', $document->category_id ?? '') == $categoria->id ? 'selected' : '' }}>
+                        {{ $categoria->name }}
+                    </option>
+                @endforeach
+            </select>
+        </div>
+    </div> --}}
 
      <div class="col-md-4">
+         <div class="form-outline">
+             <label class="form-label" for="file_doc">&nbsp;CARGAR ARCHIVO</label>
+             <input type="file" id="file_doc" name="file_doc" class="form-control" multiple>
+
+             @error('file_pdf')
+                 <small class="text-danger">{{ $message }}</small>
+             @enderror
+         </div>
+     </div>
+
+      {{-- <div class="col-md-4">
          <div class="form-outline">
              <label class="form-label" for="file_pdf">&nbsp;ARCHIVO PDF</label>
              <input type="file" id="file_pdf" name="file_pdf" class="form-control" accept=".pdf">
@@ -103,18 +133,7 @@
                  <small class="text-danger">{{ $message }}</small>
              @enderror
          </div>
-     </div>
-
-     <div class="col-md-4">
-         <div class="form-outline">
-             <label class="form-label" for="file_doc">&nbsp;ARCHIVO ORIGINAL</label>
-             <input type="file" id="file_doc" name="file_doc" class="form-control" multiple>
-
-             @error('file_pdf')
-                 <small class="text-danger">{{ $message }}</small>
-             @enderror
-         </div>
-     </div>
+     </div> --}}
 
 
  </div>
@@ -143,7 +162,7 @@
 
      <div class="col-md-2">
          <div class="form-outline">
-             <label class="form-label" for="area_resp_id">&nbsp;DEP. RESPONSABLE</label>
+             <label class="form-label" for="area_resp_id">&nbsp;PROCESO RESPONSABLE</label>
 
              <select id="area_resp_id" name="area_resp_id" class="form-control">
                  <option value="" {{ old('area_resp_id', $user->area_resp_id ?? '') == '' ? 'selected' : '' }}>
@@ -160,7 +179,7 @@
      </div>
 
 <div class="col-md-2">
-         <label for="areas" class="form-label">Áreas destinadas</label>
+         <label for="areas" class="form-label">ALCANCE</label>
          <select name="areas[]" id="areas" multiple class="form-select" data-placeholder="Selecciona las áreas">
              @foreach ($areas as $area)
                  <option value="{{ $area->id }}">{{ $area->name }}</option>
@@ -220,7 +239,7 @@
                  </option>
              </select>
          </div>
-     </div>
+     </div> 
 
        <div class="col-md-3">
          <div class="form-outline">
@@ -254,7 +273,7 @@
                  </option>
              </select>
          </div>
-     </div>
+     </div> 
 
 
 

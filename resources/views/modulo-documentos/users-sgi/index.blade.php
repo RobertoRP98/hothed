@@ -25,7 +25,7 @@
 <div class="col-md-12">
 
      <a href="{{ url('/documentacion-sgi') }}" class="col-md-3 btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
-        Documentación SGI
+        Regresar
     </a> 
 
     <a href="{{ url('/areas-sgi') }}" class="col-md-3 btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
