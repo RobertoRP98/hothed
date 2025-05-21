@@ -18,6 +18,7 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->string('version');
             $table->foreignId('category_id')->nullable()->constrained('documents_categories')->nullOnDelete();
+            $table->foreignId('type_id')->nullable()->constrained('documents_types')->nullOnDelete();
            //$table->foreignId('type_id')->nullable()->constrained('documents_types')->nullOnDelete();
            // $table->boolean('download')->default(false);
            //$table->boolean('general')->default(false);

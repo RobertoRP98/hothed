@@ -16,14 +16,14 @@
      <div data-mdb-input-init class="form-outline">
       <input type="text" id="name" name="name" value="{{ isset($category) ? $category->name : '' }}" class="form-control " 
        placeholder="DOC" />
-      <label class="form-label" for="name">CATEGORIA DE DOCUMENTO</label>
+      <label class="form-label" for="name">CLASIFICACIÓN DE DOCUMENTO</label>
      </div>
    </div>
  </div>
 
 
  <!-- Submit button -->
- <button type="submit" class="btn btn-primary btn-block mb-4 m-2">{{$modo}} Categoria de Documento</button>
+ <button type="submit" class="btn btn-primary btn-block mb-4 m-2">{{$modo}} Clasificación de Documento</button>
 
  <button type="button" class="btn btn-warning btn-block mb-3"> <a class="text-white" href="{{ url('/categorias-documentos') }}">
     Regresar

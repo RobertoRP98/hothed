@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\DocumentsTypes;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TaxController;
@@ -9,8 +10,9 @@ use App\Http\Controllers\FamilyController;
 use App\Http\Controllers\AreaSgiController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserSgiController;
-use App\Http\Controllers\CurrencyController;
 
+use App\Http\Controllers\CurrencyController;
+use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\SubgroupController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\ToolstatusController;
@@ -18,11 +20,11 @@ use App\Http\Controllers\RequisitionController;
 use App\Http\Controllers\WorkstationController;
 use App\Http\Controllers\PurchaseOrderController;
 use App\Http\Controllers\ToolwarehouseController;
+use App\Http\Controllers\DocumentsTypesController;
 use App\Http\Controllers\AuthPurchaseOrderController;
 use App\Http\Controllers\CompanyReceivableController;
-use App\Http\Controllers\AuthorizationRequisitionController;
-use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\DocumentsCategoriesController;
+use App\Http\Controllers\AuthorizationRequisitionController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -365,6 +367,8 @@ Route::group(
         Route::resource('areas-sgi', AreaSgiController::class);
         Route::resource('users-sgi', UserSgiController::class);
         Route::resource('categorias-documentos', DocumentsCategoriesController::class);
+        Route::resource('tipos-documentos', DocumentsTypesController::class);
+
 
         Route::get('documentacion-sgi',[DocumentController::class,'index'])->name('documentacion-sgi.index');
 

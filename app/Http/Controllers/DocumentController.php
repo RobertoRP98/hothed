@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\StoreDocumentRequest;
 use App\Http\Requests\UpdateDocumentRequest;
+use App\Models\DocumentsTypes;
 use Symfony\Component\Process\Process;
 
 class DocumentController extends Controller
@@ -19,7 +20,14 @@ class DocumentController extends Controller
      */
     public function index()
     {
-        $documents = Document::with(['category', 'revisor', 'aprobador', 'areaResponsable'])->latest()->get();
+        $documents = Document::with(['category', 'revisor', 'aprobador', 'areaResponsable'])->latest()->get()
+        ->map(function ($doc){
+            //SI EL ARCHIVO TERMINA EN .pdf se anula el boton en el front
+             if ($doc->file_path_doc && strtolower(pathinfo($doc->file_path_doc, PATHINFO_EXTENSION)) === 'pdf') {
+                $doc->file_path_doc = null;
+            }
+            return $doc;
+        });
 
         return view('modulo-documentos.documents.index', compact('documents'));
     }
@@ -32,8 +40,9 @@ class DocumentController extends Controller
         $areas = AreaSgi::all();
         $categorias = DocumentsCategories::all();
         $users = UserSgi::all();
+        $types = DocumentsTypes::all();
 
-        return view('modulo-documentos.documents.create', compact('areas', 'categorias', 'users'));
+        return view('modulo-documentos.documents.create', compact('areas', 'categorias', 'users', 'types'));
     }
 
     /**
@@ -47,14 +56,19 @@ class DocumentController extends Controller
             Log::info('DOC recibido: ' . $request->file('file_doc')->getClientOriginalName());
 
             $originalNameDoc = $request->file('file_doc')->getClientOriginalName();
+            $extension = strtolower($request->file('file_doc')->getClientOriginalExtension());
             $filenameDoc = uniqid() . '-' . $originalNameDoc;
             $filePathDoc = $request->file('file_doc')->storeAs('documentos-sgi', $filenameDoc);
 
             Log::info('Ruta DOC guardada: ' . $filePathDoc);
 
-            // Convertir a PDF automáticamente
-            $filePathPdf = $this->convertirADocumentoPDF($filePathDoc);
-            Log::info('Ruta PDF generada: ' . $filePathPdf);
+            // Solo convertir si NO es PDF
+            if ($extension !== 'pdf') {
+                $filePathPdf = $this->convertirADocumentoPDF($filePathDoc); //AQUI ENTRA LA FUNCION
+            } else {
+                // Si ya es PDF, lo dejamos como está
+                $filePathPdf = $filePathDoc;
+            }
         }
 
         // Crear documento

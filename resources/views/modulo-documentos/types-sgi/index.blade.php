@@ -11,8 +11,8 @@
     Regresar
 </a> </button> 
 
-<button type="button" class="btn btn-outline-success mb-3 mt-3"> <a class="text-dark" href="{{ url('categorias-documentos/create') }}">
-    Agregar Clasificación para Documentos
+<button type="button" class="btn btn-outline-success mb-3 mt-3"> <a class="text-dark" href="{{ url('tipos-documentos/create') }}">
+    Agregar Tipo para Documentos
 </a> </button> 
 
 
@@ -21,17 +21,17 @@
     <thead class="thead-light">
         <tr>
             <th>ID</th>
-            <th>CLASIFICACIÓN</th>
+            <th>TIPO</th>
             <th>Opciones</th>
         </tr>
     </thead>
     <tbody>
-        @foreach($categories as $category)
+        @foreach($types as $type)
         <tr>
-            <td>{{ $category->id }}</td>
-            <td>{{ $category->name }}</td>
+            <td>{{ $type->id }}</td>
+            <td>{{ $type->name }}</td>
             <td>
-               <button class="btn btn-warning mb-2"> <a class="text-white" href="{{ url('categorias-documentos/'.$category->id.'/edit') }}">
+               <button class="btn btn-warning mb-2"> <a class="text-white" href="{{ url('tipos-documentos/'.$type->id.'/edit') }}">
                     Editar
                 </a> </button> 
             </td>
@@ -39,7 +39,7 @@
         @endforeach
     </tbody>
 </table>
-{!! $categories->links() !!}
+{!! $types->links() !!}
 </div>
 </div>
 

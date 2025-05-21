@@ -98,29 +98,39 @@
         </div>
     </div>
 
-    {{-- <div class="col-md-2">
+     <div class="col-md-2">
         <div class="form-outline">
-            <label class="form-label" for="category_id">&nbsp;TIPO</label>
-            <select id="category_id" name="category_id" class="form-control">
-                <option value="" {{ old('category_id', $document->category_id ?? '') == '' ? 'selected' : '' }}>TIPO</option>
-                @foreach ($categorias as $categoria)
+            <label class="form-label" for="type_id">&nbsp;TIPO</label>
+            <select id="type_id" name="type_id" class="form-control">
+                <option value="" {{ old('type_id', $document->type_id ?? '') == '' ? 'selected' : '' }}>TIPO</option>
+                @foreach ($types as $type)
                     <option value="{{ $categoria->id }}"
-                        {{ old('category_id', $document->category_id ?? '') == $categoria->id ? 'selected' : '' }}>
-                        {{ $categoria->name }}
+                        {{ old('type_id', $document->type_id ?? '') == $type->id ? 'selected' : '' }}>
+                        {{ $type->name }}
                     </option>
                 @endforeach
             </select>
         </div>
-    </div> --}}
+    </div> 
 
      <div class="col-md-4">
          <div class="form-outline">
              <label class="form-label" for="file_doc">&nbsp;CARGAR ARCHIVO</label>
-             <input type="file" id="file_doc" name="file_doc" class="form-control" multiple>
+             <input type="file" id="file_doc" name="file_doc" class="form-control">
 
              @error('file_pdf')
                  <small class="text-danger">{{ $message }}</small>
              @enderror
+
+              {{-- Mostrar el archivo actual si estamos en edición --}}
+              @if (isset($document) && $document->file_path_doc)
+              <div class="mt-2">
+                <strong>Archivo actual: </strong>
+                <a href=""></a>
+              </div>
+                  
+              @endif
+
          </div>
      </div>
 

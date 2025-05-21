@@ -19,6 +19,8 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.bootstrap5.css">
 <link rel="stylesheet" href="https://cdn.datatables.net/responsive/3.0.3/css/responsive.bootstrap5.css">
+
+
 @endpush
 
 
@@ -29,6 +31,10 @@
 
     <a href="{{ url('categorias-documentos') }}" class="col-md-3 btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
         Clasificación del Documento
+    </a>
+
+    <a href="{{ url('tipos-documentos') }}" class="col-md-3 btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
+        Tipo de Documento
     </a>
 
      {{-- <a href="{{ url('/areas-sgi') }}" class="col-md-3 btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
@@ -59,6 +65,7 @@
     <table id="documentacion-sgi" class="table table-light table-bordered table-hover text-center">
 <thead class="thead-light">
         <tr>
+            <th class="col-md-1">ID</th>
             <th class="col-md-1">NOMBRE</th>
             <th class="col-md-1">VER</th>
             <th class="col-md-1">DESCARGAR</th>
@@ -69,17 +76,20 @@
     <tbody>
         @foreach($documents as $document)
         <tr>
+            <td>{{ $document->id  }}</td>
+
             <td>{{ $document->name  }}</td>
 
             {{-- Columna PDF --}}
         <td>
             @if ($document->file_path_pdf)
                 <a href="{{ route('documentos.download', ['type' => 'pdf', 'id' => $document->id]) }}"
-                   class="btn btn-sm btn-outline-primary" target="_blank">
-                    Descargar PDF
+                   class="btn btn-sm btn-outline-danger" target="_blank">
+            <i class="bi bi-filetype-pdf"  style="font-size: 30px; width: 24px; height: 24px;"></i>
+                    
                 </a>
             @else
-                <span class="text-muted">—</span>
+                <span class="text-muted"></span>
 
             @endif
         </td>
@@ -89,11 +99,11 @@
             
             @if ($document->file_path_doc)
                 <a href="{{ route('documentos.download', ['type' => 'doc', 'id' => $document->id]) }}"
-                   class="btn btn-sm btn-outline-success" target="_blank">
-                    Descargar Documento
+                   class="btn btn-sm btn-outline-primary" target="_blank">
+            <i class="bi bi-cloud-download"  style="font-size: 30px; width: 24px; height: 24px;"></i>
                 </a>
             @else
-                <span class="text-muted">—</span>
+                <span class="text-muted"></span>
             @endif
         </td>
 
@@ -102,7 +112,7 @@
             <a 
             href="{{ url('documentacion-sgi/'.$document->id.'/edit') }}" 
             {{-- target="_blank"  --}}
-            class="btn btn-success mb-2 text-white"
+            class="btn btn-warning mb-2 text-white"
         >
             Editar
         </a>
@@ -136,6 +146,7 @@
             autoWidth: false,
             pageLength: 25,
             order: [[0, 'desc']],
+
             "language": {
                 "lengthMenu":     "Mostrar _MENU_ registros",
     "loadingRecords": "Cargando...",

@@ -34,6 +34,11 @@ class Document extends Model
         return $this->belongsTo(DocumentsCategories::class, 'category_id');
     }
 
+    public function type()
+    {
+        return $this->belongsTo(DocumentsTypes::class, 'type_id');
+    }
+
     public function revisor()
     {
         return $this->belongsTo(UserSgi::class, 'revisor_id');
