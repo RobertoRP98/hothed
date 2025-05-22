@@ -21,13 +21,13 @@ class DocumentController extends Controller
     public function index()
     {
         $documents = Document::with(['category', 'revisor', 'aprobador', 'areaResponsable'])->latest()->get()
-        ->map(function ($doc){
-            //SI EL ARCHIVO TERMINA EN .pdf se anula el boton en el front
-             if ($doc->file_path_doc && strtolower(pathinfo($doc->file_path_doc, PATHINFO_EXTENSION)) === 'pdf') {
-                $doc->file_path_doc = null;
-            }
-            return $doc;
-        });
+            ->map(function ($doc) {
+                //SI EL ARCHIVO TERMINA EN .pdf se anula el boton en el front
+                if ($doc->file_path_doc && strtolower(pathinfo($doc->file_path_doc, PATHINFO_EXTENSION)) === 'pdf') {
+                    $doc->file_path_doc = null;
+                }
+                return $doc;
+            });
 
         return view('modulo-documentos.documents.index', compact('documents'));
     }
@@ -86,6 +86,7 @@ class DocumentController extends Controller
             'auth_1' => $request->auth_1,
             'auth_2' => $request->auth_2,
             'active' => $request->active,
+            'type_id' => $request->type_id,
         ]);
 
         $document->areas()->sync($request->areas);
@@ -138,9 +139,16 @@ class DocumentController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Document $document)
+    public function edit($id)
     {
-        //
+        $document = Document::with('areas')->findOrFail($id);
+
+        $areas = AreaSgi::all();
+        $categorias = DocumentsCategories::all();
+        $users = UserSgi::all();
+        $types = DocumentsTypes::all();
+
+        return view('modulo-documentos.documents.edit', compact('areas', 'categorias', 'users', 'types','document'));
     }
 
     /**

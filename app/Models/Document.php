@@ -26,7 +26,8 @@ class Document extends Model
         'area_resp_id',
         'auth_1',
         'auth_2',
-        'active'
+        'active',
+        'type_id',
     ];
 
     public function category()

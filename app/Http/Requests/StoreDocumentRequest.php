@@ -37,6 +37,7 @@ class StoreDocumentRequest extends FormRequest
             'auth_1' => 'nullable',
             'auth_2' => 'nullable',
             'active' => 'required',
+            'type_id' => 'required',
 
             'areas' => 'required|array',
             'areas.*' => 'exists:areas_sgi,id'

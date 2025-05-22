@@ -13,41 +13,42 @@
 
 
  <br>
-<div class="row mb-4 col-md-12">
-    <div class="col-md-2">
-        <div data-mdb-input-init class="form-outline">
-            <label class="form-label" for="code">&nbsp; CÓDIGO</label>
-            <input type="text" id="code" name="code" value="{{ old('code', $document->code ?? '') }}"
-                class="form-control" placeholder="ADM-001" />
-        </div>
-    </div>
+ <div class="row mb-4 col-md-12">
+     <div class="col-md-2">
+         <div data-mdb-input-init class="form-outline">
+             <label class="form-label" for="code">&nbsp; CÓDIGO</label>
+             <input type="text" id="code" name="code" value="{{ old('code', $document->code ?? '') }}"
+                 class="form-control" placeholder="ADM-001" />
+         </div>
+     </div>
 
-    <div class="col-md-3">
-        <div data-mdb-input-init class="form-outline">
-            <label class="form-label" for="name">&nbsp;NOMBRE</label>
-            <input type="text" id="name" name="name" value="{{ old('name', $document->name ?? '') }}"
-                class="form-control" placeholder="REQUISICIÓN" />
-        </div>
-    </div>
+     <div class="col-md-3">
+         <div data-mdb-input-init class="form-outline">
+             <label class="form-label" for="name">&nbsp;NOMBRE</label>
+             <input type="text" id="name" name="name" value="{{ old('name', $document->name ?? '') }}"
+                 class="form-control" placeholder="REQUISICIÓN" />
+         </div>
+     </div>
 
-    <div class="col-md-3">
-        <div data-mdb-input-init class="form-outline">
-            <label class="form-label" for="description">&nbsp;DESCRIPCIÓN</label>
-            <input type="text" id="description" name="description" value="{{ old('description', $document->description ?? '') }}"
-                class="form-control" placeholder="SOLICITAR MATERIAL" />
-        </div>
-    </div>
+     <div class="col-md-3">
+         <div data-mdb-input-init class="form-outline">
+             <label class="form-label" for="description">&nbsp;DESCRIPCIÓN</label>
+             <input type="text" id="description" name="description"
+                 value="{{ old('description', $document->description ?? '') }}" class="form-control"
+                 placeholder="SOLICITAR MATERIAL" />
+         </div>
+     </div>
 
-    <div class="col-md-2">
-        <div data-mdb-input-init class="form-outline">
-            <label class="form-label" for="version">&nbsp;VERSIÓN</label>
-            <input type="text" id="version" name="version" value="{{ old('version', $document->version ?? '') }}"
-                class="form-control" placeholder="V2.0" />
-        </div>
-    </div>
+     <div class="col-md-2">
+         <div data-mdb-input-init class="form-outline">
+             <label class="form-label" for="version">&nbsp;VERSIÓN</label>
+             <input type="text" id="version" name="version" value="{{ old('version', $document->version ?? '') }}"
+                 class="form-control" placeholder="V2.0" />
+         </div>
+     </div>
 
-    
-</div>
+
+ </div>
 
 
  <div class="row mb-4 col-md-12">
@@ -66,7 +67,7 @@
 
          </div>
      </div> --}}
-{{-- 
+     {{-- 
      <div class="col-md-2">
          <div class="form-outline">
              <label class="form-label" for="general">&nbsp;¿GENERAL?</label>
@@ -81,39 +82,41 @@
          </div>
      </div> --}}
 
-    
+
 
      <div class="col-md-2">
-        <div class="form-outline">
-            <label class="form-label" for="category_id">&nbsp;CLASIFICIACIÓN</label>
-            <select id="category_id" name="category_id" class="form-control">
-                <option value="" {{ old('category_id', $document->category_id ?? '') == '' ? 'selected' : '' }}>CLASIFICIACIÓN</option>
-                @foreach ($categorias as $categoria)
-                    <option value="{{ $categoria->id }}"
-                        {{ old('category_id', $document->category_id ?? '') == $categoria->id ? 'selected' : '' }}>
-                        {{ $categoria->name }}
-                    </option>
-                @endforeach
-            </select>
-        </div>
-    </div>
+         <div class="form-outline">
+             <label class="form-label" for="category_id">&nbsp;CLASIFICIACIÓN</label>
+             <select id="category_id" name="category_id" class="form-control">
+                 <option value="" {{ old('category_id', $document->category_id ?? '') == '' ? 'selected' : '' }}>
+                     CLASIFICIACIÓN</option>
+                 @foreach ($categorias as $categoria)
+                     <option value="{{ $categoria->id }}"
+                         {{ old('category_id', $document->category_id ?? '') == $categoria->id ? 'selected' : '' }}>
+                         {{ $categoria->name }}
+                     </option>
+                 @endforeach
+             </select>
+         </div>
+     </div>
 
      <div class="col-md-2">
-        <div class="form-outline">
-            <label class="form-label" for="type_id">&nbsp;TIPO</label>
-            <select id="type_id" name="type_id" class="form-control">
-                <option value="" {{ old('type_id', $document->type_id ?? '') == '' ? 'selected' : '' }}>TIPO</option>
-                @foreach ($types as $type)
-                    <option value="{{ $categoria->id }}"
-                        {{ old('type_id', $document->type_id ?? '') == $type->id ? 'selected' : '' }}>
-                        {{ $type->name }}
-                    </option>
-                @endforeach
-            </select>
-        </div>
-    </div> 
+         <div class="form-outline">
+             <label class="form-label" for="type_id">&nbsp;TIPO</label>
+             <select id="type_id" name="type_id" class="form-control">
+                 <option value="" {{ old('type_id', $document->type_id ?? '') == '' ? 'selected' : '' }}>TIPO
+                 </option>
+                 @foreach ($types as $type)
+                     <option value="{{ $type->id }}"
+                         {{ old('type_id', $document->type_id ?? '') == $type->id ? 'selected' : '' }}>
+                         {{ $type->name }}
+                     </option>
+                 @endforeach
+             </select>
+         </div>
+     </div>
 
-     <div class="col-md-4">
+     <div class="col-md-8">
          <div class="form-outline">
              <label class="form-label" for="file_doc">&nbsp;CARGAR ARCHIVO</label>
              <input type="file" id="file_doc" name="file_doc" class="form-control">
@@ -122,19 +125,20 @@
                  <small class="text-danger">{{ $message }}</small>
              @enderror
 
-              {{-- Mostrar el archivo actual si estamos en edición --}}
-              @if (isset($document) && $document->file_path_doc)
-              <div class="mt-2">
-                <strong>Archivo actual: </strong>
-                <a href=""></a>
-              </div>
-                  
-              @endif
+             {{-- Mostrar el archivo actual si estamos en edición --}}
+             @if (isset($document) && $document->file_path_doc)
+                 <div class="mt-2">
+                     <strong>Archivo actual: </strong>
+                     <a href="{{ asset('storage/' . $document->file_path_doc) }}" target="_blank">
+                         {{ basename($document->file_path_doc) }}
+                     </a>
+                 </div>
+             @endif
 
          </div>
      </div>
 
-      {{-- <div class="col-md-4">
+     {{-- <div class="col-md-4">
          <div class="form-outline">
              <label class="form-label" for="file_pdf">&nbsp;ARCHIVO PDF</label>
              <input type="file" id="file_pdf" name="file_pdf" class="form-control" accept=".pdf">
@@ -168,19 +172,15 @@
      </div> --}}
 
 
-   
-
-     <div class="col-md-2">
+     <div class="col-md-3">
          <div class="form-outline">
              <label class="form-label" for="area_resp_id">&nbsp;PROCESO RESPONSABLE</label>
-
              <select id="area_resp_id" name="area_resp_id" class="form-control">
-                 <option value="" {{ old('area_resp_id', $user->area_resp_id ?? '') == '' ? 'selected' : '' }}>
-                     Sin
-                     Area asignada</option>
+                 <option value=""
+                     {{ old('area_resp_id', $document->area_resp_id ?? '') == '' ? 'selected' : '' }}>TIPO</option>
                  @foreach ($areas as $area)
                      <option value="{{ $area->id }}"
-                         {{ old('area_resp_id', $revisor->area_resp_id ?? '') == $area->id ? 'selected' : '' }}>
+                         {{ old('area_resp_id', $document->area_resp_id ?? '') == $area->id ? 'selected' : '' }}>
                          {{ $area->name }}
                      </option>
                  @endforeach
@@ -188,14 +188,20 @@
          </div>
      </div>
 
-<div class="col-md-2">
-         <label for="areas" class="form-label">ALCANCE</label>
-         <select name="areas[]" id="areas" multiple class="form-select" data-placeholder="Selecciona las áreas">
-             @foreach ($areas as $area)
-                 <option value="{{ $area->id }}">{{ $area->name }}</option>
-             @endforeach
-         </select>
-     </div>
+
+
+    <div class="col-md-2">
+    <label for="areas" class="form-label">ALCANCE</label>
+    <select name="areas[]" id="areas" multiple class="form-select" data-placeholder="Selecciona las áreas">
+        @foreach ($areas as $area)
+            <option value="{{ $area->id }}"
+                {{ (collect(old('areas', $document->areas->pluck('id')))->contains($area->id)) ? 'selected' : '' }}>
+                {{ $area->name }}
+            </option>
+        @endforeach
+    </select>
+</div>
+
 
 
 
@@ -216,74 +222,77 @@
 
 
  <div class="row mb-4 col-md-12">
-    
-     <div class="col-md-3">
+
+     <div class="col-md-2">
          <div class="form-outline">
              <label class="form-label" for="revisor_id">&nbsp;REVISOR</label>
-
              <select id="revisor_id" name="revisor_id" class="form-control">
-                 <option value="" {{ old('revisor_id', $user->revisor_id ?? '') == '' ? 'selected' : '' }}>Sin
-                     revisor</option>
-                 @foreach ($users as $revisor)
-                     <option value="{{ $revisor->id }}"
-                         {{ old('revisor_id', $revisor->revisor_id ?? '') == $revisor->id ? 'selected' : '' }}>
-                         {{ $revisor->name }}
+                 <option value="" {{ old('revisor_id', $document->revisor_id ?? '') == '' ? 'selected' : '' }}>
+                     REVISOR</option>
+                 @foreach ($users as $user)
+                     <option value="{{ $user->id }}"
+                         {{ old('revisor_id', $document->revisor_id ?? '') == $user->id ? 'selected' : '' }}>
+                         {{ $user->name }}
                      </option>
                  @endforeach
              </select>
          </div>
      </div>
+
 
      <div class="col-md-3">
          <label class="form-label">STATUS REVISOR</label>
          <div class="form-outline">
              <select class="form-select" name="auth_1" id="auth_1">
                  <option value="PENDIENTE"
-                     {{ old('auth_1', isset($document) && $document->auth_1 == 'PENDIENTE' ? 'selected' : '') }}>PENDIENTE
+                     {{ old('auth_1', isset($document) && $document->auth_1 == 'PENDIENTE' ? 'selected' : '') }}>
+                     PENDIENTE
                  </option>
                  <option value="AUTORIZADO"
                      {{ old('auth_1', isset($document) && $document->auth_1 == 'AUTORIZADO' ? 'selected' : '') }}>
                      AUTORIZADO</option>
                  <option value="RECHAZADO"
-                     {{ old('auth_1', isset($document) && $document->auth_1 == 'RECHAZADO' ? 'selected' : '') }}>RECHAZADO
+                     {{ old('auth_1', isset($document) && $document->auth_1 == 'RECHAZADO' ? 'selected' : '') }}>
+                     RECHAZADO
                  </option>
              </select>
          </div>
-     </div> 
+     </div>
 
-       <div class="col-md-3">
+      <div class="col-md-2">
          <div class="form-outline">
              <label class="form-label" for="aprobador_id">&nbsp;APROBADOR</label>
-
              <select id="aprobador_id" name="aprobador_id" class="form-control">
-                 <option value="" {{ old('aprobador_id', $aprobador->id ?? '') == '' ? 'selected' : '' }}>
-                     Sin aprobador</option>
-                 @foreach ($users as $aprobador)
-                     <option value="{{ $aprobador->id }}"
-                         {{ old('aprobador_id', $aprobador->aprobador_id ?? '') == $aprobador->id ? 'selected' : '' }}>
-                         {{ $aprobador->name }}
+                 <option value="" {{ old('aprobador_id', $document->aprobador_id ?? '') == '' ? 'selected' : '' }}>
+                     APROBADOR</option>
+                 @foreach ($users as $user)
+                     <option value="{{ $user->id }}"
+                         {{ old('aprobador_id', $document->aprobador_id ?? '') == $user->id ? 'selected' : '' }}>
+                         {{ $user->name }}
                      </option>
                  @endforeach
              </select>
          </div>
      </div>
 
-       <div class="col-md-3">
+     <div class="col-md-3">
          <label class="form-label">STATUS APROBADOR</label>
          <div class="form-outline">
              <select class="form-select" name="auth_2" id="auth_2">
                  <option value="PENDIENTE"
-                     {{ old('auth_2', isset($document) && $document->auth_2 == 'PENDIENTE' ? 'selected' : '') }}>PENDIENTE
+                     {{ old('auth_2', isset($document) && $document->auth_2 == 'PENDIENTE' ? 'selected' : '') }}>
+                     PENDIENTE
                  </option>
                  <option value="AUTORIZADO"
                      {{ old('auth_2', isset($document) && $document->auth_2 == 'AUTORIZADO' ? 'selected' : '') }}>
                      AUTORIZADO</option>
                  <option value="RECHAZADO"
-                     {{ old('auth_2', isset($document) && $document->auth_2 == 'RECHAZADO' ? 'selected' : '') }}>RECHAZADO
+                     {{ old('auth_2', isset($document) && $document->auth_2 == 'RECHAZADO' ? 'selected' : '') }}>
+                     RECHAZADO
                  </option>
              </select>
          </div>
-     </div> 
+     </div>
 
 
 

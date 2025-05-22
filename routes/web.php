@@ -374,6 +374,9 @@ Route::group(
 
         Route::get('documentacion-sgi/create',[DocumentController::class,'create'])->name('documentacion-sgi.create');
         Route::post('documentacion-sgi',[DocumentController::class,'store'])->name('documentacion-sgi.store');
+
+        Route::get('documentacion-sgi/{document}/edit',[DocumentController::class,'edit'])->name('documentacion-sgi.edit');
+
         Route::get('/documentos/download/{type}/{id}', [DocumentController::class, 'download'])->name('documentos.download');
 
 
