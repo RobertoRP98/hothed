@@ -57,7 +57,7 @@ class DocumentController extends Controller
 
             $originalNameDoc = $request->file('file_doc')->getClientOriginalName();
             $extension = strtolower($request->file('file_doc')->getClientOriginalExtension());
-            $filenameDoc = uniqid() . '-' . $originalNameDoc;
+            $filenameDoc = $originalNameDoc; //DEJALO ASI AQUI ANTES HABIA ALGO MAS PARA ID UNIQUE uniqid()
             $filePathDoc = $request->file('file_doc')->storeAs('documentos-sgi', $filenameDoc);
 
             Log::info('Ruta DOC guardada: ' . $filePathDoc);

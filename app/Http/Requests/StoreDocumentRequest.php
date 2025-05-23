@@ -22,7 +22,7 @@ class StoreDocumentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'code' => 'required',
+            'code' => 'required|unique:documents,code',
             'name'=> 'required',
             'description' => 'nullable',
             'version' => 'required',
@@ -38,10 +38,8 @@ class StoreDocumentRequest extends FormRequest
             'auth_2' => 'nullable',
             'active' => 'required',
             'type_id' => 'required',
-
             'areas' => 'required|array',
             'areas.*' => 'exists:areas_sgi,id'
-
         ];
     }
 
@@ -51,6 +49,9 @@ class StoreDocumentRequest extends FormRequest
         'code.required' => 'El código es requerido',
         'name.required' => 'El nombre es requerido',
         'version.required' => 'La versión es requerida',
+        'code.unique' => 'Verifica que el codigo no este ligado a otro documento',
+        'type_id' => 'El tipo de documento es requerido',
+        'areas' => 'Las areas de alcance son requeridas',
        // 'download.required' => 'Especifica si el documento es descargable',
         //'general.required' => 'Especifica si el documento es general',
         //'file_pdf.mimes' => 'Formato no válido. Los formatos permitidos son: pdf', 
