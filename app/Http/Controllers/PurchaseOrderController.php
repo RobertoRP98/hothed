@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Carbon\Carbon;
 use App\Mail\OcPreaut;
+use App\Mail\OrderPaid;
 use App\Models\Product;
 use App\Mail\OcAuthMail;
 use App\Models\Supplier;
@@ -11,6 +12,7 @@ use App\Mail\TrackingMail;
 use App\Models\Requisition;
 use Illuminate\Http\Request;
 use App\Models\PurchaseOrder;
+use App\Exports\MyOrdersExport;
 use Barryvdh\DomPDF\Facade\Pdf;
 use App\Models\ItemOrderPurchase;
 use Illuminate\Support\Facades\DB;
@@ -26,7 +28,6 @@ use App\Exports\ReporteProveedoresLocalExport;
 use Illuminate\Validation\ValidationException;
 use App\Http\Requests\StorePurchaseOrderRequest;
 use App\Http\Requests\UpdatePurchaseOrderRequest;
-use App\Mail\OrderPaid;
 
 class PurchaseOrderController extends Controller
 {
@@ -997,6 +998,15 @@ class PurchaseOrderController extends Controller
     {
         return Excel::download(new ReporteComprasGlobalExport, 'Resumen de Global de Compras al ' . Carbon::now()->format('d-m-Y') . '.xlsx');
     }
+
+       public function exportReporteMisOrdenes()
+    {
+        $userId = auth()->id();
+      
+        return Excel::download(new MyOrdersExport($userId), 'Mis Ordenes al ' . Carbon::now()->format('d-m-Y') . '.xlsx');
+
+        }
+    
 
     public function verReporteRangos(Request $request)
     {

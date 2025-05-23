@@ -30,6 +30,11 @@
         Mis requisiciones
     </a>
 
+     <a href="{{ url('/export-mis-ordenes') }}"
+                class="col-md-3 btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
+                Descargar Excel de Mis Ordenes
+            </a>
+
     
 </div>
  

@@ -181,10 +181,10 @@ body {
                 <td>{{ $product['quantity'] }}</td>
                 <td>{{ $product['udm'] }}</td>
                 <td>{{ $product['description'] }}</td>
-                <td>${{ $product['price'] }}</td>
+                <td>-</td>
                 <td>{{ $product['tax']['concept'] }}</td> <!-- ✅ Corrección aquí -->
                 <td>{{ $product['discount'] }}%</td>
-                <td>${{ $product['subtotalproducto'] }}</td>
+                <td>-</td>
             </tr>
             @endforeach
 
@@ -195,7 +195,7 @@ body {
                 <td class="no-decoration"></td>
                 <td class="no-decoration"></td>
                 <td>SUB-TOTAL</td>
-                <td>${{ number_format($initialData['formData']['subtotal'],2,'.',',') }} {{ $initialData['formData']['currency']  }}</td>
+                <td>-</td>
             </tr>
             <tr>
                 <td class="no-decoration"></td>
@@ -204,7 +204,7 @@ body {
                 <td class="no-decoration"></td>
                 <td class="no-decoration"></td>
                 <td>IVA</td>
-                <td>${{ number_format($initialData['formData']['tax'], 2,'.',',') }} {{ $initialData['formData']['currency']  }}</td>
+                <td>-</td>
             </tr>     
             <tr>
                 <td class="no-decoration"></td>
@@ -213,7 +213,7 @@ body {
                 <td class="no-decoration"></td>
                 <td class="no-decoration"></td>
                 <td>DESCUENTO</td>
-                <td>${{ number_format($initialData['formData']['total_descuento'],2,'.',',' ) }} {{ $initialData['formData']['currency']  }}</td>
+                <td>-</td>
             </tr>     
             <tr>
                 <td class="no-decoration"></td>
@@ -222,7 +222,7 @@ body {
                 <td class="no-decoration"></td>
                 <td class="no-decoration"></td>
                 <td>TOTAL</td>
-                <td>${{ number_format($initialData['formData']['total'],2,'.',',' ) }} {{ $initialData['formData']['currency']  }} </td>
+                <td>-</td>
             </tr>
         </tbody>
     </table>
