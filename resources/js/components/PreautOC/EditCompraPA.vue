@@ -171,6 +171,18 @@
   </div>
 </div>
 
+  <div class="col-md-3">
+            <div class="form-outline">
+                <input
+                    type="text"
+                    v-model="formData.notes_client"
+                    class="form-control bg-info"
+                    disabled
+                />
+                <label class="form-label">PROYECTO</label>
+            </div>
+        </div>
+
         <!-- <div class="col-md-3">
             <div class="form-outline">
                 <select v-model="formData.authorization_3" class="form-select">

@@ -26,6 +26,7 @@ use App\Exports\ReporteProveedoresLocalExport;
 use Illuminate\Validation\ValidationException;
 use App\Http\Requests\StorePurchaseOrderRequest;
 use App\Http\Requests\UpdatePurchaseOrderRequest;
+use App\Mail\OrderPaid;
 
 class PurchaseOrderController extends Controller
 {
@@ -531,6 +532,8 @@ class PurchaseOrderController extends Controller
 
             $originalAuthorization4 = $purchaseOrder->getOriginal('authorization_4');
 
+            $originalpo_status = $purchaseOrder->getOriginal('po_status');
+
             DB::transaction(function () use ($request, $purchaseOrder, &$orden) {
                 // Actualizar los datos de la orden de compra
                 $purchaseOrder->update(array_merge(
@@ -605,11 +608,12 @@ class PurchaseOrderController extends Controller
             ];
 
             // ENVIAR EL CORREO SI APLICA
-            if ($originalAuthorization2 !== 'Autorizado' && ($orden->authorization_2) == 'Autorizado' && 
-            (
-                ($orden->currency === 'MXN' && $orden->total >= 15000) ||
-                ($orden->currency === 'USD' && $orden->total >= 750)
-            )
+            if (
+                $originalAuthorization2 !== 'Autorizado' && ($orden->authorization_2) == 'Autorizado' &&
+                (
+                    ($orden->currency === 'MXN' && $orden->total >= 15000) ||
+                    ($orden->currency === 'USD' && $orden->total >= 750)
+                )
             ) {
                 // Verifica si la requisición existe antes de acceder a user->departament
                 if (!$orden->requisition || !$orden->requisition->user) {
@@ -688,6 +692,29 @@ class PurchaseOrderController extends Controller
 
                 Log::info('Enviando correo de seguimiento a :', ['emails' => $emails]);
                 Mail::to($emails)->send(new TrackingMail($orden));
+            }
+
+            // Enviar correo de seguimiento si STATUS == PAGADA
+            if (
+                $orden->po_status === 'PAGADA' &&
+                $originalpo_status !== 'PAGADA'
+            ) {
+
+
+                $correosolicitante = $orden->requisition->user->email ?? null;
+
+                $emails = [
+                    'jose.eduardo.cordova@hothedmex.mx',
+                    $correosolicitante,
+                    //agrega mas correos si hay mas responsables de compras
+                ];
+
+                try {
+                    Mail::to($emails)->send(new OrderPaid($orden));
+                    Log::info('Correo de seguimiento por pago enviado con éxito.');
+                } catch (\Exception $e) {
+                    Log::error('Error al enviar correo de pago:', ['mensaje' => $e->getMessage()]);
+                }
             }
 
 
@@ -840,8 +867,115 @@ class PurchaseOrderController extends Controller
         // dd($initialData);
 
         $pdf = Pdf::loadview('compras.pdf', compact('order', 'today', 'proveedor', 'proveedorhh', 'producto', 'item', 'days_remaining_now', 'initialData'));
-        return $pdf->download('Orden de compra - ' . $initialData['formData']['order'] . '.pdf');
+        return $pdf->download('Orden de compra-VH-' . $initialData['formData']['order'] . '.pdf');
     }
+
+    public function pdfclient($id, $requisicione)
+    {
+        // Validar que la orden de compra pertenece a la requisición
+        $order = PurchaseOrder::with(['itemsOrderPurchase.product.tax', 'supplier', 'requisition'])
+            ->where('id', $id)
+            ->where('requisition_id', $requisicione) // Asegurar relación
+            ->firstOrFail();
+
+        $proveedorhh = Supplier::Where('id', 1)->first();
+
+        $today = Carbon::now()->format('Y-m-d');
+        //Datos para seleccionar
+        $proveedor = Supplier::all();
+        $producto = Product::all();
+        $item = ItemOrderPurchase::all();
+
+        // Calcular días restantes
+        $days_remaining_now = floor(\Carbon\Carbon::parse($order->requisition->production_date)->diffInDays(now(), false));
+
+        // Calcular prioridad con la misma lógica de Blade
+        $priority = 'BAJA';
+        if ($days_remaining_now >= -15) {
+            $priority = 'ALTA';
+        } elseif ($days_remaining_now >= -30) {
+            $priority = 'ALTA';
+        } elseif ($days_remaining_now >= -60) {
+            $priority = 'MEDIA';
+        }
+
+        //inicializacion de datos
+        $initialData = [
+            'formData' => [
+                'order' => $order->id,
+                'requisition' => $order->requisition->id,
+                'supplier_id' => $order->supplier_id,
+                'type_op' => $order->type_op,
+                'payment_type' => $order->payment_type,
+                'unique_payment' => $order->unique_payment,
+                'quotation' => $order->quotation,
+                'currency' => $order->currency,
+                'date_start' => $order->date_start,
+                'production_date' => $order->requisition->production_date,
+                'finished' => $order->finished,
+                'date_end' => $order->date_end,
+                'payment_day' => $order->payment_day,
+                'prioridad' => $priority,
+                'days_remaining_now' => $days_remaining_now,
+                'status_requisition' => $order->requisition->status_requisition,
+                'authorization_2' => $order->authorization_2,
+                'authorization_3' => $order->authorization_3,
+                'authorization_4' => $order->authorization_4,
+                'delivery_condition' => $order->delivery_condition,
+                'po_status' => $order->po_status,
+                'bill' => $order->bill,
+                'subtotal' => $order->subtotal,
+                'total_descuento' => $order->total_descuento,
+                'tax' => $order->tax,
+                'total' => $order->total,
+                'proyecto' => $order->requisition->notes_client,
+            ],
+
+            'supplierData' => [
+                [
+                    'supplier_id' => $order->supplier->id ?? null, // Asegurar que no sea null
+                    'name' => $order->supplier->name ?? '', // Nombre del proveedor
+                    'address' => $order->supplier->address ?? '', // Nombre del proveedor
+                    'account' => $order->supplier->account ?? '', // Nombre del proveedor
+                    'rfc' => $order->supplier->rfc ?? '', // RFC del proveedor
+                    'suggestions' => [],
+
+                ]
+            ],
+
+
+            'productData' => $order->itemsOrderPurchase->map(function ($item) {
+                return [
+                    'product_id' => $item->product_id, // ✅ Se mantiene porque existe en items_order_purchase
+                    'description' => optional($item->product)->description ?? 'Producto no encontrado', // ✅ Se obtiene de la relación product
+                    'quantity' => $item->quantity, // ✅ De items_order_purchase
+                    'price' => $item->price, // ✅ De items_order_purchase
+                    'discount' => $item->discount, // ✅ De items_order_purchase
+                    'subtotalproducto' => $item->subtotal, // ✅ De items_order_purchase
+                    'udm' => optional($item->product)->udm ?? 'N/A', // ✅ Evitar errores si es null
+                    'internal_id' => optional($item->product)->internal_id ?? 'N/A', // ✅ Evitar errores si es null
+                    'category' => $item->product->category ?? '',
+
+                    'tax' => [
+                        'concept' => optional($item->product->tax)->concept ?? 'N/A',
+                        'percentage' => optional($item->product->tax)->percentage ?? 0, // Si es null, envía 0
+                    ],
+                    'suggestions' => [],
+
+                ];
+            })->toArray(),
+        ];
+
+        //dd($initialData);
+
+
+
+        // dd($initialData);
+
+        $pdf = Pdf::loadview('compras.pdf-client', compact('order', 'today', 'proveedor', 'proveedorhh', 'producto', 'item', 'days_remaining_now', 'initialData'));
+        return $pdf->download('Orden de compra-VH-' . $initialData['formData']['order'] . '.pdf');
+    }
+
 
 
     public function exportReporteLocales()

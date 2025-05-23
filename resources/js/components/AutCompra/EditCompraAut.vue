@@ -289,7 +289,7 @@
             >
                 <div class="accordion-body">
                     <div class="row mb-4">
-        <div class="col-md-3">
+        <div class="col-md-2">
             <div class="form-outline">
                 <input
                     type="text"
@@ -301,7 +301,7 @@
             </div>
         </div>
 
-        <div class="col-md-3">
+        <div class="col-md-2">
             <div class="form-outline">
                 <select
                     v-model="formData.authorization_2"
@@ -349,7 +349,7 @@
 
 
 
-        <div class="col-md-3">
+        <div class="col-md-2">
             <div class="form-outline">
                 <input
                     type="text"
@@ -360,6 +360,19 @@
                 <label class="form-label">DÍAS POR VENCER / VENCIDOS</label>
             </div>
         </div>
+
+          <div class="col-md-3">
+            <div class="form-outline">
+                <input
+                    type="text"
+                    v-model="formData.notes_client"
+                    class="form-control bg-info"
+                    disabled
+                />
+                <label class="form-label">PROYECTO</label>
+            </div>
+        </div>
+
     </div>
                 </div>
             </div>

@@ -45,11 +45,13 @@
         <tr>
             <th class="col-md-1">REQ</th>
             <th class="col-md-1">OC</th>
+            <th class="col-md-1">PROYECTO</th>
             <th class="col-md-1">STATUS</th>
             <th class="col-md-1">PRIORIDAD</th>
             <th class="col-md-1">ELABORACIÓN DE OC</th>
             <th class="col-md-1">FECHA MAX DE RESPUESTA</th>
             <th class="col-md-1">DIAS VENCIDOS O POR VENCER </th>
+            <th class="col-md-1">PDF</th>
 
         </tr>
     </thead>
@@ -59,6 +61,7 @@
             <td>{{ $order->requisition->id }}</td>          
             {{-- <td>{{ "VH-".$order->id."-". $order->created_at->format('y') }}</td> --}}
             <td data-order="{{ $order->id }}">{{ "VH-".$order->id ."-". $order->created_at->format('y') }}</td>
+            <td>{{$order->requisition->notes_client}}</td>
             <td>{{ $order->po_status}}</td>
 
         <td class="
@@ -99,6 +102,16 @@
         @endif">
         {{ floor(\Carbon\Carbon::parse($order->requisition->production_date)->diffInDays(now(), false)) }}
     </td>
+
+    
+            <td>
+                <a class="text-white" href="{{ route('ordencompra.pdfclient', ['purchaseOrder' => $order->id, 'requisicione' => $order->requisition->id]) }}">
+
+                    <button class="btn btn-secondary mb-2">
+                        PDF
+                    </button>
+                </a> 
+            </td> 
             
         </tr>
         @endforeach

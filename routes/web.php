@@ -179,6 +179,8 @@ Route::group(['middleware' => ['auth']], function () {
 
     Route::get('/mis-requisiciones', [AuthorizationRequisitionController::class, 'indexclient'])->name('requisicionesclient.index');
     Route::get('/mis-ordenes', [AuthPurchaseOrderController::class, 'misordenes'])->name('ordenesclient.index');
+    Route::get('/orden-user/{purchaseOrder}/requisiciones/{requisicione}/pdf', [PurchaseOrderController::class, 'pdfclient'])->name('ordencompra.pdfclient');
+
 
     Route::get('/productos-cliente', [AuthorizationRequisitionController::class, 'productclient'])->name('productclient.index');
 

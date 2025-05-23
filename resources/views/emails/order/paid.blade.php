@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nueva Orden de Compra</title>
+    <title>Nueva Orden de Compra Pagada</title>
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -116,7 +116,7 @@
         <div class="content">
             
             <h2>Detalles de la orden</h2>
-            <p><strong>La siguiente compra ha sido aprobada, puedes iniciar el seguimiento.</strong> </p>
+            <p><strong>La siguiente compra ha sido PAGADA, puedes iniciar el seguimiento de recolección.</strong> </p>
             <p><strong>Identificor de Compra: VH-</strong> <span class="highlight">{{ $order->id }}</span></p>
             <p><strong>Solicitante:</strong> <span class="highlight">{{ $order->requisition->user->name }}</span></p>
             <p><strong>Fecha:</strong> <span class="highlight">{{ $order->requisition->request_date }}</span></p>

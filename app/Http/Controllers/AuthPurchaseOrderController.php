@@ -169,6 +169,7 @@ class AuthPurchaseOrderController extends Controller
                 'authorization_2' => $order->authorization_2,
                 'authorization_3' => $order->authorization_3,
                 'authorization_4' => $order->authorization_4,
+                'notes_client' => $order->requisition->notes_client,
                 'delivery_condition' => $order->delivery_condition,
                 'po_status' => $order->po_status,
                 'bill' => $order->bill,
@@ -358,6 +359,7 @@ class AuthPurchaseOrderController extends Controller
                 'po_status' => $order->po_status,
                 'bill' => $order->bill,
                 'bill_name' => $order->bill_name,
+                'notes_client' => $order->requisition->notes_client,
 
                 'subtotal' => $order->subtotal,
                 'total_descuento' => $order->total_descuento,
