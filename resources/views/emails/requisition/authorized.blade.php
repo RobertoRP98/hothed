@@ -129,7 +129,7 @@
 
         <!-- Pie de página -->
         <div class="footer">
-            <p>&copy; 2024 hothedmex.mx. Todos los derechos reservados.</p>
+            {{-- <p>&copy; 2024 hothedmex.mx. Todos los derechos reservados.</p> --}}
             <p>Si tienes preguntas, contáctanos en <a href="mailto:digital@hothedmex.mx">digital@hothedmex.mx</a>.</p>
         </div>
     </div>

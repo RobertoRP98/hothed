@@ -53,9 +53,9 @@
             </div>
         </div>
 
-        <div class="text-center mt-1">
+        {{-- <div class="text-center mt-1">
             <p class="footer-alt mb-0 f-14">2024 © HOT HED MÉXICO, All Rights Reserved</p>
-        </div>
+        </div> --}}
     </footer>
 </section>
 </body>
