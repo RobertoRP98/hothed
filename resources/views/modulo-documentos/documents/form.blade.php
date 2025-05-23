@@ -193,12 +193,13 @@
     <div class="col-md-2">
     <label for="areas" class="form-label">ALCANCE</label>
     <select name="areas[]" id="areas" multiple class="form-select" data-placeholder="Selecciona las áreas">
-        @foreach ($areas as $area)
-            <option value="{{ $area->id }}"
-                {{ (collect(old('areas', $document->areas->pluck('id')))->contains($area->id)) ? 'selected' : '' }}>
-                {{ $area->name }}
-            </option>
-        @endforeach
+     @foreach ($areas as $area)
+    <option value="{{ $area->id }}"
+        {{ (collect(old('areas', isset($document) ? $document->areas->pluck('id') : []))->contains($area->id)) ? 'selected' : '' }}>
+        {{ $area->name }}
+    </option>
+@endforeach
+
     </select>
 </div>
 
