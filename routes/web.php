@@ -376,11 +376,18 @@ Route::group(
 
 
         Route::get('documentacion-sgi',[DocumentController::class,'index'])->name('documentacion-sgi.index');
+
         Route::get('documentacion-sgi/create',[DocumentController::class,'create'])->name('documentacion-sgi.create');
         Route::post('documentacion-sgi',[DocumentController::class,'store'])->name('documentacion-sgi.store');
 
         Route::get('documentacion-sgi/{document}/edit',[DocumentController::class,'edit'])->name('documentacion-sgi.edit');
+        Route::patch('documentacion-sgi/{document}',[DocumentController::class,'update'])->name('documentacion-sgi.update');
+
         Route::get('/documentos/download/{type}/{id}', [DocumentController::class, 'download'])->name('documentos.download');
+
+        Route::get('documentos/ver/{id}',[DocumentController::class,'verpdf'])->name('verpdf');
+
+        
 
 
 

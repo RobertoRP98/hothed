@@ -156,7 +156,58 @@ class DocumentController extends Controller
      */
     public function update(UpdateDocumentRequest $request, Document $document)
     {
-        //
+        $filePathDoc = $document->file_path_doc;
+        $filePathPdf = $document->file_path_pdf;
+
+
+        //AQUI INSPECCIONAMOS QUE SI ES UN NUEVO ARCHIVO SE HAGA EL PROCESO DE GUARDADO Y CONVERSION
+        if($request->hasFile('file_doc')){
+            $newOriginalName = $request->file('file_doc')->getClientOriginalName();
+
+            //SOLO SI SUBEN UN NUEVO ARCHIVO SE PROCESA
+            if($newOriginalName!==basename($document->file_path_doc)){
+                Log::info('Nuevo DOC recibido:' . $newOriginalName);
+
+                $extension = strtolower($request->file('file_doc')->getClientOriginalExtension());
+                $filenameDoc = $newOriginalName;
+                $filePathDoc = $request->file('file_doc')->storeAs('documentos-sgi',$filenameDoc);
+
+                Log::info('Ruta DOC guardada: '.$filePathDoc);
+
+                //Convertir solo si no es PDF
+
+                if($extension !== 'pdf'){
+                    $filePathPdf = $this->convertirADocumentoPDF($filePathDoc);
+                }else{
+                    $filePathPdf = $filePathDoc;
+                }
+            }else{
+                Log::info('EL ARCHIVO SUBIDO ES EL MISMO, NO SE ACTUALIZA NI SE CONVIERTE');
+            }
+        }
+
+        //Actualizar los demas campos
+
+        $document->update([
+            'code' => $request->code,
+            'name' => $request->name,
+            'description' => $request->description,
+            'version' => $request->version,
+            'category_id' => $request->category_id,
+            'file_path_doc' => $filePathDoc,
+            'file_path_pdf' => $filePathPdf,
+            'revisor_id' => $request->revisor_id,
+            'aprobador_id' => $request->aprobador_id,
+            'area_resp_id' => $request->area_resp_id,
+            'auth_1' => $request->auth_1,
+            'auth_2' => $request->auth_2,
+            'active' => $request->active,
+            'type_id' => $request->type_id,
+        ]);
+
+        $document->areas()->sync($request->areas);
+
+        return redirect()->route('documentacion-sgi.index')->with('success','Documento actualizado correctamente');
     }
 
     /**
@@ -180,5 +231,11 @@ class DocumentController extends Controller
         }
 
         return abort(404, 'Archivo no disponible');
+    }
+
+    public function verpdf($id){
+
+     $document = Document::findOrFail($id);
+    return view('modulo-documentos.documents.pdfuser', compact('document'));
     }
 }

@@ -132,7 +132,11 @@
                      <a href="{{ asset('storage/' . $document->file_path_doc) }}" target="_blank">
                          {{ basename($document->file_path_doc) }}
                      </a>
+                     
                  </div>
+                 <small class="text-muted">
+    SI NO DESEAS CAMBIAR EL ARCHIVO, DEJA ESTE CAMPO VACIO.
+</small>
              @endif
 
          </div>
