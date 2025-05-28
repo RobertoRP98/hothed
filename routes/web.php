@@ -385,7 +385,10 @@ Route::group(
 
         Route::get('/documentos/download/{type}/{id}', [DocumentController::class, 'download'])->name('documentos.download');
 
-        Route::get('documentos/ver/{id}',[DocumentController::class,'verpdf'])->name('verpdf');
+       // Route::get('documentos/ver/{id}',[DocumentController::class,'verpdf'])->name('verpdf');
+
+       Route::get('/documentos/pdf/{id}', [DocumentController::class, 'streampdf'])->name('documentos.streampdf');
+
 
         
 

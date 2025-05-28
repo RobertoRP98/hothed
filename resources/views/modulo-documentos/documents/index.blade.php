@@ -95,13 +95,14 @@
 
             @endif
         </td> --}}
-                        <td>
-                                    <a href="{{ route('verpdf', ['id' => $document->id]) }}"
-                                        class="btn btn-sm btn-outline-danger" target="_blank">
-                                        <i class="bi bi-filetype-pdf"
-                                            style="font-size: 30px; width: 24px; height: 24px;"></i>
-                                    </a>
-</td>
+                                    <td>
+                                        <a href="{{ url('pdfjs/web/viewer.html?file=' . urlencode(route('documentos.streampdf', ['id' => $document->id]))) }}"
+                                            class="btn btn-sm btn-outline-danger" target="_blank">
+                                            <i class="bi bi-filetype-pdf"
+                                                style="font-size: 30px; width: 24px; height: 24px;"></i>
+                                        </a>
+
+                                    </td>
 
                                     {{-- Columna Documento --}}
                                     <td>
@@ -176,5 +177,4 @@
             }); // Asegúrate de que el ID coincida con tu tabla
         });
     </script>
-
 @endpush

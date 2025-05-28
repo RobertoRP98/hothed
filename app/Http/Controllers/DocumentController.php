@@ -5,13 +5,14 @@ namespace App\Http\Controllers;
 use App\Models\AreaSgi;
 use App\Models\UserSgi;
 use App\Models\Document;
+use App\Models\DocumentsTypes;
 use App\Models\DocumentsCategories;
 use Illuminate\Support\Facades\Log;
+use Symfony\Component\Process\Process;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\StoreDocumentRequest;
 use App\Http\Requests\UpdateDocumentRequest;
-use App\Models\DocumentsTypes;
-use Symfony\Component\Process\Process;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class DocumentController extends Controller
 {
@@ -233,9 +234,23 @@ class DocumentController extends Controller
         return abort(404, 'Archivo no disponible');
     }
 
-    public function verpdf($id){
+  public function streampdf($id)
+{
+    $document = Document::findOrFail($id);
 
-     $document = Document::findOrFail($id);
-    return view('modulo-documentos.documents.pdfuser', compact('document'));
+    $path = $document->file_path_pdf; // ya viene con "pdfs-sgi/ejemplo.pdf"
+    $filename = basename($path);
+
+    if (!Storage::disk('local')->exists($path)) {
+        abort(404, 'PDF no encontrado');
     }
+
+    return new StreamedResponse(function () use ($path) {
+        $stream = Storage::disk('local')->readStream($path);
+        fpassthru($stream);
+    }, 200, [
+        "Content-Type" => "application/pdf",
+        "Content-Disposition" => "inline; filename=\"{$filename}\""
+    ]);
+}
 }
