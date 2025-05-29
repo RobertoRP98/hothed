@@ -187,7 +187,6 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/export-productos-compras', [ProductController::class, 'exportProductosCompra'])->name('export-productos-compras');
 
     Route::get('/export-mis-ordenes', [PurchaseOrderController::class, 'exportReporteMisOrdenes'])->name('export-mis-ordenes');
-
 });
 //RUTAS QUE SOLO SON ACCESIBLES AL ENCARGADO DE COMPRAS
 
@@ -223,11 +222,11 @@ Route::group(['middleware' => ['auth', 'role:Developer|RespCompras']], function 
 
     Route::get('/export-proveedores', [PurchaseOrderController::class, 'exportProveedores'])->name('export.proveedores');
 
- //   Route::get('/export-compras-global', [PurchaseOrderController::class, 'exportReporteGlobalCompras'])->name('export.compras-global');
+    //   Route::get('/export-compras-global', [PurchaseOrderController::class, 'exportReporteGlobalCompras'])->name('export.compras-global');
 
     Route::get('/export-compras-rango', [PurchaseOrderController::class, 'exportReporteRangos'])->name('export.compras-rango');
 
-//    Route::get('/export-proveedores-locales', [PurchaseOrderController::class, 'exportProveedoresPagadas'])->name('export.proveedores-pagadas');
+    //    Route::get('/export-proveedores-locales', [PurchaseOrderController::class, 'exportProveedoresPagadas'])->name('export.proveedores-pagadas');
 
 
 });
@@ -375,31 +374,29 @@ Route::group(
         Route::resource('tipos-documentos', DocumentsTypesController::class);
 
 
-        Route::get('documentacion-sgi',[DocumentController::class,'index'])->name('documentacion-sgi.index');
+        Route::get('documentacion-sgi', [DocumentController::class, 'index'])->name('documentacion-sgi.index');
 
-        Route::get('documentacion-sgi/create',[DocumentController::class,'create'])->name('documentacion-sgi.create');
-        Route::post('documentacion-sgi',[DocumentController::class,'store'])->name('documentacion-sgi.store');
+        Route::get('documentacion-sgi/create', [DocumentController::class, 'create'])->name('documentacion-sgi.create');
+        Route::post('documentacion-sgi', [DocumentController::class, 'store'])->name('documentacion-sgi.store');
 
-        Route::get('documentacion-sgi/{document}/edit',[DocumentController::class,'edit'])->name('documentacion-sgi.edit');
-        Route::patch('documentacion-sgi/{document}',[DocumentController::class,'update'])->name('documentacion-sgi.update');
+        Route::get('documentacion-sgi/{document}/edit', [DocumentController::class, 'edit'])->name('documentacion-sgi.edit');
+        Route::patch('documentacion-sgi/{document}', [DocumentController::class, 'update'])->name('documentacion-sgi.update');
 
         Route::get('/documentos/download/{type}/{id}', [DocumentController::class, 'download'])->name('documentos.download');
 
-       // Route::get('documentos/ver/{id}',[DocumentController::class,'verpdf'])->name('verpdf');
+        // Route::get('documentos/ver/{id}',[DocumentController::class,'verpdf'])->name('verpdf');
 
-       Route::get('/documentos/pdf/{id}', [DocumentController::class, 'streampdf'])->name('documentos.streampdf');
-
-
-        
-
-
+        Route::get('/documentos/pdf/{id}', [DocumentController::class, 'streampdf'])->name('documentos.streampdf');
 
         // Route::get('/users-sgi/{id}/jefe',[UserSgiController::class,'jefeinmediato']);
-
-
-        Route::get('/phpinfo', function () {
-    phpinfo();
-});
     }
 );
+
+  Route::group(['middleware' => ['auth']], function () {
+
+            Route::get('documentacion-general', [DocumentController::class, 'indexgeneral'])->name('documentacion-general');
+
+            Route::get('mis-documentos-sgi', [DocumentController::class, 'documentosPorArea'])->name('mis-documentos-sgi');
+
+        });
 //FINALIZA MODULO DE DOCUMENTOS

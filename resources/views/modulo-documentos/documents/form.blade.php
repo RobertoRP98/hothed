@@ -244,6 +244,7 @@
          </div>
      </div>
 
+     @if ($modo !== 'Crear')
 
      <div class="col-md-3">
          <label class="form-label">STATUS REVISOR</label>
@@ -264,6 +265,9 @@
          </div>
      </div>
 
+     @endif
+
+
       <div class="col-md-2">
          <div class="form-outline">
              <label class="form-label" for="aprobador_id">&nbsp;APROBADOR</label>
@@ -280,6 +284,8 @@
          </div>
      </div>
 
+     @if ($modo !== 'Crear')
+         
      <div class="col-md-3">
          <label class="form-label">STATUS APROBADOR</label>
          <div class="form-outline">
@@ -299,6 +305,7 @@
          </div>
      </div>
 
+     @endif
 
 
  </div>

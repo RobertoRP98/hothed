@@ -8,6 +8,7 @@ use App\Models\Document;
 use App\Models\DocumentsTypes;
 use App\Models\DocumentsCategories;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 use Symfony\Component\Process\Process;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\StoreDocumentRequest;
@@ -84,8 +85,8 @@ class DocumentController extends Controller
             'revisor_id' => $request->revisor_id,
             'aprobador_id' => $request->aprobador_id,
             'area_resp_id' => $request->area_resp_id,
-            'auth_1' => $request->auth_1,
-            'auth_2' => $request->auth_2,
+            'auth_1' => 'PENDIENTE',
+            'auth_2' => 'PENDIENTE',
             'active' => $request->active,
             'type_id' => $request->type_id,
         ]);
@@ -149,7 +150,7 @@ class DocumentController extends Controller
         $users = UserSgi::all();
         $types = DocumentsTypes::all();
 
-        return view('modulo-documentos.documents.edit', compact('areas', 'categorias', 'users', 'types','document'));
+        return view('modulo-documentos.documents.edit', compact('areas', 'categorias', 'users', 'types', 'document'));
     }
 
     /**
@@ -162,27 +163,27 @@ class DocumentController extends Controller
 
 
         //AQUI INSPECCIONAMOS QUE SI ES UN NUEVO ARCHIVO SE HAGA EL PROCESO DE GUARDADO Y CONVERSION
-        if($request->hasFile('file_doc')){
+        if ($request->hasFile('file_doc')) {
             $newOriginalName = $request->file('file_doc')->getClientOriginalName();
 
             //SOLO SI SUBEN UN NUEVO ARCHIVO SE PROCESA
-            if($newOriginalName!==basename($document->file_path_doc)){
+            if ($newOriginalName !== basename($document->file_path_doc)) {
                 Log::info('Nuevo DOC recibido:' . $newOriginalName);
 
                 $extension = strtolower($request->file('file_doc')->getClientOriginalExtension());
                 $filenameDoc = $newOriginalName;
-                $filePathDoc = $request->file('file_doc')->storeAs('documentos-sgi',$filenameDoc);
+                $filePathDoc = $request->file('file_doc')->storeAs('documentos-sgi', $filenameDoc);
 
-                Log::info('Ruta DOC guardada: '.$filePathDoc);
+                Log::info('Ruta DOC guardada: ' . $filePathDoc);
 
                 //Convertir solo si no es PDF
 
-                if($extension !== 'pdf'){
+                if ($extension !== 'pdf') {
                     $filePathPdf = $this->convertirADocumentoPDF($filePathDoc);
-                }else{
+                } else {
                     $filePathPdf = $filePathDoc;
                 }
-            }else{
+            } else {
                 Log::info('EL ARCHIVO SUBIDO ES EL MISMO, NO SE ACTUALIZA NI SE CONVIERTE');
             }
         }
@@ -208,7 +209,7 @@ class DocumentController extends Controller
 
         $document->areas()->sync($request->areas);
 
-        return redirect()->route('documentacion-sgi.index')->with('success','Documento actualizado correctamente');
+        return redirect()->route('documentacion-sgi.index')->with('success', 'Documento actualizado correctamente');
     }
 
     /**
@@ -234,23 +235,60 @@ class DocumentController extends Controller
         return abort(404, 'Archivo no disponible');
     }
 
-  public function streampdf($id)
-{
-    $document = Document::findOrFail($id);
+    public function streampdf($id)
+    {
+        $document = Document::findOrFail($id);
 
-    $path = $document->file_path_pdf; // ya viene con "pdfs-sgi/ejemplo.pdf"
-    $filename = basename($path);
+        $path = $document->file_path_pdf; // ya viene con "pdfs-sgi/ejemplo.pdf"
+        $filename = basename($path);
 
-    if (!Storage::disk('local')->exists($path)) {
-        abort(404, 'PDF no encontrado');
+        if (!Storage::disk('local')->exists($path)) {
+            abort(404, 'PDF no encontrado');
+        }
+
+        return new StreamedResponse(function () use ($path) {
+            $stream = Storage::disk('local')->readStream($path);
+            fpassthru($stream);
+        }, 200, [
+            "Content-Type" => "application/pdf",
+            "Content-Disposition" => "inline; filename=\"{$filename}\""
+        ]);
     }
 
-    return new StreamedResponse(function () use ($path) {
-        $stream = Storage::disk('local')->readStream($path);
-        fpassthru($stream);
-    }, 200, [
-        "Content-Type" => "application/pdf",
-        "Content-Disposition" => "inline; filename=\"{$filename}\""
-    ]);
-}
+    public function indexgeneral(){
+
+        $documents = Document::with('areas')
+        ->whereHas('areas',function($query){
+            $query->where('areas_sgi.id',1);
+        })
+        ->get();
+
+        return view('modulo-documentos.documents.generales',compact('documents'));
+    }
+
+    public function documentosPorArea(){
+
+        //CATH DEL USUARIO LOGUEADO
+        $correo = Auth::user()->email;
+
+        //BUSCAR ESE USUARIO EN USERS_SGI
+        $usuarioSGI  = UserSgi::where('email',$correo)->first();
+
+        if(!$usuarioSGI){
+                abort(403, 'USUARIO NO AUTORIZADO');
+        }
+        //AQUI SE RESCATA EL AREA QUE TRAE EL USUARIO PERO A NIVEL TABLA USERS_SGI
+        $areaId = $usuarioSGI->area_id;
+
+        //BUSCAR DOCUMENTOS REALACIONADOS A ESA AREA RESCATADA
+
+        $documents = Document::with('areas')
+        ->whereHas('areas', function($query) use ($areaId){
+            $query->where('areas_sgi.id',$areaId);
+        })
+        ->get();
+
+
+        return view('modulo-documentos.documents.myarea',compact('documents'));
+    }
 }
