@@ -398,5 +398,7 @@ Route::group(
 
             Route::get('mis-documentos-sgi', [DocumentController::class, 'documentosPorArea'])->name('mis-documentos-sgi');
 
+            Route::get('mis-aprobaciones-sgi',[DocumentController::class,'documentosPorAprobar'])->name('mis-aprobaciones-sgi');
+
         });
 //FINALIZA MODULO DE DOCUMENTOS

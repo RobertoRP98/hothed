@@ -22,56 +22,18 @@
 
 
         <div class="col-md-12">
-            <a href="{{ url('/documentacion-sgi/create') }}"
+            <a href="{{ url('/documentacion-sgi') }}"
                 class="col-md-3 btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
-                Crear Documento
+                Regresar
             </a>
-
-            <a href="{{ url('categorias-documentos') }}"
-                class="col-md-3 btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
-                Clasificación del Documento
-            </a>
-
-            <a href="{{ url('tipos-documentos') }}"
-                class="col-md-3 btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
-                Tipo de Documento
-            </a>
-
-            {{-- <a href="{{ url('/areas-sgi') }}" class="col-md-3 btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
-        Areas de Trabajo
-    </a>
-
-     <a href="{{ url('/puestos-trabajo') }}" class="col-md-3 btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
-        Puestos de Trabajo
-    </a> --}}
-
-            <a href="{{ url('/users-sgi') }}"
-                class="col-md-3 btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
-                Usuarios
-            </a>
-
-            <a href="{{ url('/documentacion-general') }}"
-                class="col-md-3 btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
-                Documentación General
-            </a>
-
-             <a href="{{ url('/mis-documentos-sgi') }}"
-                class="col-md-3 btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
-                Documentación de mi area
-            </a>
-
-             <a href="{{ url('/mis-aprobaciones-sgi') }}"
-                class="col-md-3 btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
-                Mis aprobaciones
-            </a>
-
-
-
         </div>
+
+
+
 
         <br>
 
-        <h3 class="text-center my-1">Documentación</h3>
+        <h3 class="text-center my-1">Mis Aprobaciones</h3>
 
 
         <div class="card">
@@ -81,19 +43,16 @@
                     <table id="documentacion-sgi" class="table table-light table-bordered table-hover text-center">
                         <thead class="thead-light">
                             <tr>
-                                <th class="col-md-1">ID</th>
                                 <th class="col-md-1">CODIGO</th>
                                 <th class="col-md-1">NOMBRE</th>
                                 <th class="col-md-1">VER</th>
                                 <th class="col-md-1">DESCARGAR</th>
-                                <th class="col-md-1">OPCIONES</th>
 
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($documents as $document)
                                 <tr>
-                                    <td>{{ $document->id }}</td>
                                     <td>{{ $document->code }}</td>
                                     <td>{{ $document->name }}</td>
 
@@ -134,13 +93,7 @@
                                     </td>
 
 
-                                    <td>
-                                        <a href="{{ url('documentacion-sgi/' . $document->id . '/edit') }}"
-                                            {{-- target="_blank"  --}} class="btn btn-warning mb-2 text-white">
-                                            Editar
-                                        </a>
 
-                                    </td>
 
                                 </tr>
                             @endforeach
