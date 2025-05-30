@@ -33,7 +33,7 @@
 
         <br>
 
-        <h3 class="text-center my-1">Documentación General</h3>
+        <h3 class="text-center my-1">Mis Revisiones</h3>
 
 
         <div class="card">
@@ -47,6 +47,7 @@
                                 <th class="col-md-1 text-center">NOMBRE</th>
                                 <th class="col-md-1 text-center">VER</th>
                                 <th class="col-md-1 text-center">DESCARGAR</th>
+                                <th class="col-md-1 text-center">REVISAR</th>
 
                             </tr>
                         </thead>
@@ -92,7 +93,16 @@
                                         @endif
                                     </td>
 
+                                    
+                                    <td>
+                                        <a href="{{ url('documentacion-sgi/' . $document->id . '/revision') }}"
+                                        
 
+                                            {{-- target="_blank"  --}} class="btn btn-warning mb-2 text-white">
+                                            AUTORIZAR
+                                        </a>
+
+                                    </td>
 
 
                                 </tr>

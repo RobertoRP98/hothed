@@ -292,6 +292,30 @@ class DocumentController extends Controller
         return view('modulo-documentos.documents.myarea',compact('documents'));
     }
 
+    public function documentosPorRevisar(){
+
+        //CATH DEL USUARIO LOGUEADO
+        $correo = Auth::user()->email;
+
+        //BUSCAR ESE USUARIO EN USERS_SGI
+        $usuarioSGI  = UserSgi::where('email',$correo)->first();
+
+        if(!$usuarioSGI){
+                abort(403, 'USUARIO NO AUTORIZADO');
+        }
+        //AQUI SE RESCATA EL AREA QUE TRAE EL USUARIO PERO A NIVEL TABLA USERS_SGI
+        $areaId = $usuarioSGI->id;
+
+        //BUSCAR DOCUMENTOS REALACIONADOS A ESA AREA RESCATADA
+
+        $documents = Document::with('areas')
+        ->where('revisor_id', $usuarioSGI->id)
+        ->where('auth_1','PENDIENTE')
+        ->get();
+
+        return view('modulo-documentos.documents.user.revisiones-user',compact('documents'));
+    }
+
        public function documentosPorAprobar(){
 
         //CATH DEL USUARIO LOGUEADO
@@ -310,9 +334,24 @@ class DocumentController extends Controller
 
         $documents = Document::with('areas')
         ->where('aprobador_id', $usuarioSGI->id)
-        ->where('auth_1','PENDIENTE')
+        ->where('auth_2','PENDIENTE')
         ->get();
 
         return view('modulo-documentos.documents.user.aprobaciones-user',compact('documents'));
     }
+
+
+    public function editRevision($id)
+    {
+        $document = Document::with('areas')->findOrFail($id);
+
+        $areas = AreaSgi::all();
+        $categorias = DocumentsCategories::all();
+        $users = UserSgi::all();
+        $types = DocumentsTypes::all();
+
+        return view('modulo-documentos.documents.user.edit-revision', compact('areas', 'categorias', 'users', 'types', 'document'));
+    }
+
+    
 }

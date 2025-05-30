@@ -60,6 +60,12 @@
                 Documentación de mi area
             </a>
 
+
+              <a href="{{ url('/mis-revisiones-sgi') }}"
+                class="col-md-3 btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
+                Mis revisiones
+            </a>
+
              <a href="{{ url('/mis-aprobaciones-sgi') }}"
                 class="col-md-3 btn btn-lg btn-light border border-primary shadow-sm m-2 w-auto">
                 Mis aprobaciones
@@ -81,12 +87,12 @@
                     <table id="documentacion-sgi" class="table table-light table-bordered table-hover text-center">
                         <thead class="thead-light">
                             <tr>
-                                <th class="col-md-1">ID</th>
-                                <th class="col-md-1">CODIGO</th>
-                                <th class="col-md-1">NOMBRE</th>
-                                <th class="col-md-1">VER</th>
-                                <th class="col-md-1">DESCARGAR</th>
-                                <th class="col-md-1">OPCIONES</th>
+                                <th class="col-md-1 text-center">ID</th>
+                                <th class="col-md-1 text-center">CODIGO</th>
+                                <th class="col-md-1 text-center">NOMBRE</th>
+                                <th class="col-md-1 text-center">VER</th>
+                                <th class="col-md-1 text-center">DESCARGAR</th>
+                                <th class="col-md-1 text-center">OPCIONES</th>
 
                             </tr>
                         </thead>

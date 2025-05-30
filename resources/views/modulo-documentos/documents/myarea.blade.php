@@ -43,10 +43,10 @@
                     <table id="documentacion-sgi" class="table table-light table-bordered table-hover text-center">
                         <thead class="thead-light">
                             <tr>
-                                <th class="col-md-1">CODIGO</th>
-                                <th class="col-md-1">NOMBRE</th>
-                                <th class="col-md-1">VER</th>
-                                <th class="col-md-1">DESCARGAR</th>
+                                <th class="col-md-1 text-center">CODIGO</th>
+                                <th class="col-md-1 text-center">NOMBRE</th>
+                                <th class="col-md-1 text-center">VER</th>
+                                <th class="col-md-1 text-center">DESCARGAR</th>
 
                             </tr>
                         </thead>

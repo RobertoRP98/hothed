@@ -398,7 +398,14 @@ Route::group(
 
             Route::get('mis-documentos-sgi', [DocumentController::class, 'documentosPorArea'])->name('mis-documentos-sgi');
 
+            Route::get('mis-revisiones-sgi',[DocumentController::class,'documentosPorRevisar'])->name('mis-revisiones-sgi');
+
             Route::get('mis-aprobaciones-sgi',[DocumentController::class,'documentosPorAprobar'])->name('mis-aprobaciones-sgi');
+
+            Route::get('documentacion-sgi/{document}/revision', [DocumentController::class, 'editRevision'])->name('documentacion-sgi-revision');
+          
+            Route::patch('documentacion-sgi/{document}', [DocumentController::class, 'update'])->name('documentacion-sgi.update');
+
 
         });
 //FINALIZA MODULO DE DOCUMENTOS
