@@ -194,7 +194,7 @@
 
 
 
-    <div class="col-md-2">
+    <div class="col-md-7">
     <label for="areas" class="form-label">ALCANCE</label>
     <select name="areas[]" id="areas" multiple class="form-select" data-placeholder="Selecciona las áreas">
      @foreach ($areas as $area)

@@ -188,6 +188,22 @@
     @endauth
 
      {{-- fin vista norma --}}
+
+     @auth
+@php
+    // Determinar la ruta según el rol del usuario
+    $comprasUrl = '#'; // Enlace por defecto
+    if (auth()->user()->hasRole(['Gerope'])) {
+        $comprasUrl = '/repositorio-requisiciones-operaciones';
+    }
+@endphp
+
+@if($comprasUrl !== '#')
+    <li class="nav-item">
+        <a class="nav-link text-white" href="{{ url($comprasUrl) }}">Historial Requis</a>
+    </li>
+@endif
+@endauth
     
 
 

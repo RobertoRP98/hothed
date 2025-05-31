@@ -33,7 +33,7 @@
 
         <br>
 
-        <h3 class="text-center my-1">Documentación de mi Area</h3>
+        <h3 class="text-center my-1">Lista Maestra</h3>
 
 
         <div class="card">

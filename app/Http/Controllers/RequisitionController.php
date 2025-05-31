@@ -138,21 +138,21 @@ class RequisitionController extends Controller
                     'AUXILIAR DE CONTABILIDAD' => 'noemi.hernandez@hothedmex.mx', //NOEMI
                     'AUXILIAR DE ALMACEN', //RESP DE ALMACEN
                     'AUXILIAR DE VENTAS Y OP' => 'david.hernandez@hothedmex.mx', //DAVID
-                    'AUX DE LOGISTICA Y MANTO'=> 'david.hernandez@hothedmex.mx',
+                    'AUX DE LOGISTICA Y MANTO' => 'david.hernandez@hothedmex.mx',
                     'ESP. TECNICO' => 'david.hernandez@hothedmex.mx', // FIN DAVID
                     'COORD. DE HSE' => 'laura.delariva@hothedmex.mx', //LAURA
                     'GER. OPE' => 'karla.ibeth.segura@hothedmex.mx', //DIR KARLA
                     'COORD. CONTABILIDAD' => 'karla.ibeth.segura@hothedmex.mx',
-                    'RESP. DE SGI'=> 'karla.ibeth.segura@hothedmex.mx',
+                    'RESP. DE SGI' => 'karla.ibeth.segura@hothedmex.mx',
                     'COORD. CONTRATOS' => 'karla.ibeth.segura@hothedmex.mx',
-                    'DIR. OPERACIONES'=> 'karla.ibeth.segura@hothedmex.mx',
+                    'DIR. OPERACIONES' => 'karla.ibeth.segura@hothedmex.mx',
                     'COORD. DE RECURSOS HUMANOS' => 'karla.ibeth.segura@hothedmex.mx',
                     'RESP. DE COMPRAS' => 'karla.ibeth.segura@hothedmex.mx', //FIN DIR KARLA
                     'COORD. DE VENTAS' => 'alejandro.flores@hothedmex.mx', //FLORES
                     'SUB. GER. OPE' => 'alejandro.flores@hothedmex.mx',
                     'COORD. DE ALMACEN' => 'alejandro.flores@hothedmex.mx', //FIN FLORES
-                    'AUX. CONTRATOS' => 'miriam.hernandez@hothedmex.mx',// MIRIAM
-                    'MCFLY' => 'ale.santos@hothedmex.mx',//SANTOS
+                    'AUX. CONTRATOS' => 'miriam.hernandez@hothedmex.mx', // MIRIAM
+                    'MCFLY' => 'ale.santos@hothedmex.mx', //SANTOS
                     'AUXILIAR DE TI' => 'karla.ibeth.segura@hothedmex.mx',
                 ];
 
@@ -354,22 +354,22 @@ class RequisitionController extends Controller
         try {
             Log::info('Payload recibido:', $request->all());
             Log::info('Requisition ID:', ['id' => $requisicione->id]);
-    
+
             $today = Carbon::now();
             $importanceDays = [
                 'Baja' => 90,
                 'Media' => 60,
                 'Alta' => 15,
             ];
-    
+
             $importance = $request->input('importance', 'Baja');
             $daysToAdd = $importanceDays[$importance] ?? 90;
             $calculatedDate = $today->copy()->addDays($daysToAdd);
-    
+
             // Validar productos
             $productIds = array_column($request->input('items_requisition', []), 'product_id');
             $validProductIds = Product::whereIn('id', $productIds)->pluck('id')->toArray();
-    
+
             foreach ($productIds as $id) {
                 if (!in_array($id, $validProductIds)) {
                     throw ValidationException::withMessages([
@@ -377,12 +377,12 @@ class RequisitionController extends Controller
                     ]);
                 }
             }
-    
+
             // Inicializamos fuera de la transacción para refrescar luego
             $requisition = $requisicione;
-    
+
             DB::transaction(function () use ($request, $requisicione, $calculatedDate, $daysToAdd, $importance, &$requisition) {
-    
+
                 // Construimos el array de datos base
                 $updateData = $request->only([
                     'status_requisition',
@@ -391,19 +391,19 @@ class RequisitionController extends Controller
                     'notes_resp',
                     'finished_date'
                 ]);
-    
+
                 // Solo actualizamos importance y fechas si cambió la importance
                 if ($requisicione->importance !== $importance) {
                     $updateData['importance'] = $importance;
                     $updateData['production_date'] = $calculatedDate->format('Y-m-d');
                     $updateData['days_remaining'] = $daysToAdd;
                 }
-    
+
                 $requisicione->update($updateData);
-    
+
                 // Reemplazar productos
                 $requisicione->itemsRequisition()->delete();
-    
+
                 foreach ($request->input('items_requisition') as $item) {
                     Log::info('Insertando item:', ['requisition_id' => $requisicione->id, 'item' => $item]);
                     $requisicione->itemsRequisition()->create([
@@ -499,6 +499,17 @@ class RequisitionController extends Controller
     public function destroy(Requisition $requisition)
     {
         //
+    }
+
+    public function repositoriorequis()
+    {
+
+        $datos['requisiciones'] = Requisition::with('user')
+            ->whereHas('user', function ($query) {
+                $query->where('departament', 'OP');
+            })->get();
+
+        return view('requisition.repositorio-requis', $datos);
     }
 
 

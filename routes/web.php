@@ -177,6 +177,8 @@ Route::group(['middleware' => ['auth']], function () {
     //RUTA DE PDF PARA LAS REQUISICIONES
     Route::get('/requisiciones/{requisicione}/pdf', [RequisitionController::class, 'pdf'])->name('requisiciones.pdf');
 
+    Route::get('/repositorio-requisiciones-operaciones',[RequisitionController::class,'repositoriorequis'])->name('repositorio-requisiciones-operaciones');
+
     Route::get('/mis-requisiciones', [AuthorizationRequisitionController::class, 'indexclient'])->name('requisicionesclient.index');
     Route::get('/mis-ordenes', [AuthPurchaseOrderController::class, 'misordenes'])->name('ordenesclient.index');
     Route::get('/orden-user/{purchaseOrder}/requisiciones/{requisicione}/pdf', [PurchaseOrderController::class, 'pdfclient'])->name('ordencompra.pdfclient');
@@ -188,8 +190,8 @@ Route::group(['middleware' => ['auth']], function () {
 
     Route::get('/export-mis-ordenes', [PurchaseOrderController::class, 'exportReporteMisOrdenes'])->name('export-mis-ordenes');
 });
-//RUTAS QUE SOLO SON ACCESIBLES AL ENCARGADO DE COMPRAS
 
+//RUTAS QUE SOLO SON ACCESIBLES AL ENCARGADO DE COMPRAS
 Route::group(['middleware' => ['auth', 'role:Developer|RespCompras']], function () {
     Route::resource('/impuestos', TaxController::class);
     Route::resource('/proveedores', SupplierController::class);
@@ -227,8 +229,6 @@ Route::group(['middleware' => ['auth', 'role:Developer|RespCompras']], function 
     Route::get('/export-compras-rango', [PurchaseOrderController::class, 'exportReporteRangos'])->name('export.compras-rango');
 
     //    Route::get('/export-proveedores-locales', [PurchaseOrderController::class, 'exportProveedoresPagadas'])->name('export.proveedores-pagadas');
-
-
 });
 
 //RUTAS DE EXCELES PARA CONTABILIDAD Y RESP DE COMPRAS 
